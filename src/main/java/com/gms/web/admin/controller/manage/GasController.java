@@ -1,0 +1,170 @@
+package com.gms.web.admin.controller.manage;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.dao.DataAccessException;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.gms.web.admin.service.manage.GasService;
+import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.web.utils.RequestUtils;
+import com.gms.web.admin.domain.manage.GasVO;
+
+@Controller
+public class GasController {
+
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	/*
+	 * BoardService 빈(Bean) 선언
+	 */
+	@Autowired
+	private GasService gasService;
+	
+	@RequestMapping(value = "/gms/gas/list.do")
+	public String openGasList(Model model) {
+
+		List<GasVO> gasList = gasService.getGasList();
+		model.addAttribute("gasList", gasList);		
+		
+		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.gas"));	    
+		return "gms/gas/list";
+	}
+	
+	@RequestMapping(value = "/gms/gas/register.do", method = RequestMethod.POST)
+	public String registerGas(
+			HttpServletRequest request
+			, HttpServletResponse response
+			, Model model
+			, GasVO params) {
+		
+		RequestUtils.initUserPrgmInfo(request, params);
+		
+		logger.debug("GasContoller registerGas");
+		try {
+			//임시
+			params.setMemberCompSeq(1);
+			
+			boolean result = gasService.registerGas(params);
+			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.gas"));	
+			
+			if (result == false) {
+				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			}
+		} catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+	
+		return "redirect:/gms/gas/list.do";
+	}
+	
+	
+	@RequestMapping(value = "/gms/gas/modify.do", method = RequestMethod.POST)
+	public String modifyGas(HttpServletRequest request
+			, HttpServletResponse response
+			, Model model
+			, GasVO params) {
+		
+		logger.info("GasContoller modifyGas");
+		RequestUtils.initUserPrgmInfo(request, params);
+		
+		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.gas"));	
+		
+		try {
+			//임시
+			params.setMemberCompSeq(1);
+			logger.debug("******params.getGasId()()) *****===*"+params.getGasId());
+			boolean result = gasService.registerGas(params);
+			if (result == false) {
+				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			}
+		} catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+	
+		return "redirect:/gms/gas/list.do";
+	}
+	
+	@RequestMapping(value = "/gms/gas/delete.do")
+	public String deleteGas(@RequestParam(value = "gasId", required = false) Integer gasId, Model model) {
+
+		logger.info("******deleteGas params.getGasId()()) *****===*"+gasId);
+		try { 
+			//임시
+			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.gas"));	
+			boolean result = gasService.deleteGas(gasId);
+			if (result == false) {
+				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			}
+			
+			List<GasVO> gasList = gasService.getGasList();
+			model.addAttribute("gasList", gasList);
+			
+		} catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		
+		
+		return "redirect:/gms/gas/list.do";
+	}
+	/*
+	@RequestMapping(value = "/gms/gas/detail.do")
+	public String getGasDetails(@RequestParam(value = "gasId", required = false) Integer gasId, Model model) {
+
+		if (gasId == null || gasId < 1) {
+			// TODO => 올바르지 않은 접근이라는 메시지를 전달
+			return "redirect:/gms/gas/list.do";
+		}
+
+		GasVO gas = gasService.getGasDetails(gasId);
+		if (gas == null || "Y".equals(gas.getDeleteYn())) {
+			// TODO => 존재하지 않는 게시글이거나 이미 삭제된 게시글이라는 메시지를 전달
+			return "redirect:/gms/gas/list.do";
+		}
+
+		model.addAttribute("gas", gas);
+
+		//return "gms/gas/list";
+		return null;
+	}
+	*/
+	
+	@RequestMapping(value = "/gms/gas/detail.do")
+	@ResponseBody
+	public GasVO getGasDetails(@RequestParam(value = "gasId", required = false) Integer gasId, Model model)	{
+		
+		GasVO result = gasService.getGasDetails(gasId);
+		
+		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.gas"));	
+		
+		if(result != null) logger.info("******result *****===*"+result.getGasId());
+		else logger.info("******result is null  *****===*"); 
+		
+		return result;
+	}
+}

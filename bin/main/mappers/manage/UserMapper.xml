@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gms.web.admin.mapper.manage.UserMapper">
+
+	<resultMap id="UserMap" type="com.gms.web.admin.domain.manage.UserVO" >
+		<result property="userId"				column="User_ID"			/>
+		<result property="memberCompSeq"		column="Member_Comp_Seq"	/>		
+		<result property="userNm"				column="User_Nm"			/>
+		<result property="userPhone"			column="User_Phone"			/>
+		<result property="userPartCd"			column="User_Part_CD"		/>
+		<result property="userAuthority"		column="User_Authority"		/>
+		<result property="userPasswd"			column="User_Passwd"		/>
+		<result property="lastConnectDt"		column="Last_Connect_Dt"	/>
+		<result property="deleteYn"				column="DELETE_YN"			/>		
+		<result property="createId"				column="CREATE_ID"			/>
+		<result property="createDt"				column="CREATED_DT"			/>
+		<result property="updateId"				column="UPDATE_ID"			/>		
+		<result property="updateDt"				column="UPDATE_DT"			/>
+	</resultMap>
+	
+	<sql id="UserColumns">
+		  User_ID        
+		, Member_Comp_Seq
+		, User_Nm        
+		, User_Phone     
+		, User_Part_CD   
+		, User_Authority 
+		, User_Passwd    
+		, Last_Connect_Dt
+		, Delete_Yn
+		, Create_ID      
+		, Create_Dt      
+		, Update_ID      
+		, Update_Dt      
+
+	</sql>
+	
+	
+	<insert id="insertUser" parameterType="com.gms.web.admin.domain.manage.UserVO">
+		INSERT INTO TB_USER(
+			<include refid="UserColumns" />
+		) VALUES (
+			  #{userId}
+			, #{memberCompSeq}
+			, #{userNm}
+			, #{userPhone}
+			, #{userPartCd}
+			, #{userAuthority}
+			, #{userPasswd}
+			, NULL
+			, IFNULL(#{deleteYn}, 'N')
+			, #{createId}			
+			, NOW()
+			, NULL
+			, NOW()
+		)
+	</insert>
+
+	<select id="selectUserDetail" parameterType="String" resultType="com.gms.web.admin.domain.manage.UserVO">
+		SELECT
+			<include refid="UserColumns" />
+		FROM
+			TB_USER
+		WHERE
+			delete_yn = 'N'
+		AND
+			USER_ID = #{userId}
+	</select>
+
+	<update id="updateUser" parameterType="com.gms.web.admin.domain.manage.UserVO">
+		UPDATE TB_USER
+		SET
+			  User_NM	= #{userNm}
+			, User_Phone	= #{userPhone}
+			, User_Part_CD	= #{userPartCd}
+			, User_Authority = #{userAuthority}
+			, User_Passwd	= #{userPasswd}
+			, UPDATE_ID	= #{updateId}
+			, UPDATE_DT	= NOW()
+		WHERE
+			USER_ID = #{userId}
+	</update>
+
+	<update id="deleteUser" parameterType="String">
+		UPDATE TB_USER
+		SET
+			  delete_yn = 'Y'
+			, UPDATE_ID = #{updateId}
+			, UPDATE_DT = NOW()
+		WHERE
+			USER_ID = #{userId}
+	</update>
+
+	<select id="selectUserList" resultType="com.gms.web.admin.domain.manage.UserVO" parameterType="java.util.Map">
+		SELECT
+			<include refid="UserColumns" />
+		FROM
+			TB_USER
+		WHERE
+			delete_yn = 'N'
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchUserNm)">
+		AND User_NM	 LIKE CONCAT('%', CONCAT(#{searchUserNm}, '%'))
+		</if>
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(userPartCd)">
+		AND User_Part_CD=  #{userPartCd}
+		</if>
+		ORDER BY Create_Dt DESC 
+		Limit #{startRow}, #{rowPerPage}
+	</select>
+	
+	<select id="selectUserListOfPart" resultType="com.gms.web.admin.domain.manage.UserVO" parameterType="java.util.Map">
+		SELECT
+			<include refid="UserColumns" />
+		FROM
+			TB_USER
+		WHERE
+			delete_yn = 'N'
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchUserNm)">
+		AND User_NM	 LIKE CONCAT('%', CONCAT(#{searchUserNm}, '%'))
+		</if>
+			order by create_dt desc 
+		Limit #{startRow}, #{rowPerPage}
+	</select>
+	
+	<select id="selectUserCount" resultType="int" parameterType="java.util.Map">
+		SELECT
+			Count(User_id)
+		FROM
+			TB_USER
+		WHERE
+			delete_yn = 'N'	
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchUserNm)">
+		AND User_NM	 LIKE CONCAT('%', CONCAT(#{searchUserNm}, '%'))
+		</if>
+	</select>
+	
+	<select id="selectUserIdCheck" parameterType="com.gms.web.admin.domain.manage.UserVO" resultType="int">
+		SELECT
+			Count(User_id)
+		FROM
+			TB_USER
+		WHERE
+			delete_yn = 'N'	
+			and User_Id=#{userId}
+	</select>
+	
+
+</mapper>

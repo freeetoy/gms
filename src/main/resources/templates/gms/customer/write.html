@@ -1,0 +1,261 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="gms/layout/basic">
+
+
+<div class="wrapper">
+<th:block layout:fragment="content"> 
+<script type="text/javascript">
+
+var isOkay = false;
+$(document).ready(function(){
+	$("#businessRegId").on("focusout", function(){
+		if($(this).val() != ""){
+			checkName();
+		}
+	});
+	
+	
+	
+});
+// 리스트 페이지 이동
+var goList = function(){
+	$("#listForm").submit();
+};
+
+// form 필드값 유효성 검사
+var validation = function(){
+	var customerNm = $("#customerNm").val();
+	if(customerNm=="" || customerNm == null){
+		alert("거래처명을 입력해 주세요.");
+		$("#customerNm").focus();
+		isOkay = false;
+		return;
+	}
+	
+	var result = (
+			   isValid(customerPhone, "거래처연락처", null, "phone")
+			&& isValid(customerAddr, "거래처주소", null, null)
+	);
+	
+	if ( result === false ) {
+		isOkay = false;
+	}else{
+		return;
+	}
+	
+	isOkay = true;
+}
+
+//서버에 버전 데이터 존재 여부 확인 요청
+var checkName = function(){
+	var businessRegId = $("#businessRegId").val();
+
+	var ajaxInfo ={
+		type:"POST",
+		url:"/gms/customer/CheckBusiId.do",
+		data:{
+			businessRegId : businessRegId
+		},
+		dataType: "json",
+	};
+	ajax = callAjax(ajaxInfo);
+	ajax.done(function(data){
+		if(data.result == "fail"){
+			alert(data.message);
+			$("#businessRegId").val("");
+			$("#businessRegId").focus();
+			isOkay = false;
+			return;
+		}
+	});
+};
+
+//Ajax공통 호출
+function callAjax(ajaxInfo){
+	var dfd = $.Deferred();
+	$.ajax(ajaxInfo).done(function(data){
+		dfd.resolve(data);
+	});
+	
+	return dfd.promise();
+}
+
+
+//숫자 여부 검사
+function isNumber(input){
+	var chars = "0123456789";
+		return containsCharsOnly(input,chars);
+};
+
+function containsCharsOnly(input,chars) {
+	input = String(input);
+	for (var inx = 0; inx < input.length; inx++) {
+		if (chars.indexOf(input.charAt(inx)) == -1) {
+			return false;
+		}else{
+		}
+	};
+	return true;
+};
+
+// 입력된 내용을 작성한다.
+var goWrite = function(){
+	validation();
+	
+	alert("isOkay=="+isOkay);
+	if(!isOkay){
+		return;
+	}
+	
+	var form = $("#writeForm");	
+	
+	form.submit();
+}
+	
+</script>
+
+   <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>거래처 등록</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Simple Tables</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+  
+    <section class="content">   
+        
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              
+             <!-- general form elements -->                        
+              <!-- /.card-header -->
+              <div class="col-8">
+              <form id="writeForm" class="form-horizontal" th:action="@{/gms/customer/register.do}" th:object="${customer}" method="post" >
+                
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th class="card-footer">거래처명</th>
+                      <th><input type="text" class="form-control" id="customerNm" name="customerNm" placeholder="거래처명"></th>
+                    </tr>
+                     <tr>                                   
+                      <th class="card-footer">사업자등록번호</th>
+                      <th><input type="text" class="form-control" id="businessRegId" name="businessRegId" placeholder="사업자등록번호"></th>
+                    </tr>
+                    <tr>
+                      <th class="card-footer">거래처 대표</th>
+                      <th><input type="text" class="form-control" id="customerRepNm" name="customerRepNm" placeholder="거래처대표"> </th>   
+                    </tr>
+                    <tr>
+                      <th class="card-footer">거래처 업태</th>
+                      <th><input type="text" class="form-control" id="customerBusiType" name="customerBusiType" placeholder="거래처 업태"></th>
+                    </tr>
+                     <tr>                                   
+                      <th class="card-footer">거래처 종목</th>
+                      <th><input type="text" class="form-control" id="customerItem" name="customerItem" placeholder="거래처 종목"></th>
+                    </tr>
+                    <tr>
+                      <th class="card-footer">거래처 주소</th>
+                      <th><input type="text" class="form-control" id="customerAddr" name="customerAddr" placeholder="거래처 주소"> </th>   
+                    </tr>
+                    <tr>
+                      <th class="card-footer">거래처 연락처</th>
+                      <th><input type="text" class="form-control" id="customerPhone" name="customerPhone" placeholder="거래처 연락처"></th>
+                    </tr>
+                     <tr>                                   
+                      <th class="card-footer">거래처 이메일</th>
+                      <th><input type="text" class="form-control" id="customerEmail" name="customerEmail" placeholder="거래처 이메일"></th>
+                    </tr>
+                    <tr>
+                      <th class="card-footer">영업 담당자</th>
+                      <th>
+                       <select id="gasId" name="salesId" class="form-control">
+                        <option value="0">영업담당자</option>
+                      	<option th:each="row : ${userList}"
+					                th:text="${row.userNm}"
+					                th:value="${row.userId}"
+					               >
+					     </option>		
+					    </select>	                      
+						</th>   
+                    </tr>                   
+                    
+                  </thead>
+                              
+                </table>
+                
+                
+              </div>
+            </div>
+            
+            <!-- /.card -->
+      		 <div class="card">                                  
+              <!-- /.card-header -->
+              <!-- 
+              <div class="col-8">
+              <div class="form-group">
+                   <label class="control-label col-8">상품정보</label>
+                   <div class="col-md-10 col-sm-10 col-xs-12">
+                       <table id="myTable" class="table doc-list">
+                       <tr>
+                         <td>상품</td>
+                         <td>용량</td>
+                         <td>단가</td>
+                         <td></td>
+                       </tr>
+                       <tr>
+                       <td  style="padding-left: 0px;">                                           
+                         <select id="gasId" name="salesId" class="form-control">
+	                        <option value="0">상품</option>
+	                      	<option th:each="row : ${productList}"
+						                th:text="${row.productNm}"
+						                th:value="${row.productId}"
+						               >
+						     </option>		
+					    </select>	   
+                       </td>
+                       <td> 
+                         <input type="text" class="form-control" id="productCapa_0" name="productCapa_0" placeholder="상품용량">
+                       </td>   
+                       <td>
+                       <input type="button" class="btn btn-default btn-success" id="addrow" value="추가" />
+                       </td>
+                       </tr>
+                     </table>
+                     </div>
+                 </div>
+              </div>
+            </div>
+            
+              -->
+      		<div class="card-footer">
+                 <a href="/gms/customer/list.do" class="btn btn-secondary float-left">취소</a>
+		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">
+                </div>		     		
+            </form>   
+          	<!-- /.col-12 -->
+          </div>
+        </div>      
+        
+        
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  
+  </th:block>
+  
+
+  

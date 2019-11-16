@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+	<!-- 공통화면 -->
+	<entry key="common.page.title">GMS System</entry>
+	
+	
+	
+	<!-- Menu ID 정의 -->
+	<entry key="common.menu.order">order</entry>
+	<entry key="common.menu.trasnaction">transaction</entry>
+	<entry key="common.menu.bottle">bottle</entry>
+	<entry key="common.menu.boottle.test">btest</entry>
+	<entry key="common.menu.boottle.sales">bsales</entry>
+	<entry key="common.menu.customer">customer</entry>
+	<entry key="common.menu.customer.price">price</entry>
+	<entry key="common.menu.gas">gas</entry>
+	<entry key="common.menu.product">product</entry>
+	<entry key="common.menu.stat_order">statorder</entry>
+	<entry key="common.menu.stat_product">statproduct</entry>
+	<entry key="common.menu.stat_customer">statcustomer</entry>
+	<entry key="common.menu.stat_bottle">statbottle</entry>
+	<entry key="common.menu.user">user</entry>
+	<entry key="common.menu.calendar">calendar</entry>
+	<entry key="common.menu.report">report</entry>
+	<entry key="common.menu.vacation">vacation</entry>
+	<entry key="common.menu.self">self</entry>
+	
+
+	<entry key="common.user.SALES">01</entry>
+	
+</properties>

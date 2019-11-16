@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{HH:mm} %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <logger name="com.gms.web.admin" level="DEBUG"/>
+    <logger name="jdbc" level="OFF"/> 
+    <logger name="jdbc.sqlonly" level="INFO" appender-ref="console-infolog"/> 
+    <logger name="jdbc.resultset" level="OFF"/> 
+    <logger name="jdbc.resultsettable" level="INFO" appender-ref="console-infolog"/> 
+    <logger name="jdbc.connection" level="OFF" /> 
+    
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+    
+</configuration>

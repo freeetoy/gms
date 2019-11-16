@@ -1,0 +1,312 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="gms/layout/basic">
+
+<div class="wrapper">
+
+<th:block layout:fragment="content"> 
+<script type="text/javascript">
+
+	function validationOfForm(form) {
+	
+		var result = (
+				   isValid(form.gasNm, "가스명", null, null)
+				&& isValid(form.gasCd, "가스코드", null, null)
+		);
+		
+		if ( result === false ) {
+			return false;
+		}
+	}
+	// end of function
+	
+	var fn_deleteUser = function(userId){
+		var form = document.deleteform;	
+		               		
+		if(confirm("삭제하시겠습니까?")){	
+			
+			$("#userId").val(userId);  			
+			
+			
+	        form.submit();			
+		}                  		
+	}
+	
+	// 입력된 내용을 작성한다.
+	function goSearch(){	
+		
+		var form = document.mainForm;	
+		
+		form.submit();
+	};
+
+
+
+	function gotoPage(pageNo) {
+		
+		var form =  document.mainForm;			
+		
+		$("#currentPage").val(pageNo);  
+    	
+        //validate checkt시 confirm 중복되는 부분 처리 
+        
+    	mainForm.submit();
+    }
+$(document).ready(function(){ 
+
+	var counter = 0;
+	$("#addrow").on("click", function () {
+
+        counter++;
+       
+        if (counter > 11){
+
+          alert('더 이상 추가 할수 없습니다.');
+          return false;
+
+        }
+     
+        var newRow = $("<tr>");
+        var cols = "";
+
+        cols += '<td style="padding-left:0px;">';
+        cols += '<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:160px"></select>';
+      
+        cols += '</td><td>';
+
+        cols += ' <select class="form-control" id="sel_storage_' + counter + '" name="sel_storage_' + counter + '" style="width:160px"></select> ';
+
+
+        cols += '</td><td>';
+
+        cols += ' <input type="text" id="order_cnt_' + counter + '" name="order_cnt_' + counter + '" style="width:80px;height:35px;">';
+                     
+        cols += '</td><td>';
+
+        
+
+        cols += ' <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" value="삭제" />';
+        cols += '</td>';
+
+        cols +='</tr>';
+
+
+
+        newRow.append(cols);
+        $("table.doc-list").append(newRow);
+
+
+
+        init_add(counter);
+
+        init_add_storage(counter);
+
+
+
+      
+    });
+	
+	$('#mod_sel_pumname_0').change( function(){
+	    
+
+        var select_pumname = $('#mod_sel_pumname_0').val();
+
+        init_storage_list(select_pumname,0,"mod");
+
+      
+    });
+	
+	function init_storage_list(pumname,sel_pid,type){
+	      
+	      console.log(type);      
+
+
+	      $.ajax({
+	          url: '../process/get_storage_init.php',
+	          type: 'POST',
+	          data: 'companynumber='+ 2348102444 + '&pumname=' + pumname,
+	          dataType: 'TEXT',
+
+	     })
+	     .done(function(data){	           
+	          //console.log("sel pid:" + sel_pid + "type:" + type);
+
+	          console.log(data);
+	          
+
+	          var json_obj = $.parseJSON(data);//parse JSON
+
+
+	          if(type == "ins"){
+	            
+	            $('#sel_storage_' + sel_pid).find('option').remove(); 
+	            $('#sel_storage_' + sel_pid).append(json_obj.list_account);
+
+
+	          }else if(type == "mod"){
+
+	            $('#mod_sel_storage_' + sel_pid).find('option').remove(); 
+	            $('#mod_sel_storage_' + sel_pid).append(json_obj.list_account);
+
+	          }
+	      
+	         
+	        
+
+	        
+	     })
+	     .fail(function(){
+
+
+	        console.log("fail");
+
+
+	     });
+
+
+
+
+	  } 
+	
+	function init_add(pid){
+
+
+	      $.ajax({
+	          url: '/gms/product/priceList.do',
+	          type: 'POST',
+	          data:{
+					productId : pid
+				},
+	          dataType: 'TEXT',
+
+	     })
+	         .done(function(data){
+
+	          var json_obj = $.parseJSON(data);//parse JSON
+	          
+	            $('#productId_' + pid).find('option').remove(); 
+	            $('#productId_' + pid).append(json_obj.list_pumname);	          
+	        
+	     })
+	     .fail(function(){
+
+	        console.log("fail");
+
+	     });
+
+	  } 
+
+});
+
+</script>
+
+   <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>거래처 목록</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Simple Tables</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+  
+    <section class="content">          
+        
+    	<div class="row">
+    	
+              <div class="col-1">
+               		거래처명
+              </div>               
+              <div class="col-4">
+              <form id="mainForm" name=""mainForm"" th:action="@{/gms/price/write.do}" method="post">
+              <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
+              <select id="customerId" name="customerId" class="form-control">
+	                      <option value="0">거래처 목록</option>
+	                    	<option th:each="row : ${customerList}"
+				                th:text="${row.customerNm}"
+				                th:value="${row.customerId}"
+				               >
+				     </option>		
+			    </select>	   
+			   </div>
+              <div class="col-3">
+              <input type="text" id="searchCustomerNm" name="searchCustomerNm" class="form-control" placeholder="search" th:value="${searchCustomerNm}">
+              </div>               
+              <div class="col-2">
+                <button class="btn btn-navbar" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+           </form>
+              </div>
+             
+              <div class="col-2">
+               		<a href="/gms/customer/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">거래처 등록</button></a>
+              </div>
+         </div>
+         <div class="row">	
+	        <div class="col-12">
+	        <table class="table table-hover">
+	         </table>
+	        </div>
+        </div>
+        <div class="row">	
+	        <div class="col-12">
+		        <div class="card">                                  
+	              <!-- /.card-header -->
+	             
+	              <div class="col-8">
+	              <div class="form-group">
+	                   <label class="control-label col-8">상품정보</label>
+	                   <div class="col-md-10 col-sm-10 col-xs-12">
+	                       <table id="myTable" class="table doc-list">
+	                       <tr>
+	                         <td>상품</td>
+	                         <td>용량</td>
+	                         <td>단가</td>
+	                         <td></td>
+	                       </tr>
+	                       <tr>
+	                       <td  style="padding-left: 0px;">                                           
+	                         <select id="productId_0" name="productId_0" class="form-control">
+		                        <option value="0">상품</option>
+		                      	<option th:each="row : ${productList}"
+							                th:text="${row.productNm}"
+							                th:value="${row.productId}"
+							               >
+							     </option>		
+						    </select>	   
+	                       </td>
+	                       <td> 
+	                         <input type="text" class="form-control" id="productCapa_0" name="productCapa_0" placeholder="상품용량">
+	                       </td>   
+	                       <td> 
+	                         <input type="text" class="form-control" id="productPrice_0" name="productPrice_0" placeholder="가격">
+	                       </td> 
+	                       <td>
+	                       <input type="button" class="btn btn-default btn-success" id="addrow" value="추가" />
+	                       </td>
+	                       </tr>
+	                     </table>
+	                     </div>
+	                 </div>
+	              </div>
+	            </div>
+            
+	        </div>
+        </div> 
+        
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  
+  </th:block>
+
+</body>
+</html>

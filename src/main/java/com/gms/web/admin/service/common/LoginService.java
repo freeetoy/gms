@@ -1,0 +1,7 @@
+package com.gms.web.admin.service.common;
+
+import com.gms.web.admin.domain.common.LoginUserVO;
+
+public interface LoginService {
+	public LoginUserVO modifyUserInfo(LoginUserVO param);
+}
