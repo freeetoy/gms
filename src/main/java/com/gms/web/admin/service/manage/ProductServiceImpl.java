@@ -135,7 +135,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<ProductPriceVO> getProductPriceList(Integer productId) {
-		logger.info("****** getProductList *****===*");
+		logger.info("****** getProductPriceList *****===*");
 		return productMapper.selectProductPriceList(productId);
 	}
 

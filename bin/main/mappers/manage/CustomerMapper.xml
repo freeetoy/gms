@@ -22,6 +22,17 @@
 		<result property="updateDt"				column="UPDATE_DT"		/>
 	</resultMap>
 	
+	<resultMap id="CustomerPriceMap" type="com.gms.web.admin.domain.manage.CustomerPriceVO" >
+		<result property="customerId"			column="Customer_ID"		/>
+		<result property="productId"			column="Product_ID"			/>		
+		<result property="productPriceSeq"		column="Product_Price_Seq"	/>
+		<result property="productPrice"			column="Product_Price"		/>		
+		<result property="createId"				column="CREATE_ID"			/>
+		<result property="createDt"				column="CREATED_DT"			/>
+		<result property="updateId"				column="UPDATE_ID"			/>		
+		<result property="updateDt"				column="UPDATE_DT"			/>
+	</resultMap>
+	
 	<sql id="InsertCustomerColumns">
 		 Member_Comp_Seq	        
 		, Customer_Nm	
@@ -57,7 +68,16 @@
 		, UPDATE_ID	
 		, UPDATE_DT
 	</sql>
-	
+	<sql id="InsertCustomerPriceColumns">
+		 Customer_ID	        
+		, Product_ID	
+		, Product_Price_Seq        
+		, Product_Price
+		, CREATE_ID	
+		, CREATE_DT	
+		, UPDATE_ID	
+		, UPDATE_DT
+	</sql>
 	<insert id="insertCustomer" parameterType="com.gms.web.admin.domain.manage.CustomerVO">
 		INSERT INTO TB_CUSTOMER(
 			<include refid="InsertCustomerColumns" />
@@ -80,6 +100,22 @@
 		)
 	</insert>
 
+	<insert id="insertCustomerPrice" parameterType="com.gms.web.admin.domain.manage.CustomerPriceVO">
+		INSERT INTO TB_CUSTOMER_PRODUCT_PRICE(
+			<include refid="InsertCustomerPriceColumns" />
+		) VALUES (
+			 #{customerId}
+			, #{productId}
+			, #{productPriceSeq}
+			, #{productPrice}
+			, #{createId}			
+			, NOW()
+			, NULL
+			, NOW()
+		)
+	</insert>
+	
+	
 	<select id="selectCustomerDetail" parameterType="String" resultType="com.gms.web.admin.domain.manage.CustomerVO">
 		SELECT
 			<include refid="CustomerColumns" />
@@ -169,6 +205,26 @@
 		ORDER BY Customer_Nm desc 
 	</select>
 
+	<select id="selectCustomerPriceList" resultType="com.gms.web.admin.domain.manage.CustomerPriceExtVO" parameterType="Integer">
+		SELECT
+			a.Customer_ID, a.Product_ID, a.Product_Price_Seq,a.Product_Price, b.Product_Capa, c.Product_Nm
+		FROM
+			TB_CUSTOMER_PRODUCT_PRICE a, TB_PRODUCT_PRICE b, TB_PRODUCT c
+		WHERE
+			CUSTOMER_ID = #{customerId}
+		AND a.Product_ID = b.Product_ID
+		AND b.Product_ID = c.Product_ID
+		AND a.Product_Price_Seq = b.Product_Price_Seq
+		AND b.Product_Status != 0
+		AND c.Product_Status != 0
+	</select>
+	
+	<update id="deleteCustomerPrice" parameterType="Integer">
+		DELETE
+		FROM  TB_CUSTOMER_PRODUCT_PRICE		
+		WHERE
+			CUSTOMER_ID = #{customerId}
+	</update>
 		
 
 </mapper>

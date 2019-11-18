@@ -2,16 +2,14 @@ package com.gms.web.admin.domain.manage;
 
 import java.io.Serializable;
 
-import com.gms.web.admin.common.domain.AbstractVO;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CustomerPriceVO extends AbstractVO implements Serializable {
-
-	private static final long serialVersionUID = 8224009842300238104L;
+public class CustomerPriceExtVO implements Serializable {
+	
+	private static final long serialVersionUID = 8229009842300238104L;
 	
 	/** Customer_ID       */
 	private Integer customerId;
@@ -25,7 +23,11 @@ public class CustomerPriceVO extends AbstractVO implements Serializable {
 	/** Product_Price 	*/    
 	private int productPrice;
 	
-	/** 거래처명 검색	 */
-	private String searchCustomerNm;
+	/**Product_Nm */
+	private String productNm;
 	
+	
+	/** Product_Capa     */
+	private String productCapa;
+
 }

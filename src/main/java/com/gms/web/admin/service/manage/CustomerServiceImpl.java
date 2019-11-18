@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
+import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.mapper.manage.CustomerMapper;
 
@@ -172,6 +174,45 @@ public class CustomerServiceImpl implements CustomerService {
 		resutlMap.put("searchCustomerNm", param);
 		
 		return resutlMap;	
+	}
+
+	@Override
+	@Transactional
+	public boolean registerCustomerPrice(CustomerPriceVO param) {
+		boolean successFlag = false;
+
+		// 정보 등록
+		int result = 0;
+		logger.info("****** registerCustomer.getCustomerId()()) *****===*"+param.getCustomerId());
+		
+		result = customerMapper.insertCustomerPrice(param);
+		if (result > 0) {
+			successFlag = true;
+		}
+		
+		return successFlag;
+	}
+
+	@Override
+	@Transactional
+	public boolean deleteCustomerPrice(Integer customerId) {
+		boolean successFlag = false;
+
+		// 정보 등록
+		int result = 0;
+		logger.info("****** registerCustomer.getCustomerId()()) *****===*"+customerId);
+		
+		result = customerMapper.deleteCustomerPrice(customerId);
+		if (result > 0) {
+			successFlag = true;
+		}
+		
+		return successFlag;
+	}
+
+	@Override
+	public List<CustomerPriceExtVO> getCustomerPreiceList(Integer customerId) {
+		return customerMapper.selectCustomerPriceList(customerId);
 	}
 
 }

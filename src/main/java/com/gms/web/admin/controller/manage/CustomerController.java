@@ -20,8 +20,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.web.utils.RequestUtils;
+import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
+import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.GasVO;
+import com.gms.web.admin.domain.manage.ProductPriceVO;
+import com.gms.web.admin.domain.manage.ProductVO;
 import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.manage.ProductService;
@@ -193,10 +197,77 @@ public class CustomerController {
 		Map<String, Object> map = customerService.searchCustomerList(searchCustomerNm);
 		model.addAttribute("customerList", map.get("list"));
 		
-		model.addAttribute("productList", productService.getProductList());
+		//model.addAttribute("productList", productService.getProductList());
+		
 					
 		return "/gms/price/write";
 	}
 	
+	@RequestMapping(value = "/gms/price/register.do", method = RequestMethod.POST)
+	public String registerCustomerPrice(HttpServletRequest request
+			, HttpServletResponse response
+			, Model model) {
+		
+		logger.debug("CustomerContoller registerCustomerPrice");
+		
+		
+		CustomerPriceVO params = null;	
+		
+		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));
+		
+		
+		try {
+			
+			int priceCount  = Integer.parseInt(request.getParameter("priceCount"));
+			
+			boolean result=false;
+			
+			logger.debug("CustomerContoller registerCustomerPrice priceCnt== "+ priceCount);
+			logger.debug("CustomerContoller registerCustomerPrice request.getParameter(\"customerId1\"== "+ request.getParameter("customerId1"));
+			
+			result = customerService.deleteCustomerPrice(Integer.parseInt(request.getParameter("customerId1")));
+			
+			for(int i =0 ; i < priceCount ; i++ ) {
+				params = new CustomerPriceVO();	
+				
+				RequestUtils.initUserPrgmInfo(request, params);
+				result = false;			
+				
+				params.setCustomerId(Integer.parseInt(request.getParameter("customerId1")));
+				params.setProductId(Integer.parseInt(request.getParameter("productId_"+i)));
+				params.setProductPriceSeq(Integer.parseInt(request.getParameter("productPriceSeq_"+i)));
+				params.setProductPrice(Integer.parseInt(request.getParameter("productPrice_"+i)));
+								
+				result = customerService.registerCustomerPrice(params);
+			}
+			
+			//ID 중복체크			
+			//boolean result = customerService.registerCustomerPrice(params);
+			if (result == false) {
+				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			}
+		} catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+	
+		return "redirect:/gms/price/write.do";
+		//return null;
+	}
+	
+	
+	@RequestMapping(value = "/gms/price/customerList.do")
+	@ResponseBody
+	public List<CustomerPriceExtVO> getCustomerProductPriceList(@RequestParam(value = "customerId", required = false) Integer customerId, Model model)	{	
+		
+		List<CustomerPriceExtVO> customerPriceList = customerService.getCustomerPreiceList(customerId);
+		model.addAttribute("customerPriceList", customerPriceList);
+		
+		return customerPriceList;
+		//return null;
+	}
 	
 }

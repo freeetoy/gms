@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
+import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 
 @Mapper
@@ -28,5 +30,10 @@ public interface CustomerMapper {
 
 	public int deleteCustomer(Integer customerId);	
 		
+	public int insertCustomerPrice(CustomerPriceVO param);
+	
+	public int deleteCustomerPrice(Integer customerId);	
+	
+	public List<CustomerPriceExtVO> selectCustomerPriceList(Integer customerId);
 
 }

@@ -47,7 +47,7 @@ public class ProductController {
 		model.addAttribute("productList", productList);
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.product"));
 
-		return "gms/product/list";
+		return null;
 	}
 	
 	@RequestMapping(value = "/gms/product/write.do")
@@ -336,14 +336,24 @@ public class ProductController {
 	
 	@RequestMapping(value = "/gms/product/priceList.do")
 	@ResponseBody
-	public String getProductPriceList(@RequestParam(value = "productId", required = false) Integer productId, Model model)	{
+	public List<ProductPriceVO> getProductPriceList(@RequestParam(value = "productId", required = false) Integer productId, Model model)	{
 		
 		
 		List<ProductPriceVO> productPriceList =  productService.getProductPriceList(productId);
 		
-		model.addAttribute("productPriceList", productPriceList);
+		model.addAttribute("productPriceList", productPriceList);		
+		return productPriceList;
+		//return null;
+	}
+	
+	@RequestMapping(value = "/gms/product/nlist.do")
+	@ResponseBody
+	public List<ProductVO> getProductList(Model model)	{	
 		
+		List<ProductVO> productList = productService.getProductList();
+		model.addAttribute("productList", productList);
 		
-		return null;
+		return productList;
+		//return null;
 	}
 }
