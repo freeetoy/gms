@@ -1,0 +1,238 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="gms/layout/basic">
+
+<div class="wrapper">
+
+<th:block layout:fragment="content"> 
+<script type="text/javascript">
+
+	function validationOfForm(form) {
+	
+		var result = (
+				   isValid(form.gasNm, "가스명", null, null)
+				&& isValid(form.gasCd, "가스코드", null, null)
+		);
+		
+		if ( result === false ) {
+			return false;
+		}
+	}
+	// end of function
+	
+	var fn_deleteUser = function(userId){
+		var form = document.deleteform;	
+		               		
+		if(confirm("삭제하시겠습니까?")){	
+			
+			$("#userId").val(userId);  			
+			
+			
+	        form.submit();			
+		}                  		
+	}
+	
+	// 입력된 내용을 작성한다.
+	function goSearch(){	
+		
+		var form = document.mainForm;	
+		
+		form.submit();
+	};
+
+
+
+	function gotoPage(pageNo) {
+		
+		var form =  document.mainForm;			
+		
+		$("#currentPage").val(pageNo);  
+    	
+        //validate checkt시 confirm 중복되는 부분 처리 
+        
+    	mainForm.submit();
+    }
+	
+
+	$(function() {
+	
+	  $('input[name="searchChargeDt"]').daterangepicker({
+	      autoUpdateInput: false,
+	      locale: {
+	          cancelLabel: 'Clear'
+	      }
+	  });
+	
+	  $('input[name="searchChargeDt"]').on('apply.daterangepicker', function(ev, picker) {
+	      $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+	  });
+	
+	  $('input[name="searchChargeDt"]').on('cancel.daterangepicker', function(ev, picker) {
+	      $(this).val('');
+	  });
+	
+	});
+	</script>
+   <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>용기 목록</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Simple Tables</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+  
+    <section class="content">          
+        
+        <div class="row">
+        
+              <div class="col-2">
+               		충전기한
+              </div>               
+              <div class="col-4">
+              <form id="mainForm" name=""mainForm"" th:action="@{/gms/bottle/list.do}" method="post">
+              <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
+               <input type="text" class="form-control" name="searchChargeDt" value="" />			
+              </div>               
+              <div class="col-3">               
+              </div>
+         </div>
+         <div class="row">	
+	        <div class="col-12">
+	        <table class="table table-hover">
+	         </table>
+	        </div>
+        </div>
+    	<div class="row">
+              <div class="col-2">
+               		용기ID
+              </div>               
+              <div class="col-4">              
+               <input type="text" id="searchBottleId" name="searchBottleId" class="form-control" placeholder="search" th:value="${searchUserNm}">
+              </div>  
+               <div class="col-2">
+               	<select id="searchGasId" name="searchGasId" class="form-control">
+                          <option value="0">가스선택</option>				    
+					        <option th:each="row : ${gasList}"
+					                th:text="${row.gasNm}"
+					                th:value="${row.gasId}"
+					               >
+					        </option>					
+                        </select>
+              </div>                   
+              <div class="col-2">
+                <button class="btn btn-navbar" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+           </form>
+              </div>
+             
+              <div class="col-2">
+               		<a href="/gms/bottle/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">용기 등록</button></a>
+              </div>
+         </div>
+        <div class="row">	
+	        <div class="col-12">
+	        <table class="table table-hover">
+	         </table>
+	        </div>
+        </div>
+        <div class="row">	
+          <div class="col-12">
+            <div class="card">
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                <form id="deleteform" name="deleteform" th:action="@{/gms/user/delete.do}" method="post">
+                	<input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
+                	<input type="hidden" id="searchUserNm" name="searchUserNm" th:value="${searchUserNm}">
+                	<input type="hidden" id="userId" name="userId" value="">
+                </form>
+                  <thead>
+                    <tr>
+                      <th>순번</th>
+                      <th>용기코드</th>
+                      <th>바코드</th>
+                      <th>가스</th>
+                      <th>용량</th>
+                      <th>작업</th>
+                      <th>거래처</th>
+                      <th>등록일</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  	<tr th:if="${not #lists.isEmpty( bottleist )}" th:each="row : ${bottleList}">
+                      <td th:text="${totalCount-((currentPage-1)*10) - userList.indexOf(row)}"></td>
+                      <td>
+                      <a th:href="@{/gms/bottle/update.do( bottleId=${row.bottleId} )}" th:text="${row.bottleId}"></a>
+                      </td>
+                      <td th:text="${row.bottleBarCd}"></td>
+                      <td th:text="${row.gasId}"></td>
+                      <td th:text="${row.bottleCapa}"></td>
+                      <td th:text="${row.bottleWorkCd}"></td>
+                      <td th:text="${row.CustomerId}"></td>
+                      <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>                      
+                    </tr>
+                    <tr th:unless="${not #lists.isEmpty( userList )}">
+						<td colspan="8">조회된 결과가 없습니다.</td>
+					</tr>						
+                  </tbody>
+					
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>    
+        <!-- /.row -->
+        
+         <div class="row">								
+			<div class="col-sm-12 col-md-7">
+				<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+					<ul class="pagination">
+						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
+							<a th:href="@{/gms/user/list.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+						</li>
+						
+						<li th:if="${currentPage<=1}" class="paginate_button page-item previous disabled" id="example2_previous">
+							<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+						</li>
+						<th:block th:each="num:${#numbers.sequence(startPageNum, lastPageNum)}">
+						
+						<li th:if="${currentPage == num}" class="paginate_button page-item active">
+							<a href="#" th:onclick="gotoPage([[ ${num} ]])" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">[[${num}]]</a>
+						</li>
+					
+						<li th:unless="${currentPage == num}" class="paginate_button page-item">
+							<a href="#" th:onclick="gotoPage([[ ${num} ]])" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">[[${num}]]</a>
+						</li>
+						</th:block>
+					
+						<li th:if="${currentPage < lastPage}" class="paginate_button page-item next" id="example2_next">
+						<a th:href="@{/gms/user/list.do(currentPage=${currentPage +1})}" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+						</li>
+						<li th:if="${currentPage >= lastPage}" class="paginate_button page-item next disabled" id="example2_next">
+						<a href="#"  aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+						</li>
+        			</ul>
+				</div>
+			</div>
+		</div>
+        
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  
+  </th:block>
+
+</body>
+</html>

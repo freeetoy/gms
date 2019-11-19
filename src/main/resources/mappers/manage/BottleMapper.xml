@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gms.web.admin.mapper.manage.BottleMapper">
+	
+	<resultMap id="BottleMap" type="com.gms.web.admin.domain.manage.BottleVO" >
+		<result property="bottleId"		column="Bottle_ID"		/>
+		<result property="bottleBarCd"		column="Bottle_BarCd"		/>		
+		<result property="gasId"		column="Gas_ID"			/>
+		<result property="bottleCapa"		column="Bottle_Capa"		/>
+		<result property="bottleCreateDt"	column="Bottle_Create_Dt"	/>
+		<result property="bottleChargeDt"	column="Bottle_Charge_Dt"	/>
+		<result property="bottleVolumn"		column="Bottle_Volumn"		/>
+		<result property="bottleChargePrss"	column="Bottle_Charge_Prss"	/>
+		<result property="bottleSalesYn"	column="Bottle_Sales_YN"	/>	
+		<result property="bottleWorkCd"		column="Bottle_Work_CD"		/>
+		<result property="bottleWorkId"		column="Bottle_Work_ID"		/>	
+		<result property="customerId"		column="Customer_ID"		/>	
+		<result property="memberCompSeq"	column="Member_Comp_Seq"	/>
+		<result property="orderId"			column="Order_ID"		/>	
+		<result property="orderProductSeq"	column="Order_Product_Seq"	/>
+		<result property="createId"			column="CREATE_ID"		/>
+		<result property="createDt"			column="CREATE_DT"		/>
+		<result property="updateId"			column="UPDATE_ID"		/>		
+		<result property="updateDt"			column="UPDATE_DT"		/>
+	</resultMap>
+	
+
+	<sql id="BottleColumns">
+		  Bottle_ID
+		, Bottle_BarCd
+		, Gas_ID	
+		, Bottle_Capa
+		, Bottle_Create_Dt	
+		, Bottle_Charge_Dt	
+		, Bottle_Volumn
+		, Bottle_Charge_Prss	
+		, Bottle_Sales_YN	
+		, Bottle_Work_CD
+		, Bottle_Work_ID
+		, Customer_ID
+		, Member_Comp_Seq	
+		, Order_ID
+		, Order_Product_Seq	
+		, CREATE_ID
+		, CREATE_DT
+		, UPDATE_ID
+		, UPDATE_DT
+	</sql>
+
+	<insert id="insertBottle" parameterType="com.gms.web.admin.domain.manage.BottleVO">
+		INSERT INTO TB_Bottle(
+			<include refid="BottleColumns" />
+		) VALUES (
+			  #{bottleId}
+			, #{bottleBarCd}
+			, #{gasId}
+			, #{bottleCapa}
+			, #{bottleCreateDt}
+			, #{bottleChargeDt}
+			, #{bottleVolumn}
+			, #{bottleChargePrss}
+			, #{bottleSalesYn})
+			, #{bottleWorkCd}
+			, #{bottleWorkId}
+			, #{customerId}
+			, #{memberCompSeq}
+			, #{orderId}
+			, #{orderProductSeq})
+			, #{createId}			
+			, NOW()
+			, NULL
+			, NOW()
+		)
+	</insert>
+
+	<select id="selectBottleDetail" parameterType="String" resultType="com.gms.web.admin.domain.manage.BottleVO">
+		SELECT
+			<include refid="BottleColumns" />
+		FROM
+			TB_Bottle
+		WHERE
+			Bottle_ID = #{bottleId}
+	</select>
+
+	<update id="updateBottle" parameterType="com.gms.web.admin.domain.manage.BottleVO">
+		UPDATE TB_Bottle
+		SET
+			Bottle_BarCd		= #{bottleBarCd}
+			, Gas_ID		= #{gasId}
+			, Bottle_Capa		= #{bottleCapa}
+			, Bottle_Create_Dt	= #{bottleCreateDt}
+			, Bottle_Charge_Dt	= #{bottleChargeDt}
+			, Bottle_Volumn		= #{bottleVolumn}
+			, Bottle_Charge_Prss	= #{bottleChargePrss}
+			, Bottle_Sales_YN	= #{bottleSalesYn}
+			, Bottle_Work_CD	= #{bottleWorkCd}
+			, Bottle_Work_ID	= #{bottleWorkId}
+			, Customer_ID		= #{customerId}
+			, Order_ID		= #{orderId}
+			, Order_Product_Seq	= #{orderProductSeq}
+		WHERE
+			Bottle_ID = #{bottleId}
+	</update>
+
+	<update id="updateBottleWorkCd" parameterType="com.gms.web.admin.domain.manage.BottleVO">
+		UPDATE TB_Bottle
+		SET
+			  Bottle_Work_CD = #{bottleWorkCd}
+			, Bottle_Work_ID	= #{bottleWorkId}
+			, UPDATE_ID = #{updateId}
+			, UPDATE_DT = NOW()
+		WHERE
+			Bottle_ID = #{bottleId}
+	</update>	
+
+	<select id="selectBottleList" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="java.util.Map">
+		SELECT
+			<include refid="BottleColumns" />
+		FROM
+			TB_Bottle
+		WHERE
+			0 = 0
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchBottleId)">
+		AND Bottle_ID	 LIKE CONCAT('%', CONCAT(#{searchBottleId}, '%'))
+		</if>
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchGasId)">
+		AND Gas_ID=  #{searchGasId}
+		</if>
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
+		AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
+		</if>																				
+		ORDER BY Create_Dt DESC 
+		Limit #{startRow}, #{rowPerPage}
+	</select>
+	
+	<select id="selectBottleCount" resultType="int" parameterType="java.util.Map">
+		SELECT
+			Count(Bottle_id)
+		FROM
+			TB_Bottle
+		WHERE
+			0 = 0
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchBottleId)">
+		AND Bottle_ID	 LIKE CONCAT('%', CONCAT(#{searchBottleId}, '%'))
+		</if>
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchGasId)">
+		AND Gas_ID=  #{searchGasId}
+		</if>
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
+		AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
+		</if>		
+	</select>
+	
+	<select id="selectBottleIdCheck" parameterType="com.gms.web.admin.domain.manage.BottleVO" resultType="int">
+		SELECT
+			Count(Bottle_id)
+		FROM
+			TB_Bottle
+		WHERE
+			Bottle_Id=#{bottleId}
+	</select>
+
+	<select id="selectBottleBarCdCheck" parameterType="com.gms.web.admin.domain.manage.BottleVO" resultType="int">
+		SELECT
+			Count(Bottle_id)
+		FROM
+			TB_Bottle
+		WHERE
+			Bottle_BarCd=#{bottleBarCd}
+	</select>
+
+</mapper>
