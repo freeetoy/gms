@@ -1,6 +1,5 @@
 package com.gms.web.admin.controller.manage;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,9 +22,6 @@ import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
-import com.gms.web.admin.domain.manage.GasVO;
-import com.gms.web.admin.domain.manage.ProductPriceVO;
-import com.gms.web.admin.domain.manage.ProductVO;
 import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.manage.ProductService;
@@ -125,12 +121,19 @@ public class CustomerController {
 		} else {
 			
 			CustomerVO customer = customerService.getCustomerDetails(customerId);
-			
+						
 			if (customer == null) {
 				return "redirect:/gms/customer/list.do";
 			}
 			
 			model.addAttribute("customer", customer);
+			
+			UserVO param = new UserVO();
+			param.setUserPartCd(PropertyFactory.getProperty("common.user.SALES"));
+			
+			Map<String, Object> map = userService.getUserList(param);
+			model.addAttribute("userList", map.get("list"));
+			
 		}
 		
 		return "/gms/customer/update";
@@ -209,9 +212,7 @@ public class CustomerController {
 			, Model model) {
 		
 		logger.debug("CustomerContoller registerCustomerPrice");
-		
-		
-		CustomerPriceVO params = null;	
+			
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));
 		
@@ -225,22 +226,26 @@ public class CustomerController {
 			logger.debug("CustomerContoller registerCustomerPrice priceCnt== "+ priceCount);
 			logger.debug("CustomerContoller registerCustomerPrice request.getParameter(\"customerId1\"== "+ request.getParameter("customerId1"));
 			
-			result = customerService.deleteCustomerPrice(Integer.parseInt(request.getParameter("customerId1")));
+			//result = customerService.deleteCustomerPrice(Integer.parseInt(request.getParameter("customerId1")));
+			CustomerPriceVO[] customerPrice = new CustomerPriceVO[priceCount];
 			
 			for(int i =0 ; i < priceCount ; i++ ) {
-				params = new CustomerPriceVO();	
 				
-				RequestUtils.initUserPrgmInfo(request, params);
+				CustomerPriceVO priceVo = new CustomerPriceVO();
+				
+				RequestUtils.initUserPrgmInfo(request, priceVo);
 				result = false;			
 				
-				params.setCustomerId(Integer.parseInt(request.getParameter("customerId1")));
-				params.setProductId(Integer.parseInt(request.getParameter("productId_"+i)));
-				params.setProductPriceSeq(Integer.parseInt(request.getParameter("productPriceSeq_"+i)));
-				params.setProductPrice(Integer.parseInt(request.getParameter("productPrice_"+i)));
-								
-				result = customerService.registerCustomerPrice(params);
+				priceVo.setCustomerId(Integer.parseInt(request.getParameter("customerId1")));
+				priceVo.setProductId(Integer.parseInt(request.getParameter("productId_"+i)));
+				priceVo.setProductPriceSeq(Integer.parseInt(request.getParameter("productPriceSeq_"+i)));
+				priceVo.setProductPrice(Integer.parseInt(request.getParameter("productPrice_"+i)));
+					
+				customerPrice[i] = priceVo;
+				
 			}
 			
+			result = customerService.registerCustomerPrice(customerPrice);
 			//ID 중복체크			
 			//boolean result = customerService.registerCustomerPrice(params);
 			if (result == false) {

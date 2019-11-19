@@ -116,13 +116,13 @@
 	</insert>
 	
 	
-	<select id="selectCustomerDetail" parameterType="String" resultType="com.gms.web.admin.domain.manage.CustomerVO">
+	<select id="selectCustomerDetail" parameterType="Integer" resultType="com.gms.web.admin.domain.manage.CustomerVO">
 		SELECT
 			<include refid="CustomerColumns" />
 		FROM
 			TB_CUSTOMER
 		WHERE
-			delete_yn = 'N'
+			Customer_Status != '0'
 		AND
 			CUSTOMER_ID = #{customerId}
 	</select>
@@ -138,8 +138,8 @@
 			, Customer_Addr		= #{customerAddr}
 			, Customer_Phone	= #{customerPhone}
 			, Customer_Email	= #{customerEmail}
-			, Sales_ID		= #{customerPasswd}
-			, UPDATE_ID		= #{salesId}
+			, Sales_ID		= #{salesId}
+			, UPDATE_ID		= #{updateId}
 			, UPDATE_DT		= NOW()
 		WHERE
 			CUSTOMER_ID = #{customerId}

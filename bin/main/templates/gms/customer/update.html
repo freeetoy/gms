@@ -33,10 +33,10 @@ var validation = function(){
 	}
 	*/
 	var result = (
-				isValid(customerNm, "거래처명", null, null)
-			&& isValid(customerAddr, "거래처주소", null, null)
-			&&  isValid(customerPhone, "거래처연락처", null, "phone")			
-			&& isValid(salesId, "영업 담당자", null, null)
+			isValid(customerNm, "거래처명", null, null)
+		&& isValid(customerAddr, "거래처주소", null, null)
+		&&  isValid(customerPhone, "거래처연락처", null, "phone")			
+		&& isValid(salesId, "영업 담당자", null, null)
 	);
 	
 	if ( result === false ) {
@@ -45,9 +45,9 @@ var validation = function(){
 	}else{
 		isOkay = true;
 		return;
-	}
-	
-	isOkay = true;
+}
+
+isOkay = true;
 }
 
 //서버에 버전 데이터 존재 여부 확인 요청
@@ -145,51 +145,56 @@ var goWrite = function(){
              <!-- general form elements -->                        
               <!-- /.card-header -->
               <div class="col-8">
-              <form id="writeForm" class="form-horizontal" th:action="@{/gms/customer/register.do}" th:object="${customer}" method="post" >
-                
+              <form id="writeForm" class="form-horizontal" th:action="@{/gms/customer/modify.do}" th:object="${customer}" method="post" >
+                <input type="hidden" id="customerId" name="customerId" th:value="${customer.customerId}">
                 <table class="table table-hover">
                   <thead>
                     <tr>
                       <th class="card-footer">거래처명</th>
-                      <th><input type="text" class="form-control" id="customerNm" name="customerNm" placeholder="거래처명"></th>
+                      <th><input type="text" class="form-control" id="customerNm" name="customerNm"  th:value="${customer.customerNm}"></th>
                     </tr>
                      <tr>                                   
                       <th class="card-footer">사업자등록번호</th>
-                      <th><input type="text" class="form-control" id="businessRegId" name="businessRegId" placeholder="사업자등록번호"></th>
+                      <th><input type="text" class="form-control" id="businessRegId" name="businessRegId" th:value="${customer.businessRegId}"></th>
                     </tr>
                     <tr>
                       <th class="card-footer">거래처 대표</th>
-                      <th><input type="text" class="form-control" id="customerRepNm" name="customerRepNm" placeholder="거래처대표"> </th>   
+                      <th><input type="text" class="form-control" id="customerRepNm" name="customerRepNm" th:value="${customer.customerRepNm}"> </th>   
                     </tr>
                     <tr>
                       <th class="card-footer">거래처 업태</th>
-                      <th><input type="text" class="form-control" id="customerBusiType" name="customerBusiType" placeholder="거래처 업태"></th>
+                      <th><input type="text" class="form-control" id="customerBusiType" name="customerBusiType" th:value="${customer.customerBusiType}"></th>
                     </tr>
-                     <tr>                                   
+                    <tr>
                       <th class="card-footer">거래처 종목</th>
-                      <th><input type="text" class="form-control" id="customerItem" name="customerItem" placeholder="거래처 종목"></th>
+                      <th><input type="text" class="form-control" id="customerItem" name="customerItem" th:value="${customer.customerItem}"></th>
                     </tr>
                     <tr>
                       <th class="card-footer">거래처 주소</th>
-                      <th><input type="text" class="form-control" id="customerAddr" name="customerAddr" placeholder="거래처 주소"> </th>   
+                      <th><input type="text" class="form-control" id="customerAddr" name="customerAddr" th:value="${customer.customerAddr}"> </th>   
                     </tr>
                     <tr>
                       <th class="card-footer">거래처 연락처</th>
-                      <th><input type="text" class="form-control" id="customerPhone" name="customerPhone" placeholder="거래처 연락처"></th>
+                      <th><input type="text" class="form-control" id="customerPhone" name="customerPhone" th:value="${customer.customerPhone}"></th>
                     </tr>
                      <tr>                                   
                       <th class="card-footer">거래처 이메일</th>
-                      <th><input type="text" class="form-control" id="customerEmail" name="customerEmail" placeholder="거래처 이메일"></th>
+                      <th><input type="text" class="form-control" id="customerEmail" name="customerEmail" th:value="${customer.customerEmail}"></th>
                     </tr>
                     <tr>
                       <th class="card-footer">영업 담당자</th>
                       <th>
                        <select id="salesId" name="salesId" class="form-control">
-                        <option value="">영업담당자</option>
+                        <option value="0">영업담당자</option>
                       	<option th:each="row : ${userList}"
 					                th:text="${row.userNm}"
 					                th:value="${row.userId}"
-					               >
+					               th:if="${customer.salesId ==row.userId}" selected>
+					     </option>	
+					     <option th:each="row : ${userList}"
+					                th:text="${row.userNm}"
+					                th:value="${row.userId}"
+					               th:unless="${customer.salesId ==row.userId}">
 					     </option>		
 					    </select>	                      
 						</th>   

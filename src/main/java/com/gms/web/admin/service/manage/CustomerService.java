@@ -27,7 +27,7 @@ public interface CustomerService {
 	
 	public List<CustomerPriceExtVO>  getCustomerPreiceList(Integer customerId);
 	
-	public boolean registerCustomerPrice(CustomerPriceVO param);
+	public boolean registerCustomerPrice(CustomerPriceVO[] param);
 	
 	public boolean deleteCustomerPrice(Integer customerId);
 }

@@ -127,7 +127,7 @@
                   	<tr th:if="${not #lists.isEmpty( customerList )}" th:each="row : ${customerList}">
                       <td th:text="${totalCount-((currentPage-1)*10) - customerList.indexOf(row)}"></td>
                       <td>
-                      <a th:href="@{/gms/customer/update.do( userId=${row.customerId} )}" th:text="${row.customerNm}"></a>
+                      <a th:href="@{/gms/customer/update.do( customerId=${row.customerId} )}" th:text="${row.customerNm}"></a>
                       </td>
                       <td th:text="${row.businessRegId}"></td>
                       <td  th:text="${row.customerRepNm}"></td>

@@ -10,6 +10,9 @@ function validationOfForm(form) {
 	
 	var priceCnt= $("#priceCnt").val() ;
 	alert("priceCnt==="+priceCnt);
+	if($("#customerId").val() == "="){
+		alert("거래처를 선택하세요" );
+	}
 	if($("#productId_0").val() == "0" || $("#productCapa_0").val() == "0" || $("#productprice_0").val() == ""){
 		alert("document.mainForm.customerId.value== "+document.mainForm.customerId.value );
 		alert('상품을 선택 하세요');      
@@ -22,61 +25,19 @@ function validationOfForm(form) {
 // end of function
 
 
-
-//Ajax공통 호출
-function callAjax(ajaxInfo){
-	var dfd = $.Deferred();
-	$.ajax(ajaxInfo).done(function(data){
-		dfd.resolve(data);
-	});
-	
-	return dfd.promise();
-}
-
-
-var fn_modifyGas = function(gasId){
-
-	var ajaxInfo ={
-		type:"POST",
-		url:"/gms/gas/detail.do",
-		data:{
-			gasId : gasId
-		},
-		dataType: "json",
-	};
-	
-	ajax = callAjax(ajaxInfo);
-	
-	ajax.done(function(data){
-		console.log(data);
-	
-		console.log("####gasCd---"+data.gasCd);		
-		
-		$("#gasId").val(data.gasId);
-		$("#gasNm").val(data.gasNm);
-		$("#gasCd").val(data.gasCd);
-		//document.form1.gasNm1.value=data.gasNm;
-			
-		if(data.result == "fail"){
-			alert("가스가 존재하지 않습니다");			
-			return;
-		}
-		
-	});
-
-};
-
-
 $(document).ready(function(){ 
 	
 	var counter = 0;
+	var totalCount = 1;
 	
 	init_add(0);
 	$("#addrow").on("click", function () {
 
 		alert("addrow");
 		counter++;
-
+		totalCount++;
+		console.log("1counter=="+counter); 
+		console.log("1 totalCount=="+totalCount); 
 		if (counter > 11){
 
 		  alert('더 이상 추가 할수 없습니다.');
@@ -127,7 +88,11 @@ $(document).ready(function(){
         console.log("추가 클릭");
 
         mod_counter++;       
-
+        totalCount++;
+        
+        console.log("2 mod_counter=="+mod_counter); 
+		console.log("2 totalCount=="+totalCount); 
+		
         console.log("추가 mod_counter:" + mod_counter);
 
         var newRow = $("<tr>");
@@ -152,19 +117,18 @@ $(document).ready(function(){
 
         init_mod_storage(mod_counter);
 
-
     });
     
     
     // row 삭제
-
-
     $("table.doc-list").on("click", ".ibtnDel", function (event) {
         $(this).closest("tr").remove();       
         console.log("ibtnDel mod_counter "+counter);
         counter -= 1
-        
+        totalCount-=1
         $("#priceCount").val(counter);
+        console.log("3 counter=="+counter); 
+		console.log("3 totalCount=="+totalCount); 
     });
 
 
@@ -174,21 +138,19 @@ $(document).ready(function(){
         $(this).closest("tr").remove();       
         console.log("ibtnDelMod mod_counter "+mod_counter);
         mod_counter -= 1
+        totalCount -= 1
         $("#priceCount").val(mod_counter);
+        console.log("4 mod_counter=="+mod_counter); 
+		console.log("4 totalCount=="+totalCount); 
     });
     
 
     function init_mod_storage(mod_counter) {
-        // body...
-      
-           $('#productId_' + mod_counter).change( function(){      
-
-          	var mod_select_pumname = $('#productId_' + mod_counter).val();
-
-          	init_storage_list(mod_select_pumname,mod_counter,'mod');
-        
-          });
-
+        // body...      
+		 $('#productId_' + mod_counter).change( function(){      		
+				var mod_select_pumname = $('#productId_' + mod_counter).val();		
+				init_storage_list(mod_select_pumname,mod_counter,'mod');		
+		});
       }
     
     function init_add(pid){
@@ -208,16 +170,10 @@ $(document).ready(function(){
 			$('#productId_' + pid).append('<option value='+data[i].productId+'>'+data[i].productNm+'</option>')
 			
 		}
-  	  //var json_obj = $.parseJSON(data);//parse JSON
-  	  
-  	   // $('#productId_' + pid).find('option').remove(); 
-  	    //$('#productId_' + pid).append(json_obj.productPriceList);	          
-  	
+  	 
        })
        .fail(function(){
-
-  	console.log("fail");
-
+  			console.log("fail");
        });
 
     } 
@@ -225,16 +181,11 @@ $(document).ready(function(){
     
     function init_add_storage(counter) {
     	// body...
-
     		$('#productId_' + counter).change( function(){
-
     			var select_pumname = $('#productId_' + counter).val();
 
     			init_storage_list(select_pumname,counter,'ins');
-
-
     		});
-
     	}
     
  // 입력된 내용을 작성한다.
@@ -247,11 +198,18 @@ $(document).ready(function(){
     	//if(!isOkay){
     	//	return;
     	//}
+    	$("#priceCount").val(counter++);
     	
+    	
+    	console.log("5 mod_counter==="+mod_counter);
+    	console.log("5 counter==="+counter);
+    	console.log("5 totalCount==="+totalCount);
     	var form = $("#writeForm");	
-    	console.log(counter+mod_counter);
-    	document.getElementById("priceCount").value = counter+mod_counter;
+
+    	//document.getElementById("priceCount").value = counter+mod_counter;
+    	document.getElementById("priceCount").value = totalCount;
     	
+    	alert("save");
     	form.submit();
     });
     
@@ -303,6 +261,9 @@ $(document).ready(function(){
 		
 			$('#customerId1').val($(this).val());
 			
+			console.log("customerId change ="+totalCount); 
+			
+			
 			$.ajax({
 				url: '/gms/price/customerList.do',
 				type: 'POST',
@@ -317,8 +278,7 @@ $(document).ready(function(){
 				console.log("start datea ="+data);     
 				for(i=0; i< data.length;i++) {
 		            $('#productId_' + i).find('option').remove();
-		        }
-			
+		        }			
 
 		    	var i=0;
 				//$('#productCapa_' + sel_pid).find('option').remove(); 
@@ -326,6 +286,38 @@ $(document).ready(function(){
 				console.log("data.length "+data.length);     
 				
 				if(data.length ==0) {
+					
+					$("table.doc-list").find('tr').remove();
+				 	
+				 	var newRow = $("<tr>");
+			        
+			       	cols += '<td>상품</td>';
+					cols += '<td>용량</td>';
+					cols += '<td>가격</td>';
+					cols += '<td></td></tr>';
+
+			        newRow.append(cols);
+			        $("table.doc-list").append(newRow);
+			        
+			        totalCount =1 ;
+			        
+			        var newRow = $("<tr>");
+					var cols = "";
+
+					cols += '<td style="padding-left:0px;">';
+					cols += '	<select class="form-control" id="productId_0" name="productId_0" style="width:160px"></select>'; 
+					cols += '</td><td>';
+					cols += '	<select class="form-control" id="productPriceSeq_0" name="productPriceSeq_0" style="width:100px"><option value=0>옵션</option></select> ';
+					cols += '</td><td>';
+					cols += '	<input type="text" class="form-control" id="productPrice_0" name="productPrice_0" " placeholder="가격">';
+					cols += '</td><td>';  
+					cols += '	<input type="button" class="ibtnAddMod btn btn-md btn-info" id="mod_addrow" value="추가" />';
+					cols += '</td>';
+					cols +='</tr>';
+
+					newRow.append(cols);
+					$("table.doc-list").append(newRow);
+					
 					init_add(counter);
 		            
 		            init_mod_storage(counter);
@@ -363,15 +355,10 @@ $(document).ready(function(){
 			            cols += ' <input type="text" id="productPrice_' + counter + '" name="productPrice_' + counter + '" class="form-control" value="' + data[i].productPrice + '">';		                         
 			            cols += '</td><td>';		           
 	
-			            if (counter < 1){
-	
-			              cols += ' <input type="button" class="ibtnAddMod btn btn-md btn-info" id="mod_addrow" value="추가" />';
-	
-	
-			            }else{
-	
-			              cols += ' <input type="button" class="ibtnDelMod btn btn-md btn-danger" id="addrow" value="삭제" />';
-	
+			            if (counter < 1){	
+			              cols += ' <input type="button" class="ibtnAddMod btn btn-md btn-info" id="mod_addrow" value="추가" />';	
+			            }else{	
+			              cols += ' <input type="button" class="ibtnDelMod btn btn-md btn-danger" id="addrow" value="삭제" />';	
 			            }
 			            cols += '</td>';
 			            cols +='</tr>';
@@ -386,20 +373,19 @@ $(document).ready(function(){
 						console.log("counter=="+counter);   
 	
 			            mod_counter = counter;
-	
+			            
+			            totalCount =counter;
 			            counter++;
+			            
 					}
+					totalCount = data.length;
 				}
 			})
 			.fail(function(){
 				console.log("fail");
-			 });
-			
-
-	        //console.log("mod_counter:" + mod_counter);
+			 });		
 
 	});
-    
     
    
 });
@@ -472,7 +458,12 @@ $(document).ready(function(){
               <form name="writeForm" id="writeForm" class="form-horizontal" th:action="@{/gms/price/register.do}"  method="post" onsubmit="return validationOfForm(this)">
               <input type="hidden" id="priceCount" name="priceCount" value="">
               <input type="hidden" id="customerId1" name="customerId1" value="">
-                
+                <div class="form-group">	
+			        <div class="col-12">
+			        <table class="table table-hover">
+			         </table>
+			        </div>
+		        </div>
                 <div class="form-group">
                    <label class="control-label col-8">상품정보</label>
                    <div class="col-md-10 col-sm-10 col-xs-12">

@@ -178,17 +178,25 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	@Transactional
-	public boolean registerCustomerPrice(CustomerPriceVO param) {
+	public boolean registerCustomerPrice(CustomerPriceVO[] param) {
 		boolean successFlag = false;
 
 		// 정보 등록
 		int result = 0;
-		logger.info("****** registerCustomer.getCustomerId()()) *****===*"+param.getCustomerId());
+		logger.info("****** registerCustomer.getCustomerId()()) *****===*");
 		
-		result = customerMapper.insertCustomerPrice(param);
-		if (result > 0) {
-			successFlag = true;
+		boolean deleteResult = false;
+		for(int i = 0 ; i < param.length ; i++ ) {
+			
+			if( i == 0 ) deleteResult = deleteCustomerPrice(param[i].getCustomerId());
+			
+			result = customerMapper.insertCustomerPrice(param[i]);
+			
+			if (deleteResult != false && result > 0) {
+				successFlag = true;
+			}
 		}
+				
 		
 		return successFlag;
 	}

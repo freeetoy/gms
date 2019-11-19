@@ -23,6 +23,7 @@ var goList = function(){
 
 // form 필드값 유효성 검사
 var validation = function(){
+	/*
 	var customerNm = $("#customerNm").val();
 	if(customerNm=="" || customerNm == null){
 		alert("거래처명을 입력해 주세요.");
@@ -30,15 +31,19 @@ var validation = function(){
 		isOkay = false;
 		return;
 	}
-	
+	*/
 	var result = (
-			   isValid(customerPhone, "거래처연락처", null, "phone")
+				isValid(customerNm, "거래처명", null, null)
 			&& isValid(customerAddr, "거래처주소", null, null)
+			&&  isValid(customerPhone, "거래처연락처", null, "phone")			
+			&& isValid(salesId, "영업 담당자", null, null)
 	);
 	
 	if ( result === false ) {
 		isOkay = false;
+		return;
 	}else{
+		isOkay = true;
 		return;
 	}
 	
@@ -179,8 +184,8 @@ var goWrite = function(){
                     <tr>
                       <th class="card-footer">영업 담당자</th>
                       <th>
-                       <select id="gasId" name="salesId" class="form-control">
-                        <option value="0">영업담당자</option>
+                       <select id="salesId" name="salesId" class="form-control">
+                        <option value="">영업담당자</option>
                       	<option th:each="row : ${userList}"
 					                th:text="${row.userNm}"
 					                th:value="${row.userId}"
