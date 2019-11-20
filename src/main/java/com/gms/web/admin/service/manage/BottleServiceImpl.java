@@ -103,9 +103,8 @@ public class BottleServiceImpl implements BottleService {
 	}
 	
 	@Override
-	public BottleVO getBottleDetail(String BottleId) {
-		// TODO Auto-generated method stub
-		return null;
+	public BottleVO getBottleDetail(String bottleId) {
+		return bottleMapper.selectBottleDetail(bottleId);	
 	}
 	
 	@Override
@@ -129,15 +128,22 @@ public class BottleServiceImpl implements BottleService {
 	@Override
 	@Transactional
 	public int registerBottle(BottleVO param) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		// 정보 등록
+		logger.info("****** registerBottle.getBottleId()()) *****===*"+param.getBottleId());
+		
+		return bottleMapper.insertBottle(param);		
+		
 	}
 
 	@Override
 	@Transactional
 	public int modifyBottle(BottleVO param) {
-		// TODO Auto-generated method stub
-		return 0;
+				
+		// 정보 등록
+		logger.info("****** modifyBottle.getBottleId()()) *****===*"+param.getBottleId());
+		
+		return bottleMapper.updateBottle(param);
 	}
 	
 	@Override

@@ -116,6 +116,15 @@ var goWrite = function(){
 	form.submit();
 }
 
+var goList = function(){
+	
+	
+	var form = $("#writeForm");	
+	
+	form.action='/gms/bottle/list.do'
+	form.submit();
+}
+
 	$(function() { 
 	  $('input[name="bottleCreateDt"]').daterangepicker({
 	    singleDatePicker: true,
@@ -182,17 +191,20 @@ var goWrite = function(){
              <!-- general form elements -->                        
               <!-- /.card-header -->
               <div class="col-8">
-              <form id="writeForm" class="form-horizontal" th:action="@{/gms/bottle/register.do}" th:object="${bottle}" method="post" >
-                
+              <form id="writeForm" class="form-horizontal" th:action="@{/gms/bottle/modify.do}" th:object="${bottle}" method="post" >
+                <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
+        		<input type="hidden" id="searchGasId" name="searchGasId" th:value="${searchGasId}">
+        		<input type="hidden" id="searchBottleId" name="searchBottleId" th:value="${searchBottleId}">
+        		<input type="hidden" id="searchChargeDt" name="searchChargeDt" th:value="${searchChargeDt}">
                 <table class="table table-hover">
                   <thead>
                     <tr>
                       <th class="card-footer">용기 코드</th>
-                      <th><input type="text" class="form-control" id="bottleId" name="bottleId" placeholder="용기 코드"></th>
+                      <th><input type="text" class="form-control" id="bottleId" name="bottleId" th:value="${bottle.bottleId}"></th>
                     </tr>
                      <tr>                                   
                       <th class="card-footer">용기 바코드</th>
-                      <th><input type="text" class="form-control" id="bottleBarCd" name="bottleBarCd" placeholder="용기 바코드"></th>
+                      <th><input type="text" class="form-control" id="bottleBarCd" name="bottleBarCd" th:value="${bottle.bottleBarCd}"></th>
                     </tr>
                     <tr>
                       <th class="card-footer">가스</th>
@@ -202,30 +214,35 @@ var goWrite = function(){
 					        <option th:each="row : ${gasList}"
 					                th:text="${row.gasNm}"
 					                th:value="${row.gasId}"
-					               >
+					                th:if="${bottle.gasId ==row.gasId}" selected>					             
+					        </option>	
+					        <option th:each="row : ${gasList}"
+					                th:text="${row.gasNm}"
+					                th:value="${row.gasId}"
+					                th:unless="${bottle.gasId ==row.gasId}">					             
 					        </option>					
                         </select>
 					  </th>   
                     </tr>
                     <tr>
                       <th class="card-footer">가스 용량</th>
-                      <th><input type="text" class="form-control" id="bottleCapa" name="bottleCapa" placeholder="가스 용량"></th>
+                      <th><input type="text" class="form-control" id="bottleCapa" name="bottleCapa" th:value="${bottle.bottleCapa}"></th>
                     </tr>
                      <tr>                                   
                       <th class="card-footer">제조일</th>
-                      <th><input type="text" class="form-control" id="bottleCreateDt" name="bottleCreateDt" placeholder="제조일"></th>
+                      <th><input type="text" class="form-control" id="bottleCreateDt" name="bottleCreateDt" th:value="${#calendars.format( bottle.bottleCreateDt, 'yyyy/MM/dd' )}"></th>
                     </tr>
                     <tr>
                       <th class="card-footer">충전 기한</th>
-                      <th><input type="text" class="form-control" id="bottleChargeDt" name="bottleChargeDt" placeholder="충전 기한"> </th>   
+                      <th><input type="text" class="form-control" id="bottleChargeDt" name="bottleChargeDt" th:value="${#calendars.format( bottle.bottleChargeDt, 'yyyy/MM/dd' )}"> </th>   
                     </tr>
                     <tr>
                       <th class="card-footer">용기 체적</th>
-                      <th><input type="text" class="form-control" id="bottleVolumn" name="bottleVolumn" placeholder="용기 체적"></th>
+                      <th><input type="text" class="form-control" id="bottleVolumn" name="bottleVolumn" th:value="${bottle.bottleVolumn}"></th>
                     </tr>
                      <tr>                                   
                       <th class="card-footer">충전 압력</th>
-                      <th><input type="text" class="form-control" id="bottleChargePrss" name="bottleChargePrss" placeholder="충전 압력"></th>
+                      <th><input type="text" class="form-control" id="bottleChargePrss" name="bottleChargePrss" th:value="${bottle.bottleChargePrss}"></th>
                     </tr>
                     <tr>
                       <th class="card-footer">용기 소유</th>
@@ -244,10 +261,12 @@ var goWrite = function(){
             
           
       		<div class="card-footer">
-                 <a href="/gms/bottle/list.do" class="btn btn-secondary float-left">취소</a>
+      			<div class="col-8">
+                 <a href="#" th:onclick="goList()"  class="btn btn-secondary float-left">취소</a>
 		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">
                 </div>		     		
-            </form>   
+            	</form>   
+            </div>
           	<!-- /.col-12 -->
           </div>
         </div>      

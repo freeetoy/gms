@@ -23,6 +23,9 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	/** Gas ID */
 	private Integer gasId ;
 	
+	/** Gas Nm */
+	private String gasNm ;
+	
 	/** Bottle_Capa	*/
 	private String bottleCapa;
 
@@ -33,10 +36,10 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	private Date bottleChargeDt;
 	
 	/** Bottle_Volumn	*/
-	private int bottleVolumn;
+	private String bottleVolumn;
 
 	/** Bottle_Charge_Prss	*/
-	private int bottleChargePrss;
+	private String bottleChargePrss;
 
 	/** Bottle_Sales_YN	*/
 	private String bottleSalesYn;
@@ -54,6 +57,8 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	0309	폐기
 	*/
 	private String bottleWorkCd;
+	
+	private String bottleWorkCdNm;
 
 	/** Bottle_Work_ID	*/
 	private String bottleWorkId;
@@ -61,6 +66,10 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	/** Customer_ID		*/
 	private Integer customerId;
 
+	/** Customer_Nm		*/
+	private String customerNm;
+
+	
 	/** Member_Comp_Seq	*/
 	private Integer memberCompSeq;
 

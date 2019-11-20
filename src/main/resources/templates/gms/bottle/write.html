@@ -7,7 +7,7 @@
 
 var isOkay = false;
 $(document).ready(function(){
-	$("#businessRegId").on("focusout", function(){
+	$("#bottleId").on("focusout", function(){
 		if($(this).val() != ""){
 			checkName();
 		}
@@ -115,6 +115,43 @@ var goWrite = function(){
 	
 	form.submit();
 }
+
+	$(function() { 
+	  $('input[name="bottleCreateDt"]').daterangepicker({
+	    singleDatePicker: true,
+	    showDropdowns: true,
+	    autoUpdateInput: false,
+	      locale: {
+	          cancelLabel: 'Clear'
+	      }
+	  });
+	
+	  $('input[name="bottleCreateDt"]').on('apply.daterangepicker', function(ev, picker) {
+	      $(this).val(picker.startDate.format('YYYY/MM/DD'));
+	  });
+	
+	  $('input[name="bottleCreateDt"]').on('cancel.daterangepicker', function(ev, picker) {
+	      $(this).val('');
+	  });
+	  
+	  $('input[name="bottleChargeDt"]').daterangepicker({
+		    singleDatePicker: true,
+		    showDropdowns: true,
+		    autoUpdateInput: false,
+		      locale: {
+		          cancelLabel: 'Clear'
+		      }
+		  });
+		
+		  $('input[name="bottleChargeDt"]').on('apply.daterangepicker', function(ev, picker) {
+		      $(this).val(picker.startDate.format('YYYY/MM/DD'));
+		  });
+		
+		  $('input[name="bottleChargeDt"]').on('cancel.daterangepicker', function(ev, picker) {
+		      $(this).val('');
+		  });
+	});
+	</script>
 	
 </script>
 
@@ -145,7 +182,7 @@ var goWrite = function(){
              <!-- general form elements -->                        
               <!-- /.card-header -->
               <div class="col-8">
-              <form id="writeForm" class="form-horizontal" th:action="@{/gms/bottle/register.do}" th:object="${customer}" method="post" >
+              <form id="writeForm" class="form-horizontal" th:action="@{/gms/bottle/register.do}" th:object="${bottle}" method="post" >
                 
                 <table class="table table-hover">
                   <thead>

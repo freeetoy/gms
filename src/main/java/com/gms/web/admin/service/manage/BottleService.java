@@ -9,7 +9,7 @@ public interface BottleService {
 
 	public Map<String,Object> getBottleList(BottleVO params);	
 	
-	public BottleVO getBottleDetail(String BottleId) ;
+	public BottleVO getBottleDetail(String bottleId) ;
 	
 	public int getBottleCount(Map<String, Object> map);	
 	

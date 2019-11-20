@@ -3,38 +3,74 @@
 <div class="wrapper">
 
 <th:block layout:fragment="content"> 
-<script type="text/javascript">
-
-	function validationOfForm(form) {
+<script type="text/javascript">	
 	
-		var result = (
-				   isValid(form.gasNm, "가스명", null, null)
-				&& isValid(form.gasCd, "가스코드", null, null)
-		);
+	//Ajax공통 호출
+	function callAjax(ajaxInfo){
+		var dfd = $.Deferred();
+		$.ajax(ajaxInfo).done(function(data){
+			dfd.resolve(data);
+		});
 		
-		if ( result === false ) {
-			return false;
-		}
+		return dfd.promise();
 	}
-	// end of function
 	
-	var fn_deleteUser = function(userId){
-		var form = document.deleteform;	
-		               		
-		if(confirm("삭제하시겠습니까?")){	
+	
+	var fn_ChangeBottleWorkCd = function(bottleId){
+	
+		//$("table.table-hover").find('tr').remove();
+		
+		var ajaxInfo ={
+			type:"POST",
+			url:"/gms/bottle/detail.do",
+			data:{
+				bottleId : bottleId
+			},
+			dataType: "json",
+		};
+		
+		ajax = callAjax(ajaxInfo);
+		
+		ajax.done(function(data){
+			console.log(data);
+		
+			console.log("####bottleCd---"+data.bottleId);		
 			
-			$("#userId").val(userId);  			
+			$("#bottleId").val(data.bottleId);
+			$("#bottleBarCd").val(data.bottleBarCd);
 			
+			$('select[id="bottleWorkCd"]').find('option:contains(data.bottleWorkCd)').attr("selected",true);
+
+			$("#bottleWorkCd").val(data.bottleWorkCd);			
+				
+			if(data.result == "fail"){
+				alert("용기가 존재하지 않습니다");			
+				return;
+			}
 			
-	        form.submit();			
-		}                  		
+		});
+		
+	};
+	
+	    
+	var goUpdate = function(bottleId){		
+		
+		//alert("goUpdate "+bottleId);
+		console.log("goUpdate bottleId ="+bottleId);
+		var form = $("#mainForm");	
+
+		$("#bottleId").val(bottleId);
+    	
+    	//document.getElementById("priceCount").value = totalCount;
+    	mainForm.action="/gms/bottle/update.do";
+    	form.submit();
 	}
 	
 	// 입력된 내용을 작성한다.
 	function goSearch(){	
 		
 		var form = document.mainForm;	
-		
+		mainForm.action="/gms/bottle/list.do";
 		form.submit();
 	};
 
@@ -45,9 +81,9 @@
 		var form =  document.mainForm;			
 		
 		$("#currentPage").val(pageNo);  
-    	
+		 mainForm.action="/gms/bottle/list.do";
         //validate checkt시 confirm 중복되는 부분 처리 
-        
+       
     	mainForm.submit();
     }
 	
@@ -90,16 +126,66 @@
     </section>
   
     <section class="content">          
-        
+        <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">용기 상태 변경</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form role="form1" th:action="@{/gms/bottle/changeWorkCd.do(currentPage=${currentPage}, searchBottleId=${searchBottleId},searchGasId=${searchGasId},searchChargeDt=${searchChargeDt})}" th:object="${bottle}" method="post" onsubmit="return validationOfForm(this)">
+              
+              <div class="card-body">
+            	<table class="table table-hover">
+                  <thead>
+                  <tr>
+                      <th class="card-footer">용기 코드</th>
+                      <th><input type="text" class="form-control" id="bottleId" name="bottleId" placeholder="용기 코드" readonly></th>
+                    </tr>
+                     <tr>                                   
+                      <th class="card-footer">용기 바코드</th>
+                      <th><input type="text" class="form-control" id="bottleBarCd" name="bottleBarCd" placeholder="용기 바코드" readonly></th>
+                    </tr>
+                    <tr>
+                      <th class="card-footer">상태</th>
+                      <th>
+                      <select id="bottleWorkCd" name="bottleWorkCd" class="form-control">
+                          <option value="">상태</option>				    
+					        <option th:each="row : ${codeList}"
+					                th:text="${row.cdNm}"
+					                th:value="${row.cdId}"
+					               >
+					        </option>					
+                        </select>
+					  </th>   
+                    </tr>
+                  </thead>                              
+                </table>       
+                
+              </div>            
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
         <div class="row">
-        
+        		
               <div class="col-2">
                		충전기한
               </div>               
               <div class="col-4">
-              <form id="mainForm" name=""mainForm"" th:action="@{/gms/bottle/list.do}" method="post">
+              <form id="mainForm" name=""mainForm""  method="post">
               <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
-               <input type="text" class="form-control" name="searchChargeDt" value="" />			
+              <input type="hidden" id="bottleId" name="bottleId" value="">
+               <input type="text" class="form-control" name="searchChargeDt" th:value="${searchChargeDt}"/>			
               </div>               
               <div class="col-3">               
               </div>
@@ -115,17 +201,23 @@
                		용기ID
               </div>               
               <div class="col-4">              
-               <input type="text" id="searchBottleId" name="searchBottleId" class="form-control" placeholder="search" th:value="${searchUserNm}">
+               <input type="text" id="searchBottleId" name="searchBottleId" class="form-control" placeholder="search" th:value="${searchBottleId}">
               </div>  
                <div class="col-2">
                	<select id="searchGasId" name="searchGasId" class="form-control">
-                          <option value="0">가스선택</option>				    
-					        <option th:each="row : ${gasList}"
-					                th:text="${row.gasNm}"
-					                th:value="${row.gasId}"
-					               >
-					        </option>					
-                        </select>
+                    <option value="">가스선택</option>				    
+			        <option th:each="row : ${gasList}"
+			                th:text="${row.gasNm}"
+			                th:value="${row.gasId}"
+			                th:if="${searchGasId ==row.gasId}" selected>					             
+			        </option>	
+			        <option th:each="row : ${gasList}"
+			                th:text="${row.gasNm}"
+			                th:value="${row.gasId}"
+			                th:unless="${searchGasId ==row.gasId}">					             
+			        </option>			
+				        				
+                 </select>
               </div>                   
               <div class="col-2">
                 <button class="btn btn-navbar" type="submit">
@@ -149,12 +241,7 @@
             <div class="card">
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
-                <table class="table table-hover">
-                <form id="deleteform" name="deleteform" th:action="@{/gms/user/delete.do}" method="post">
-                	<input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
-                	<input type="hidden" id="searchUserNm" name="searchUserNm" th:value="${searchUserNm}">
-                	<input type="hidden" id="userId" name="userId" value="">
-                </form>
+                <table class="table table-hover">                
                   <thead>
                     <tr>
                       <th>순번</th>
@@ -165,23 +252,33 @@
                       <th>작업</th>
                       <th>거래처</th>
                       <th>등록일</th>
+                      <th>상태변경</th>
                     </tr>
                   </thead>
                   <tbody>
-                  	<tr th:if="${not #lists.isEmpty( bottleist )}" th:each="row : ${bottleList}">
-                      <td th:text="${totalCount-((currentPage-1)*10) - userList.indexOf(row)}"></td>
+                  	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}">
+                      <td th:text="${totalCount-((currentPage-1)*10) - bottleList.indexOf(row)}"></td>
                       <td>
-                      <a th:href="@{/gms/bottle/update.do( bottleId=${row.bottleId} )}" th:text="${row.bottleId}"></a>
+                      <a href="#" th:onclick="goUpdate([[ ${row.bottleId} ]])" th:text="${row.bottleId}"></a>                     
                       </td>
                       <td th:text="${row.bottleBarCd}"></td>
-                      <td th:text="${row.gasId}"></td>
+                      <td th:text="${row.gasNm}"></td>
                       <td th:text="${row.bottleCapa}"></td>
-                      <td th:text="${row.bottleWorkCd}"></td>
-                      <td th:text="${row.CustomerId}"></td>
-                      <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>                      
+                      <td th:text="${row.bottleWorkCdNm}"></td>
+                      <td th:text="${row.CustomerNm}"></td>
+                      <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>  
+                      <td>                      
+						<a class="btn btn-info btn-xs" th:bottleId="${row.bottleId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_ChangeBottleWorkCd([[ ${row.bottleId} ]])" href="#"><i class="fas fa-pencil-alt"></i>상태변경 </a>
+						
+						<a class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteUser([[ ${row.bottleId} ]])">
+                              <i class="fas fa-trash">
+                              </i>
+                              Delete
+                          </a>          
+                      </td>                     
                     </tr>
-                    <tr th:unless="${not #lists.isEmpty( userList )}">
-						<td colspan="8">조회된 결과가 없습니다.</td>
+                    <tr th:unless="${not #lists.isEmpty( bottleList )}">
+						<td colspan="9">조회된 결과가 없습니다.</td>
 					</tr>						
                   </tbody>
 					

@@ -29,4 +29,16 @@
 
 	<entry key="common.user.SALES">01</entry>
 	
+	<!-- 코드  정의 -->	
+	<entry key="common.bottle.status">0300</entry>
+	<entry key="common.bottle.status.0301">0301</entry>
+	<entry key="common.bottle.status.0302">0302</entry>
+	<entry key="common.bottle.status.0303">0303</entry>
+	<entry key="common.bottle.status.0304">0304</entry>
+	<entry key="common.bottle.status.0305">0305</entry>
+	<entry key="common.bottle.status.0306">0306</entry>
+	<entry key="common.bottle.status.0307">0307</entry>
+	<entry key="common.bottle.status.0308">0308</entry>
+	<entry key="common.bottle.status.0309">0308</entry>
+	
 </properties>

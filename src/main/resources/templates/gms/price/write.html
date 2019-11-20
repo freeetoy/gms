@@ -9,12 +9,12 @@
 function validationOfForm(form) {
 	
 	var priceCnt= $("#priceCnt").val() ;
-	alert("priceCnt==="+priceCnt);
+	//alert("priceCnt==="+priceCnt);
 	if($("#customerId").val() == "="){
 		alert("거래처를 선택하세요" );
 	}
 	if($("#productId_0").val() == "0" || $("#productCapa_0").val() == "0" || $("#productprice_0").val() == ""){
-		alert("document.mainForm.customerId.value== "+document.mainForm.customerId.value );
+		//alert("document.mainForm.customerId.value== "+document.mainForm.customerId.value );
 		alert('상품을 선택 하세요');      
 		return false;
 	}
@@ -33,7 +33,7 @@ $(document).ready(function(){
 	init_add(0);
 	$("#addrow").on("click", function () {
 
-		alert("addrow");
+		//alert("addrow");
 		counter++;
 		totalCount++;
 		console.log("1counter=="+counter); 
@@ -209,7 +209,7 @@ $(document).ready(function(){
     	//document.getElementById("priceCount").value = counter+mod_counter;
     	document.getElementById("priceCount").value = totalCount;
     	
-    	alert("save");
+    	//alert("save");
     	form.submit();
     });
     
