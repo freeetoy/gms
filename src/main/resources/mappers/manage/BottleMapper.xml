@@ -21,6 +21,7 @@
 		<result property="memberCompSeq"	column="Member_Comp_Seq"	/>
 		<result property="orderId"			column="Order_ID"			/>	
 		<result property="orderProductSeq"	column="Order_Product_Seq"	/>
+		<result property="deleteYn"			column="Delete_YN"			/>
 		<result property="createId"			column="CREATE_ID"			/>
 		<result property="createDt"			column="CREATE_DT"			/>
 		<result property="updateId"			column="UPDATE_ID"			/>		
@@ -43,6 +44,7 @@
 		, Member_Comp_Seq	
 		, Order_ID
 		, Order_Product_Seq	
+		, Delete_YN	
 		, CREATE_ID
 		, CREATE_DT
 		, UPDATE_ID
@@ -92,6 +94,7 @@
 			, #{memberCompSeq}
 			, #{orderId}
 			, #{orderProductSeq}
+			, 'N'
 			, #{createId}			
 			, NOW()
 			, NULL
@@ -106,6 +109,8 @@
 			TB_Bottle
 		WHERE
 			Bottle_ID = #{bottleId}
+		AND
+			Delete_YN = 'N'
 	</select>
 
 	<update id="updateBottle" parameterType="com.gms.web.admin.domain.manage.BottleVO">
@@ -131,8 +136,31 @@
 			, UPDATE_ID = #{updateId}
 			, UPDATE_DT = NOW()
 		WHERE
-			Bottle_ID = #{bottleId}
+			Bottle_ID = #{chBottleId}
 	</update>	
+	
+	<update id="deleteBottle" parameterType="com.gms.web.admin.domain.manage.BottleVO">
+		UPDATE TB_Bottle
+		SET
+			Delete_YN = 'Y'
+			, UPDATE_ID = #{updateId}
+			, UPDATE_DT = NOW()
+		WHERE
+			Bottle_ID = #{bottleId}
+	</update>
+	
+	<update id="deleteBottles" parameterType="com.gms.web.admin.domain.manage.BottleVO">
+		UPDATE TB_Bottle
+		SET
+			Delete_YN = 'Y'
+			, UPDATE_ID = #{updateId}
+			, UPDATE_DT = NOW()
+		WHERE
+			Bottle_ID in  
+			<foreach collection="bottList" item="item" index="index" open="(" separator="," close=")">
+				#{item} 
+			</foreach>
+	</update>
 
 	<select id="selectBottleList" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="java.util.Map">
 		SELECT A.*, B.Customer_Nm
@@ -142,7 +170,7 @@
 			FROM
 				TB_Bottle TB, TB_CODE TC, TB_Gas TG
 			WHERE
-				0 = 0
+				TB.Delete_YN = 'N'
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchBottleId)">
 			AND Bottle_ID	 LIKE CONCAT('%', CONCAT(#{searchBottleId}, '%'))
 			</if>
@@ -165,7 +193,7 @@
 		FROM
 			TB_Bottle
 		WHERE
-			0 = 0
+			Delete_YN = 'N'
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchBottleId)">
 		AND Bottle_ID	 LIKE CONCAT('%', CONCAT(#{searchBottleId}, '%'))
 		</if>
@@ -184,6 +212,8 @@
 			TB_Bottle
 		WHERE
 			Bottle_Id=#{bottleId}
+		AND
+			Delete_YN = 'N'
 	</select>
 
 	<select id="selectBottleBarCdCheck" parameterType="com.gms.web.admin.domain.manage.BottleVO" resultType="int">
@@ -193,6 +223,8 @@
 			TB_Bottle
 		WHERE
 			Bottle_BarCd=#{bottleBarCd}
+		AND
+			Delete_YN = 'N'
 	</select>
 
 </mapper>

@@ -10,6 +10,7 @@ import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
@@ -1250,6 +1251,21 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             return splitwords(s, m_whiteSpace);
     }
 
+    public static  List <String> makeForeach (String s, String gb){
+        List<String> list =   new ArrayList<String>();
+        String[] aCode = s.split(gb);
+     
+        if (s == null || "".equals(s)) {
+            return null;
+        }
+        for(int i=0; i< aCode.length; i++){
+            list.add(aCode[i].toString());
+        }
+     
+        return list;
+    }
+
+    	
     /**
      * <pre>
      * 원본 문자열을 일반적인 공백문자(' ','\n','\t','\r')로 토큰화 한다.<br> 겹따옴표('"') 안의 내용은 하나의 토큰으로 판단하여 문자열을 토큰화 한다.

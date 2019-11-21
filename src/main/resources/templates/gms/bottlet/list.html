@@ -120,7 +120,7 @@ var fn_deleteBottle = function(bottleId){
 	function goSearch(){	
 		
 		var form = document.mainForm;	
-		mainForm.action="/gms/bottle/list.do";
+		mainForm.action="/gms/bottlet/list.do";
 		form.submit();
 	};
 
@@ -131,7 +131,7 @@ var fn_deleteBottle = function(bottleId){
 		var form =  document.mainForm;			
 		
 		$("#currentPage").val(pageNo);  
-		 mainForm.action="/gms/bottle/list.do";
+		 mainForm.action="/gms/bottlet/list.do";
         //validate checkt시 confirm 중복되는 부분 처리 
        
     	mainForm.submit();

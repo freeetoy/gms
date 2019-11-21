@@ -10,8 +10,8 @@
 	<entry key="common.menu.order">order</entry>
 	<entry key="common.menu.trasnaction">transaction</entry>
 	<entry key="common.menu.bottle">bottle</entry>
-	<entry key="common.menu.boottle.test">btest</entry>
-	<entry key="common.menu.boottle.sales">bsales</entry>
+	<entry key="common.menu.boottle.test">bottlet</entry>
+	<entry key="common.menu.boottle.sales">bottles</entry>
 	<entry key="common.menu.customer">customer</entry>
 	<entry key="common.menu.customer.price">price</entry>
 	<entry key="common.menu.gas">gas</entry>

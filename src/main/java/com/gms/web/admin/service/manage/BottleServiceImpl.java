@@ -147,18 +147,29 @@ public class BottleServiceImpl implements BottleService {
 	}
 	
 	@Override
+	@Transactional
 	public int changeBottleWorkCd(BottleVO param) {
-		// TODO Auto-generated method stub
-		return 0;
+		// 정보 등록
+		logger.info("****** modifyBottle.getChBottleId()()) *****===*"+param.getChBottleId());
+		
+		return bottleMapper.updateBottleWorkCd(param);
 	}
 
 	@Override
 	@Transactional
-	public int deleteBottle(String BottleId) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteBottle(BottleVO param) {
+		logger.info("****** deleteBottle *****===*"+param.getBottleId());
+		
+		return bottleMapper.deleteBottle(param);
 	}
 
+	@Override
+	@Transactional
+	public int deleteBottles(BottleVO param) {
+		return bottleMapper.deleteBottles(param);
+	}
+
+	
 	@Override
 	public Map<String, Object> checkBottleIdDuplicate(BottleVO param) {		
 			// 중복체크
@@ -177,5 +188,6 @@ public class BottleServiceImpl implements BottleService {
 			return result;	
 	}
 
+	
 	
 }

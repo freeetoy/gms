@@ -23,7 +23,9 @@ public interface BottleService {
 	
 	public int changeBottleWorkCd(BottleVO param);
 
-	public int deleteBottle(String BottleId);
+	public int deleteBottle(BottleVO param);
+	
+	public int deleteBottles(BottleVO param);
 	
 	public Map<String, Object> checkBottleIdDuplicate(BottleVO param);
 }

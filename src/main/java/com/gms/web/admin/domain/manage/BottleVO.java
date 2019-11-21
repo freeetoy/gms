@@ -2,6 +2,7 @@ package com.gms.web.admin.domain.manage;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.gms.web.admin.common.domain.AbstractSearchVO;
 
@@ -16,6 +17,9 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	
 	/** Bottle_ID		*/
 	private String bottleId;
+	
+	/** Bottle_ID		*/
+	private String chBottleId;
 
 	/** Bottle_BarCd	*/
 	private String bottleBarCd;
@@ -78,6 +82,14 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 
 	/** Order_Product_Seq	*/
 	private Integer orderProductSeq;
+	
+	/** 삭제여부  Delete_YN*/
+	private String deleteYn;
+	
+	/** 복수 삭제용 Ids*/
+	private String bottleIds;
+	
+	private List<String> bottList;
 	
 	/** 검색용			*/
 	/** SearchBottleiId	*/

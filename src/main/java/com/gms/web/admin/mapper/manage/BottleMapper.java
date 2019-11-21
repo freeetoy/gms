@@ -20,7 +20,9 @@ public interface BottleMapper {
 	
 	public int updateBottleWorkCd(BottleVO param);
 
-	//public int deleteBottle(String BottleId);
+	public int deleteBottle(BottleVO param);
+	
+	public int deleteBottles(BottleVO param);
 
 	public int selectBottleCount(Map<String, Object> map);	
 

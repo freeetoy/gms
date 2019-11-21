@@ -4,7 +4,57 @@
 
 <th:block layout:fragment="content"> 
 <script type="text/javascript">	
+
+function checkAll(){
+   
+    
+    if( $("#checkAll").is(':checked') ) {
+
+        $("input[name=check_id]").prop("checked", true);
+
+	} else {
 	
+	        $("input[name=check_id]").prop("checked", false);
+	
+	}
+}
+
+	
+function validationOfForm(form) {
+	
+	console.log(form.chBottle.value);
+	return ture;
+}
+	
+
+
+function fn_modifyBottleWorkCd(){				
+		
+		var form = $("#chForm");	
+    	chForm.action="/gms/bottle/changeWorkCd.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]";
+    	chForm.submit();
+	}
+	
+var fn_deleteBottle = function(bottleId){
+		
+	if(confirm("삭제하시겠습니까?")){	
+		
+		var form = document.createElement("form");
+		form.setAttribute("charset","UTF-8");
+		form.setAttribute("method","post");
+		form.setAttribute("action","/gms/bottle/delete.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
+		
+		var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "bottleId");
+        hiddenField.setAttribute("value", bottleId);
+
+        form.appendChild(hiddenField);      
+        document.body.appendChild(form);
+
+        form.submit();			
+	}                  		
+}
 	//Ajax공통 호출
 	function callAjax(ajaxInfo){
 		var dfd = $.Deferred();
@@ -36,7 +86,7 @@
 		
 			console.log("####bottleCd---"+data.bottleId);		
 			
-			$("#bottleId").val(data.bottleId);
+			$("#chBottleId").val(data.bottleId);
 			$("#bottleBarCd").val(data.bottleBarCd);
 			
 			$('select[id="bottleWorkCd"]').find('option:contains(data.bottleWorkCd)').attr("selected",true);
@@ -105,7 +155,66 @@
 	      $(this).val('');
 	  });
 	
-	});
+	});	
+
+	
+	function fn_deleteBottles()
+	{
+		/*
+		var checked_len = $("input[name='check_id[]']:checked").length;
+		alert("checked_len="+checked_len);
+		if(checked_len <1){
+			alert('삭제할 항목을 선택 하세요.');
+				return false;
+		}
+		*/
+		var checkedValue = ""; 
+		var chki=0;
+		var inputElements = document.getElementsByClassName('IdCheckbox');
+		for(var i=0; inputElements[i]; ++i){
+		      if(inputElements[i].checked){	
+		    	  
+		    	   //checkedValue +="'";
+		           checkedValue += (inputElements[i].value);
+		           chki++;
+		           //break;
+		           checkedValue +=",";
+		      }
+		}
+		
+		if(chki < 1){
+			alert('삭제할 항목을 선택 하세요.');
+			return false;
+			
+		}
+		console.log("chki="+chki);	
+		console.log("checkeValue="+checkedValue);		
+		
+		if(confirm("정말로 삭제 하시겠습니까?")){
+
+			var form = document.createElement("form");
+			form.setAttribute("charset","UTF-8");
+			form.setAttribute("method","post");
+			form.setAttribute("action","/gms/bottle/deleteChecked.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
+			
+			var hiddenField = document.createElement("input");
+	        hiddenField.setAttribute("type", "hidden");
+	        hiddenField.setAttribute("name", "bottleIds");
+	        hiddenField.setAttribute("value", checkedValue);
+
+	        form.appendChild(hiddenField);
+	       
+	        document.body.appendChild(form);
+
+	        form.submit();			
+			
+		}else{
+
+		return false;
+		}
+
+	}
+	
 	</script>
    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -135,18 +244,18 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form role="form1" th:action="@{/gms/bottle/changeWorkCd.do(currentPage=${currentPage}, searchBottleId=${searchBottleId},searchGasId=${searchGasId},searchChargeDt=${searchChargeDt})}" th:object="${bottle}" method="post" onsubmit="return validationOfForm(this)">
+            <form id="chForm" name="chForm" th:object="${bottle}" method="post">
               
               <div class="card-body">
             	<table class="table table-hover">
                   <thead>
                   <tr>
                       <th class="card-footer">용기 코드</th>
-                      <th><input type="text" class="form-control" id="bottleId" name="bottleId" placeholder="용기 코드" readonly></th>
+                      <th><input type="text" class="form-control" id="chBottleId" name="chBottleId" placeholder="용기 코드" ></th>
                     </tr>
                      <tr>                                   
                       <th class="card-footer">용기 바코드</th>
-                      <th><input type="text" class="form-control" id="bottleBarCd" name="bottleBarCd" placeholder="용기 바코드" readonly></th>
+                      <th><input type="text" class="form-control" id="bottleBarCd" name="bottleBarCd" placeholder="용기 바코드" ></th>
                     </tr>
                     <tr>
                       <th class="card-footer">상태</th>
@@ -167,7 +276,7 @@
               </div>            
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Save changes</button>
+              <a class="btn btn-info btn-sm" href="#" onclick="javascript:fn_modifyBottleWorkCd();"><i class="fas fa-pencil-alt"></i>상태변경</a>
             </div>
             </form>
           </div>
@@ -177,18 +286,19 @@
       </div>
       <!-- /.modal -->
         <div class="row">
-        		
-              <div class="col-2">
+        	<div class="col-1">
+        	</div>
+            <div class="col-1">
                		충전기한
-              </div>               
-              <div class="col-4">
+            </div>               
+            <div class="col-4">
               <form id="mainForm" name=""mainForm""  method="post">
               <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
               <input type="hidden" id="bottleId" name="bottleId" value="">
                <input type="text" class="form-control" name="searchChargeDt" th:value="${searchChargeDt}"/>			
-              </div>               
-              <div class="col-3">               
-              </div>
+            </div>               
+            <div class="col-3">               
+            </div>
          </div>
          <div class="row">	
 	        <div class="col-12">
@@ -197,13 +307,15 @@
 	        </div>
         </div>
     	<div class="row">
-              <div class="col-2">
+    		<div class="col-1">
+        	</div>
+           	<div class="col-1">
                		용기ID
-              </div>               
-              <div class="col-4">              
+            </div>               
+            <div class="col-4">              
                <input type="text" id="searchBottleId" name="searchBottleId" class="form-control" placeholder="search" th:value="${searchBottleId}">
-              </div>  
-               <div class="col-2">
+            </div>  
+            <div class="col-2">
                	<select id="searchGasId" name="searchGasId" class="form-control">
                     <option value="">가스선택</option>				    
 			        <option th:each="row : ${gasList}"
@@ -244,7 +356,7 @@
                 <table class="table table-hover">                
                   <thead>
                     <tr>
-                      <th>순번</th>
+                      <th><input type="checkbox" name="checkAll" id="checkAll" onclick="checkAll();"/></th>
                       <th>용기코드</th>
                       <th>바코드</th>
                       <th>가스</th>
@@ -256,8 +368,9 @@
                     </tr>
                   </thead>
                   <tbody>
+                  <form name="checkForm" id="checkForm">
                   	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}">
-                      <td th:text="${totalCount-((currentPage-1)*10) - bottleList.indexOf(row)}"></td>
+                      <td><input class="IdCheckbox" name="check_id" type="checkbox" th:value="${row.bottleId}"></td>
                       <td>
                       <a href="#" th:onclick="goUpdate([[ ${row.bottleId} ]])" th:text="${row.bottleId}"></a>                     
                       </td>
@@ -270,16 +383,14 @@
                       <td>                      
 						<a class="btn btn-info btn-xs" th:bottleId="${row.bottleId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_ChangeBottleWorkCd([[ ${row.bottleId} ]])" href="#"><i class="fas fa-pencil-alt"></i>상태변경 </a>
 						
-						<a class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteUser([[ ${row.bottleId} ]])">
-                              <i class="fas fa-trash">
-                              </i>
-                              Delete
-                          </a>          
+						<a class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteBottle([[ ${row.bottleId} ]])">
+                              <i class="fas fa-trash"></i>삭제</a>          
                       </td>                     
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( bottleList )}">
 						<td colspan="9">조회된 결과가 없습니다.</td>
-					</tr>						
+					</tr>			
+					</form>			
                   </tbody>
 					
                 </table>
@@ -321,6 +432,12 @@
 						</li>
         			</ul>
 				</div>
+			</div>
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-2">
+			<a id="select_del" class="btn btn-danger btn-sm" href="#" th:onclick="fn_deleteBottles()">
+                              <i class="fas fa-trash"></i>선택삭제</a>   
 			</div>
 		</div>
         
