@@ -71,18 +71,30 @@
                   <p>용기 목록</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="/gms/bottlet/list.do" class="nav-link">
+              <li th:if="${menuId=='bottlet'}" class="nav-item">
+                <a href="/gms/bottle/charge.do" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>용기 검사</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="../layout/fixed-sidebar.html" class="nav-link">
+              <li th:unless="${menuId=='bottlet'}" class="nav-item">
+                <a href="/gms/bottle/charge.do" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>용기 검사</p>
+                </a>
+              </li>
+              <li th:if="${menuId=='bottles'}" class="nav-item">
+                <a href="/gms/bottle/sales.do" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>용기 판매</p>
                 </a>
-              </li>              
+              </li>           
+              <li th:unless="${menuId=='bottles'}" class="nav-item">
+                <a href="/gms/bottle/sales.do" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>용기 판매</p>
+                </a>
+              </li>                
             </ul>
           </li>
           <li th:unless="${menuId=='bottle'|| menuId=='bottlet' || menuId=='bottles'}" class="nav-item has-treeview">
@@ -101,7 +113,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/gms/bottlet/list.do" class="nav-link">
+                <a href="/gms/bottle/charge.do" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>용기 검사</p>
                 </a>

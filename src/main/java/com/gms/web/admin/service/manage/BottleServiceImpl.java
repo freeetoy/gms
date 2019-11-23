@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.mapper.manage.BottleMapper;
 
@@ -67,6 +68,11 @@ public class BottleServiceImpl implements BottleService {
 		if(param.getSearchChargeDtEnd() != null) {
 			map.put("searchChargeDtEnd", param.getSearchChargeDtEnd());
 			logger.info("****** getBottleList *****getSearchChargeDtEnd===*"+param.getSearchChargeDtEnd());
+		}
+		
+		if(param.getSearchSalesYn() != null) {
+			map.put("searchSalesYn", param.getSearchSalesYn());
+			logger.info("****** getBottleList *****getSearchSalesYn===*"+param.getSearchSalesYn());
 		}
 		
 		logger.info("****** getBottleList *****currentPage===*"+currentPage);
@@ -131,8 +137,11 @@ public class BottleServiceImpl implements BottleService {
 
 		// 정보 등록
 		logger.info("****** registerBottle.getBottleId()()) *****===*"+param.getBottleId());
+		int result = 0;
+		result =  bottleMapper.insertBottle(param);		
+		if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
 		
-		return bottleMapper.insertBottle(param);		
+		return result;
 		
 	}
 
@@ -151,8 +160,12 @@ public class BottleServiceImpl implements BottleService {
 	public int changeBottleWorkCd(BottleVO param) {
 		// 정보 등록
 		logger.info("****** modifyBottle.getChBottleId()()) *****===*"+param.getChBottleId());
+		int result = 0;
+		result =  bottleMapper.updateBottleWorkCd(param);
 		
-		return bottleMapper.updateBottleWorkCd(param);
+		if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
+		
+		return result;
 	}
 
 	@Override
@@ -160,7 +173,13 @@ public class BottleServiceImpl implements BottleService {
 	public int deleteBottle(BottleVO param) {
 		logger.info("****** deleteBottle *****===*"+param.getBottleId());
 		
-		return bottleMapper.deleteBottle(param);
+		int result = 0;
+		result =   bottleMapper.deleteBottle(param);
+		
+		if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
+		
+		return result;
+		
 	}
 
 	@Override
@@ -188,6 +207,17 @@ public class BottleServiceImpl implements BottleService {
 			return result;	
 	}
 
+	@Override
+	public List<BottleHistoryVO> selectBottleHistoryList(String bottleId){
+		
+		return bottleMapper.selectBottleHistoryList(bottleId);		
+	}
 	
 	
+	private int insertBottleHistory(String bottleId) {
+		// 정보 등록
+		logger.info("****** registerBottle.getBottleId()()) *****===*" +bottleId);
+		
+		return bottleMapper.insertBottleHistory(bottleId);		
+	}
 }

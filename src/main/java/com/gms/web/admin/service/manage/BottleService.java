@@ -1,7 +1,9 @@
 package com.gms.web.admin.service.manage;
 
+import java.util.List;
 import java.util.Map;
 
+import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 
@@ -28,4 +30,6 @@ public interface BottleService {
 	public int deleteBottles(BottleVO param);
 	
 	public Map<String, Object> checkBottleIdDuplicate(BottleVO param);
+	
+	public List<BottleHistoryVO> selectBottleHistoryList(String bottleId);
 }

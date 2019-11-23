@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 
 @Mapper
@@ -14,7 +15,7 @@ public interface BottleMapper {
 	
 	public int insertBottle(BottleVO param);
 
-	public BottleVO selectBottleDetail(String BottleId) ;
+	public BottleVO selectBottleDetail(String bottleId) ;
 
 	public int updateBottle(BottleVO param);
 	
@@ -29,4 +30,8 @@ public interface BottleMapper {
 	public int selectBottleIdCheck(BottleVO param);	
 
 	public int selectBottleBarCdCheck(BottleVO param);
+	
+	public List<BottleHistoryVO> selectBottleHistoryList(String bottleId);	
+	
+	public int insertBottleHistory(String bottleId);
 }

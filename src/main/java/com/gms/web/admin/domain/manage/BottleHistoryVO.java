@@ -4,16 +4,19 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.gms.web.admin.common.domain.AbstractSearchVO;
+import com.gms.web.admin.common.domain.AbstractVO;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class BottleVO extends AbstractSearchVO implements Serializable {
-
-	private static final long serialVersionUID = 3224009822300528104L;
+public class BottleHistoryVO extends AbstractVO implements Serializable {
+	
+	private static final long serialVersionUID = 3234009822300528104L;
+		
+	/** Bottle_Hist_Seq */
+	private Integer bottleHistSeq ;
 	
 	/** Bottle_ID		*/
 	private String bottleId;
@@ -25,10 +28,7 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	private String bottleBarCd;
 
 	/** Gas ID */
-	private Integer gasId ;
-	
-	/** Gas Nm */
-	private String gasNm ;
+	private Integer gasId ;	
 	
 	/** Bottle_Capa	*/
 	private String bottleCapa;
@@ -63,7 +63,7 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	private String bottleWorkCd;
 	
 	private String bottleWorkCdNm;
-
+	
 	/** Bottle_Work_ID	*/
 	private String bottleWorkId;
 
@@ -72,7 +72,6 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 
 	/** Customer_Nm		*/
 	private String customerNm;
-
 	
 	/** Member_Comp_Seq	*/
 	private Integer memberCompSeq;
@@ -89,27 +88,5 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	/** 삭제여부  Delete_YN*/
 	private String deleteYn;
 	
-	/** 복수 삭제용 Ids*/
-	private String bottleIds;
 	
-	private List<String> bottList;
-	
-	/** 검색용			*/
-	/** SearchBottleiId	*/
-	private String  searchBottleId;
-	
-	/** SearchGasId		*/
-	private String  searchGasId;
-	
-	/** searchChargeDt	*/
-	private String  searchChargeDt;
-	
-	/** searchChargeDtFrom	*/
-	private String  searchChargeDtFrom;
-	
-	/** searchChargeDtEnd	*/
-	private String  searchChargeDtEnd;
-	
-	/** searchChargeDtEnd	*/
-	private String  searchSalesYn;
 }

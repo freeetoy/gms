@@ -234,7 +234,8 @@ var fn_deleteBottle = function(bottleId){
       </div><!-- /.container-fluid -->
     </section>
   
-    <section class="content">          
+    <section class="content">        
+     <!-- modal start-->   
         <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -310,7 +311,7 @@ var fn_deleteBottle = function(bottleId){
     		<div class="col-1">
         	</div>
            	<div class="col-1">
-               		용기ID
+               		용기코드
             </div>               
             <div class="col-4">              
                <input type="text" id="searchBottleId" name="searchBottleId" class="form-control" placeholder="search" th:value="${searchBottleId}">
@@ -382,9 +383,10 @@ var fn_deleteBottle = function(bottleId){
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>  
                       <td>                      
 						<a class="btn btn-info btn-xs" th:bottleId="${row.bottleId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_ChangeBottleWorkCd([[ ${row.bottleId} ]])" href="#"><i class="fas fa-pencil-alt"></i>상태변경 </a>
-						
 						<a class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteBottle([[ ${row.bottleId} ]])">
-                              <i class="fas fa-trash"></i>삭제</a>          
+                              <i class="fas fa-trash"></i>삭제</a>         
+<a class="btn btn-danger btn-xs" href="/gms/bottle/excelDownload.do" >
+                              <i class="fas fa-trash"></i>다운로드</a>         
                       </td>                     
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( bottleList )}">

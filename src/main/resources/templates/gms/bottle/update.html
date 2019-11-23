@@ -118,11 +118,13 @@ var goWrite = function(){
 
 var goList = function(){
 	
-	
+	/*
 	var form = $("#writeForm");	
 	
 	form.action='/gms/bottle/list.do'
 	form.submit();
+	*/
+	window.history.back();
 }
 
 	$(function() { 
@@ -186,11 +188,11 @@ var goList = function(){
         
         <div class="row">
           <div class="col-12">
-            <div class="card">
+            <div class="col-8">
               
              <!-- general form elements -->                        
               <!-- /.card-header -->
-              <div class="col-8">
+              <div class="card">
               <form id="writeForm" class="form-horizontal" th:action="@{/gms/bottle/modify.do}" th:object="${bottle}" method="post" >
                 <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
         		<input type="hidden" id="searchGasId" name="searchGasId" th:value="${searchGasId}">
@@ -259,10 +261,44 @@ var goList = function(){
               </div>
             </div>
             
+            <!-- history 이력 -->
+             <div class="col-8">
+            <div class="card">
+           
+            	
+            	<table class="table table-hover">	         	
+	         		<thead>
+                    <tr>
+                      <th>번호</th>
+                      <th>작업</th>
+                      <th>용기타입</th>
+                      <th>거래처</th>
+                      <th>작업자</th>
+                      <th>등록일</th>
+                    </tr>
+                  	</thead>
+                  	<tbody>
+                  	<tr th:if="${not #lists.isEmpty( historyList )}" th:each="row : ${historyList}">
+                      <td th:text="${historyList.indexOf(row)+1}"></td>
+                      <td th:text="${row.bottleWorkCdNm}"></td>
+                      <td th:if="${row.bottleType=='E'}" th:text="공병"></td>
+                       <td th:unless="${row.bottleType=='E'}" th:text="실병"></td>
+                      <td th:text="${row.customerNm}"></td>
+                      <td th:text="${row.bottleWorkId}"></td>
+                      <td th:text="${#calendars.format( row.updateDt, 'yyyy-MM-dd' )}"></td>
+                    </tr>
+                  	</tbody>
+               	</table>   
+               </div>
+            </div>
+            <div class="col-8">
+            <table class="table table-hover">
+	         
+            </div>
           
       		<div class="card-footer">
       			<div class="col-8">
-                 <a href="#" th:onclick="goList()"  class="btn btn-secondary float-left">취소</a>
+                 <a href="#" th:onclick="history.back()"  class="btn btn-secondary float-left">취소</a>
 		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">
                 </div>		     		
             	</form>   

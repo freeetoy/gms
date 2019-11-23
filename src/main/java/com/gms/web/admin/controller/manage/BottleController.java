@@ -25,6 +25,7 @@ import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.common.CodeVO;
+import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.GasVO;
 import com.gms.web.admin.service.common.CodeService;
@@ -74,7 +75,7 @@ public class BottleController {
 			
 		}
 		
-		params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
+		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
 		
 		Map<String, Object> map = bottleService.getBottleList(params);
 		
@@ -111,7 +112,7 @@ public class BottleController {
 	}
 	
 	
-	@RequestMapping(value = "/gms/bottlet/list.do")
+	@RequestMapping(value = "/gms/bottle/charge.do")
 	public String getBottleTestList(BottleVO params, Model model) {
 
 		logger.info("BottleContoller getBottleList");
@@ -158,7 +159,7 @@ public class BottleController {
 			
 		}
 		logger.info("BottleContoller searchChargeDt "+ searchChargeDt);
-		params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
+		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
 		
 		Map<String, Object> map = bottleService.getBottleList(params);
 		
@@ -190,9 +191,73 @@ public class BottleController {
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.boottle.test"));	 
 		
-		return "gms/bottlet/list";
+		return "gms/bottle/charge";
 	}
 	
+	@RequestMapping(value = "/gms/bottle/sales.do")
+	public String getBottleSalesList(BottleVO params, Model model) {
+
+		logger.info("BottleContoller getBottleList");
+		logger.info("BottleContoller currentPage "+ params.getCurrentPage());
+		logger.info("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
+		logger.info("BottleContoller searchGasId "+ params.getSearchGasId());
+		logger.info("BottleContoller searchBottleId "+ params.getSearchBottleId());
+		
+		String searchChargeDt = params.getSearchChargeDt();	
+		
+		String searchChargeDtFrom = null;
+		String searchChargeDtEnd = null;
+				
+		if(searchChargeDt != null && searchChargeDt.length() > 20) {
+			
+			logger.info("BottleContoller searchChargeDt "+ searchChargeDt.length());
+			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;
+			
+			searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;
+			
+			params.setSearchChargeDtFrom(searchChargeDtFrom);
+			params.setSearchChargeDtEnd(searchChargeDtEnd);
+			
+		}
+		
+		logger.info("BottleContoller searchChargeDt "+ searchChargeDt);
+		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
+		
+		params.setSearchSalesYn("Y");
+		logger.info("BottleContoller searchSalesYn "+ params.getSearchSalesYn());
+		
+		Map<String, Object> map = bottleService.getBottleList(params);
+		
+		model.addAttribute("bottleList", map.get("list"));
+		
+		String searchGasId = "";
+		if(params.getSearchGasId() != null && params.getSearchGasId().length() > 20 ) {
+			searchGasId = params.getSearchGasId();
+			model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
+		}
+		
+		// 가스 정보 불러오기
+		List<GasVO> gasList = gasService.getGasList();
+		model.addAttribute("gasList", gasList);
+		
+		//BOTTLE_WORK_CD 코드정보 불러오기 
+		List<CodeVO> codeList = codeService.getCodeList(PropertyFactory.getProperty("common.bottle.status"));
+		model.addAttribute("codeList", codeList);
+		
+		//검색어 셋팅
+		model.addAttribute("searchBottleId", params.getSearchBottleId());	
+		model.addAttribute("searchChargeDt", searchChargeDt);	
+		
+		model.addAttribute("currentPage", map.get("currentPage"));
+		model.addAttribute("lastPage", map.get("lastPage"));
+		model.addAttribute("startPageNum", map.get("startPageNum"));
+		model.addAttribute("lastPageNum", map.get("lastPageNum"));
+		model.addAttribute("totalCount", map.get("totalCount"));
+		
+		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.boottle.sales"));	 
+		
+		return "gms/bottle/sales";
+	}
 	
 	@RequestMapping(value = "/gms/bottle/write.do")
 	public String openBottleWrite(Model model) {
@@ -268,6 +333,10 @@ public class BottleController {
 			// 가스 정보 불러오기
 			List<GasVO> gasList = gasService.getGasList();
 			model.addAttribute("gasList", gasList);		
+			
+			// 용기 이력 정보 불러오기
+			List<BottleHistoryVO> historyList = bottleService.selectBottleHistoryList(params.getBottleId());
+			model.addAttribute("historyList", historyList);	
 			
 			model.addAttribute("bottle", bottle);
 			model.addAttribute("currentPage", params.getCurrentPage());

@@ -120,7 +120,7 @@ var fn_deleteBottle = function(bottleId){
 	function goSearch(){	
 		
 		var form = document.mainForm;	
-		mainForm.action="/gms/bottlet/list.do";
+		mainForm.action="/gms/bottle/sales.do";
 		form.submit();
 	};
 
@@ -131,7 +131,7 @@ var fn_deleteBottle = function(bottleId){
 		var form =  document.mainForm;			
 		
 		$("#currentPage").val(pageNo);  
-		 mainForm.action="/gms/bottlet/list.do";
+		 mainForm.action="/gms/bottle/sales.do";
         //validate checkt시 confirm 중복되는 부분 처리 
        
     	mainForm.submit();
@@ -222,7 +222,7 @@ var fn_deleteBottle = function(bottleId){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>용기 목록</h1>
+            <h1>용기 판매</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -233,8 +233,9 @@ var fn_deleteBottle = function(bottleId){
         </div>
       </div><!-- /.container-fluid -->
     </section>
-  
-    <section class="content">          
+   
+    <section class="content">         
+    <!-- modal start--> 
         <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -285,21 +286,7 @@ var fn_deleteBottle = function(bottleId){
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
-        <div class="row">
-        	<div class="col-1">
-        	</div>
-            <div class="col-1">
-               		충전기한
-            </div>               
-            <div class="col-4">
-              <form id="mainForm" name=""mainForm""  method="post">
-              <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
-              <input type="hidden" id="bottleId" name="bottleId" value="">
-               <input type="text" class="form-control" name="searchChargeDt" th:value="${searchChargeDt}"/>			
-            </div>               
-            <div class="col-3">               
-            </div>
-         </div>
+        
          <div class="row">	
 	        <div class="col-12">
 	        <table class="table table-hover">
@@ -308,29 +295,17 @@ var fn_deleteBottle = function(bottleId){
         </div>
     	<div class="row">
     		<div class="col-1">
+    		<form id="mainForm" name=""mainForm""  method="post">
+              <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
+              <input type="hidden" id="bottleId" name="bottleId" value="">
         	</div>
            	<div class="col-1">
-               		용기ID
+               		용기코드
             </div>               
             <div class="col-4">              
                <input type="text" id="searchBottleId" name="searchBottleId" class="form-control" placeholder="search" th:value="${searchBottleId}">
             </div>  
-            <div class="col-2">
-               	<select id="searchGasId" name="searchGasId" class="form-control">
-                    <option value="">가스선택</option>				    
-			        <option th:each="row : ${gasList}"
-			                th:text="${row.gasNm}"
-			                th:value="${row.gasId}"
-			                th:if="${searchGasId ==row.gasId}" selected>					             
-			        </option>	
-			        <option th:each="row : ${gasList}"
-			                th:text="${row.gasNm}"
-			                th:value="${row.gasId}"
-			                th:unless="${searchGasId ==row.gasId}">					             
-			        </option>			
-				        				
-                 </select>
-              </div>                   
+                        
               <div class="col-2">
                 <button class="btn btn-navbar" type="submit">
             <i class="fas fa-search"></i>
@@ -338,9 +313,7 @@ var fn_deleteBottle = function(bottleId){
            </form>
               </div>
              
-              <div class="col-2">
-               		<a href="/gms/bottle/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">용기 등록</button></a>
-              </div>
+             
          </div>
         <div class="row">	
 	        <div class="col-12">
@@ -356,7 +329,7 @@ var fn_deleteBottle = function(bottleId){
                 <table class="table table-hover">                
                   <thead>
                     <tr>
-                      <th><input type="checkbox" name="checkAll" id="checkAll" onclick="checkAll();"/></th>
+                      <th>순번</th>
                       <th>용기코드</th>
                       <th>바코드</th>
                       <th>가스</th>
@@ -364,13 +337,12 @@ var fn_deleteBottle = function(bottleId){
                       <th>작업</th>
                       <th>거래처</th>
                       <th>등록일</th>
-                      <th>상태변경</th>
                     </tr>
                   </thead>
                   <tbody>
-                  <form name="checkForm" id="checkForm">
+                 
                   	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}">
-                      <td><input class="IdCheckbox" name="check_id" type="checkbox" th:value="${row.bottleId}"></td>
+                      <td th:text="${totalCount-((currentPage-1)*10) - bottleList.indexOf(row)}"></td>
                       <td>
                       <a href="#" th:onclick="goUpdate([[ ${row.bottleId} ]])" th:text="${row.bottleId}"></a>                     
                       </td>
@@ -379,18 +351,11 @@ var fn_deleteBottle = function(bottleId){
                       <td th:text="${row.bottleCapa}"></td>
                       <td th:text="${row.bottleWorkCdNm}"></td>
                       <td th:text="${row.CustomerNm}"></td>
-                      <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>  
-                      <td>                      
-						<a class="btn btn-info btn-xs" th:bottleId="${row.bottleId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_ChangeBottleWorkCd([[ ${row.bottleId} ]])" href="#"><i class="fas fa-pencil-alt"></i>상태변경 </a>
-						
-						<a class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteBottle([[ ${row.bottleId} ]])">
-                              <i class="fas fa-trash"></i>삭제</a>          
-                      </td>                     
+                      <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td> 
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( bottleList )}">
-						<td colspan="9">조회된 결과가 없습니다.</td>
-					</tr>			
-					</form>			
+						<td colspan="8">조회된 결과가 없습니다.</td>
+					</tr>			</form>			
                   </tbody>
 					
                 </table>
@@ -407,7 +372,7 @@ var fn_deleteBottle = function(bottleId){
 				<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
 					<ul class="pagination">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
-							<a th:href="@{/gms/user/list.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+							<a th:href="@{/gms/bottle/sales.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
 						</li>
 						
 						<li th:if="${currentPage<=1}" class="paginate_button page-item previous disabled" id="example2_previous">
@@ -425,7 +390,7 @@ var fn_deleteBottle = function(bottleId){
 						</th:block>
 					
 						<li th:if="${currentPage < lastPage}" class="paginate_button page-item next" id="example2_next">
-						<a th:href="@{/gms/user/list.do(currentPage=${currentPage +1})}" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+						<a th:href="@{/gms/bottle/sales.do(currentPage=${currentPage +1})}" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
 						</li>
 						<li th:if="${currentPage >= lastPage}" class="paginate_button page-item next disabled" id="example2_next">
 						<a href="#"  aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
@@ -436,8 +401,8 @@ var fn_deleteBottle = function(bottleId){
 			<div class="col-md-3">
 			</div>
 			<div class="col-md-2">
-			<a id="select_del" class="btn btn-danger btn-sm" href="#" th:onclick="fn_deleteBottles()">
-                              <i class="fas fa-trash"></i>선택삭제</a>   
+			<!-- a id="select_del" class="btn btn-danger btn-sm" href="#" th:onclick="fn_deleteBottles()">
+                              <i class="fas fa-trash"></i>선택삭제</a-->   
 			</div>
 		</div>
         
