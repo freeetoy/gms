@@ -41,4 +41,7 @@
 	<entry key="common.bottle.status.0308">0308</entry>
 	<entry key="common.bottle.status.0309">0308</entry>
 	
+	
+	<entry key="common.code.order.type">0200</entry>
+	
 </properties>

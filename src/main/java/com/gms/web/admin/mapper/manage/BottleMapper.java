@@ -13,6 +13,8 @@ public interface BottleMapper {
 
 	public List<BottleVO> selectBottleList(Map<String, Object> map);	
 	
+	public List<BottleVO> selectCustomerBottleList(Integer customerId);	
+	
 	public int insertBottle(BottleVO param);
 
 	public BottleVO selectBottleDetail(String bottleId) ;

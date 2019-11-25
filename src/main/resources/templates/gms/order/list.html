@@ -31,23 +31,23 @@ function validationOfForm(form) {
 function fn_modifyBottleWorkCd(){				
 		
 		var form = $("#chForm");	
-    	chForm.action="/gms/bottle/changeWorkCd.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]";
+    	chForm.action="/gms/order/changeWorkCd.do?currentPage=[[ ${currentPage} ]]&searchCustomerNm=[[ ${searchCustomerNm} ]]&searchOrderDt=[[ ${searchOrderDt} ]]";
     	chForm.submit();
 	}
 	
-var fn_deleteBottle = function(bottleId){
+var fn_deleteBottle = function(orderId){
 		
 	if(confirm("삭제하시겠습니까?")){	
 		
 		var form = document.createElement("form");
 		form.setAttribute("charset","UTF-8");
 		form.setAttribute("method","post");
-		form.setAttribute("action","/gms/bottle/delete.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
+		form.setAttribute("action","/gms/order/delete.do?currentPage=[[ ${currentPage} ]]&searchCustomerNm=[[ ${searchCustomerNm} ]]&searchOrderDt=[[ ${searchOrderDt} ]]");
 		
 		var hiddenField = document.createElement("input");
         hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", "bottleId");
-        hiddenField.setAttribute("value", bottleId);
+        hiddenField.setAttribute("name", "orderId");
+        hiddenField.setAttribute("value", orderId);
 
         form.appendChild(hiddenField);      
         document.body.appendChild(form);
@@ -66,15 +66,15 @@ var fn_deleteBottle = function(bottleId){
 	}
 	
 	
-	var fn_ChangeBottleWorkCd = function(bottleId){
+	var fn_ChangeBottleWorkCd = function(orderId){
 	
 		//$("table.table-hover").find('tr').remove();
 		
 		var ajaxInfo ={
 			type:"POST",
-			url:"/gms/bottle/detail.do",
+			url:"/gms/order/detail.do",
 			data:{
-				bottleId : bottleId
+				orderId : orderId
 			},
 			dataType: "json",
 		};
@@ -84,18 +84,18 @@ var fn_deleteBottle = function(bottleId){
 		ajax.done(function(data){
 			console.log(data);
 		
-			console.log("####bottleCd---"+data.bottleId);		
+			console.log("####orderCd---"+data.orderId);		
 			
-			$("#chBottleId").val(data.bottleId);
-			$("#bottleBarCd").val(data.bottleBarCd);
+			$("#chBottleId").val(data.orderId);
+			$("#orderBarCd").val(data.orderBarCd);
 			
-			$('select[id="bottleWorkCd"]').find('option:contains(data.bottleWorkCd)').attr("selected",true);
+			$('select[id="orderWorkCd"]').find('option:contains(data.orderWorkCd)').attr("selected",true);
 
-			$("#bottleWorkCd").val(data.bottleWorkCd);		
+			$("#orderWorkCd").val(data.orderWorkCd);		
 			
-			$('select[id="bottleType"]').find('option:contains(data.bottleType)').attr("selected",true);
+			$('select[id="orderType"]').find('option:contains(data.orderType)').attr("selected",true);
 
-			$("#bottleType").val(data.bottleType);		
+			$("#orderType").val(data.orderType);		
 				
 			if(data.result == "fail"){
 				alert("용기가 존재하지 않습니다");			
@@ -107,16 +107,16 @@ var fn_deleteBottle = function(bottleId){
 	};
 	
 	    
-	var goUpdate = function(bottleId){		
+	var goUpdate = function(orderId){		
 		
-		//alert("goUpdate "+bottleId);
-		console.log("goUpdate bottleId ="+bottleId);
+		//alert("goUpdate "+orderId);
+		console.log("goUpdate orderId ="+orderId);
 		var form = $("#mainForm");	
 
-		$("#bottleId").val(bottleId);
+		$("#orderId").val(orderId);
     	
     	//document.getElementById("priceCount").value = totalCount;
-    	mainForm.action="/gms/bottle/update.do";
+    	mainForm.action="/gms/order/update.do";
     	form.submit();
 	}
 	
@@ -124,7 +124,7 @@ var fn_deleteBottle = function(bottleId){
 	function goSearch(){	
 		
 		var form = document.mainForm;	
-		mainForm.action="/gms/bottle/list.do";
+		mainForm.action="/gms/order/list.do";
 		form.submit();
 	};
 
@@ -135,7 +135,7 @@ var fn_deleteBottle = function(bottleId){
 		var form =  document.mainForm;			
 		
 		$("#currentPage").val(pageNo);  
-		 mainForm.action="/gms/bottle/list.do";
+		 mainForm.action="/gms/order/list.do";
         //validate checkt시 confirm 중복되는 부분 처리 
        
     	mainForm.submit();
@@ -144,18 +144,18 @@ var fn_deleteBottle = function(bottleId){
 
 	$(function() {
 	
-	  $('input[name="searchChargeDt"]').daterangepicker({
+	  $('input[name="searchOrderDt"]').daterangepicker({
 	      autoUpdateInput: false,
 	      locale: {
 	          cancelLabel: 'Clear'
 	      }
 	  });
 	
-	  $('input[name="searchChargeDt"]').on('apply.daterangepicker', function(ev, picker) {
+	  $('input[name="searchOrderDt"]').on('apply.daterangepicker', function(ev, picker) {
 	      $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
 	  });
 	
-	  $('input[name="searchChargeDt"]').on('cancel.daterangepicker', function(ev, picker) {
+	  $('input[name="searchOrderDt"]').on('cancel.daterangepicker', function(ev, picker) {
 	      $(this).val('');
 	  });
 	
@@ -199,11 +199,11 @@ var fn_deleteBottle = function(bottleId){
 			var form = document.createElement("form");
 			form.setAttribute("charset","UTF-8");
 			form.setAttribute("method","post");
-			form.setAttribute("action","/gms/bottle/deleteChecked.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
+			form.setAttribute("action","/gms/order/deleteChecked.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchOrderDt=[[ ${searchOrderDt} ]]");
 			
 			var hiddenField = document.createElement("input");
 	        hiddenField.setAttribute("type", "hidden");
-	        hiddenField.setAttribute("name", "bottleIds");
+	        hiddenField.setAttribute("name", "orderIds");
 	        hiddenField.setAttribute("value", checkedValue);
 
 	        form.appendChild(hiddenField);
@@ -226,7 +226,7 @@ var fn_deleteBottle = function(bottleId){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>용기 목록</h1>
+            <h1>주문 목록</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -249,7 +249,7 @@ var fn_deleteBottle = function(bottleId){
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form id="chForm" name="chForm" th:object="${bottle}" method="post">
+            <form id="chForm" name="chForm" th:object="${order}" method="post">
               
               <div class="card-body">
             	<table class="table table-hover">
@@ -260,12 +260,12 @@ var fn_deleteBottle = function(bottleId){
                     </tr>
                      <tr>                                   
                       <th class="card-footer">용기 바코드</th>
-                      <th><input type="text" class="form-control" id="bottleBarCd" name="bottleBarCd" placeholder="용기 바코드" ></th>
+                      <th><input type="text" class="form-control" id="orderBarCd" name="orderBarCd" placeholder="용기 바코드" ></th>
                     </tr>
                     <tr>
                       <th class="card-footer">상태</th>
                       <th>
-                      <select id="bottleWorkCd" name="bottleWorkCd" class="form-control">
+                      <select id="orderWorkCd" name="orderWorkCd" class="form-control">
                           <option value="">상태</option>				    
 					        <option th:each="row : ${codeList}"
 					                th:text="${row.cdNm}"
@@ -278,7 +278,7 @@ var fn_deleteBottle = function(bottleId){
                     <tr>
                       <th class="card-footer">용기타입</th>
                       <th>
-                      <select id="bottleType" name="bottleType" class="form-control">
+                      <select id="orderType" name="orderType" class="form-control">
                           <option value="E">공병</option>
                           <option value="F">실병</option>	
                         </select>
@@ -300,16 +300,17 @@ var fn_deleteBottle = function(bottleId){
       </div>
       <!-- /.modal -->
         <div class="row">
+        
         	<div class="col-1">
         	</div>
             <div class="col-1">
-               		충전기한
+               		기 간
             </div>               
             <div class="col-4">
               <form id="mainForm" name=""mainForm""  method="post">
               <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
-              <input type="hidden" id="bottleId" name="bottleId" value="">
-               <input type="text" class="form-control" name="searchChargeDt" th:value="${searchChargeDt}"/>			
+              <input type="hidden" id="orderId" name="orderId" value="">
+               <input type="text" class="form-control" name="searchOrderDt" th:value="${searchOrderDt}"/>			
             </div>               
             <div class="col-3">               
             </div>
@@ -324,27 +325,12 @@ var fn_deleteBottle = function(bottleId){
     		<div class="col-1">
         	</div>
            	<div class="col-1">
-               		용기코드
+               		거래처명
             </div>               
             <div class="col-4">              
-               <input type="text" id="searchBottleId" name="searchBottleId" class="form-control" placeholder="search" th:value="${searchBottleId}">
+               <input type="text" id="searchCustomerNm" name="searchCustomerNm" class="form-control" placeholder="search" th:value="${searchCustomerNm}">
             </div>  
-            <div class="col-2">
-               	<select id="searchGasId" name="searchGasId" class="form-control">
-                    <option value="">가스선택</option>				    
-			        <option th:each="row : ${gasList}"
-			                th:text="${row.gasNm}"
-			                th:value="${row.gasId}"
-			                th:if="${searchGasId ==row.gasId}" selected>					             
-			        </option>	
-			        <option th:each="row : ${gasList}"
-			                th:text="${row.gasNm}"
-			                th:value="${row.gasId}"
-			                th:unless="${searchGasId ==row.gasId}">					             
-			        </option>			
-				        				
-                 </select>
-              </div>                   
+            
               <div class="col-2">
                 <button class="btn btn-navbar" type="submit">
             <i class="fas fa-search"></i>
@@ -353,10 +339,10 @@ var fn_deleteBottle = function(bottleId){
               </div>
              
               <div class="col-1">
-               		<a href="/gms/bottle/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">용기 등록</button></a>
+               		<a href="/gms/order/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">주문 등록</button></a>
               </div>
               <div class="col-1">
-               		<a href="/gms/bottle/excelDownload.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
+               		<a href="/gms/order/excelDownload.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
               </div>
          </div>
         <div class="row">	
@@ -373,38 +359,40 @@ var fn_deleteBottle = function(bottleId){
                 <table class="table table-hover">                
                   <thead>
                     <tr>
-                      <th><input type="checkbox" name="checkAll" id="checkAll" onclick="checkAll();"/></th>
-                      <th>용기코드</th>
-                      <th>바코드</th>
-                      <th>가스</th>
-                      <th>용량</th>
-                      <th>작업</th>
+                      <th>순번</th>
                       <th>거래처</th>
-                      <th>등록일</th>
+                      <th>품명</th>
+                      <th>용량</th>
+                      <th>접수자</th>
+                      <th>상태</th>
+                      <th>요청일자</th>
+                      <th>접수일</th>
                       <th>상태변경</th>
+		      <th>관리</th>
                     </tr>
                   </thead>
                   <tbody>
                   <form name="checkForm" id="checkForm">
-                  	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}">
-                      <td><input class="IdCheckbox"  name="check_id" type="checkbox" th:value="${row.bottleId}"></td>
+                  	<tr th:if="${not #lists.isEmpty( orderList )}" th:each="row : ${orderList}">
+                      <td><input class="IdCheckbox" name="check_id" type="checkbox" th:value="${row.orderId}"></td>
                       <td>
-                      <a href="#" th:onclick="goUpdate([[ ${row.bottleId} ]])" th:text="${row.bottleId}"></a>                     
+                      <a href="#" th:onclick="goUpdate([[ ${row.orderId} ]])" th:text="${row.orderId}"></a>                     
                       </td>
-                      <td th:text="${row.bottleBarCd}"></td>
-                      <td th:text="${row.gasNm}"></td>
-                      <td th:text="${row.bottleCapa}"></td>
-                      <td th:text="${row.bottleWorkCdNm}"></td>
                       <td th:text="${row.CustomerNm}"></td>
-                      <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>  
+                      <td th:text="${row.orderProductNm}"></td>
+                      <td th:text="${row.orderProductCapa}"></td>
+                      <td th:text="${row.salesId}"></td>
+                      <td th:text="${row.orderProcessCdNm}"></td>
+                      <td th:text="${#calendars.format( row.deliveryReqDt 'yyyy-MM-dd' )}"></td>
+		      <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>  
                       <td>                      
-						<a class="btn btn-info btn-xs" th:bottleId="${row.bottleId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_ChangeBottleWorkCd([[ ${row.bottleId} ]])" href="#"><i class="fas fa-pencil-alt"></i>상태변경 </a>
-						<a class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteBottle([[ ${row.bottleId} ]])">
+						<a class="btn btn-info btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_ChangeBottleWorkCd([[ ${row.orderId} ]])" href="#"><i class="fas fa-pencil-alt"></i>상태변경 </a>
+						<a class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteBottle([[ ${row.orderId} ]])">
                               <i class="fas fa-trash"></i>삭제</a>
                       </td>                     
                     </tr>
-                    <tr th:unless="${not #lists.isEmpty( bottleList )}">
-						<td colspan="9">조회된 결과가 없습니다.</td>
+                    <tr th:unless="${not #lists.isEmpty( orderList )}">
+						<td colspan="10">조회된 결과가 없습니다.</td>
 					</tr>			
 					</form>			
                   </tbody>
@@ -423,7 +411,7 @@ var fn_deleteBottle = function(bottleId){
 				<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
 					<ul class="pagination">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
-							<a th:href="@{/gms/bottle/list.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+							<a th:href="@{/gms/order/list.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
 						</li>
 						
 						<li th:if="${currentPage<=1}" class="paginate_button page-item previous disabled" id="example2_previous">
@@ -441,7 +429,7 @@ var fn_deleteBottle = function(bottleId){
 						</th:block>
 					
 						<li th:if="${currentPage < lastPage}" class="paginate_button page-item next" id="example2_next">
-						<a th:href="@{/gms/bottle/list.do(currentPage=${currentPage +1})}" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+						<a th:href="@{/gms/order/list.do(currentPage=${currentPage +1})}" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
 						</li>
 						<li th:if="${currentPage >= lastPage}" class="paginate_button page-item next disabled" id="example2_next">
 						<a href="#"  aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
@@ -456,7 +444,7 @@ var fn_deleteBottle = function(bottleId){
                               <i class="fas fa-trash"></i>선택삭제</a>   
 			</div>
 			<div class="col-1">
-               		<a href="/gms/bottle/excelDownload.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀등록</button></a>
+               		<a href="/gms/order/excelDownload.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀등록</button></a>
               </div>
 		</div>
         

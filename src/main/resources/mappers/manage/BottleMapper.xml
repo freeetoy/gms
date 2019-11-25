@@ -21,7 +21,7 @@
 		<result property="memberCompSeq"	column="Member_Comp_Seq"	/>
 		<result property="orderId"			column="Order_ID"			/>	
 		<result property="orderProductSeq"	column="Order_Product_Seq"	/>
-		<result property="deleteYn"			column="Delete_YN"			/>
+		<result property="bottleType"		column="Bottle_Type"		/>
 		<result property="createId"			column="CREATE_ID"			/>
 		<result property="createDt"			column="CREATE_DT"			/>
 		<result property="updateId"			column="UPDATE_ID"			/>		
@@ -48,6 +48,7 @@
 		<result property="memberCompSeq"		column="Member_Comp_Seq"	/>
 		<result property="orderId"				column="Order_ID"			/>	
 		<result property="orderProductSeq"		column="Order_Product_Seq"	/>
+		<result property="bottleType"			column="Bottle_Type"		/>
 		<result property="deleteYn"				column="Delete_YN"			/>
 		<result property="createId"				column="CREATE_ID"			/>
 		<result property="createDt"				column="CREATE_DT"			/>
@@ -71,6 +72,7 @@
 		, Member_Comp_Seq	
 		, Order_ID
 		, Order_Product_Seq	
+		, Bottle_Type	
 		, Delete_YN	
 		, CREATE_ID
 		, CREATE_DT
@@ -148,6 +150,7 @@
 			, #{memberCompSeq}
 			, #{orderId}
 			, #{orderProductSeq}
+			, #{bottleType}
 			, 'N'
 			, #{createId}			
 			, NOW()
@@ -185,10 +188,11 @@
 	<update id="updateBottleWorkCd" parameterType="com.gms.web.admin.domain.manage.BottleVO">
 		UPDATE TB_Bottle
 		SET
-			  Bottle_Work_CD = #{bottleWorkCd}
-			, Bottle_Work_ID	= #{bottleWorkId}
-			, UPDATE_ID = #{updateId}
-			, UPDATE_DT = NOW()
+			  Bottle_Work_CD 	= #{bottleWorkCd}
+			, Bottle_Work_ID	= #{bottleWorkId}]
+			, Bottle_Type		= #{bottleType}
+			, UPDATE_ID 		= #{updateId}
+			, UPDATE_DT 		= NOW()
 		WHERE
 			Bottle_ID = #{chBottleId}
 	</update>	
@@ -311,6 +315,20 @@
 				FROM TB_Bottle_Hist 
 				WHERE Bottle_Id=#{bottleId}
 			) b 
-		WHERE a.Bottle_Id =#{bottleBId}
+		WHERE a.Bottle_Id =#{bottleId}
 	</insert>
+	
+	
+	<select id="selectCustomerBottleList" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="Integer">		
+		SELECT
+			<include refid="BottleSelectColumns" />
+		FROM
+			TB_Bottle TB, TB_CODE TC, TB_Gas TG
+		WHERE
+			TB.Delete_YN = 'N'			
+		AND Customer_id = #{customerId}
+		AND TB.Bottle_Work_CD = TC.CD_ID	
+		AND TB.Gas_ID = TG.Gas_Id
+		
+	</select>
 </mapper>

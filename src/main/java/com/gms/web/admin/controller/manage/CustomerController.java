@@ -23,6 +23,7 @@ import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.UserVO;
+import com.gms.web.admin.service.manage.BottleService;
 import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.manage.ProductService;
 import com.gms.web.admin.service.manage.UserService;
@@ -36,6 +37,9 @@ public class CustomerController {
 	 */
 	@Autowired
 	private CustomerService customerService;
+	
+	@Autowired
+	private BottleService bottleService;
 	
 	@Autowired
 	private UserService userService;
@@ -134,6 +138,7 @@ public class CustomerController {
 			Map<String, Object> map = userService.getUserList(param);
 			model.addAttribute("userList", map.get("list"));
 			
+			model.addAttribute("bottleList", bottleService.getCustomerBottleList(customerId));			
 		}
 		
 		return "/gms/customer/update";
@@ -271,6 +276,17 @@ public class CustomerController {
 		List<CustomerPriceExtVO> customerPriceList = customerService.getCustomerPreiceList(customerId);
 		model.addAttribute("customerPriceList", customerPriceList);
 		
+		return customerPriceList;
+		//return null;
+	}
+	
+	@RequestMapping(value = "/gms/common/customerList.do")
+	@ResponseBody
+	public List<CustomerVO> getCustomerList(@RequestParam(value = "searchCustomerNm", required = false) String searchCustomerNm, Model model)	{	
+		
+		Map<String, Object> map = customerService.searchCustomerList(searchCustomerNm);
+		//model.addAttribute("customerList", map.get("list"));
+		List<CustomerVO> customerPriceList = (List<CustomerVO>) map.get("list");
 		return customerPriceList;
 		//return null;
 	}

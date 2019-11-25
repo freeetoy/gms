@@ -139,12 +139,12 @@ var goWrite = function(){
     <section class="content">   
         
         <div class="row">
-          <div class="col-12">
-            <div class="card">
+          <div class="col-12">          
               
              <!-- general form elements -->                        
               <!-- /.card-header -->
-              <div class="col-8">
+            <div class="col-8">
+              <div class="card">
               <form id="writeForm" class="form-horizontal" th:action="@{/gms/customer/modify.do}" th:object="${customer}" method="post" >
                 <input type="hidden" id="customerId" name="customerId" th:value="${customer.customerId}">
                 <table class="table table-hover">
@@ -209,45 +209,39 @@ var goWrite = function(){
             </div>
             
             <!-- /.card -->
-      		 <div class="card">                                  
+      		                          
               <!-- /.card-header -->
-              <!-- 
-              <div class="col-8">
-              <div class="form-group">
-                   <label class="control-label col-8">상품정보</label>
-                   <div class="col-md-10 col-sm-10 col-xs-12">
-                       <table id="myTable" class="table doc-list">
-                       <tr>
-                         <td>상품</td>
-                         <td>용량</td>
-                         <td>단가</td>
-                         <td></td>
-                       </tr>
-                       <tr>
-                       <td  style="padding-left: 0px;">                                           
-                         <select id="gasId" name="salesId" class="form-control">
-	                        <option value="0">상품</option>
-	                      	<option th:each="row : ${productList}"
-						                th:text="${row.productNm}"
-						                th:value="${row.productId}"
-						               >
-						     </option>		
-					    </select>	   
-                       </td>
-                       <td> 
-                         <input type="text" class="form-control" id="productCapa_0" name="productCapa_0" placeholder="상품용량">
-                       </td>   
-                       <td>
-                       <input type="button" class="btn btn-default btn-success" id="addrow" value="추가" />
-                       </td>
-                       </tr>
-                     </table>
-                     </div>
-                 </div>
-              </div>
+              
+			<div class="col-8">
+            <div class="card">        
+            	
+            	<table class="table table-hover">	         	
+	         		<thead>
+                    <tr>
+                      <th>용기코드</th>
+                      <th>용기바코드</th>
+                      <th>가스</th>
+                      <th>용량</th>
+                      <th>구분</th>
+                    </tr>
+                  	</thead>
+                  	<tbody>
+                  	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}">
+                      <td th:text="${row.bottleId}"></td>
+                      <td th:text="${row.bottleBarCd}"></td>                     
+                      <td th:text="${row.gasNm}"></td>
+                      <td th:text="${row.bottleCapa}"></td>
+                      <td th:if="${row.bottleSalesYn=='N'}" th:text="공병"></td>
+                      <td th:unless="${row.bottleSalesYn=='N'}" th:text="실병"></td>
+                    </tr>
+                  	</tbody>
+               	</table>   
+               </div>
             </div>
-            
-              -->
+            <div class="col-8">
+            <table class="table table-hover">
+	         
+            </div>
       		<div class="card-footer">
                  <a href="/gms/customer/list.do" class="btn btn-secondary float-left">취소</a>
 		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">

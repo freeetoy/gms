@@ -109,6 +109,12 @@ public class BottleServiceImpl implements BottleService {
 	}
 	
 	@Override
+	public List<BottleVO> getCustomerBottleList(Integer customerId) {
+		return bottleMapper.selectCustomerBottleList(customerId);	
+	}
+	
+	
+	@Override
 	public BottleVO getBottleDetail(String bottleId) {
 		return bottleMapper.selectBottleDetail(bottleId);	
 	}
@@ -220,4 +226,6 @@ public class BottleServiceImpl implements BottleService {
 		
 		return bottleMapper.insertBottleHistory(bottleId);		
 	}
+
+	
 }

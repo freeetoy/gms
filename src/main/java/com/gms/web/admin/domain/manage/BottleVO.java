@@ -84,6 +84,7 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	private Integer orderProductSeq;
 	
 	/** 삭제여부  Bottle_Type */
+	/** E 공병, F 실병 */
 	private String bottleType;
 	
 	/** 삭제여부  Delete_YN*/
