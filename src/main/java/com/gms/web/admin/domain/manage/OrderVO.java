@@ -65,13 +65,16 @@ public class OrderVO extends AbstractSearchVO implements Serializable {
 	private String orderProcessCd;
 	
 	/** Order_Process_Nm   	*/
-	private String orderProcessNm;
+	private String orderProcessCdNm;
 
 	/** Order_Delivery_Dt   	*/
 	private Date orderDeliveryDt;
 	
 	/** Sales_ID           	*/
 	private String salesId;	
+	
+	/** Order_Total_Amount     	*/
+	private int orderTotalAmount;
 	
 	/** Deposit_Check_Dt   	*/
 	private Date depositCheckDt;
@@ -102,6 +105,10 @@ public class OrderVO extends AbstractSearchVO implements Serializable {
 	 *	0520	우체국			*/
 	private String depositBankCd;
 
+	
+	/** productCount     	*/
+	private int productCount;
+	
 	
 	/** 검색용			*/
 	/** SearchCustomerNm	*/

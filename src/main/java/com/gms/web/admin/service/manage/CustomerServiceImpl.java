@@ -219,7 +219,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public List<CustomerPriceExtVO> getCustomerPreiceList(Integer customerId) {
+	public List<CustomerPriceExtVO> getCustomerPriceList(Integer customerId) {
 		return customerMapper.selectCustomerPriceList(customerId);
 	}
 

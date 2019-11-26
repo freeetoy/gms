@@ -25,7 +25,7 @@ public interface CustomerService {
 
 	public Map<String, Object> checkBusinessRegIdDuplicate(CustomerVO param);
 	
-	public List<CustomerPriceExtVO>  getCustomerPreiceList(Integer customerId);
+	public List<CustomerPriceExtVO>  getCustomerPriceList(Integer customerId);
 	
 	public boolean registerCustomerPrice(CustomerPriceVO[] param);
 	

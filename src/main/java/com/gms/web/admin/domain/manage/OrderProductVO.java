@@ -27,16 +27,16 @@ public class OrderProductVO extends AbstractVO implements Serializable {
 	private Integer productPriceSeq;
 	
 	/** Order_Count      	*/
-	private int orderCount;
-	
-	/** Order_Amount     	*/
-	private int orderAmount;
+	private int orderCount;	
 	
 	/** Order_Product_ETC     	*/
 	private String orderProductEtc;
 	
 	/** Bottle_Change_YN 	*/
-	private String bottleChangeYn;
+	private String bottleChangeYn;	
+	
+	/** Order_Amount     	*/
+	private int orderAmount;
 	
 	/** Bottle_ID			*/
 	private String bottleId;     

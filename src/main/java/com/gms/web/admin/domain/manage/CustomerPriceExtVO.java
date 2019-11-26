@@ -24,8 +24,7 @@ public class CustomerPriceExtVO implements Serializable {
 	private int productPrice;
 	
 	/**Product_Nm */
-	private String productNm;
-	
+	private String productNm;	
 	
 	/** Product_Capa     */
 	private String productCapa;

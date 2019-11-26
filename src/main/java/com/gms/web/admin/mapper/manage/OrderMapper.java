@@ -1,5 +1,6 @@
 package com.gms.web.admin.mapper.manage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,10 +22,14 @@ public interface OrderMapper {
 	public List<OrderVO> selectCustomerOrderList(Integer customerId);	
 	
 	public OrderVO selectOrderDetail(Integer orderId) ;
+	
+	public int selectOrderId() ;
 
 	public int insertOrder(OrderVO param);
 
 	public int insertOrderProduct(OrderProductVO param);
+	
+	public int insertOrderProducts(List<OrderProductVO>  param);
 	
 	public int updateOrder(OrderVO param);
 	

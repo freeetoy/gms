@@ -42,6 +42,16 @@
 	<entry key="common.bottle.status.0309">0308</entry>
 	
 	
-	<entry key="common.code.order.type">0200</entry>
+	<entry key="common.code.order.type">0100</entry>
+	
+	<entry key="common.code.order.process">0200</entry>
+	<entry key="common.code.order.process.01">0201</entry>
+	<entry key="common.code.order.process.02">0202</entry>
+	<entry key="common.code.order.process.03">0203</entry>
+	<entry key="common.code.order.process.04">0204</entry>
+	<entry key="common.code.order.process.05">0205</entry>
+	<entry key="common.code.order.process.06">0206</entry>
+	<entry key="common.code.order.process.07">0207</entry>
+	<entry key="common.code.order.process.08">0208</entry>
 	
 </properties>

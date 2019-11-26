@@ -1,20 +1,30 @@
 package com.gms.web.admin.controller.manage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.common.CodeVO;
 import com.gms.web.admin.domain.manage.BottleVO;
+import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
+import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.GasVO;
+import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.service.common.CodeService;
 import com.gms.web.admin.service.manage.CustomerService;
@@ -67,7 +77,7 @@ public class OrderController {
 		
 		Map<String, Object> map = orderService.getOrderList(params);
 		
-		mav.addObject("bottleList", map.get("list"));
+		mav.addObject("orderList", map.get("list"));
 		
 		
 		//검색어 셋팅
@@ -83,7 +93,7 @@ public class OrderController {
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));	 
 		
 		
-		mav.setViewName("gms/order/list");
+		mav.setViewName("/gms/order/list");
 		return mav;
 	}
 	
@@ -108,6 +118,26 @@ public class OrderController {
 					
 	}
 
+	
+	@RequestMapping(value = "/gms/order/register.do", method = RequestMethod.POST)
+	public ModelAndView registerOrder(
+			HttpServletRequest request
+			, HttpServletResponse response
+			, OrderVO params) {
 
+		ModelAndView mav = new ModelAndView();		
+
+		RequestUtils.initUserPrgmInfo(request, params);		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));
+		
+		int result = 0;
+		
+		result = orderService.registerOrder(request,params);
+		if(result > 0){
+			String alertMessage = "등록되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/order/list.do");
+		}
+		return null;
+	}
 		
 }

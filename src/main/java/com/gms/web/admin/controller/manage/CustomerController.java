@@ -273,7 +273,7 @@ public class CustomerController {
 	@ResponseBody
 	public List<CustomerPriceExtVO> getCustomerProductPriceList(@RequestParam(value = "customerId", required = false) Integer customerId, Model model)	{	
 		
-		List<CustomerPriceExtVO> customerPriceList = customerService.getCustomerPreiceList(customerId);
+		List<CustomerPriceExtVO> customerPriceList = customerService.getCustomerPriceList(customerId);
 		model.addAttribute("customerPriceList", customerPriceList);
 		
 		return customerPriceList;

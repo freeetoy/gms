@@ -1,7 +1,10 @@
 package com.gms.web.admin.service.manage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import com.gms.web.admin.domain.manage.OrderExtVO;
 import com.gms.web.admin.domain.manage.OrderProductVO;
@@ -16,9 +19,13 @@ public interface OrderService {
 
 	public int getOrderCount(Map<String, Object> map);	
 
-	public int registerOrder(OrderVO param);	
+	public int getOrderId() ;
+	
+	public int registerOrder(HttpServletRequest request,OrderVO param);	
 
-	public int registerOrderProduct(OrderProductVO param);	
+	public int registerOrderProduct(OrderProductVO orderProduct);	
+	
+	public int registerOrderProducts(List<OrderProductVO> orderProduct);	
 
 	public int modifyOrder(OrderVO param);
 	

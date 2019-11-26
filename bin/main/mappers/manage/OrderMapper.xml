@@ -14,6 +14,7 @@
 		<result property="customerNm"			column="Customer_NM"			/>
 		<result property="orderProcessCd"		column="Order_Process_CD"		/>
 		<result property="orderProcessCdNm"		column="Order_Process_CD_NM"	/>
+		<result property="orderTotalAmount"		column="Order_Total_Amount"		/>
 		<result property="depositCheckDt"		column="Deposit_Check_Dt"		/>
 		<result property="depositAmount"		column="Deposit_Amount"			/>
 		<result property="depositBankCd"		column="Deposit_Bank_Cd"		/>
@@ -29,10 +30,10 @@
 		<result property="orderProductSeq"		column="Order_Product_Seq"	/>
 		<result property="productId"			column="Product_ID"			/>
 		<result property="productPriceSeq"		column="Product_Price_Seq"	/>
-		<result property="orderCount"			column="Order_Count"		/>
-		<result property="orderAmount"			column="Order_Amount"		/>
+		<result property="orderCount"			column="Order_Count"		/>		
 		<result property="orderProductEtc"		column="Order_Product_ETC"	/>
 		<result property="bottleChangeYn"		column="Bottle_Change_YN"	/>
+		<result property="orderAmount"			column="Order_Amount"		/>
 		<result property="bottleId"				column="Bottle_ID"			/>
 		<result property="createId"				column="CREATE_ID"			/>
 		<result property="createDt"				column="CREATE_DT"			/>
@@ -41,7 +42,8 @@
 	</resultMap>
 	
 	<sql id="OrderColumns">
-		Member_Comp_Seq  
+		 Order_ID         
+		 , Member_Comp_Seq  
 		 , Order_Type_CD    
 		 , Delivery_Req_Dt 		  
 		 , Delivery_Req_AmPm
@@ -50,6 +52,7 @@
 		 , Order_Product_Capa 
 		 , Customer_ID      
 		 , Order_Process_CD 
+		 , Order_Total_Amount
 		 , Deposit_Check_Dt 
 		 , Deposit_Amount   
 		 , Deposit_Bank_Cd  
@@ -73,6 +76,7 @@
 		 , Customer_Nm 
 		 , Order_Process_CD 
 		 , CD_NM Order_Process_CD_NM
+		 , Order_Total_Amount 
 		 , Deposit_Check_Dt 
 		 , Deposit_Amount   
 		 , Deposit_Bank_Cd  
@@ -88,10 +92,10 @@
 		 , Order_Product_Seq
 		 , Product_ID       
 		 , Product_Price_Seq
-		 , Order_Count      
-		 , Order_Amount     
+		 , Order_Count   
 		 , Order_Product_ETC
 		 , Bottle_Change_YN 
+		 , Order_Amount 
 		 , Bottle_ID           
 		 , Create_ID        
 		 , Create_Dt        
@@ -103,7 +107,8 @@
 		INSERT INTO TB_Order(
 			<include refid="OrderColumns" />
 		) VALUES (
-			#{memberCompSeq}	
+			#{orderId}
+			, #{memberCompSeq}	
 			, #{orderTypeCd}	
 			, #{deliveryReqDt}					
 			, #{deliveryReqAmpm}		
@@ -112,6 +117,7 @@
 			, #{orderProductCapa}
 			, #{customerId}
 			, #{orderProcessCd}
+			, #{orderTotalAmount}
 			, #{depositCheckDt}
 			, #{depositAmount}
 			, #{depositBankCd}
@@ -131,10 +137,10 @@
 			, #{orderProductSeq}	
 			, #{productId}	
 			, #{productPriceSeq}					
-			, #{orderCount}		
-			, #{orderAmount}
+			, #{orderCount}	
 			, #{orderProductEtc}
-			, #{bottleChangeYn}				
+			, #{bottleChangeYn}		
+			, #{orderAmount}		
 			, #{bottleId}
 			, #{createId}			
 			, NOW()
@@ -142,7 +148,36 @@
 			, NOW()
 		)
 	</insert>
-
+	
+	<insert id="insertOrderProducts" parameterType="java.util.List" >
+	    	INSERT INTO TB_Order_Product(
+				<include refid="OrderProductColumns" />
+			) VALUES 
+			<foreach collection="list" item="item" separator=" , ">
+			(
+				#{item.orderId}
+				, #{item.orderProductSeq}	
+				, #{item.productId}	
+				, #{item.productPriceSeq}					
+				, #{item.orderCount}	
+				, #{item.orderProductEtc}
+				, #{item.bottleChangeYn}		
+				, #{item.orderAmount}		
+				, ''
+				, #{item.createId}			
+				, NOW()
+				, NULL
+				, NOW()
+	    	)
+	    	</foreach>
+	</insert>
+	
+	<select id="selectOrderId" resultType="int">
+		SELECT
+			MAX(IFNULL(Order_id,0))+1
+		FROM
+			TB_ORDER
+	</select>
 	<select id="selectOrderDetail" parameterType="String" resultType="com.gms.web.admin.domain.manage.OrderVO">
 		SELECT
 			<include refid="OrderColumns" />
@@ -161,6 +196,7 @@
 			, Order_Product_Nm		= #{orderProductNm}
 			, Order_Product_Capa	= #{orderProductCapa}
 			, Customer_ID			= #{customerId}
+			, Order_Total_Amount	= #{orderTotalAmount}
 		WHERE
 			Order_ID = #{orderId}
 	</update>
@@ -171,8 +207,9 @@
 			productId			= #{productId}
 			, Product_Price_Seq	= #{orderProductSeq}
 			, Order_Count		= #{orderCount}
-			, Order_Amount		= #{orderAmount}
+			, Order_Capa		= #{orderCapa}
 			, Bottle_Change_YN	= #{bottleChangeYn}
+			, Order_Amount		= #{orderAmount}
 		WHERE
 			Order_ID = #{orderId}
 		AND
@@ -182,7 +219,8 @@
 	<update id="updateOrderDeposit" parameterType="com.gms.web.admin.domain.manage.OrderVO">
 		UPDATE TB_Order
 		SET
-			Deposit_Check_Dt		= #{depositCheckDt}
+			Order_Process_CD 	= #{orderProcessCd}
+			, Deposit_Check_Dt		= #{depositCheckDt}
 			, Deposit_Amount		= #{depositAmount}
 			, Deposit_Bank_CD		= #{depositBankCd}
 		WHERE

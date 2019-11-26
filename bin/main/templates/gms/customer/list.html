@@ -153,8 +153,8 @@
         <!-- /.row -->
         
          <div class="row">								
-			<div class="col-sm-12 col-md-7">
-				<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+			<div class="col-12">
+				<div class="pagination justify-content-center m-0" id="example2_paginate">
 					<ul class="pagination">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
 							<a th:href="@{/gms/customer/list.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
