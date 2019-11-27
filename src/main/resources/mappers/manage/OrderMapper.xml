@@ -19,6 +19,7 @@
 		<result property="depositAmount"		column="Deposit_Amount"			/>
 		<result property="depositBankCd"		column="Deposit_Bank_Cd"		/>
 		<result property="salesId"				column="Sales_ID"				/>
+		<result property="createNm"				column="Create_Nm"				/>
 		<result property="createId"				column="CREATE_ID"				/>
 		<result property="createDt"				column="CREATE_DT"				/>
 		<result property="updateId"				column="UPDATE_ID"				/>		
@@ -80,7 +81,8 @@
 		 , Deposit_Check_Dt 
 		 , Deposit_Amount   
 		 , Deposit_Bank_Cd  
-		 , A.Sales_ID         
+		 , A.Sales_ID
+		 , D.User_Nm Create_Nm
 		 , A.Create_ID        
 		 , A.Create_Dt        
 		 , A.Update_ID        
@@ -262,16 +264,17 @@
 		SELECT
 			<include refid="OrderSelectColumns" />
 		FROM
-			TB_Order A, TB_Customer B, TB_CODE C
+			TB_Order A, TB_Customer B, TB_CODE C, TB_User D
 		WHERE
 			A.Customer_Id = B.Customer_ID
+		AND A.Order_Process_Cd = C.CD_ID
+		AND A.Create_Id = D.User_ID
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
 		AND Customer_Nm	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
 		</if>		
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
 		AND date_format(Create_Dt,'%Y/%m/%d')  between  #{searchOrderDtFrom} AND  #{searchOrderDtEnd} 
-		</if>						
-		AND A.Order_Process_Cd = C.CD_ID										
+		</if>
 		ORDER BY Create_Dt DESC 
 		Limit #{startRow}, #{rowPerPage}
 	</select>
@@ -291,15 +294,16 @@
 		SELECT
 			Count(Order_id)
 		FROM
-			TB_Order
+			TB_Order A, TB_Customer B, TB_CODE C
 		WHERE
-			0 = 0
+			A.Customer_Id = B.Customer_ID
+		AND A.Order_Process_Cd = C.CD_ID
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
 		AND Customer_Nm	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
-		</if>		
+		</if>
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
-		AND date_format(Create_Dt,'%Y/%m/%d')  between  #{searchOrderDtFrom} AND  #{searchOrderDtEnd} 
-		</if>				
+		AND date_format(Create_Dt,'%Y/%m/%d')  between  #{searchOrderDtFrom} AND  #{searchOrderDtEnd}
+		</if>
 	</select>	
 	
 	<select id="selectCustomerOrderList" resultType="com.gms.web.admin.domain.manage.OrderVO" parameterType="Integer">		

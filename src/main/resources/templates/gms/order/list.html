@@ -302,7 +302,7 @@ var fn_deleteBottle = function(orderId){
         <div class="row">
         
             <div class="col-1">
-               		<label >기간</label>
+               		<label>접수 기간</label>
             </div>               
             <div class="col-4">
               <form id="mainForm" name=""mainForm""  method="post">
@@ -364,19 +364,19 @@ var fn_deleteBottle = function(orderId){
                       <th>요청일자</th>
                       <th>접수일</th>
                       <th>상태변경</th>
-		      			<th>관리</th>
+                        <th>관리</th>
                     </tr>
                   </thead>
                   <tbody>
                   <form name="checkForm" id="checkForm">
-                  	<tr th:if="${not #lists.isEmpty( orderList )}" th:each="row : ${orderList}">
+                  	<tr th:if="${not #lists.isEmpty( orderList )}" th:each="row : ${orderList}" style="font-size:13px;">
                       <td>
                       <a href="#" th:onclick="goUpdate([[ ${row.orderId} ]])" th:text="${row.orderId}"></a>                     
                       </td>
                       <td th:text="${row.CustomerNm}"></td>
                       <td th:text="${row.orderProductNm}"></td>
                       <td th:text="${row.orderProductCapa}"></td>
-                      <td th:text="${row.createId}"></td>
+                      <td th:text="|${row.createNm}(${row.createId})|"></td>
                       <td th:text="${row.orderProcessCdNm}"></td>
                       <td th:text="${#calendars.format( row.deliveryReqDt, 'yyyy-MM-dd' )}"></td>
 		     			<td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>  
@@ -386,7 +386,9 @@ var fn_deleteBottle = function(orderId){
 					  <td>  	
 						<a class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteBottle([[ ${row.orderId} ]])">
                               <i class="fas fa-trash"></i>삭제</a>
-                                          
+                          <a class="btn btn-primary btn-xs" href="#" th:onclick="showOrderDetail([[ ${row.orderId} ]])">
+                              <i class="fas fa-folder"></i>거래명세서</a>
+                      </td>
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( orderList )}">
 						<td colspan="10">조회된 결과가 없습니다.</td>

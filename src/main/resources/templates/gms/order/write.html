@@ -25,23 +25,6 @@ $(function() {
 	  
 	 
 	});
-function validationOfForm(form) {
-	
-	var priceCnt= $("#priceCnt").val() ;
-	//alert("priceCnt==="+priceCnt);
-	if($("#customerId").val() == "="){
-		alert("거래처를 선택하세요" );
-	}
-	if($("#productId_0").val() == "0" || $("#productCapa_0").val() == "0" || $("#productprice_0").val() == ""){
-		//alert("document.mainForm.customerId.value== "+document.mainForm.customerId.value );
-		alert('상품을 선택 하세요');      
-		return false;
-	}
-	
-	//var customerId= document.mainForm.
-	
-}
-// end of function
 
 
 $(document).ready(function(){ 
@@ -218,13 +201,28 @@ $(document).ready(function(){
  // 입력된 내용을 작성한다.
     $("#save").on("click", function () {
     	//validation();
-    	
-    	//var form1 = $("#mainForm");	
-    	//var customerId =mainForm.customerId.val();
-    	//alert("customerId="+customerId);
-    	//if(!isOkay){
-    	//	return;
-    	//}
+
+        if($("#orderTypeCd").val() == ""){
+            alert("주문타입을 선택하세요" );
+            return;
+        }
+
+        if($("#customerId").val() == ""){
+            alert("거래처를 선택하세요" );
+            return;
+        }
+        //alert("priceCnt==="+priceCnt);
+        if($("#deliveryReqDt").val() == ""){
+            alert("납품요청일를 선택하세요" );
+            return;
+        }
+        if($("#productId_0").val() == "0" || $("#productPriceSeq_0").val() == "0" || $("#orderCount_0").val() == ""){
+            //alert("document.mainForm.customerId.value== "+document.mainForm.customerId.value );
+            alert('상품을 선택 하세요');
+            return ;
+        }
+
+
     	$("#productCount").val(counter++);
     	
     	
@@ -336,7 +334,39 @@ $(document).ready(function(){
 	         console.log("fail");
 	      });
 	 });
-    
+
+
+
+	function validationOfForm() {
+
+		var productCount= $("#productCount").val() ;
+
+		alert("productCount==="+productCount);
+
+		if($("#orderTypeCd").val() == "="){
+			alert("주문타입을 선택하세요" );
+			return;
+		}
+
+		if($("#customerId").val() == "="){
+			alert("거래처를 선택하세요" );
+			return;
+		}
+		//alert("priceCnt==="+priceCnt);
+		if($("#deliveryReqDt").val() == "="){
+			alert("납품요청일를 선택하세요" );
+			return;
+		}
+		if($("#productId_0").val() == "0" || $("#productPriceSeq_0").val() == "0" || $("#orderCount_0").val() == ""){
+			//alert("document.mainForm.customerId.value== "+document.mainForm.customerId.value );
+			alert('상품을 선택 하세요');
+			return ;
+		}
+
+		//var customerId= document.mainForm.
+
+	}
+// end of function
 
 });
 
@@ -397,7 +427,7 @@ $(document).ready(function(){
 	                      <td class="card-footer">거래처</td>
 	                      <td>
 	                      	<select id="customerId" name="customerId" class="form-control">
-		                      <option value="0">거래처 목록</option>
+		                      <option value="">거래처 목록</option>
 		                    	<option th:each="row : ${customerList}"
 					                th:text="${row.customerNm}"
 					                th:value="${row.customerId}"
