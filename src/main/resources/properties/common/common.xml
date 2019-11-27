@@ -43,6 +43,12 @@
 	
 	
 	<entry key="common.code.order.type">0100</entry>
+	<entry key="common.code.order.type.01">0101</entry>
+	<entry key="common.code.order.type.02">0102</entry>
+	<entry key="common.code.order.type.03">0103</entry>
+	<entry key="common.code.order.type.04">0104</entry>
+	<entry key="common.code.order.type.05">0105</entry>
+	<entry key="common.code.order.type.06">0106</entry>
 	
 	<entry key="common.code.order.process">0200</entry>
 	<entry key="common.code.order.process.01">0201</entry>

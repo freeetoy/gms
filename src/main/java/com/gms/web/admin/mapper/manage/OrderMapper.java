@@ -21,7 +21,7 @@ public interface OrderMapper {
 
 	public List<OrderVO> selectCustomerOrderList(Integer customerId);	
 	
-	public OrderVO selectOrderDetail(Integer orderId) ;
+	public OrderVO selectOrderDetail(Integer orderId) ;		
 	
 	public int selectOrderId() ;
 
@@ -42,5 +42,7 @@ public interface OrderMapper {
 	public int deleteOrder(OrderVO param);
 
 	public int deleteOrderProduct(OrderProductVO param);
+	
+	public int deleteOrderProducts(Integer orderId);
 
 }

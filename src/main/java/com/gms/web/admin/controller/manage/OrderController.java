@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
@@ -54,6 +56,7 @@ public class OrderController {
 		logger.info("BottleContoller getBottleList");
 		logger.info("BottleContoller currentPage "+ params.getCurrentPage());
 		logger.info("BottleContoller searchOrderDt "+ params.getSearchOrderDt());
+		logger.info("BottleContoller searchCustomerNm "+ params.getSearchCustomerNm());
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -62,27 +65,22 @@ public class OrderController {
 		String searchOrderDtFrom = null;
 		String searchOrderDtEnd = null;
 				
-		if(searchOrderDt != null && searchOrderDt.length() > 20) {
-						
-			searchOrderDtFrom = searchOrderDt.substring(0, 10) ;
-			
+		if(searchOrderDt != null && searchOrderDt.length() > 20) {						
+			searchOrderDtFrom = searchOrderDt.substring(0, 10) ;			
 			searchOrderDtEnd = searchOrderDt.substring(13, searchOrderDt.length()) ;
 			
 			params.setSearchOrderDtFrom(searchOrderDtFrom);
-			params.setSearchOrderDtEnd(searchOrderDtEnd);
-			
+			params.setSearchOrderDtEnd(searchOrderDtEnd);			
 		}
 		
-		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
 		
 		Map<String, Object> map = orderService.getOrderList(params);
 		
-		mav.addObject("orderList", map.get("list"));
-		
+		mav.addObject("orderList", map.get("list"));	
 		
 		//검색어 셋팅
-
 		mav.addObject("searchOrderDt", params.getSearchOrderDt());	
+		mav.addObject("searchCustomerNm", params.getSearchCustomerNm());	
 		
 		mav.addObject("currentPage", map.get("currentPage"));
 		mav.addObject("lastPage", map.get("lastPage"));
@@ -138,6 +136,86 @@ public class OrderController {
 			RequestUtils.responseWriteException(response, alertMessage, "/gms/order/list.do");
 		}
 		return null;
+	}
+	
+	
+	@RequestMapping(value = "/gms/order/update.do")
+	public ModelAndView openOrderUpdate(HttpServletRequest request
+			, HttpServletResponse response,
+			OrderVO params) {
+		
+		logger.info("OrderContoller openOrderUpate "+ params.getOrderId());
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));
+	
+		
+		
+			
+		if (params.getOrderId() == null) {
+			return null;
+		} else {
+			
+			OrderVO order = orderService.getOrderDetail(params.getOrderId());		
+			
+			if (order == null) {
+				return null;
+			}
+			
+			// 주문 타입 불러오기
+			List<CodeVO> codeList = codeService.getCodeList(PropertyFactory.getProperty("common.code.order.type"));
+			mav.addObject("codeList", codeList);	
+			
+			// 주문 타입 불러오기
+			Map<String, Object> map = customerService.searchCustomerList("");
+			mav.addObject("customerList", map.get("list"));
+			
+			mav.addObject("order", order);
+			//mav.addObject("orderProductList", orderProductList);
+			mav.addObject("currentPage", params.getCurrentPage());
+			mav.addObject("searchCustomerNm", params.getSearchCustomerNm());
+			mav.addObject("searchOrderDt", params.getSearchOrderDt());
+			
+		}
+		mav.setViewName("/gms/order/update");
+		
+		return mav;
+					
+	}
+	
+	@RequestMapping(value = "/gms/order/modify.do", method = RequestMethod.POST)
+	public ModelAndView modifyOrder(
+			HttpServletRequest request
+			, HttpServletResponse response
+			, OrderVO params) {
+
+		ModelAndView mav = new ModelAndView();		
+
+		RequestUtils.initUserPrgmInfo(request, params);		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));
+		
+		int result = 0;
+		
+		result = orderService.modifyOrder(request,params);
+		if(result > 0){
+			String alertMessage = "수정되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/order/list.do?currentPage="+params.getCurrentPage()+"&searchCustomerNm="+params.getSearchCustomerNm()+"&searchOrderDt="+params.getSearchOrderDt());
+		}
+		return null;
+	}
+	
+	
+	@RequestMapping(value = "/gms/order/orderProductList.do")
+	@ResponseBody
+	public List<OrderProductVO> getOrderProductList(@RequestParam(value = "orderId", required = false) Integer orderId, Model model)	{	
+				
+		logger.info("OrderContoller getOrderProductList "+ orderId);
+		
+		List<OrderProductVO> orderProductList = orderService.getOrderProductList(orderId);
+		//model.addAttribute("orderProductList", orderProductList);
+		
+		return orderProductList;
 	}
 		
 }

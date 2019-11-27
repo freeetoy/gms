@@ -35,7 +35,7 @@ function fn_modifyBottleWorkCd(){
     	chForm.submit();
 	}
 	
-var fn_deleteBottle = function(orderId){
+var deleteOrder = function(orderId){
 		
 	if(confirm("삭제하시겠습니까?")){	
 		
@@ -66,7 +66,7 @@ var fn_deleteBottle = function(orderId){
 	}
 	
 	
-	var fn_ChangeBottleWorkCd = function(orderId){
+	var fn_ChangeOrderWorkCd = function(orderId){
 	
 		//$("table.table-hover").find('tr').remove();
 		
@@ -325,7 +325,7 @@ var fn_deleteBottle = function(orderId){
                		<label >거래처명</label>
             </div>               
             <div class="col-4">              
-               <input type="text" id="searchCustomerNm" name="searchCustomerNm" class="form-control" placeholder="search" th:value="${searchCustomerNm}">
+               <input type="text" id="searchCustomerNm" name="searchCustomerNm" class="form-control" th:value="${searchCustomerNm}">
             </div>  
             
               <div class="col-5">
@@ -368,11 +368,9 @@ var fn_deleteBottle = function(orderId){
                     </tr>
                   </thead>
                   <tbody>
-                  <form name="checkForm" id="checkForm">
+                 
                   	<tr th:if="${not #lists.isEmpty( orderList )}" th:each="row : ${orderList}" style="font-size:13px;">
-                      <td>
-                      <a href="#" th:onclick="goUpdate([[ ${row.orderId} ]])" th:text="${row.orderId}"></a>                     
-                      </td>
+                      <td th:text="${totalCount-((currentPage-1)*10) - orderList.indexOf(row)}"></td>
                       <td th:text="${row.CustomerNm}"></td>
                       <td th:text="${row.orderProductNm}"></td>
                       <td th:text="${row.orderProductCapa}"></td>
@@ -381,10 +379,11 @@ var fn_deleteBottle = function(orderId){
                       <td th:text="${#calendars.format( row.deliveryReqDt, 'yyyy-MM-dd' )}"></td>
 		     			<td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>  
                       <td>                      
-						<a class="btn btn-info btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_ChangeBottleWorkCd([[ ${row.orderId} ]])" href="#"><i class="fas fa-pencil-alt"></i>상태변경 </a>
+						<a class="btn btn-success btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_ChangeBottleWorkCd([[ ${row.orderId} ]])" href="#"><i class="fas fa-pencil-alt"></i>상태변경 </a>
 					  </td>
 					  <td>  	
-						<a class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteBottle([[ ${row.orderId} ]])">
+					  <a class="btn btn-info btn-xs" href="#" th:onclick="goUpdate([[ ${row.orderId} ]])"><i class="fas fa-pencil-alt"></i>수정 </a>
+						<a class="btn btn-danger btn-xs" href="#" th:onclick="deleteOrder([[ ${row.orderId} ]])">
                               <i class="fas fa-trash"></i>삭제</a>
                           <a class="btn btn-primary btn-xs" href="#" th:onclick="showOrderDetail([[ ${row.orderId} ]])">
                               <i class="fas fa-folder"></i>거래명세서</a>
@@ -393,10 +392,11 @@ var fn_deleteBottle = function(orderId){
                     <tr th:unless="${not #lists.isEmpty( orderList )}">
 						<td colspan="10">조회된 결과가 없습니다.</td>
 					</tr>			
-					</form>			
+					
                   </tbody>
 					
                 </table>
+                
               </div>
               <!-- /.card-body -->
             </div>

@@ -21,7 +21,7 @@ public class OrderProductVO extends AbstractVO implements Serializable {
 	private Integer orderProductSeq;
 	
 	/** Product_ID 			*/
-	private Integer productId;
+	private Integer productId;	
 		
 	/** Product_Price_Seq 	*/
 	private Integer productPriceSeq;
@@ -40,5 +40,11 @@ public class OrderProductVO extends AbstractVO implements Serializable {
 	
 	/** Bottle_ID			*/
 	private String bottleId;     
+	
+	/** Product_Nm 			*/
+	private String productNm;
+	
+	/** Product_Capa 			*/
+	private String productCapa;
 
 }

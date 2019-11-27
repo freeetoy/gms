@@ -133,11 +133,10 @@ $(document).ready(function(){
     // row 삭제
     $("table.doc-list").on("click", ".ibtnDel", function (event) {
         $(this).closest("tr").remove();       
-        console.log("ibtnDel mod_counter "+counter);
+       
         counter -= 1
         totalCount-=1
         $("#productCount").val(counter);
-        console.log("3 counter=="+counter); 
 		console.log("3 totalCount=="+totalCount); 
     });
 
@@ -146,11 +145,11 @@ $(document).ready(function(){
 
     $("table.doc-list").on("click", ".ibtnDelMod", function (event) {
         $(this).closest("tr").remove();       
-        console.log("ibtnDelMod mod_counter "+mod_counter);
+       
         mod_counter -= 1
         totalCount -= 1
         $("#productCount").val(mod_counter);
-        console.log("4 mod_counter=="+mod_counter); 
+
 		console.log("4 totalCount=="+totalCount); 
     });
     
@@ -206,7 +205,8 @@ $(document).ready(function(){
             alert("주문타입을 선택하세요" );
             return;
         }
-
+		var orderType = $("#orderTypeCd").val();
+        
         if($("#customerId").val() == ""){
             alert("거래처를 선택하세요" );
             return;
@@ -216,14 +216,15 @@ $(document).ready(function(){
             alert("납품요청일를 선택하세요" );
             return;
         }
-        if($("#productId_0").val() == "0" || $("#productPriceSeq_0").val() == "0" || $("#orderCount_0").val() == ""){
-            //alert("document.mainForm.customerId.value== "+document.mainForm.customerId.value );
-            alert('상품을 선택 하세요');
-            return ;
-        }
-
-
-    	$("#productCount").val(counter++);
+        
+        if(orderType == "0101" || orderType == "0102" || orderType == "0103"){
+	        if($("#productId_0").val() == "0" || $("#productPriceSeq_0").val() == "0" || $("#orderCount_0").val() == ""){
+	            //alert("document.mainForm.customerId.value== "+document.mainForm.customerId.value );
+	            alert('상품을 선택 하세요');
+	            return ;
+	        }
+	        $("#productCount").val(counter++);
+        }	
     	
     	
     	var checkedValue = ""; 
@@ -337,36 +338,16 @@ $(document).ready(function(){
 
 
 
-	function validationOfForm() {
-
-		var productCount= $("#productCount").val() ;
-
-		alert("productCount==="+productCount);
-
-		if($("#orderTypeCd").val() == "="){
-			alert("주문타입을 선택하세요" );
-			return;
+    $('select[name=orderTypeCd]').change(function() {
+		
+		//$('#customerId1').val($(this).val());
+		var orderType = $(this).val();
+		console.log("orderType Change ="+orderType); 
+		if(orderType=='0104' || orderType=='0105' || orderType=='0105' ){
+		 	$("table.doc-list").closest("table").remove();
+		//console.log("customerId change ="+totalCount); 
 		}
-
-		if($("#customerId").val() == "="){
-			alert("거래처를 선택하세요" );
-			return;
-		}
-		//alert("priceCnt==="+priceCnt);
-		if($("#deliveryReqDt").val() == "="){
-			alert("납품요청일를 선택하세요" );
-			return;
-		}
-		if($("#productId_0").val() == "0" || $("#productPriceSeq_0").val() == "0" || $("#orderCount_0").val() == ""){
-			//alert("document.mainForm.customerId.value== "+document.mainForm.customerId.value );
-			alert('상품을 선택 하세요');
-			return ;
-		}
-
-		//var customerId= document.mainForm.
-
-	}
-// end of function
+	});
 
 });
 

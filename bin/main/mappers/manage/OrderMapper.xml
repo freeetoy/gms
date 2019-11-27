@@ -30,7 +30,9 @@
 		<result property="orderId"				column="Order_ID"			/>
 		<result property="orderProductSeq"		column="Order_Product_Seq"	/>
 		<result property="productId"			column="Product_ID"			/>
+		<result property="productNm"			column="Product_Nm"			/>
 		<result property="productPriceSeq"		column="Product_Price_Seq"	/>
+		<result property="productCapa"			column="Product_Capa"		/>
 		<result property="orderCount"			column="Order_Count"		/>		
 		<result property="orderProductEtc"		column="Order_Product_ETC"	/>
 		<result property="bottleChangeYn"		column="Bottle_Change_YN"	/>
@@ -103,6 +105,23 @@
 		 , Create_Dt        
 		 , Update_ID        
 		 , Update_Dt   
+	</sql>
+	<sql id="OrderProductSelectColumns">
+		  Order_ID         
+		 , Order_Product_Seq
+		 , A.Product_ID       
+		 , Product_Nm       
+		 , A.Product_Price_Seq
+		 , Product_Capa     
+		 , Order_Count   
+		 , Order_Product_ETC
+		 , Bottle_Change_YN 
+		 , Order_Amount 
+		 , Bottle_ID           
+		 , A.Create_ID        
+		 , A.Create_Dt        
+		 , A.Update_ID        
+		 , A.Update_Dt   
 	</sql>
 	
 		<insert id="insertOrder" parameterType="com.gms.web.admin.domain.manage.OrderVO">
@@ -180,7 +199,7 @@
 		FROM
 			TB_ORDER
 	</select>
-	<select id="selectOrderDetail" parameterType="String" resultType="com.gms.web.admin.domain.manage.OrderVO">
+	<select id="selectOrderDetail" parameterType="Integer" resultType="com.gms.web.admin.domain.manage.OrderVO">
 		SELECT
 			<include refid="OrderColumns" />
 		FROM
@@ -248,16 +267,10 @@
 		WHERE
 			Order_ID = #{orderId}
 	</update>	
-	<update id="deleteOrderProduct" parameterType="com.gms.web.admin.domain.manage.OrderProductVO">
-		UPDATE TB_Order
-		SET
-			Delete_YN = 'Y'
-			, UPDATE_ID = #{updateId}
-			, UPDATE_DT = NOW()
+	<update id="deleteOrderProducts" parameterType="Integer">
+		DELETE FROM  TB_Order_Product		
 		WHERE
-			Order_ID = #{orderId}
-		AND
-			Order_Product_Seq = #{orderProductSeq}	
+			Order_ID = #{orderId}		
 	</update>	
 
 	<select id="selectOrderList" resultType="com.gms.web.admin.domain.manage.OrderVO" parameterType="java.util.Map">		
@@ -280,14 +293,17 @@
 	</select>
 	
 	
-	<select id="selectOrderProductList" resultType="com.gms.web.admin.domain.manage.OrderVO" parameterType="Integer">		
+	<select id="selectOrderProductList" resultType="com.gms.web.admin.domain.manage.OrderProductVO" parameterType="Integer">		
 		SELECT
-			<include refid="OrderProductColumns" />
+			<include refid="OrderProductSelectColumns" />
 		FROM
-			TB_Order_Prodcut
+			TB_Order_Product A , TB_Product b ,TB_Product_Price C
 		WHERE
-			Order_ID = #{orderId}									
-		ORDER BY Create_Dt DESC 
+			Order_ID = #{orderId}	
+		AND A.Product_ID = B.Product_ID
+		AND A.Product_ID = C.Product_ID
+		AND A.Product_Price_Seq = C.Product_Price_Seq								
+		ORDER BY A.Create_Dt DESC 
 	</select>
 	
 	<select id="selectOrderCount" resultType="int" parameterType="java.util.Map">

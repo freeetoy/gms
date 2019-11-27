@@ -10,9 +10,11 @@ $(function() {
 	    singleDatePicker: true,
 	    showDropdowns: true,
 	    autoUpdateInput: false,
+	    startDate: new Date(),
 	      locale: {
 	          cancelLabel: 'Clear'
 	      }
+	  	
 	  });
 
 	  $('input[name="deliveryReqDt"]').on('apply.daterangepicker', function(ev, picker) {
@@ -23,6 +25,12 @@ $(function() {
 	      $(this).val('');
 	  });
 	  
+	  $('input[name="deliveryReqDt"]').on('changeDate', function(ev){
+	      
+	      $(this).datepicker('hide');
+
+
+	    });
 	 
 	});
 
@@ -32,7 +40,9 @@ $(document).ready(function(){
 	var counter = 0;
 	var totalCount = 1;
 	
-	init_add(0);
+	initProduct(0);
+	initProductPriceList();
+	
 	$("#addrow").on("click", function () {
 
 		//alert("addrow");
@@ -68,9 +78,9 @@ $(document).ready(function(){
 		newRow.append(cols);
 		$("table.doc-list").append(newRow);
 		$("#productCount").val(counter+1);
-		init_add(counter);
+		initProduct(counter);
 
-		init_add_storage(counter);
+		addProductCapa(counter);
 
 	});
 
@@ -80,7 +90,7 @@ $(document).ready(function(){
 
 		var select_pumname = $('#productId_0').val();
 
-		init_storage_list(select_pumname,0,"ins");
+		getProductList(select_pumname,0,"ins");
 	});
 
 
@@ -123,9 +133,9 @@ $(document).ready(function(){
         $("table.doc-list").append(newRow);
 
         $("#productCount").val(mod_counter);
-        init_add(mod_counter);
+        initProduct(mod_counter);
 
-        init_mod_storage(mod_counter);
+        initModProductCapa(mod_counter);
 
     });
     
@@ -154,15 +164,15 @@ $(document).ready(function(){
     });
     
 
-    function init_mod_storage(mod_counter) {
+    function initModProductCapa(mod_counter) {
         // body...      
 		 $('#productId_' + mod_counter).change( function(){      		
 				var mod_select_pumname = $('#productId_' + mod_counter).val();		
-				init_storage_list(mod_select_pumname,mod_counter,'mod');		
+				getProductList(mod_select_pumname,mod_counter,'mod');		
 		});
       }
     
-    function init_add(pid){
+    function initProduct(pid){
 
         $.ajax({
   	  	url: '/gms/product/nlist.do',
@@ -188,12 +198,12 @@ $(document).ready(function(){
     } 
     
     
-    function init_add_storage(counter) {
+    function addProductCapa(counter) {
     	// body...
     		$('#productId_' + counter).change( function(){
     			var select_pumname = $('#productId_' + counter).val();
 
-    			init_storage_list(select_pumname,counter,'ins');
+    			getProductList(select_pumname,counter,'ins');
     		});
     	}
     
@@ -240,37 +250,26 @@ $(document).ready(function(){
 		      }
 		}
 		var i=0;
-		$('input:checkbox[id="bottleChangeYn"]').each(function() {
-	
+		$('input:checkbox[id="bottleChangeYn"]').each(function() {	
 		      //this.checked = true; //checked 처리
 
-		      if(this.checked){//checked 처리된 항목의 값
-
-		            
-		      this.value='Y'
-		    	  alert(i+"==="+this.value); 
-		      
-		      //document.getElementsByNmae("bottleChangeYn_"+i).value = this.value;
-		      
-		      //alert(i+"==="+document.getElementsByNmae("bottleChangeYn_"+i).value); 
+		      if(this.checked){//checked 처리된 항목의 값		            
+		      	this.value='Y'		    	
 		      }
 			i++;
-		 });
-		 
-    	
-    	console.log("5 mod_counter==="+mod_counter);
-    	console.log("5 counter==="+counter);
+		 });    	
+    	console.log("searchCustomerNm= "+$("#searchCustomerNm").val());
     	console.log("5 totalCount==="+totalCount);
     	var form = $("#writeForm");	
 
     	//document.getElementById("priceCount").value = counter+mod_counter;
     	document.getElementById("productCount").value = totalCount;
     	
-    	//alert("save");
+    	
     	form.submit();
     });
     
-    function init_storage_list(pumname,sel_pid,type){
+    function getProductList(pumname,sel_pid,type){
 	      
 		console.log(type);      
 		
@@ -314,7 +313,7 @@ $(document).ready(function(){
     
     $("#btn_com_search").click(function()  
    {    	
-	  var searchCustomerNm = $("#searchCustomerNm").val();
+	  var searchCustomerNm = $("#searchCustomerNm1").val();
 
 	   $.ajax({
 	           url: '/gms/common/customerList.do',
@@ -348,6 +347,151 @@ $(document).ready(function(){
 		//console.log("customerId change ="+totalCount); 
 		}
 	});
+    
+    function initProductPriceList(){
+		//alert("init_productList");	
+		$.ajax({
+			url: '/gms/order/orderProductList.do',
+			type: 'POST',
+			data: 'orderId='+ [[${order.orderId}]] ,
+			dataType: 'json',
+
+		 })
+		.done(function(data){	           
+			var counter = 0;
+	        var cols = "";
+	        
+			console.log("start datea ="+data);     
+			for(i=0; i< data.length;i++) {
+	            $('#productId_' + i).find('option').remove();
+	        }			
+
+	    	var i=0;
+			//$('#productCapa_' + sel_pid).find('option').remove(); 
+			
+			console.log("data.length "+data.length);     
+			
+			if(data.length ==0) {
+				
+				$("table.doc-list").find('tr').remove();
+			 	
+			 	var newRow = $("<tr>");
+		        
+				cols += '<td>상품</td>';
+				cols += '<td>용량</td>';
+				cols += '<td>수량</td>';
+				cols += '<td>기타</td>';
+				cols += '<td>용기교환</td>';
+				cols += '<td></td></tr>';
+
+		        newRow.append(cols);
+		        $("table.doc-list").append(newRow);
+		        
+		        totalCount =1 ;
+		        
+		        var newRow = $("<tr>");
+				var cols = "";
+				cols += '<td style="padding-left:0px;">';
+				cols += '<select class="form-control" id="productId_0" name="productId_0" style="width:150px"></select>'; 
+				cols += '</td><td>';
+				cols += ' <select class="form-control" id="productPriceSeq_0" name="productPriceSeq_0" style="width:80px"><option value=0>옵션</option></select> ';
+				cols += '</td><td>';
+				cols += ' <input type="number" class="form-control" id="orderCount_0" name="orderCount_0" style="width:60px;height:35px;" onkeypress="return event.charCode >= 48" min="1" max="99999">';
+				cols += '</td><td>';  
+				cols += ' <input type="text" class="form-control" id="orderProductEtc_0" name="orderProductEtc_0 " >';
+				cols += '</td><td>';  
+				cols += ' <input type="checkbox" class="form-control" id="bottleChangeYn_0" name="bottleChangeYn_0">';
+				cols += '</td><td>'; 
+				cols += ' <input type="button" class="ibtnAddMod btn btn-md btn-danger" id="mod_addrow" value="삭제" />';
+				cols += '</td>';
+				cols +='</tr>';
+
+
+				newRow.append(cols);
+				$("table.doc-list").append(newRow);
+				
+				initProduct(counter);
+	            
+				initModProductCapa(counter);
+	            
+			}else {
+
+			 	$("table.doc-list").find('tr').remove();
+			 	
+			 	var newRow = $("<tr>");
+		        
+				cols += '<td>상품</td>';
+				cols += '<td>용량</td>';
+				cols += '<td>수량</td>';
+				cols += '<td>기타</td>';
+				cols += '<td>용기교환</td>';
+				cols += '<td></td></tr>';
+
+				newRow.append(cols);
+		        $("table.doc-list").append(newRow);
+		        
+				for(i=0; i< data.length;i++) {
+					console.log(data);     
+					console.log(data[i]);     
+					var newRow = $("<tr>");
+			        
+		            cols = "";
+				
+					cols += '<td style="padding-left:0px;">';
+					cols += '	<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:150px">'; 
+					cols += '	<option value="' + data[i].productId +'" selected>' + data[i].productNm + '</option>';
+					cols += '	</select>';
+					cols += '</td><td>';
+					cols += '	<select class="form-control" id="productPriceSeq_' + counter + '" name="productPriceSeq_' + counter + '" style="width:80px">';
+					cols += '	<option value="' + data[i].productPriceSeq +'" selected>' + data[i].productCapa + '</option>';
+					cols += '	</select> ';
+					cols += '</td><td>';
+					cols += '	<input type="number" class="form-control" id="orderCount_' + counter + '" name="orderCount_' + counter + '" value="' + data[i].orderCount + '" style="width:60px;height:35px;" onkeypress="return event.charCode >= 48" min="1" max="99999">';
+					cols += '</td><td>';  
+					cols += '	<input type="text" class="form-control" id="orderProductEtc_' + counter + '" name="orderProductEtc_' + counter + '"  value="' + data[i].orderProductEtc + '">';
+					cols += '</td><td>';  
+					if(data[i].bottleChangeYn=='Y'){
+						cols += '	<input type="checkbox" class="form-control" id="bottleChangeYn" name="bottleChangeYn_' + counter + '" checked>';
+					}else {
+						cols += '	<input type="checkbox" class="form-control" id="bottleChangeYn" name="bottleChangeYn_' + counter + '" ">';
+					}
+					cols += '</td><td>'; 
+	
+					if (counter < 1){	
+						cols += ' <input type="button" class="ibtnAddMod btn btn-md btn-info" id="mod_addrow" value="추가" />';	
+					}else{	
+						cols += ' <input type="button" class="ibtnDelMod btn btn-md btn-danger" id="addrow" value="삭제" />';	
+					}
+					cols += '</td>';
+					cols +='</tr>';
+	
+			            
+	
+		            newRow.append(cols);
+		            $("table.doc-list").append(newRow);
+		            
+		            initProduct(counter);
+		            
+		            initModProductCapa(counter);
+		            
+					console.log("counter=="+counter);   
+	
+		            mod_counter = counter;
+		            
+		            totalCount =counter;
+		            counter++;
+		            
+				}
+				totalCount = data.length;
+			}
+		})
+		.fail(function(){
+			console.log("fail");
+		 });		
+
+    }
+
+
 
 });
 
@@ -386,8 +530,13 @@ $(document).ready(function(){
              <!-- general form elements -->                        
               <!-- /.card-header -->
               <div class="col-10">
-              <form id="writeForm" class="form-horizontal" th:action="@{/gms/order/register.do}" method="post" >
-              <input type="hidden" id="productCount" name="productCount" value="">
+              <form id="writeForm" class="form-horizontal" th:action="@{/gms/order/modify.do}" method="post" >
+              	<input type="hidden" id="orderId" name="orderId" th:value="${order.orderId}">
+              	<input type="hidden" id="productCount" name="productCount" value="">
+              	<input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
+        		<input type="hidden" id="searchCustomerNm" name="searchCustomerNm" th:value="${searchCustomerNm}">
+        		<input type="hidden" id="searchOrderDt" name="searchOrderDt" th:value="${searchOrderDt}">
+              
               	<div class="form-group">	
 			        <div class="col-10">
 			        <table class="table table-hover">
@@ -396,10 +545,16 @@ $(document).ready(function(){
 	                      <td class="card-footer">주문종류</td>
 	                      <td colspan=3>
 	                      	<select id="orderTypeCd" name="orderTypeCd" class="form-control">
-	                    	<option value="">주문타입</option>				    
-				        	<option th:each="row : ${codeList}"
-				                th:text="${row.cdNm}"
-				                th:value="${row.cdId}">					             
+		                    	<option value="">주문타입</option>				    
+					        	<option th:each="row : ${codeList}"
+					                th:text="${row.cdNm}"
+					                th:value="${row.cdId}"
+					                th:if="${order.orderTypeCd ==row.cdId}" selected>		             
+					        	</option>	
+					        	<option th:each="row : ${codeList}"
+					                th:text="${row.cdNm}"
+					                th:value="${row.cdId}"
+					                th:unless="${order.orderTypeCd ==row.cdId}">		             
 				        	</option>	
 	                 		</select>
 							</td>
@@ -408,15 +563,20 @@ $(document).ready(function(){
 	                      <td class="card-footer">거래처</td>
 	                      <td>
 	                      	<select id="customerId" name="customerId" class="form-control">
-		                      <option value="">거래처 목록</option>
+		                      	<option value="">거래처 목록</option>
 		                    	<option th:each="row : ${customerList}"
 					                th:text="${row.customerNm}"
 					                th:value="${row.customerId}"
-					               >
-						     </option>		
+					              	th:if="${order.customerId ==row.customerId}" selected>	
+						     	</option>	
+						     	<option th:each="row : ${customerList}"
+					                th:text="${row.customerNm}"
+					                th:value="${row.customerId}"
+					              	th:unless="${order.customerId ==row.customerId}">	
+						     	</option>		
 					    	</select>	   
 						  </td>
-						  <td ><input type="text" class="form-control" id="searchCustomerNm" name="searchCustomerNm" >
+						  <td ><input type="text" class="form-control" id="searchCustomerNm1" name="searchCustomerNm1" >
 						  </td>
 	            		  <td >
 	                		 <input type="button" class="btn btn-default btn-success" id="btn_com_search" value="검색" />
@@ -424,16 +584,18 @@ $(document).ready(function(){
 	                    </tr>   
 	                    <tr>                                   
 	                      <td class="card-footer">납품요청일</td>
-	                      <td ><input type="text"  id="deliveryReqDt" name="deliveryReqDt"  class="form-control">
+	                      <td ><input type="text"  id="deliveryReqDt" name="deliveryReqDt" th:value="${#calendars.format( order.deliveryReqDt, 'yyyy/MM/dd' )}" class="form-control">
 	                      </td>     
-	                      <td colspan=2><input type="radio"  name="deliveryReqAmpm" id="deliveryReqAmpm" value="A" checked="">  오전                                   
-	                      	<input type="radio"  name="deliveryReqAmpm" id="deliveryReqAmpm" value="P"> 오후
-	
+	                      <td colspan=2>
+	                      	<input type="radio"  name="deliveryReqAmpm" id="deliveryReqAmpm" value="A" th:if="${order.deliveryReqAmpm =='A'}" checked="">                                      
+	                      	<input type="radio"  name="deliveryReqAmpm" id="deliveryReqAmpm" value="A" th:unless="${order.deliveryReqAmpm =='A'}">   오전
+	                      	<input type="radio"  name="deliveryReqAmpm" id="deliveryReqAmpm" value="P"  th:if="${order.deliveryReqAmpm =='P'}" checked=""> 
+							<input type="radio"  name="deliveryReqAmpm" id="deliveryReqAmpm" value="P"  th:unless="${order.deliveryReqAmpm =='P'}"> 오후
 	            		  </td>                
 	                    </tr>                   
 	                    <tr>
 	                      <td class="card-footer">기타사항</td>
-	                      <td colspan=3><input type="text" class="form-control" id="orderEtc" name="orderEtc" placeholder="기타사항"> </thd>   
+	                      <td colspan=3><input type="text" class="form-control" id="orderEtc" name="orderEtc"  th:value="${order.orderEtc}"> </thd>   
 	                    </tr>                   
 	                     </thead>   
 			         </table>
@@ -459,31 +621,30 @@ $(document).ready(function(){
 		                         <td>용기교환</td>
 		                         <td></td>
 		                       </tr>
-		                       <tr>
-		                       <td  style="padding-left: 0px;">                                           
-		                         <select id="productId_0" name="productId_0" class="form-control" style="width:150px">
-			                        
-							    </select>	   
-		                       </td>
-		                       <td> 
-		                       		<select id="productPriceSeq_0" name="productPriceSeq_0" class="form-control" style="width:80px">
-				                        <option value="0">옵션</option>			                      	
+		                       <tr >
+			                       <td  style="padding-left: 0px;">                                           
+			                         <select id="productId_0" name="productId_0" class="form-control" style="width:150px">
+				                        
 								    </select>	   
-		                        
-		                       </td>   
-		                       <td>
-	                             <input type="number" id="orderCount_0" name="orderCount_0" style="width:60px;height:35px;" onkeypress="return event.charCode >= 48" min="1" max="99999"> 
-	                           </td>	                      
-		                       <td> 
-		                         <input type="text" class="form-control" id="orderProductEtc_0" name="orderProductEtc_0">
-		                       </td> 
-		                       <td> 
-		                         <input type="checkbox" class="form-control" id="bottleChangeYn" name="bottleChangeYn_0">
-			                   </td> 
-		                       <td>
-		                       <input type="button" class="btn btn-default btn-success" id="addrow" value="추가" />
-		                       
-		                       </td>
+			                       </td>
+			                       <td> 
+			                       		<select id="productPriceSeq_0" name="productPriceSeq_0" class="form-control" style="width:80px">
+					                        <option value="0">옵션</option>			                      	
+									    </select>	   
+			                       </td>   
+			                       <td>
+		                             <input type="number" id="orderCount_0" name="orderCount_0" style="width:60px;height:35px;" onkeypress="return event.charCode >= 48" min="1" max="99999"> 
+		                           </td>	                      
+			                       <td> 
+			                         <input type="text" class="form-control" id="orderProductEtc_0" name="orderProductEtc_0">
+			                       </td> 
+			                       <td> 
+			                         <input type="checkbox" class="form-control" id="bottleChangeYn" name="bottleChangeYn_0">
+				                   </td> 
+			                       <td>
+			                       <input type="button" class="btn btn-default btn-success" id="addrow" value="추가" />
+			                       
+			                       </td>
 		                       </tr>
 		                     </table>
 	                     </div>

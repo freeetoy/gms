@@ -16,6 +16,8 @@ public interface OrderService {
 	public List<OrderVO> getCustomerOrderList(Integer customerId);
 
 	public OrderVO getOrderDetail(Integer orderId) ;
+	
+	public List<OrderProductVO> getOrderProductList(Integer orderId);
 
 	public int getOrderCount(Map<String, Object> map);	
 
@@ -27,7 +29,7 @@ public interface OrderService {
 	
 	public int registerOrderProducts(List<OrderProductVO> orderProduct);	
 
-	public int modifyOrder(OrderVO param);
+	public int modifyOrder(HttpServletRequest request,OrderVO param);
 	
 	public int modifyOrderDeposit(OrderVO param);
 
