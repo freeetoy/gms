@@ -206,6 +206,8 @@
 			TB_Order
 		WHERE
 			Order_ID = #{orderId}
+		AND 
+			Order_Process_CD !='0299'
 	</select>
 
 	<update id="updateOrder" parameterType="com.gms.web.admin.domain.manage.OrderVO">
@@ -261,7 +263,7 @@
 	<update id="deleteOrder" parameterType="com.gms.web.admin.domain.manage.OrderVO">
 		UPDATE TB_Order
 		SET
-			Delete_YN = 'Y'
+			Order_Process_CD = '0299'
 			, UPDATE_ID = #{updateId}
 			, UPDATE_DT = NOW()
 		WHERE
@@ -279,7 +281,8 @@
 		FROM
 			TB_Order A, TB_Customer B, TB_CODE C, TB_User D
 		WHERE
-			A.Customer_Id = B.Customer_ID
+			A.Customer_Id = B.Customer_ID		
+		AND Order_Process_CD !='0299'
 		AND A.Order_Process_Cd = C.CD_ID
 		AND A.Create_Id = D.User_ID
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
@@ -313,6 +316,7 @@
 			TB_Order A, TB_Customer B, TB_CODE C
 		WHERE
 			A.Customer_Id = B.Customer_ID
+		AND Order_Process_CD !='0299'
 		AND A.Order_Process_Cd = C.CD_ID
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
 		AND Customer_Nm	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
@@ -328,7 +332,9 @@
 		FROM
 			TB_Order A, TB_Customer B, TB_CODE C
 		WHERE
-			A.Customer_Id = B.Customer_ID		
+			A.Customer_Id = B.Customer_ID	
+		AND 
+			Order_Process_CD !='0299'	
 		AND 
 			Customer_id = #{customerId}
 		AND 

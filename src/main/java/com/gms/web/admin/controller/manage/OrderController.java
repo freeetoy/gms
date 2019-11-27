@@ -217,5 +217,30 @@ public class OrderController {
 		
 		return orderProductList;
 	}
+	
+	
+	@RequestMapping(value = "/gms/order/delete.do", method = RequestMethod.POST)
+	public ModelAndView deleteOrder(HttpServletRequest request
+			, HttpServletResponse response
+			, OrderVO params) {
+		
+		logger.info("OrderContoller deleteOrder");
+		
+		RequestUtils.initUserPrgmInfo(request, params);
+		
+		//검색조건 셋팅
+		logger.info("OrderContoller searchOrderDt "+ params.getSearchOrderDt());
+		logger.info("OrderContoller searchCustomerNm "+ params.getSearchCustomerNm());
+		
+		int  result = orderService.deleteOrder(params);
+		
+		if(result > 0){
+			String alertMessage = "삭제하였습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/order/list.do?currentPage="+params.getCurrentPage()+"&searchCustomerNm="+params.getSearchCustomerNm()+"&searchOrderDt="+params.getSearchOrderDt());
+		}
+		return null;
+		
+	}
 		
 }
