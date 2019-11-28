@@ -83,9 +83,7 @@ var fn_deleteBottle = function(bottleId){
 		
 		ajax.done(function(data){
 			console.log(data);
-		
-			console.log("####bottleCd---"+data.bottleId);		
-			
+
 			$("#chBottleId").val(data.bottleId);
 			$("#bottleBarCd").val(data.bottleBarCd);
 			
