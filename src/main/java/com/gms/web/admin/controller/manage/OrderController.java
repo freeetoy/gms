@@ -242,5 +242,15 @@ public class OrderController {
 		return null;
 		
 	}
+	
+	
+	@RequestMapping(value = "/gms/order/detail.do")
+	@ResponseBody
+	public OrderVO getOrderDetail(@RequestParam(value = "orderId", required = false) Integer orderId, Model model)	{
+		
+		OrderVO result = orderService.getOrderDetail(orderId);			
+		
+		return result;
+	}
 		
 }

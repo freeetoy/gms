@@ -201,13 +201,16 @@
 	</select>
 	<select id="selectOrderDetail" parameterType="Integer" resultType="com.gms.web.admin.domain.manage.OrderVO">
 		SELECT
-			<include refid="OrderColumns" />
+			<include refid="OrderSelectColumns" />
 		FROM
-			TB_Order
+			TB_Order A, TB_Customer B, TB_CODE C, TB_User D
 		WHERE
 			Order_ID = #{orderId}
-		AND 
-			Order_Process_CD !='0299'
+		AND Order_Process_CD !='0299'
+		AND A.Customer_Id = B.Customer_ID		
+		AND Order_Process_CD !='0299'
+		AND A.Order_Process_Cd = C.CD_ID
+		AND A.Create_Id = D.User_ID				
 	</select>
 
 	<update id="updateOrder" parameterType="com.gms.web.admin.domain.manage.OrderVO">

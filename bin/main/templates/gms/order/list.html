@@ -5,21 +5,7 @@
 <th:block layout:fragment="content"> 
 <script type="text/javascript">	
 
-function checkAll(){
-   
-    
-    if( $("#checkAll").is(':checked') ) {
 
-        $("input[name=check_id]").prop("checked", true);
-
-	} else {
-	
-	        $("input[name=check_id]").prop("checked", false);
-	
-	}
-}
-
-	
 function validationOfForm(form) {
 	
 	console.log(form.chBottle.value);
@@ -35,7 +21,7 @@ function fn_modifyBottleWorkCd(){
     	chForm.submit();
 	}
 	
-var deleteOrder = function(orderId){
+var goDelete = function(orderId){
 		
 	if(confirm("삭제하시겠습니까?")){	
 		
@@ -66,7 +52,7 @@ var deleteOrder = function(orderId){
 	}
 	
 	
-	var fn_ChangeOrderWorkCd = function(orderId){
+	var changeOrderProcess = function(orderId){
 	
 		//$("table.table-hover").find('tr').remove();
 		
@@ -83,25 +69,16 @@ var deleteOrder = function(orderId){
 		
 		ajax.done(function(data){
 			console.log(data);
-		
-			console.log("####orderCd---"+data.orderId);		
 			
-			$("#chBottleId").val(data.orderId);
-			$("#orderBarCd").val(data.orderBarCd);
-			
-			$('select[id="orderWorkCd"]').find('option:contains(data.orderWorkCd)').attr("selected",true);
-
-			$("#orderWorkCd").val(data.orderWorkCd);		
-			
-			$('select[id="orderType"]').find('option:contains(data.orderType)').attr("selected",true);
-
-			$("#orderType").val(data.orderType);		
+			$("#chOrdereId").val(data.orderId);
+			$("#mCustomerNm").val(data.customerNm);			
+			$("#mOrderReqDt").val(data.deliveryReqDt);
+			$("#mOrderEtc").val(data.orderEtc);		
 				
 			if(data.result == "fail"){
-				alert("용기가 존재하지 않습니다");			
+				alert("주문이 존재하지 않습니다");			
 				return;
-			}
-			
+			}			
 		});
 		
 	};
@@ -244,46 +221,28 @@ var deleteOrder = function(orderId){
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">용기 상태 변경</h4>
+              <h4 class="modal-title">주문 정보</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <form id="chForm" name="chForm" th:object="${order}" method="post">
-              
+              <input type="hidden" id="chOrderId" name="chOrderId" value="">
               <div class="card-body">
             	<table class="table table-hover">
                   <thead>
                   <tr>
-                      <th class="card-footer">용기 코드</th>
-                      <th><input type="text" class="form-control" id="chBottleId" name="chBottleId" placeholder="용기 코드" ></th>
+                      <th class="card-footer">거래처</th>
+                      <th><input type="text" class="form-control" id="mCustomerNm" name="mCustomerNm" readonly></th>
+                    </tr>
+                    <tr>                                   
+                      <th class="card-footer">납품요청일</th>
+                      <th><input type="text" class="form-control" id="mOrderReqDt" name="mOrderReqDt" readonly ></th>
                     </tr>
                      <tr>                                   
-                      <th class="card-footer">용기 바코드</th>
-                      <th><input type="text" class="form-control" id="orderBarCd" name="orderBarCd" placeholder="용기 바코드" ></th>
-                    </tr>
-                    <tr>
-                      <th class="card-footer">상태</th>
-                      <th>
-                      <select id="orderWorkCd" name="orderWorkCd" class="form-control">
-                          <option value="">상태</option>				    
-					        <option th:each="row : ${codeList}"
-					                th:text="${row.cdNm}"
-					                th:value="${row.cdId}"
-					               >
-					        </option>					
-                        </select>
-					  </th>   
-                    </tr>
-                    <tr>
-                      <th class="card-footer">용기타입</th>
-                      <th>
-                      <select id="orderType" name="orderType" class="form-control">
-                          <option value="E">공병</option>
-                          <option value="F">실병</option>	
-                        </select>
-					  </th>   
-                    </tr>
+                      <th class="card-footer">기타</th>
+                      <th><input type="text" class="form-control" id="mOrderEtc" name="mOrderEtc" readonly></th>
+                    </tr>                    
                   </thead>                              
                 </table>       
                 
@@ -343,7 +302,7 @@ var deleteOrder = function(orderId){
          </div>
         <div class="row">	
 	        <div class="col-12">
-	        <table class="table table-hover">
+	        <table>
 	         </table>
 	        </div>
         </div>
@@ -379,11 +338,11 @@ var deleteOrder = function(orderId){
                       <td th:text="${#calendars.format( row.deliveryReqDt, 'yyyy-MM-dd' )}"></td>
 		     			<td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>  
                       <td>                      
-						<a class="btn btn-success btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_ChangeBottleWorkCd([[ ${row.orderId} ]])" href="#"><i class="fas fa-pencil-alt"></i>상태변경 </a>
+						<a class="btn btn-success btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#modal-default" th:onclick="changeOrderProcess([[ ${row.orderId} ]])" href="#"><i class="fas fa-pencil-alt"></i>상태변경 </a>
 					  </td>
 					  <td>  	
 					  <a class="btn btn-info btn-xs" href="#" th:onclick="goUpdate([[ ${row.orderId} ]])"><i class="fas fa-pencil-alt"></i>수정 </a>
-						<a class="btn btn-danger btn-xs" href="#" th:onclick="deleteOrder([[ ${row.orderId} ]])">
+						<a class="btn btn-danger btn-xs" href="#" th:onclick="goDelete([[ ${row.orderId} ]])">
                               <i class="fas fa-trash"></i>삭제</a>
                           <a class="btn btn-primary btn-xs" href="#" th:onclick="showOrderDetail([[ ${row.orderId} ]])">
                               <i class="fas fa-folder"></i>거래명세서</a>

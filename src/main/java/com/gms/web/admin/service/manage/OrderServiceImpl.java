@@ -489,8 +489,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	@Transactional
 	public int deleteOrder(OrderVO param) {
-		// TODO Auto-generated method stub
-		return 0;
+		return orderMapper.deleteOrder(param);
 	}
 
 	@Override
