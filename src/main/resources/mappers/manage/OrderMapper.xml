@@ -260,7 +260,7 @@
 			, UPDATE_ID 		= #{updateId}
 			, UPDATE_DT 		= NOW()
 		WHERE
-			Order_ID = #{orderId}
+			Order_ID = #{chOrderId}
 	</update>	
 	
 	<update id="deleteOrder" parameterType="com.gms.web.admin.domain.manage.OrderVO">

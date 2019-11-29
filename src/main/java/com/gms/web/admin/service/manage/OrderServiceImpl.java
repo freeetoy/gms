@@ -481,9 +481,41 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional
-	public int changeOrderProcessCd(OrderVO param) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int changeOrderProcessCd(OrderVO params) {
+		
+		String searchOrderDtFrom = null;
+		String searchOrderDtEnd = null;
+		int  result = 0;
+		
+		try {		
+			logger.debug("******params.getOrderId()()) *****===*"+params.getChOrderId());
+			logger.debug("Orderserive  searchOrderDt "+ params.getSearchOrderDt());
+			String searchOrderDt = params.getSearchOrderDt();	
+					
+			if(searchOrderDt != null && searchOrderDt.length() > 20) {
+				
+				logger.debug("OrderContoller searchOrderDt "+ searchOrderDt.length());
+
+				searchOrderDtFrom = searchOrderDt.substring(0, 10) ;				
+				searchOrderDtEnd = searchOrderDt.substring(13, searchOrderDt.length()) ;
+				
+				params.setSearchOrderDtFrom(searchOrderDtFrom);
+				params.setSearchOrderDtEnd(searchOrderDtEnd);
+				
+			}			
+			
+			result = orderMapper.updateOrderProcessCd(params);
+			logger.debug("Orderserive end searchOrderDt "+ params.getSearchOrderDt());
+					
+		} catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 
 	@Override
@@ -525,6 +557,20 @@ public class OrderServiceImpl implements OrderService {
 			e.printStackTrace();
 		}
 		if(result ==0) result = 1;
+		return result;
+	}
+
+	@Override
+	public OrderExtVO getOrder(Integer orderId) {
+		
+		OrderVO order = orderMapper.selectOrderDetail(orderId);	
+		
+		List<OrderProductVO> orderProduct = orderMapper.selectOrderProductList(orderId);
+		
+		OrderExtVO result = new OrderExtVO();
+		result.setOrder(order);
+		result.setOrderProduct(orderProduct);
+		
 		return result;
 	}
 

@@ -26,6 +26,7 @@ import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.GasVO;
+import com.gms.web.admin.domain.manage.OrderExtVO;
 import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.service.common.CodeService;
@@ -246,11 +247,34 @@ public class OrderController {
 	
 	@RequestMapping(value = "/gms/order/detail.do")
 	@ResponseBody
-	public OrderVO getOrderDetail(@RequestParam(value = "orderId", required = false) Integer orderId, Model model)	{
+	public OrderExtVO getOrderDetail(@RequestParam(value = "orderId", required = false) Integer orderId, Model model)	{
 		
-		OrderVO result = orderService.getOrderDetail(orderId);			
+		OrderExtVO result = orderService.getOrder(orderId);			
 		
 		return result;
 	}
 		
+	@RequestMapping(value = "/gms/order/changeProcess.do", method = RequestMethod.POST)
+	public ModelAndView modifyOrderWorkCd(HttpServletRequest request
+			, HttpServletResponse response
+			, OrderVO params) {
+		
+		logger.debug("OrderContoller changeProcess");
+		
+		logger.debug("OrderContoller orderProcessCd=="+params.getOrderProcessCd());
+		
+		RequestUtils.initUserPrgmInfo(request, params);
+		
+		logger.debug("OrderContoller befeor service searchCustomerNm=="+params.getSearchCustomerNm());
+		int result = orderService.changeOrderProcessCd(params);
+		logger.debug("OrderContoller after service searchCustomerNm=="+params.getSearchCustomerNm());
+		if(result > 0){
+			String alertMessage = "진행상태를 변경하였습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/order/list.do?currentPage="+params.getCurrentPage()+"&searchCustomerNm="+params.getSearchCustomerNm()+"&searchOrderDt="+params.getSearchOrderDt());
+		}
+		return null;
+		
+	}
+	
 }

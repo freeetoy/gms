@@ -47,7 +47,7 @@ public class AbstractSearchVO extends AbstractVO implements Serializable{
         super();
         this.currentPage = 1;
         this.orderWay = "asc";
-        this.rowPerPage = 10;
+        this.rowPerPage = 5;
     }
 	
 	

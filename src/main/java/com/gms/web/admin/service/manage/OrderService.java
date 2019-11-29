@@ -17,6 +17,8 @@ public interface OrderService {
 
 	public OrderVO getOrderDetail(Integer orderId) ;
 	
+	public OrderExtVO getOrder(Integer orderId) ;
+	
 	public List<OrderProductVO> getOrderProductList(Integer orderId);
 
 	public int getOrderCount(Map<String, Object> map);	
