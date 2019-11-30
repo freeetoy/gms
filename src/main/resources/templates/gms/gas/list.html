@@ -172,15 +172,7 @@
           <div class="col-12">
             <div class="card">
              
-              <div class="card-header">
-                <h3 class="card-title">Responsive Hover Table</h3>
-
-                <div class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 150px;">
-                    <div class="input-group-append"></div>
-                  </div>
-                </div>
-              </div>
+              
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover">
@@ -195,14 +187,14 @@
                     </tr>
                   </thead>
                   <tbody>
-                  	<tr th:if="${not #lists.isEmpty( gasList )}" th:each="row : ${gasList}">
+                  	<tr th:if="${not #lists.isEmpty( gasList )}" th:each="row : ${gasList}" style="font-size:14px;">
                       <td th:text="${gasList.indexOf(row)+1}"></td>
                       <td th:text="${row.gasNm}"></td>
                       <td th:text="${row.gasCd}"></td>
                       <td th:text="${row.createId}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
-                      <td><button type="button" class="btn btn-primary" th:gasId="${row.gasId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_modifyGas([[ ${row.gasId} ]])">수정</button> 
-                      <button type="button" class="btn btn-secondary" th:onclick="fn_deleteGas([[ ${row.gasId} ]])">삭제</button>
+                      <td><button type="button" class="btn btn-primary  btn-sm" th:gasId="${row.gasId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_modifyGas([[ ${row.gasId} ]])">수정</button> 
+                      <button type="button" class="btn btn-secondary  btn-sm" th:onclick="fn_deleteGas([[ ${row.gasId} ]])">삭제</button>
                       
                       </td>
                     </tr>

@@ -341,7 +341,7 @@ var fn_deleteBottle = function(bottleId){
                   </thead>
                   <tbody>
                  
-                  	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}">
+                  	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}" style="font-size:14px;">
                       <td th:text="${totalCount-((currentPage-1)*10) - bottleList.indexOf(row)}"></td>
                       <td>
                       <a href="#" th:onclick="goUpdate([[ ${row.bottleId} ]])" th:text="${row.bottleId}"></a>                     

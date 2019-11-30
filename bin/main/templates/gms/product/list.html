@@ -141,7 +141,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                  	<tr th:if="${not #lists.isEmpty( productList )}" th:each="row : ${productList}">
+                  	<tr th:if="${not #lists.isEmpty( productList )}" th:each="row : ${productList}" style="font-size:14px;">
                       <td th:text="${productList.indexOf(row)+1}"></td>
                       <td th:if="${row.productPriceSeq == 1}" th:rowspan="${row.productPriceCount}">
                       <a th:href="@{/gms/product/update.do( productId=${row.productId} )}" th:text="${row.ProductNm}"></a>

@@ -385,7 +385,7 @@ var fn_deleteBottle = function(bottleId){
                   </thead>
                   <tbody>
                   <form name="checkForm" id="checkForm">
-                  	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}">
+                  	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}" style="font-size:14px;">
                       <td><input class="IdCheckbox"  name="check_id" type="checkbox" th:value="${row.bottleId}"></td>
                       <td>
                       <a href="#" th:onclick="goUpdate([[ ${row.bottleId} ]])" th:text="${row.bottleId}"></a>                     

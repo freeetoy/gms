@@ -123,7 +123,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                  	<tr th:if="${not #lists.isEmpty( userList )}" th:each="row : ${userList}">
+                  	<tr th:if="${not #lists.isEmpty( userList )}" th:each="row : ${userList}"  style="font-size:14px;">
                       <td th:text="${totalCount-((currentPage-1)*10) - userList.indexOf(row)}"></td>
                       <td>
                       <a th:href="@{/gms/user/update.do( userId=${row.userId} )}" th:text="${row.userNm}"></a>

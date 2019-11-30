@@ -6,14 +6,10 @@
 <script type="text/javascript">	
 
 
-function validationOfForm(form) {
-	
-	console.log(form.chBottle.value);
-	return ture;
-}
+
 
 var goUpdate = function(orderId){		
-	
+	/*
 	//alert("goUpdate "+orderId);
 	console.log("goUpdate orderId ="+orderId);
 	var form = $("#mainForm");	
@@ -23,17 +19,43 @@ var goUpdate = function(orderId){
 	//document.getElementById("priceCount").value = totalCount;
 	form.action="/gms/order/update.do";
 	form.submit();
+	*/
+	
+	var form = document.createElement("form");
+	form.setAttribute("charset","UTF-8");
+	form.setAttribute("method","post");
+	form.setAttribute("action","/gms/order/update.do?currentPage=[[ ${currentPage} ]]&searchCustomerNm=[[ ${searchCustomerNm} ]]&searchOrderDt=[[ ${searchOrderDt} ]]");
+	//form.setAttribute("action","/gms/order/update.do");
+		
+	var hiddenField = document.createElement("input");
+    hiddenField.setAttribute("type", "hidden");
+    hiddenField.setAttribute("name", "orderId");
+    hiddenField.setAttribute("value", orderId);
+
+    form.appendChild(hiddenField);          
+    document.body.appendChild(form);
+
+    form.submit();			
+	
+	
+	
 }
 
-function gotoPage(pageNo) {
+var gotoPage = function(pageNo) {
 	
-	var form =  document.mainForm;			
-	
+	//var form =  document.mainForm;			
+	console.log("gotoPage "+pageNo);
 	$("#currentPage").val(pageNo);  
-	 mainForm.action="/gms/order/list.do";
+	 //mainForm.action="/gms/order/list.do";
     //validate checkt시 confirm 중복되는 부분 처리 
    
-	mainForm.submit();
+	//mainForm.submit();
+    
+	var form = document.mainForm;	
+	document.mainForm.action="/gms/order/list.do";
+	document.mainForm.submit();
+    
+   		
 }
 	
 var goDelete = function(orderId){
@@ -351,6 +373,7 @@ $(document).ready(function(){
 								<form id="chForm" name="chForm" th:object="${order}" method="post">
 					              <input type="hidden" id="chOrderId" name="chOrderId" value="">
 					              <input type="hidden" id="orderProcessCd" name="orderProcessCd" value="">	
+					              
 									<table id="myTable" class="table order-info">
 									<thead>
 										<tr>
@@ -414,7 +437,7 @@ $(document).ready(function(){
 										<div class="col-md-2 col-sm-2 col-xs-12">
 										</div>
 									</div>
-		
+									</form>
 									<div class="ln_solid"></div>
 									<div class="form-group" id="view_button" >
 										<div align="center">
@@ -443,11 +466,11 @@ $(document).ready(function(){
 		</div>
 		</div>
 		<!-- /.modal -->
-    
-    	<div class="row">
-        	<form id="mainForm" name=""mainForm""  method="post">
+    		<form id="mainForm" name="mainForm"  method="post">
               <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
               <input type="hidden" id="orderId" name="orderId" value="">
+    	<div class="row">
+        	
             <div class="col-1">
                		<label>접수 기간</label>
             </div>               
@@ -593,40 +616,7 @@ $(document).ready(function(){
     </section>
     <!-- /.content -->
   </div>
-  
-  <script type="text/javascript">	
-
-
-function validationOfForm(form) {
-	
-	console.log(form.chBottle.value);
-	return ture;
-}
-
-var goUpdate = function(orderId){		
-	
-	//alert("goUpdate "+orderId);
-	console.log("goUpdate orderId ="+orderId);
-	var form = $("#mainForm");	
-
-	$("#orderId").val(orderId);
-	
-	//document.getElementById("priceCount").value = totalCount;
-	form.action="/gms/order/update.do";
-	form.submit();
-}
-
-function gotoPage(pageNo) {
-	
-	var form =  document.mainForm;			
-	
-	$("#currentPage").val(pageNo);  
-	 mainForm.action="/gms/order/list.do";
-    //validate checkt시 confirm 중복되는 부분 처리 
-   
-	mainForm.submit();
-}
-</script>
+ 
   </th:block>
 
 </body>
