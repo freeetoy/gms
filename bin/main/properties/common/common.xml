@@ -8,7 +8,7 @@
 	
 	<!-- Menu ID 정의 -->
 	<entry key="common.menu.order">order</entry>
-	<entry key="common.menu.trasnaction">transaction</entry>
+	<entry key="common.menu.trasnaction">transact</entry>
 	<entry key="common.menu.bottle">bottle</entry>
 	<entry key="common.menu.boottle.test">bottlet</entry>
 	<entry key="common.menu.boottle.sales">bottles</entry>

@@ -144,9 +144,9 @@ $(document).ready(function(){
 					
 					$("#mcustomerNm").val(data.order.customerNm);			
 					$("#deliveryReqDt").val(moment(data.order.deliveryReqDt).format('YYYY/MM/DD') + ' ' +Ampm);			
-					$("#orderEtc").val(data.order.orderEtc);			
-					$("#orderTotalAmount").val(numberWithCommas(data.order.orderTotalAmount));	
-					console.log(data.order.OrderTotalAmount);
+					$("#OrderEtc").val(data.order.orderEtc);			
+					
+					//console.log(data.order.customerNm);
 					
 					if(data.order.orderProcessCd =='0201'){			
 						$("#view_button").show();
@@ -211,7 +211,7 @@ $(document).ready(function(){
 						cols += '<td>용량</td>';
 						cols += '<td>수량</td>';
 						cols += '<td>기타</td>';
-						cols += '<td>용기교환</td></tr>';
+						cols += '<td>용기교한</td></tr>';
 
 						newRow.append(cols);
 						$("table.mod-doc-list").append(newRow);
@@ -235,9 +235,9 @@ $(document).ready(function(){
 			       .fail(function(){
 				  console.log("fail");
 			       });
-				
 
-				//$("#orderAmountView").show();
+
+				//$("#view_button1").show();
 				//$("#view_button").hide();
 			});
 	
@@ -439,12 +439,9 @@ $(document).ready(function(){
 									<table id="myTable" class="table order-info">
 										<tr>
 											<td class="card-footer">기타사항</td>
-											<td colspan=5><input type="text" class="form-control" id="orderEtc"  name="orderEtc"  placeholder="" value="" disabled> </td>
-										</tr>		
-										<tr>
-											<td class="card-footer" id="orderAmountView">주문금액</td>
-											<td colspan=5><input type="text" class="form-control" id="orderTotalAmount"  name="orderTotalAmount"  placeholder="" value="" disabled> </td>
-										</tr>										
+											<td colspan=5><input type="text" class="form-control" id="orderEtc"  name=""orderEtc""  placeholder="" value="" disabled> </td>
+										</tr>
+										
 									</table>
 											
 									<div class="form-group" id="view_sale_finish_date_check" style="display: none;">
@@ -597,11 +594,11 @@ $(document).ready(function(){
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
 					<ul class="pagination">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
-							<a th:href="@{/gms/order/list.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Prev</a>
+							<a th:href="@{/gms/order/list.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
 						</li>
 						
 						<li th:if="${currentPage<=1}" class="paginate_button page-item previous disabled" id="example2_previous">
-							<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Prev</a>
+							<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
 						</li>
 						<th:block th:each="num:${#numbers.sequence(startPageNum, lastPageNum)}">
 						

@@ -109,6 +109,67 @@ public class BottleServiceImpl implements BottleService {
 	}
 	
 	@Override
+	public List<BottleVO> getBottleListToExcel(BottleVO param) {
+		logger.info("****** getBottleListToExcel *****start===*");
+		
+		
+		logger.info("****** getBottleListToExcel *****param.getSearchBottleId===*" + param.getSearchBottleId());
+		logger.info("****** getBottleListToExcel *****param.getRowPerPage===*" + param.getRowPerPage());
+		
+		int currentPage = param.getCurrentPage();
+		int ROW_PER_PAGE = param.getRowPerPage();
+		
+		int starPageNum =1;
+		
+		int lastPageNum = ROW_PER_PAGE;
+		
+		if(currentPage > (ROW_PER_PAGE/2)) {
+			lastPageNum += (starPageNum-1);
+		}
+		
+		int startRow = (currentPage-1) * ROW_PER_PAGE;
+		
+		Map<String, Object> map = new HashMap<String, Object>();		
+		
+		map.put("startRow", startRow);
+		map.put("rowPerPage", ROW_PER_PAGE);	
+		map.put("searchBottleId", param.getSearchBottleId());	
+		
+		if(param.getSearchGasId() != null) {
+			map.put("searchGasId", param.getSearchGasId());
+			logger.info("****** getBottleList *****searchGasId===*"+param.getSearchGasId());
+		}
+		
+		if(param.getSearchChargeDt() != null) {
+			map.put("searchChargeDt", param.getSearchChargeDt());
+			logger.info("****** getBottleList *****getSearchChargeDt===*"+param.getSearchChargeDt());
+		}		
+		
+		if(param.getSearchChargeDtFrom() != null) {
+			map.put("searchChargeDtFrom", param.getSearchChargeDtFrom());
+			logger.info("****** getBottleList *****getSearchChargeDtFrom===*"+param.getSearchChargeDtFrom());
+		}
+		
+		if(param.getSearchChargeDtEnd() != null) {
+			map.put("searchChargeDtEnd", param.getSearchChargeDtEnd());
+			logger.info("****** getBottleListToExcel *****getSearchChargeDtEnd===*"+param.getSearchChargeDtEnd());
+		}
+		
+		if(param.getSearchSalesYn() != null) {
+			map.put("searchSalesYn", param.getSearchSalesYn());
+			logger.info("****** getBottleListToExcel *****getSearchSalesYn===*"+param.getSearchSalesYn());
+		}
+		
+		logger.info("****** getBottleListToExcel *****currentPage===*"+currentPage);
+				
+		
+		List<BottleVO> bottleList = bottleMapper.selectBottleListToExcel(map);
+		
+		
+		return bottleList;
+	}
+	
+	@Override
 	public List<BottleVO> getCustomerBottleList(Integer customerId) {
 		return bottleMapper.selectCustomerBottleList(customerId);	
 	}
@@ -227,5 +288,11 @@ public class BottleServiceImpl implements BottleService {
 		return bottleMapper.insertBottleHistory(bottleId);		
 	}
 
+	@Override
+	public int modifyBottleOrder(BottleVO param) {
+		return bottleMapper.updateBottleOrderId(param);		
+	}
+
+	
 	
 }

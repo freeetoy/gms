@@ -183,7 +183,7 @@
 			, Bottle_Sales_YN	= #{bottleSalesYn}
 		WHERE
 			Bottle_ID = #{bottleId}
-	</update>
+	</update>	
 
 	<update id="updateBottleWorkCd" parameterType="com.gms.web.admin.domain.manage.BottleVO">
 		UPDATE TB_Bottle
@@ -196,6 +196,17 @@
 		WHERE
 			Bottle_ID = #{chBottleId}
 	</update>	
+	
+	<update id="updateBottleOrderId" parameterType="com.gms.web.admin.domain.manage.BottleVO">
+		UPDATE TB_Bottle
+		SET
+			Order_Id			= #{orderId}
+			,Order_Product_Seq	= #{orderProductSeq}
+			, UPDATE_ID 		= #{updateId}
+			, UPDATE_DT 		= NOW()	
+		WHERE
+			Bottle_ID = #{bottleId}
+	</update>
 	
 	<update id="deleteBottle" parameterType="com.gms.web.admin.domain.manage.BottleVO">
 		UPDATE TB_Bottle
@@ -246,6 +257,33 @@
 		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID														
 		ORDER BY Create_Dt DESC 
 		Limit #{startRow}, #{rowPerPage}
+	</select>
+	
+	<select id="selectBottleListToExcel" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="java.util.Map">
+		SELECT A.*, B.Customer_Nm
+		FROM (
+			SELECT
+				<include refid="BottleSelectColumns" />
+			FROM
+				TB_Bottle TB, TB_CODE TC, TB_Gas TG
+			WHERE
+				TB.Delete_YN = 'N'
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchBottleId)">
+			AND Bottle_ID	 LIKE CONCAT('%', CONCAT(#{searchBottleId}, '%'))
+			</if>
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchGasId)">
+			AND TG.Gas_ID=  #{searchGasId}
+			</if>
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
+			AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
+			</if>		
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchSalesYn)">
+			AND Bottle_Sales_Yn =  #{searchSalesYn}
+			</if>			
+			AND TB.Bottle_Work_CD = TC.CD_ID	
+			AND TB.Gas_ID = TG.Gas_Id
+		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID														
+		ORDER BY Create_Dt DESC 
 	</select>
 	
 	<select id="selectBottleCount" resultType="int" parameterType="java.util.Map">

@@ -37,6 +37,7 @@
 		,Product_Price_Seq
 		,Product_Price
 		,Product_Capa
+		,product_Status
 		,Create_ID 
 		,Create_Dt 
 		,Update_ID 
@@ -81,6 +82,7 @@
 			, #{productPriceSeq}
 			, #{productPrice}
 			, #{productCapa}
+			, IFNULL(#{productStatus}, '2')
 			, #{createId}			
 			, NOW()
 			, NULL
@@ -126,7 +128,7 @@
 	<update id="updateProductPriceStatus" parameterType="com.gms.web.admin.domain.manage.ProductPriceVO">
 		UPDATE TB_Product_Price
 		SET
-			  Product_Status = #{productPrice}
+			  Product_Status = #{productStatus}
 		WHERE
 			Product_ID = #{productId}
 		AND 
@@ -144,7 +146,11 @@
 	</update>
 	
 	<update id="deleteProductPrice" parameterType="integer">
-		DELETE FROM TB_Product_Price		
+		DELETE FROM TB_Product_Price	
+		SET
+			  Product_Status = '0'
+			, UPDATE_ID = #{updateId}
+			, UPDATE_DT = NOW()	
 		WHERE
 			Product_ID = #{productId}
 	</update>
@@ -199,6 +205,33 @@
 			p.Product_Status != '0'
 		AND 
 			pp.Product_Status != '0'
+	</select>
+		
+	<select id="selectCustomerProductTotalList" parameterType="integer" resultType="com.gms.web.admin.domain.manage.ProductTotalVO">
+		SELECT p.Product_ID, pseq Product_Price_Seq,ta.price Product_Price, Product_Nm, Gas_ID, pp.Product_Status, Member_Comp_Seq, Product_Capa,
+			p.Create_ID, p.Create_Dt, p.Update_ID, p.Update_Dt
+		FROM (
+			SELECT DISTINCT a.product_id pid, a.product_price_seq pseq , a.product_price price
+			FROM tb_product_price a
+			WHERE not exists 
+			(
+				SELECT 1
+				FROM tb_customer_product_price b 
+				WHERE a.Product_ID = b.Product_ID
+				AND a.Product_Price_Seq = b.Product_Price_Seq
+				AND Customer_Id = #{customerId}	
+			)
+			UNION 
+			SELECT DISTINCT c.product_id pid, c.product_price_seq pseq, c.product_price price
+			FROM tb_customer_product_price c
+			WHERE customer_id=1
+			) ta, TB_Product p, TB_Product_Price pp
+		WHERE ta.pid= p.product_Id
+		AND p.product_Id =pp.product_Id
+		AND ta.pseq = pp.Product_Price_Seq
+		AND p.Product_Status != '0'
+		AND pp.Product_Status != '0'
+
 	</select>
 	
 	<select id="selectProductPriceSeq" parameterType="integer" resultType="int">

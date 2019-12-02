@@ -1,0 +1,436 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="gms/layout/blank">
+
+<th:block layout:fragment="content"> 
+<style type="text/css">
+.border_out {font-family: 굴림;border: 3px double black;}
+body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: #000000; border:0px;}
+.border_in {border-width:1px; border-color:black; border-style:solid none solid solid;}
+.l_dot {border-style:dotted; border-width:0 0 0 1px; border-color:#4C4C4C;}
+.lb_dot {border-style:dotted; border-width:0 0 1px 1px; border-color:#6C6C6C;}
+.tl_dot {border-style:solid solid solid dotted; border-width:1px 0px 1px 1px; border-color:black black black #6C6C6C;}
+#command_bar {
+  font-size: 10pt;
+  background-color: #FEFFD2;
+  border: 1px solid #AF9E29;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+.sign_area {
+  position: relative;
+}
+.sign_img {
+  position: absolute;
+  top: 15px;
+  left: 190px;
+}
+
+</style>
+
+
+<div class="print_area" style="margin-top: 50px;page-break-before:always">
+	<table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto;">
+	<tbody>
+		<tr>
+			<td>
+			<table width="960" cellpadding="0" cellspacing="0" class="border_out">
+			  <tbody>
+			  <tr height="44"> 
+			    <td>
+			      <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+				<tbody>
+				<tr>
+				  <td align="center"><span style="font-size:18pt;font-weight:bold;"> 주 문 거 래 명 세 서</span></td>
+				  <td>
+				    <table width="80%" align="right" height="100%" border="0" cellspacing="0" cellpadding="0">
+				      <tbody>
+				      <tr>
+					<td class="border_in" align="center" style="border-top-style:none">작성일</td>    
+				      </tr>
+				      <tr>
+					<td width="30" class="border_in" align="center" style="border-top-style:none;border-bottom-style:none;font-size: 12px;">2019-11-27 10:47</td>               
+				       
+				      </tr>
+				    </tbody>
+				    </table>
+				  </td>
+				</tr>
+			      </tbody>
+			      </table>
+			  </td>          
+		</tr>
+	</tbody>
+	</table>
+
+	  <table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto">   
+	  <tbody>
+		<tr>
+		</tr></tbody></table><table width="100%" style="border-left-style:none;" border="0" cellspacing="0" cellpadding="0">
+			<tbody><tr>
+			  <td width="45%">
+				<table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr height="30"> 
+						<td width="25%" align="center" style="border-style: none none solid solid;border-width: 1px;">거래처명<br>
+						</td>
+						<td style="border-style: none none solid solid;border-width: 1px;" align="center" th:text="${customer.customerNm}"></td>
+					</tr>
+					<tr height="30"> 
+						<td width="25%" align="center" style="border-style: none none solid solid;border-width: 1px;">사업자등록번호<br>
+						</td>
+						<td style="border-style: none none solid solid;border-width: 1px;" align="center" th:text="${customer.businessRegId}"> </td>
+					</tr>
+					<tr height="30"> 
+						<td width="25%" align="center" style="border-style: none none solid solid;border-width: 1px;">주소<br>
+						</td>
+						<td style="border-style: none none solid solid;border-width: 1px;" align="center" th:text="${customer.CustomerAddr}"></td>
+					</tr>
+					<tr height="30"> 
+						<td width="25%" align="center" style="border-style: none none solid solid;border-width: 1px;">전화번호<br>
+						</td>
+						<td style="border-style: none none solid solid;border-width: 1px;" align="center" th:text="${customer.CustomerPhone}"></td>
+					</tr> 
+				</tbody>
+				</table>
+			</td>
+			<td width="18" style="border-style: none solid  solid;border-width: 1px;" align="center"><span style="line-height:38px">공<br>
+				  급<br>
+				  자</span>
+			</td>
+			<td>
+				<table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0"> 
+				<tbody>
+					<tr height="30">                               
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> 일련번호<br>                             
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;">201911271047-1 <br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> 전화<br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;">02-3663-2825 / Fax : 031-984-5214<br>                              
+						</td>   
+					</tr>
+					<tr height="30">                               
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> 사업자등록번호<br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;">2348102444<br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> 이름<br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;">김호성 <br>                              
+						</td>    
+					</tr>
+					<tr height="30">                               
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> 상호<br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;">(주)대한특수가스<br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> 담당자<br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> <br>                              
+						</td>   
+					</tr>
+					<tr height="30"> 
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> 주소<br>                              
+						</td>
+						<td colspan="3" align="center" style="border-style: none solid solid none;border-width: 1px;">경기도 김포시 하성면 하성로 710<br>                              
+						</td>
+					</tr>
+				</tbody>
+				</table>
+			</td>      
+		</tr>
+	  </tbody>
+	  </table>  
+
+	<table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto;margin-top: 5px;">
+	<tbody>
+		<tr height="30">
+			<td width="80%" style="border-style: solid none solid solid;border-width: 2px;padding-left: 10px;font-size: 12pt;font-weight: bold ">
+			합계금액 : 삼만삼천원정    </td>
+			<td style="border-style: solid solid solid none;border-width: 2px;">
+			(₩33,000원) /  VAT포함
+			</td>
+		</tr>
+	</tbody>
+	</table>
+	
+	<table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto;margin-top: 5px;">
+	<tbody>
+		<tr height="20"> 
+			<td class="border_in" align="center">월</td>
+			<td class="border_in" style="border-left-style:none" align="center">일</td>
+			<td class="tl_dot" align="center">품 목 명</td>
+			<td class="tl_dot" align="center">용 량</td>
+			<td class="tl_dot" align="center">수 량</td>
+			<td class="tl_dot" align="center">단 가</td>
+			<td class="tl_dot" align="center">공 급 가 액</td>
+			<td class="tl_dot" align="center">부 가 세</td>
+			<td class="tl_dot" style="border-right-style: solid;border-right-width: 1px;" align="center">적 요</td>
+		</tr>
+		<tr height="20" th:if="${not #lists.isEmpty( orderExt.orderProduct )}" th:each="row : ${orderExt.orderProduct}"> 
+			<td class="border_in" style="border-top-style:none;" align="center">0</td>
+			<td class="border_in" style="border-top-style:none;border-left-style:none" align="center">0</td>
+			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.productNm}"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.productCapa}"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderCount}"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderAmount/row.orderCount}"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderAmount}"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderAmount*0.1}"></td>
+			<td class="tl_dot" style="border-top-style:none;border-right-width: 1px;" align="center"></td>
+		</tr>
+		<tr height="20" th:each="seq : ${#numbers.sequence(1,15-orderExt.orderProduct.size())}"> 
+			<td class="border_in" style="border-top-style:none;" align="center"></td>
+			<td class="border_in" style="border-top-style:none;border-left-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none;border-right-width: 1px;" align="center"></td>
+		</tr>
+		
+	</tbody>
+	</table>
+
+	<table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto;margin-top: 5px;">
+	<tbody>
+		<tr height="20"> 
+			<td width="5%" style="border-style: solid solid solid solid;border-width: 1px;" align="center">수량</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">1</td>
+
+			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">공급가액</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">30,000</td>
+
+			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">부가세</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">3,000</td>
+
+			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">합계</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">33,000</td>
+
+			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">인수</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="right">(인)</td>
+		</tr>
+		<tr height="30"> 
+		<td style="border-style: none solid solid solid;border-width: 1px;" align="center">비고</td>
+		<td colspan="9" style="border-style: none solid solid none;border-width: 1px;" align="center"></td>
+		</tr>
+	</tbody>
+	</table>
+
+
+	     
+
+	<br>
+	<p align="center">
+	------------------------------------------------------------------------------------------------------------
+
+
+	</p>
+
+	<br>
+
+
+
+
+
+
+	<table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto;">
+	<tbody>
+		<tr>
+			<td>
+			<table width="960" cellpadding="0" cellspacing="0" class="border_out">
+			  <tbody>
+			  <tr height="44"> 
+			    <td>
+			      <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+				<tbody>
+				<tr>
+				  <td align="center"><span style="font-size:18pt;font-weight:bold;"> 주 문 거 래 명 세 서</span></td>
+				  <td>
+				    <table width="80%" align="right" height="100%" border="0" cellspacing="0" cellpadding="0">
+				      <tbody>
+				      <tr>
+					<td class="border_in" align="center" style="border-top-style:none">작성일</td>    
+				      </tr>
+				      <tr>
+					<td width="30" class="border_in" align="center" style="border-top-style:none;border-bottom-style:none;font-size: 12px;">2019-11-27 10:47</td>               
+				       
+				      </tr>
+				    </tbody>
+				    </table>
+				  </td>
+				</tr>
+			      </tbody>
+			      </table>
+			  </td>          
+		</tr>
+	</tbody>
+	</table>
+
+	  <table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto">   
+	  <tbody>
+		<tr>
+		</tr></tbody></table><table width="100%" style="border-left-style:none;" border="0" cellspacing="0" cellpadding="0">
+			<tbody><tr>
+			  <td width="45%">
+				<table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr height="30"> 
+						<td width="25%" align="center" style="border-style: none none solid solid;border-width: 1px;">거래처명<br>
+						</td>
+						<td style="border-style: none none solid solid;border-width: 1px;" align="center" th:text="${customer.customerNm}"></td>
+					</tr>
+					<tr height="30"> 
+						<td width="25%" align="center" style="border-style: none none solid solid;border-width: 1px;">사업자등록번호<br>
+						</td>
+						<td style="border-style: none none solid solid;border-width: 1px;" align="center" th:text="${customer.businessRegId}"> </td>
+					</tr>
+					<tr height="30"> 
+						<td width="25%" align="center" style="border-style: none none solid solid;border-width: 1px;">주소<br>
+						</td>
+						<td style="border-style: none none solid solid;border-width: 1px;" align="center" th:text="${customer.CustomerAddr}"></td>
+					</tr>
+					<tr height="30"> 
+						<td width="25%" align="center" style="border-style: none none solid solid;border-width: 1px;">전화번호<br>
+						</td>
+						<td style="border-style: none none solid solid;border-width: 1px;" align="center" th:text="${customer.CustomerPhone}"></td>
+					</tr> 
+				</tbody>
+				</table>
+			</td>
+			<td width="18" style="border-style: none solid  solid;border-width: 1px;" align="center"><span style="line-height:38px">공<br>
+				  급<br>
+				  자</span>
+			</td>
+			<td>
+				<table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0"> 
+				<tbody>
+					<tr height="30">                               
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> 일련번호<br>                             
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;">201911271047-1 <br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> 전화<br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;">02-3663-2825 / Fax : 031-984-5214<br>                              
+						</td>   
+					</tr>
+					<tr height="30">                               
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> 사업자등록번호<br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;">2348102444<br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> 이름<br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;">김호성 <br>                              
+						</td>    
+					</tr>
+					<tr height="30">                               
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> 상호<br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;">(주)대한특수가스<br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> 담당자<br>                              
+						</td>
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> <br>                              
+						</td>   
+					</tr>
+					<tr height="30"> 
+						<td width="25%" align="center" style="border-style: none solid solid none;border-width: 1px;"> 주소<br>                              
+						</td>
+						<td colspan="3" align="center" style="border-style: none solid solid none;border-width: 1px;">경기도 김포시 하성면 하성로 710<br>                              
+						</td>
+					</tr>
+				</tbody>
+				</table>
+			</td>      
+		</tr>
+	  </tbody>
+	  </table>  
+
+	<table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto;margin-top: 5px;">
+	<tbody>
+		<tr height="30">
+			<td width="80%" style="border-style: solid none solid solid;border-width: 2px;padding-left: 10px;font-size: 12pt;font-weight: bold ">
+			합계금액 : 삼만삼천원정    </td>
+			<td style="border-style: solid solid solid none;border-width: 2px;">
+			(₩33,000원) /  VAT포함
+			</td>
+		</tr>
+	</tbody>
+	</table>
+	
+	<table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto;margin-top: 5px;">
+	<tbody>
+		<tr height="20"> 
+			<td class="border_in" align="center">월</td>
+			<td class="border_in" style="border-left-style:none" align="center">일</td>
+			<td class="tl_dot" align="center">품 목 명</td>
+			<td class="tl_dot" align="center">용 량</td>
+			<td class="tl_dot" align="center">수 량</td>
+			<td class="tl_dot" align="center">단 가</td>
+			<td class="tl_dot" align="center">공 급 가 액</td>
+			<td class="tl_dot" align="center">부 가 세</td>
+			<td class="tl_dot" style="border-right-style: solid;border-right-width: 1px;" align="center">적 요</td>
+		</tr>
+		<tr height="20" th:if="${not #lists.isEmpty( orderExt.orderProduct )}" th:each="row : ${orderExt.orderProduct}"> 
+			<td class="border_in" style="border-top-style:none;" align="center">0</td>
+			<td class="border_in" style="border-top-style:none;border-left-style:none" align="center">0</td>
+			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.productNm}"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.productCapa}"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderCount}"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderAmount/row.orderCount}"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderAmount}"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderAmount*0.1}"></td>
+			<td class="tl_dot" style="border-top-style:none;border-right-width: 1px;" align="center"></td>
+		</tr>
+		<tr height="20" th:each="seq : ${#numbers.sequence(1,15-orderExt.orderProduct.size())}"> 
+			<td class="border_in" style="border-top-style:none;" align="center"></td>
+			<td class="border_in" style="border-top-style:none;border-left-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none;border-right-width: 1px;" align="center"></td>
+		</tr>
+	</tbody>
+	</table>
+
+	<table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto;margin-top: 5px;">
+	<tbody>
+		<tr height="20"> 
+			<td width="5%" style="border-style: solid solid solid solid;border-width: 1px;" align="center">수량</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">1</td>
+
+			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">공급가액</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">30,000</td>
+
+			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">부가세</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">3,000</td>
+
+			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">합계</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">33,000</td>
+
+			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">인수</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="right">(인)</td>
+		</tr>
+		<tr height="30"> 
+		<td style="border-style: none solid solid solid;border-width: 1px;" align="center">비고</td>
+		<td colspan="9" style="border-style: none solid solid none;border-width: 1px;" align="center"></td>
+		</tr>
+	</tbody>
+	</table>	    
+	<p></p>
+	<br>
+<input type="button" onclick="pagePrintPreview()" value="프린트하기"> <input type="button" value="뒤로" onclick="window.history.go(-1)">
+
+<script type="text/javascript">
+function pagePrintPreview(){
+alert("print");
+	window.print();
+} 
+</script>
+</th:block>

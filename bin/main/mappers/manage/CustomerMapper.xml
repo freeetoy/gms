@@ -14,7 +14,7 @@
 		<result property="customerPhone"		column="Customer_Phone"		/>	
 		<result property="customerEmail"		column="Customer_Email"		/>	
 		<result property="salesId"				column="Sales_ID"		/>
-		<result property="salesNm"				column="Sales_NM"		/>
+		<result property="salesNm"				column="Sales_Nm"		/>
 		<result property="customerStatus"		column="Customer_Status"	/>		
 		<result property="createId"				column="CREATE_ID"		/>
 		<result property="createDt"				column="CREATED_DT"		/>
@@ -26,7 +26,7 @@
 		<result property="customerId"			column="Customer_ID"		/>
 		<result property="productId"			column="Product_ID"			/>		
 		<result property="productPriceSeq"		column="Product_Price_Seq"	/>
-		<result property="productPrice"			column="Product_Price"		/>		
+		<result property="productPrice"			column="Product_Price"		/>	
 		<result property="createId"				column="CREATE_ID"			/>
 		<result property="createDt"				column="CREATED_DT"			/>
 		<result property="updateId"				column="UPDATE_ID"			/>		
@@ -52,7 +52,7 @@
 	</sql>
 	<sql id="CustomerColumns">
 		  Customer_ID	
-		, Member_Comp_Seq	        
+		, A.Member_Comp_Seq	        
 		, Customer_Nm	
 		, Business_Reg_ID        
 		, Customer_Rep_Nm        
@@ -62,17 +62,19 @@
 		, Customer_Phone	
 		, Customer_Email	
 		, Sales_ID
+		, User_Nm Sales_Nm
 		, Customer_Status
-		, CREATE_ID	
-		, CREATE_DT	
-		, UPDATE_ID	
-		, UPDATE_DT
+		, A.CREATE_ID	
+		, A.CREATE_DT	
+		, A.UPDATE_ID	
+		, A.UPDATE_DT
 	</sql>
 	<sql id="InsertCustomerPriceColumns">
 		 Customer_ID	        
 		, Product_ID	
 		, Product_Price_Seq        
 		, Product_Price
+		, Product_Status
 		, CREATE_ID	
 		, CREATE_DT	
 		, UPDATE_ID	
@@ -120,11 +122,12 @@
 		SELECT
 			<include refid="CustomerColumns" />
 		FROM
-			TB_CUSTOMER
+			TB_CUSTOMER A, TB_USER B
 		WHERE
-			Customer_Status != '0'
+			Customer_Status != '0'		
 		AND
 			CUSTOMER_ID = #{customerId}
+		AND A.Sales_ID = B.User_ID
 	</select>
 
 	<update id="updateCustomer" parameterType="com.gms.web.admin.domain.manage.CustomerVO">
@@ -159,9 +162,11 @@
 		SELECT
 			<include refid="CustomerColumns" />
 		FROM
-			TB_CUSTOMER
+			TB_CUSTOMER A, TB_USER B
 		WHERE
 			Customer_Status != '0'
+		AND 
+			A.Sales_ID = B.User_ID
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
 		AND Customer_NM	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
 		</if>
@@ -196,9 +201,11 @@
 		SELECT
 			<include refid="CustomerColumns" />
 		FROM
-			TB_CUSTOMER
+			TB_CUSTOMER A, TB_USER B
 		WHERE
 			Customer_Status != '0'
+		AND 
+			A.Sales_ID = B.User_ID
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
 		AND Customer_NM	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
 		</if>

@@ -14,6 +14,8 @@ import com.gms.web.admin.domain.manage.OrderVO;
 public interface OrderMapper {
 
 	public List<OrderVO> selectOrderList(Map<String, Object> map);	
+	
+	public List<OrderVO> selectOrderListToExcel(Map<String, Object> map);	
 
 	public List<OrderProductVO> selectOrderProductList(Integer orderId);	
 
@@ -36,6 +38,8 @@ public interface OrderMapper {
 	public int updateOrderDeposit(OrderVO param);
 
 	public int updateOrderProduct(OrderProductVO param);
+	
+	public int updateOrderBottleId(OrderProductVO param);
 
 	public int updateOrderProcessCd(OrderVO param);
 

@@ -13,6 +13,8 @@ import com.gms.web.admin.domain.manage.OrderVO;
 public interface OrderService {
 	public Map<String,Object> getOrderList(OrderVO params);	
 	
+	public List<OrderVO> getOrderListToExcel(OrderVO params);	
+	
 	public List<OrderVO> getCustomerOrderList(Integer customerId);
 
 	public OrderVO getOrderDetail(Integer orderId) ;
@@ -36,6 +38,8 @@ public interface OrderService {
 	public int modifyOrderDeposit(OrderVO param);
 
 	public int modifyOrderProduct(OrderProductVO param);
+	
+	public int modifyOrderBottleId(OrderProductVO param);
 
 	public int changeOrderProcessCd(OrderVO param);
 

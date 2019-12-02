@@ -35,6 +35,8 @@ public interface ProductMapper {
 
 	public List<ProductTotalVO> selectProductTotalList();
 	
+	public List<ProductTotalVO> selectCustomerProductTotalList(Integer customerId);
+	
 	public int selectProductPriceSeq(Integer productId);
 	
 	public List<ProductVO> selectProductList();

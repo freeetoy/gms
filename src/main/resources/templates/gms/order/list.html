@@ -3,10 +3,8 @@
 <div class="wrapper">
 
 <th:block layout:fragment="content"> 
+<script src="/dist/js/jquery.popupWindow.js"></script>
 <script type="text/javascript">	
-
-
-
 
 var goUpdate = function(orderId){		
 	/*
@@ -35,9 +33,7 @@ var goUpdate = function(orderId){
     form.appendChild(hiddenField);          
     document.body.appendChild(form);
 
-    form.submit();			
-	
-	
+    form.submit();	
 	
 }
 
@@ -53,10 +49,11 @@ var gotoPage = function(pageNo) {
     
 	var form = document.mainForm;	
 	document.mainForm.action="/gms/order/list.do";
-	document.mainForm.submit();
-    
+	document.mainForm.submit();   
    		
 }
+
+
 	
 var goDelete = function(orderId){
 		
@@ -147,18 +144,27 @@ $(document).ready(function(){
 					
 					$("#mcustomerNm").val(data.order.customerNm);			
 					$("#deliveryReqDt").val(moment(data.order.deliveryReqDt).format('YYYY/MM/DD') + ' ' +Ampm);			
-					$("#OrderEtc").val(data.order.orderEtc);			
+					$("#orderEtc").val(data.order.orderEtc);			
+					$("#orderTotalAmount").val(numberWithCommas(data.order.orderTotalAmount));	
+					console.log(data.order.OrderTotalAmount);
 					
-					//console.log(data.order.customerNm);
-					
-					if(data.order.orderProcessCd =='0201'){								
+					if(data.order.orderProcessCd =='0201'){			
+						$("#view_button").show();
+						$("#view_button1").hide();
+						
 						$("#btn_process_2").prop('disabled', true);
 						$("#btn_process_3").prop('disabled', true);
 					}if(data.order.orderProcessCd =='0202'){
+						$("#view_button").show();
+						$("#view_button1").hide();
+						
 						$("#btn_process_1").html("접수완료");
 						$("#btn_process_1").prop('disabled', true);
 						$("#btn_process_3").prop('disabled', true);
 					}else if(data.order.orderProcessCd =='0203'){
+						$("#view_button").show();
+						$("#view_button1").hide();
+						
 						$("#btn_process_1").html("접수완료");
 						$("#btn_process_2").html("생산완료");						
 						$("#btn_process_1").prop('disabled', true);
@@ -167,33 +173,33 @@ $(document).ready(function(){
 						$("#view_button1").show();
 						$("#view_button").hide();
 						
+						$("#btn_process_6").prop('disabled', true);
 						$("#btn_process_7").prop('disabled', true);
-						$("#btn_process_8").prop('disabled', true);
 					}else if(data.order.orderProcessCd =='0206'){
 						$("#view_button1").show();
 						$("#view_button").hide();
 						
-						$("#btn_process_6").html("거래명세서완료");
-						$("#btn_process_6").prop('disabled', true);
-						$("#btn_process_8").prop('disabled', true);
+						$("#btn_process_5").html("거래명세서완료");
+						$("#btn_process_5").prop('disabled', true);
+						$("#btn_process_7").prop('disabled', true);
 					}else if(data.order.orderProcessCd =='0207'){
 						$("#view_button1").show();
 						$("#view_button").hide();
 						
-						$("#btn_process_6").html("거래명세서완료");
-						$("#btn_process_7").html("세금계산서완료");	
-						$("#btn_process_6").prop('disabled', true);
-						$("#btn_process_7").prop('disabled', true);	
+						$("#btn_process_5").html("거래명세서완료");
+						$("#btn_process_6").html("세금계산서완료");	
+						$("#btn_process_5").prop('disabled', true);
+						$("#btn_process_6").prop('disabled', true);	
 					}else if(data.order.orderProcessCd =='0208'){
 						$("#view_button1").show();
 						$("#view_button").hide();
 						
-						$("#btn_process_6").html("거래명세서완료");
-						$("#btn_process_7").html("세금계산서완료");	
-						$("#btn_process_8").html("입금완료");	
+						$("#btn_process_5").html("거래명세서완료");
+						$("#btn_process_6").html("세금계산서완료");	
+						$("#btn_process_7").html("입금완료");	
+						$("#btn_process_5").prop('disabled', true);
 						$("#btn_process_6").prop('disabled', true);
-						$("#btn_process_7").prop('disabled', true);
-						$("#btn_process_8").prop('disabled', true);		
+						$("#btn_process_7").prop('disabled', true);		
 					}
 					
 					if(data.orderProduct.length > 0) {
@@ -205,7 +211,7 @@ $(document).ready(function(){
 						cols += '<td>용량</td>';
 						cols += '<td>수량</td>';
 						cols += '<td>기타</td>';
-						cols += '<td>용기교한</td></tr>';
+						cols += '<td>용기교환</td></tr>';
 
 						newRow.append(cols);
 						$("table.mod-doc-list").append(newRow);
@@ -229,9 +235,9 @@ $(document).ready(function(){
 			       .fail(function(){
 				  console.log("fail");
 			       });
+				
 
-
-				//$("#view_button1").show();
+				//$("#orderAmountView").show();
 				//$("#view_button").hide();
 			});
 	
@@ -298,7 +304,22 @@ $(document).ready(function(){
 		}
 	});
 
-	
+ 	// 거래명세서 출력
+    $(".btn_order_print").click(function()  
+    {
+    
+       var orderId = $(this).attr('orderId'); 
+
+       $.popupWindow('/gms/order/popupOrder.do?orderId=' + orderId, {
+              width: 1300,
+              height: 500,
+              center: 'screen',
+              scrollbars: 'true'
+          });
+
+
+
+    });
 	
 	//Ajax공통 호출
 	function callAjax(ajaxInfo){
@@ -311,8 +332,6 @@ $(document).ready(function(){
 	}
 	
 
-	
-	
 	// 입력된 내용을 작성한다.
 	function goSearch(){	
 		
@@ -324,9 +343,6 @@ $(document).ready(function(){
 
 
 });
-
-
-
 	
 </script>
    <div class="content-wrapper">
@@ -349,8 +365,7 @@ $(document).ready(function(){
   
     <section class="content">        
     
-    <!--  process modat start -->
-  
+    	<!--  process modat start -->  
 		<div class="modal modal-info fade" id="process-modal">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -424,9 +439,12 @@ $(document).ready(function(){
 									<table id="myTable" class="table order-info">
 										<tr>
 											<td class="card-footer">기타사항</td>
-											<td colspan=5><input type="text" class="form-control" id="orderEtc"  name=""orderEtc""  placeholder="" value="" disabled> </td>
-										</tr>
-										
+											<td colspan=5><input type="text" class="form-control" id="orderEtc"  name="orderEtc"  placeholder="" value="" disabled> </td>
+										</tr>		
+										<tr>
+											<td class="card-footer" id="orderAmountView">주문금액</td>
+											<td colspan=5><input type="text" class="form-control" id="orderTotalAmount"  name="orderTotalAmount"  placeholder="" value="" disabled> </td>
+										</tr>										
 									</table>
 											
 									<div class="form-group" id="view_sale_finish_date_check" style="display: none;">
@@ -466,16 +484,16 @@ $(document).ready(function(){
 		</div>
 		</div>
 		<!-- /.modal -->
-    		<form id="mainForm" name="mainForm"  method="post">
+    	
+    	<div class="row">        	
+    		
+            <div class="col-1">
+            <form id="mainForm" name="mainForm"  method="post">
               <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
               <input type="hidden" id="orderId" name="orderId" value="">
-    	<div class="row">
-        	
-            <div class="col-1">
                		<label>접수 기간</label>
             </div>               
-            <div class="col-4">
-              
+            <div class="col-4">              
                <input type="text" class="form-control" name="searchOrderDt" th:value="${searchOrderDt}"/>			
             </div>               
             <div class="col-3">               
@@ -556,18 +574,16 @@ $(document).ready(function(){
 					  <a class="btn btn-info btn-xs" href="#" th:onclick="javascript:goUpdate([[ ${row.orderId} ]])"><i class="fas fa-pencil-alt"></i>수정 </a>
 						<a class="btn btn-danger btn-xs" href="#" th:onclick="goDelete([[ ${row.orderId} ]])">
                               <i class="fas fa-trash"></i>삭제</a>
-                          <a class="btn btn-secondary btn-xs" href="#" th:onclick="showOrderDetail([[ ${row.orderId} ]])">
+                          <a class="btn_order_print btn btn-secondary btn-xs" th:orderId="${row.orderId}"  href="#" >
                               <i class="fas fa-folder"></i>거래명세서</a>
                       </td>
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( orderList )}">
 						<td colspan="10">조회된 결과가 없습니다.</td>
-					</tr>			
-					
-                  </tbody>
-					
-                </table>
-                
+					</tr>		
+										
+                  </tbody>					
+                </table>                
               </div>
               <!-- /.card-body -->
             </div>
@@ -581,11 +597,11 @@ $(document).ready(function(){
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
 					<ul class="pagination">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
-							<a th:href="@{/gms/order/list.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+							<a th:href="@{/gms/order/list.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Prev</a>
 						</li>
 						
 						<li th:if="${currentPage<=1}" class="paginate_button page-item previous disabled" id="example2_previous">
-							<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+							<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Prev</a>
 						</li>
 						<th:block th:each="num:${#numbers.sequence(startPageNum, lastPageNum)}">
 						
@@ -609,7 +625,7 @@ $(document).ready(function(){
 			</div>
 			<div class="col-md-2">
 			</div>
-			
+			</div>
 		</div>
         
       </div><!-- /.container-fluid -->

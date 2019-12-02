@@ -294,15 +294,13 @@ var fn_deleteBottle = function(bottleId){
 	        </div>
         </div>
     	<div class="row">
-    		<div class="col-1">
-    		<form id="mainForm" name=""mainForm""  method="post">
-              <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
-              <input type="hidden" id="bottleId" name="bottleId" value="">
-        	</div>
            	<div class="col-1">
                		용기코드
             </div>               
-            <div class="col-4">              
+            <div class="col-5">   
+            <form id="mainForm" name=""mainForm""  method="post">
+              <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
+              <input type="hidden" id="bottleId" name="bottleId" value="">           
                <input type="text" id="searchBottleId" name="searchBottleId" class="form-control" placeholder="search" th:value="${searchBottleId}">
             </div>  
                         

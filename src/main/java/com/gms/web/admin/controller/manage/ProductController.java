@@ -102,8 +102,7 @@ public class ProductController {
 			params.setMemberCompSeq(1);
 			//int productId = productService.registerProduct(params);
 			logger.info("ProductContoller registerProduct params.getGasId()d ==="+params.getGasId());
-			ProductPriceVO[] priceVo = new ProductPriceVO[priceCount] ;
-			
+			ProductPriceVO[] priceVo = new ProductPriceVO[priceCount] ;			
 			
 			for(int i =0 ; i <priceCount ; i++ ) {
 				ProductPriceVO priceVo1 = new ProductPriceVO();

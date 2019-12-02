@@ -25,6 +25,7 @@ import com.gms.web.admin.domain.common.CodeVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
+import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.GasVO;
 import com.gms.web.admin.domain.manage.OrderExtVO;
 import com.gms.web.admin.domain.manage.OrderProductVO;
@@ -206,6 +207,28 @@ public class OrderController {
 		return null;
 	}
 	
+	@RequestMapping(value = "/gms/order/modifyBottleId.do", method = RequestMethod.POST)
+	public ModelAndView modifyOrderBottlId(
+			HttpServletRequest request
+			, HttpServletResponse response
+			, OrderProductVO params) {
+
+		ModelAndView mav = new ModelAndView();		
+
+		RequestUtils.initUserPrgmInfo(request, params);		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));
+		
+		int result = 0;
+		
+		result = orderService.modifyOrderBottleId(params);
+		if(result > 0){
+			String alertMessage = "수정되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/order/list.do");
+		}
+		return null;
+	}
+	
 	
 	@RequestMapping(value = "/gms/order/orderProductList.do")
 	@ResponseBody
@@ -275,6 +298,23 @@ public class OrderController {
 		}
 		return null;
 		
+	}
+	
+	
+	@RequestMapping(value = "/gms/order/popupOrder.do")
+	public String getPopupOrderDetail(@RequestParam(value = "orderId", required = false) Integer orderId, Model model)	{
+		
+		logger.debug("OrderContoller getPopupOrderDetail");
+		
+		OrderExtVO result = orderService.getOrder(orderId);			
+		
+		model.addAttribute("orderExt", result);
+		
+		CustomerVO customer = customerService.getCustomerDetails(result.getOrder().getCustomerId());			
+		
+		model.addAttribute("customer", customer);
+		
+		return "/gms/order/popupOrder";
 	}
 	
 }

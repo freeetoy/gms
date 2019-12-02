@@ -263,6 +263,18 @@
 			Order_ID = #{chOrderId}
 	</update>	
 	
+	<update id="updateOrderBottleId" parameterType="com.gms.web.admin.domain.manage.OrderProductVO">
+		UPDATE TB_Order_Product
+		SET
+			  Bottle_ID 	= #{bottleId}
+			, UPDATE_ID 	= #{updateId}
+			, UPDATE_DT 	= NOW()
+		WHERE
+			Order_ID = #{orderId}
+		AND
+			Order_Product_Seq = #{orderProductSeq}	
+	</update>	
+	
 	<update id="deleteOrder" parameterType="com.gms.web.admin.domain.manage.OrderVO">
 		UPDATE TB_Order
 		SET
@@ -296,6 +308,25 @@
 		</if>
 		ORDER BY Create_Dt DESC 
 		Limit #{startRow}, #{rowPerPage}
+	</select>
+	
+	<select id="selectOrderListToExcel" resultType="com.gms.web.admin.domain.manage.OrderVO" parameterType="java.util.Map">		
+		SELECT
+			<include refid="OrderSelectColumns" />
+		FROM
+			TB_Order A, TB_Customer B, TB_CODE C, TB_User D
+		WHERE
+			A.Customer_Id = B.Customer_ID		
+		AND Order_Process_CD !='0299'
+		AND A.Order_Process_Cd = C.CD_ID
+		AND A.Create_Id = D.User_ID
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
+		AND Customer_Nm	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
+		</if>		
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
+		AND date_format(Create_Dt,'%Y/%m/%d')  between  #{searchOrderDtFrom} AND  #{searchOrderDtEnd} 
+		</if>
+		ORDER BY Create_Dt DESC 
 	</select>
 	
 	

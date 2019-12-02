@@ -146,6 +146,11 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
+	public List<ProductTotalVO> getCustomerProductTotalList(Integer customerId) {
+		return productMapper.selectCustomerProductTotalList(customerId);
+	}
+	
+	@Override
 	public int getProductId() {
 		// TODO Auto-generated method stub
 		
@@ -177,6 +182,8 @@ public class ProductServiceImpl implements ProductService {
 			productId = getProductId();
 			
 			param.setProductId(Integer.valueOf(productId));
+			param.setMemberCompSeq(1);		
+			
 			logger.info("****** after set ProductId registerProduct param.getProductId()()) *****===*"+param.getProductId());
 			logger.info("****** registerProduct param.getGasId *****===*"+param.getGasId());
 			logger.info("****** registerProduct param.param1.length *****===*"+param1.length);
@@ -303,4 +310,6 @@ public class ProductServiceImpl implements ProductService {
 		logger.info("****** getProductTotalList *****===*");
 		return productMapper.selectProductList();
 	}
+
+	
 }

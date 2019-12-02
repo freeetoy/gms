@@ -135,7 +135,7 @@
                       <td th:text="${row.customerItem}"></td>
                       <td  th:text="${row.customerAddr}"></td>
                       <td th:text="${row.customerPhone}"></td>
-                      <td th:text="${row.salesId}"></td>
+                      <td th:text="${row.salesNm}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( customerList )}">

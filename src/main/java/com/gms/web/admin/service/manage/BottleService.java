@@ -11,6 +11,8 @@ public interface BottleService {
 
 	public Map<String,Object> getBottleList(BottleVO params);	
 	
+	public List<BottleVO> getBottleListToExcel(BottleVO params);
+	
 	public List<BottleVO> getCustomerBottleList(Integer customerId);
 	
 	public BottleVO getBottleDetail(String bottleId) ;
@@ -24,6 +26,8 @@ public interface BottleService {
 	public int registerBottle(BottleVO param);	
 
 	public int modifyBottle(BottleVO param);
+	
+	public int modifyBottleOrder(BottleVO param);
 	
 	public int changeBottleWorkCd(BottleVO param);
 

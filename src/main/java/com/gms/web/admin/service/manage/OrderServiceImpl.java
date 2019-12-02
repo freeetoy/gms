@@ -16,14 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.web.utils.RequestUtils;
+import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.OrderExtVO;
 import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.domain.manage.ProductTotalVO;
-import com.gms.web.admin.mapper.manage.CustomerMapper;
 import com.gms.web.admin.mapper.manage.OrderMapper;
-import com.gms.web.admin.mapper.manage.ProductMapper;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -34,10 +33,14 @@ public class OrderServiceImpl implements OrderService {
 	private OrderMapper orderMapper;
 	
 	@Autowired
-	private CustomerMapper customerMapper;
+	private CustomerService customerService;
 	
 	@Autowired
-	private ProductMapper productMapper;
+	private BottleService bottleService;
+	
+	@Autowired
+	private ProductService productService;
+	
 
 	@Override
 	public Map<String, Object> getOrderList(OrderVO param) {
@@ -114,6 +117,37 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	public List<OrderVO> getOrderListToExcel(OrderVO param) {
+		logger.info("****** getOrderListToExcel *****start===*");		
+		
+					
+		Map<String, Object> map = new HashMap<String, Object>();		
+		
+		map.put("searchCustomerNm", param.getSearchCustomerNm());	
+		if(param.getSearchOrderDt() != null) {
+			map.put("searchOrderDt", param.getSearchOrderDt());
+			logger.info("****** getOrderListToExcel *****getSearchOrderDt===*"+param.getSearchOrderDt());
+		}		
+		
+		if(param.getSearchOrderDtFrom() != null) {
+			map.put("searchOrderDtFrom", param.getSearchOrderDtFrom());
+			logger.info("****** getOrderListToExcel *****getSearchOrderDtFrom===*"+param.getSearchOrderDtFrom());
+		}
+		
+		if(param.getSearchOrderDtEnd() != null) {
+			map.put("searchOrderDtEnd", param.getSearchOrderDtEnd());
+			logger.info("****** getOrderListToExcel *****getSearchOrderDtEnd===*"+param.getSearchOrderDtEnd());
+		}	
+				
+		List<OrderVO> orderList = orderMapper.selectOrderListToExcel(map);
+		
+			
+		return orderList;
+	}
+
+
+	
+	@Override
 	public List<OrderVO> getCustomerOrderList(Integer customerId) {
 		// TODO Auto-generated method stub
 		return null;
@@ -183,11 +217,11 @@ public class OrderServiceImpl implements OrderService {
 					|| orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.03"))) {
 			
 				// 거래처 상품별 단가 정보 가져오기
-				List<CustomerPriceExtVO> customerPriceList = customerMapper.selectCustomerPriceList(params.getCustomerId());			
+				//List<CustomerPriceExtVO> customerPriceList = customerService.getCustomerPriceList(params.getCustomerId());			
 				
 				// 거래처 상품별 단가 정보 가져오기
-				List<ProductTotalVO> productPriceList = productMapper.selectProductTotalList();;			
-										
+				List<ProductTotalVO> productPriceList = productService.getCustomerProductTotalList(params.getCustomerId());
+						
 				
 				for(int i =0 ; i < productCount ; i++ ) {
 					
@@ -205,47 +239,29 @@ public class OrderServiceImpl implements OrderService {
 					orderCount = Integer.parseInt(request.getParameter("orderCount_"+i));
 					
 					if(request.getParameter("bottleChangeYn_"+i) !=null)  bottleChangeYn = "Y";
+									
 					
-					
-					for(int j=0;j<customerPriceList.size();j++) {
-						tempCustomerPrice = customerPriceList.get(j);
+					for(int k=0;k<productPriceList.size();k++) {
 						orderAmount = 0;
-						if(productId == tempCustomerPrice.getProductId() && productPriceSeq == tempCustomerPrice.getProductPriceSeq()  ) {
+						tempProduct = productPriceList.get(k);
+						
+						if(productId == tempProduct.getProductId() && productPriceSeq == tempProduct.getProductPriceSeq()) {
 							
 							if(i==0) {
-								orderProductNm = tempCustomerPrice.getProductNm();
-								orderProductCapa = tempCustomerPrice.getProductCapa();
-								
-								logger.debug("OrderContoller registerOrder customerPriceList orderProductNm== "+ orderProductNm);
-								logger.debug("OrderContoller registerOrder customerPriceList orderProductCapa== "+ orderProductCapa);
+								orderProductNm = tempProduct.getProductNm();
+								orderProductCapa = tempProduct.getProductCapa();
+								logger.debug("OrderContoller registerOrder productPriceList orderProductNm== "+ orderProductNm);
+								logger.debug("OrderContoller registerOrder productPriceList orderProductCapa== "+ orderProductCapa);
 							}
-							orderAmount = tempCustomerPrice.getProductPrice() *orderCount;						
+							
+							orderAmount = tempProduct.getProductPrice() *orderCount;	
 							logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
 							productVo.setOrderAmount(orderAmount);
-							orderTotalAmount += orderAmount;
-						}else {
-							for(int k=0;k<productPriceList.size();k++) {
-								tempProduct = productPriceList.get(k);
-								
-								if(productId == tempProduct.getProductId() && productPriceSeq == tempProduct.getProductPriceSeq()) {
-									
-									if(i==0) {
-										orderProductNm = tempProduct.getProductNm();
-										orderProductCapa = tempProduct.getProductCapa();
-										logger.debug("OrderContoller registerOrder productPriceList orderProductNm== "+ orderProductNm);
-										logger.debug("OrderContoller registerOrder productPriceList orderProductCapa== "+ orderProductCapa);
-									}
-									
-									orderAmount = tempProduct.getProductPrice() *orderCount;	
-									logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
-									productVo.setOrderAmount(orderAmount);
-									orderTotalAmount += orderAmount;								
-								}
-							}						
-							
+							orderTotalAmount += orderAmount;								
 						}
+					}						
+													
 						
-					}		
 					logger.debug("OrderContoller registerOrder orderTotalAmount== "+ orderTotalAmount);
 					
 					productVo.setOrderId(params.getOrderId());
@@ -353,10 +369,10 @@ public class OrderServiceImpl implements OrderService {
 					|| orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.03"))) {
 				
 				// 거래처 상품별 단가 정보 가져오기
-				List<CustomerPriceExtVO> customerPriceList = customerMapper.selectCustomerPriceList(params.getCustomerId());			
+				//List<CustomerPriceExtVO> customerPriceList = customerService.getCustomerPriceList(params.getCustomerId());		
 				
-				// 거래처 상품별 단가 정보 가져오기
-				List<ProductTotalVO> productPriceList = productMapper.selectProductTotalList();
+				// 상품별 단가 정보 가져오기
+				List<ProductTotalVO> productPriceList = productService.getCustomerProductTotalList(params.getCustomerId());
 								
 				for(int i =0 ; i < productCount ; i++ ) {
 					
@@ -377,45 +393,29 @@ public class OrderServiceImpl implements OrderService {
 						bottleChangeYn = "Y";
 					}
 					
-					logger.debug("OrderContoller modifyOrder customerPriceList.size() = "+ customerPriceList.size());
+					//logger.debug("OrderContoller modifyOrder customerPriceList.size() = "+ customerPriceList.size());
 					
-					for(int j=0;j<customerPriceList.size();j++) {
-						tempCustomerPrice = customerPriceList.get(j);
+					for(int j=0;j<productPriceList.size();j++) {
 						orderAmount = 0;
 						
-						if(productId == tempCustomerPrice.getProductId() && productPriceSeq == tempCustomerPrice.getProductPriceSeq()  ) {
+						
+						for(int k=0;k<productPriceList.size();k++) {
+							tempProduct = productPriceList.get(k);
 							
-							if(i==0) {
-								orderProductNm = tempCustomerPrice.getProductNm();
-								orderProductCapa = tempCustomerPrice.getProductCapa();
+							if(productId == tempProduct.getProductId() && productPriceSeq == tempProduct.getProductPriceSeq()) {
 								
-								//logger.debug("OrderContoller modifyOrder customerPriceList orderProductNm== "+ orderProductNm);
-								//logger.debug("OrderContoller modifyOrder customerPriceList orderProductCapa== "+ orderProductCapa);
-							}
-							orderAmount = tempCustomerPrice.getProductPrice() *orderCount;						
-							//logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
-							productVo.setOrderAmount(orderAmount);
-							orderTotalAmount += orderAmount;
-						}else {
-							for(int k=0;k<productPriceList.size();k++) {
-								tempProduct = productPriceList.get(k);
-								
-								if(productId == tempProduct.getProductId() && productPriceSeq == tempProduct.getProductPriceSeq()) {
-									
-									if(i==0) {
-										orderProductNm = tempProduct.getProductNm();
-										orderProductCapa = tempProduct.getProductCapa();
-										logger.debug("OrderContoller modifyOrder productPriceList orderProductNm== "+ orderProductNm);
-										logger.debug("OrderContoller modifyOrder productPriceList orderProductCapa== "+ orderProductCapa);
-									}
-									
-									orderAmount = tempProduct.getProductPrice() *orderCount;	
-									logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
-									productVo.setOrderAmount(orderAmount);
-									orderTotalAmount += orderAmount;								
+								if(i==0) {
+									orderProductNm = tempProduct.getProductNm();
+									orderProductCapa = tempProduct.getProductCapa();
+									logger.debug("OrderContoller modifyOrder productPriceList orderProductNm== "+ orderProductNm);
+									logger.debug("OrderContoller modifyOrder productPriceList orderProductCapa== "+ orderProductCapa);
 								}
-							}						
-							
+								
+								orderAmount = tempProduct.getProductPrice() *orderCount;	
+								logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
+								productVo.setOrderAmount(orderAmount);
+								orderTotalAmount += orderAmount;								
+							}
 						}
 						
 					}		
@@ -478,6 +478,27 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	@Override
+	@Transactional
+	public int modifyOrderBottleId(OrderProductVO param) {
+		
+		//TODO  용기거래테이블 등록 필요
+		BottleVO bottle = new BottleVO();
+		bottle.setBottleId(param.getBottleId());
+		bottle.setOrderId(param.getOrderId());
+		bottle.setOrderProductSeq(param.getOrderProductSeq());
+		bottle.setUpdateId(param.getUpdateId());
+		
+		int result = bottleService.modifyBottleOrder(bottle);
+		
+		if(result >0 )
+			return orderMapper.updateOrderBottleId(param);
+		else
+			return 0;
+	}
+
+	
 
 	@Override
 	@Transactional

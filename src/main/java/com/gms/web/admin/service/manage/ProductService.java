@@ -31,6 +31,8 @@ public interface ProductService {
 
 	public List<ProductTotalVO> getProductTotalList();
 	
+	public List<ProductTotalVO> getCustomerProductTotalList(Integer customerId);
+	
 	public List<ProductPriceVO> getProductPriceList(Integer productId);
 	
 	public int getProductProductSeq(Integer productId) ;
