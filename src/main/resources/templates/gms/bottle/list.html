@@ -122,7 +122,9 @@ var fn_deleteBottle = function(bottleId){
 	function goSearch(){	
 		
 		var form = document.mainForm;	
-		mainForm.action="/gms/bottle/list.do";
+		$("#currentPage").val(1);  
+		form.currentPage.value=1;
+		form.action="/gms/bottle/list.do?currentPage=1";
 		form.submit();
 	};
 
@@ -217,6 +219,26 @@ var fn_deleteBottle = function(bottleId){
 
 	}
 	
+	
+	function doExcelUploadProcess(){
+        var f = new FormData(document.getElementById('form1'));
+        
+        var ajaxInfo ={
+        		url: "/uploadExcelFile",
+                data: f,
+                processData: false,
+                contentType: false,
+                type: "POST",
+    			dataType: "json",
+    		};
+    		
+    		ajax = callAjax(ajaxInfo);
+    		
+    		ajax.done(function(data){
+    			console.log(data);
+    			//document.getElementById('result').innerHTML = JSON.stringify(data);
+    		});
+    }
 	</script>
    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -302,7 +324,7 @@ var fn_deleteBottle = function(bottleId){
                		충전기한
             </div>               
             <div class="col-5">
-              <form id="mainForm" name=""mainForm""  method="post">
+              <form id="mainForm" name="mainForm"  method="post">
               <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
               <input type="hidden" id="bottleId" name="bottleId" value="">
                <input type="text" class="form-control" name="searchChargeDt" th:value="${searchChargeDt}"/>			
@@ -450,7 +472,13 @@ var fn_deleteBottle = function(bottleId){
                               <i class="fas fa-trash"></i>선택삭제</a>   
 			</div>
 			<div class="col-1">
+			<form id="form1" name="form1" method="post" enctype="multipart/form-data">
+    <input type="file" id="fileInput" name="fileInput">
+    <button type="button" onclick="doExcelUploadProcess()">엑셀업로드 작업</button>
+    </form>
                		<a href="/gms/bottle/excelDownload.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀등록</button></a>
+             <div id="result">
+             
               </div>
 		</div>
         

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gms.web.admin.mapper.statistics.StatisticsProductMapper">
+	<resultMap id="StatisticsProductMap" type="com.gms.web.admin.domain.statistics.StatisticsProductVO" >
+		<result property="productId"			column="Product_ID"				/>
+		<result property="statDt"				column="Stat_Dt"				/>
+		<result property="orderCount"			column="Order_Count"			/>
+		<result property="orderAmount"			column="Order_Amount"			/>
+		<result property="createId"				column="CREATE_ID"				/>
+		<result property="createDt"				column="CREATE_DT"				/>
+	</resultMap>
+	
+	<sql id="StatisticsProductColumns">
+		 Product_ID         
+		 , Stat_Dt  
+		 , Order_Count    
+		 , Order_Amount 	 
+		 , Create_ID        
+		 , Create_Dt
+	</sql>
+
+	<insert id="inserDailyStatisticsProduct" parameterType="com.gms.web.admin.domain.statistics.StatisticsProductVO">
+		INSERT INTO TB_Daily_Stat_Product(
+			<include refid="StatisticsProductColumns" />
+		) 
+		SELECT  Product_ID,DATE_FORMAT(A.Create_Dt,'%Y/%m/%d'), SUM(Order_Count),SUM(Order_Amount),#{createId}, NOW()
+		FROM TB_Order_Product A, TB_Order B
+		WHERE DATE_FORMAT(A.Create_dt,'%Y/%m/%d')=  DATE_FORMAT(now(),'%Y/%m/%d')
+		AND B.Order_Process_CD !='0299'
+		AND B.Order_ID = A.Order_ID
+		GROUP BY DATE_FORMAT(A.Create_Dt,'%Y/%m/%d'),A.Product_Id
+	</insert>
+	
+	<insert id="inserMonthlyStatisticsProduct" parameterType="com.gms.web.admin.domain.statistics.StatisticsProductVO">
+		INSERT INTO TB_Monthly_Stat_Product(
+			<include refid="StatisticsProductColumns" />
+		)
+		SELECT  Product_ID,DATE_FORMAT(A.Create_Dt,'%Y%m'), SUM(Order_Count),SUM(Order_Amount),#{createId}, NOW()
+		FROM TB_Order_Product A, TB_Order B
+		WHERE DATE_FORMAT(A.Create_dt,'%Y%m')=  DATE_FORMAT(now(),'%Y%m')
+		AND B.Order_Process_CD !='0299'
+		AND B.Order_ID = A.Order_ID
+		GROUP BY DATE_FORMAT(A.Create_Dt,'%Y%m'),A.Product_Id
+	</insert>
+	
+	
+	<select id="selectDailylStatisticsProductList" resultType="com.gms.web.admin.domain.statistics.StatisticsProductVO" parameterType="java.util.Map">		
+		SELECT
+			<include refid="StatisticsProductColumns" />
+		FROM
+			TB_Daily_Stat_Product
+		WHERE
+			Product_Id = #{searchProductId}		
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchStatDt)">
+		AND Stat_Dt between  #{searchStatDtFrom} AND  #{searchStatDtEnd} 
+		</if>
+		ORDER BY Create_Dt DESC 
+	</select>
+	
+	<select id="selectMonthlylStatisticsProductList" resultType="com.gms.web.admin.domain.statistics.StatisticsProductVO" parameterType="java.util.Map">		
+		SELECT
+			<include refid="StatisticsProductColumns" />
+		FROM
+			TB_Monthly_Stat_Product
+		WHERE
+			Product_Id = #{searchProductId}		
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchStatDt)">
+		AND Stat_Dt between  #{searchStatDtFrom} AND  #{searchStatDtEnd} 
+		</if>
+		ORDER BY Create_Dt DESC 
+	</select>
+	
+</mapper>

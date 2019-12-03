@@ -1,0 +1,222 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="gms/layout/basic">
+
+<div class="wrapper">
+
+<th:block layout:fragment="content"> 
+<script type="text/javascript">
+
+	function validationOfForm(form) {
+	
+		var result = (
+				   isValid(form.gasNm, "가스명", null, null)
+				&& isValid(form.gasCd, "가스코드", null, null)
+		);
+		
+		if ( result === false ) {
+			return false;
+		}
+	}
+	// end of function
+	
+	var fn_deleteGas = function(gasId){
+		               		
+		if(confirm("삭제하시겠습니까?")){	
+			
+			var form = document.createElement("form");
+			form.setAttribute("charset","UTF-8");
+			form.setAttribute("method","post");
+			form.setAttribute("action","/gms/gas/delete.do");
+			
+			var hiddenField = document.createElement("input");
+	        hiddenField.setAttribute("type", "hidden");
+	        hiddenField.setAttribute("name", "gasId");
+	        hiddenField.setAttribute("value", gasId);
+
+	        form.appendChild(hiddenField);
+	        
+	        document.body.appendChild(form);
+
+	        form.submit();			
+		}                  		
+	}
+	
+	//Ajax공통 호출
+	function callAjax(ajaxInfo){
+		var dfd = $.Deferred();
+		$.ajax(ajaxInfo).done(function(data){
+			dfd.resolve(data);
+		});
+		
+		return dfd.promise();
+	}
+	
+	
+	var fn_modifyGas = function(gasId){
+	
+		var ajaxInfo ={
+			type:"POST",
+			url:"/gms/gas/detail.do",
+			data:{
+				gasId : gasId
+			},
+			dataType: "json",
+		};
+		
+		ajax = callAjax(ajaxInfo);
+		
+		ajax.done(function(data){
+			console.log(data);
+		
+			console.log("####gasCd---"+data.gasCd);		
+			
+			$("#gasId").val(data.gasId);
+			$("#gasNm").val(data.gasNm);
+			$("#gasCd").val(data.gasCd);
+			//document.form1.gasNm1.value=data.gasNm;
+				
+			if(data.result == "fail"){
+				alert("가스가 존재하지 않습니다");			
+				return;
+			}
+			
+		});
+
+	};
+	
+	
+	$(function() {
+		
+		  $('input[name="searchStatDt"]').daterangepicker({
+		      autoUpdateInput: false,
+		      locale: {
+		          cancelLabel: 'Clear'
+		      }
+		  });
+		
+		  $('input[name="searchStatDt"]').on('apply.daterangepicker', function(ev, picker) {
+		      $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+		  });
+		
+		  $('input[name="searchStatDt"]').on('cancel.daterangepicker', function(ev, picker) {
+		      $(this).val('');
+		  });
+		
+		
+		});	
+
+</script>
+
+   <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>상품 판매 현황</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Simple Tables</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+  
+    <section class="content">
+    
+      <div class="container-fluid">
+        
+        <div class="row">
+    		
+           	<div class="col-1">
+               		<label >거래처명</label>
+            </div>               
+            <div class="col-4">     
+            <form id="mainForm" name="mainForm"  method="post">         
+            	<select id="searchProductId" name="searchProductId" class="form-control">
+	                      <option value="0">상품 목록</option>
+	                    	<option th:each="row : ${productList}"
+				                th:text="${row.productNm}"
+				                th:value="${row.productId}"
+				               >
+				     </option>		
+			    </select>	                      
+            </div>  
+          
+         </div>
+         <div class="row">	
+	        <div class="col-12">
+	        <table class="table table-hover">
+	        <tr></tr>
+	         </table>
+	        </div>
+        </div>
+        <div class="row">        	
+    		
+            <div class="col-1">
+                      
+               		<label>기간</label>
+            </div>               
+            <div class="col-4">              
+               <input type="text" class="form-control" name="searchStatDt" th:value="${searchStatDt}"/>			
+            </div>               
+            <div class="col-5">
+                <button class="btn btn-navbar" type="submit"><i class="fas fa-search"></i></button>           
+              </div>  
+              
+              </form>  
+         </div>       
+    	
+        <div class="row">	
+	        <div class="col-12">
+	        <table>
+	       </br>
+	         </table>
+	        </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <div class="card">
+             
+              
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>날짜</th>
+                      <th>주문건수</th>
+                      <th>주문금액</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  	<tr th:if="${not #lists.isEmpty( statProductList )}" th:each="row : ${statProductList}" style="font-size:14px;">
+                      <td th:text="${row.statDt}"></td>
+                      <td th:text="${row.orderCount}"></td>
+                      <td th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}"></td>
+                    </tr>
+                    <tr th:unless="${not #lists.isEmpty( statProductList )}">
+						<td colspan="3">조회된 결과가 없습니다.</td>
+					</tr>
+					
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        
+        
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  
+  </th:block>
+  
+
+  
