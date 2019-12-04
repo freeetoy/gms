@@ -14,7 +14,7 @@ public interface StatisticsProductMapper {
 	
 	public List<StatisticsProductVO> selectMontlylStatisticsProductList(Map<String, Object> map);	
 	
-	public int inserDailyStatisticsProduct(StatisticsProductVO param);
+	public int inserDailyStatisticsProduct();
 
-	public int inserMonthlyStatisticsProduct(StatisticsProductVO param);
+	public int inserMonthlyStatisticsProduct();
 }

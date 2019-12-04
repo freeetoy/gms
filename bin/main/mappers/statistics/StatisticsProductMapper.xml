@@ -19,19 +19,19 @@
 		 , Create_Dt
 	</sql>
 
-	<insert id="inserDailyStatisticsProduct" parameterType="com.gms.web.admin.domain.statistics.StatisticsProductVO">
+	<insert id="inserDailyStatisticsProduct">
 		INSERT INTO TB_Daily_Stat_Product(
 			<include refid="StatisticsProductColumns" />
 		) 
-		SELECT  Product_ID,DATE_FORMAT(A.Create_Dt,'%Y/%m/%d'), SUM(Order_Count),SUM(Order_Amount),#{createId}, NOW()
-		FROM TB_Order_Product A, TB_Order B
-		WHERE DATE_FORMAT(A.Create_dt,'%Y/%m/%d')=  DATE_FORMAT(now(),'%Y/%m/%d')
-		AND B.Order_Process_CD !='0299'
-		AND B.Order_ID = A.Order_ID
+		SELECT  Product_ID,DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d'), SUM(Order_Count),SUM(Order_Amount),'admin', NOW()
+		FROM 	TB_Order_Product A, TB_Order B
+		WHERE 	DATE_FORMAT(A.Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 2 day),'%Y/%m/%d')
+		AND 	B.Order_Process_CD !='0299'
+		AND 	B.Order_ID = A.Order_ID
 		GROUP BY DATE_FORMAT(A.Create_Dt,'%Y/%m/%d'),A.Product_Id
 	</insert>
 	
-	<insert id="inserMonthlyStatisticsProduct" parameterType="com.gms.web.admin.domain.statistics.StatisticsProductVO">
+	<insert id="inserMonthlyStatisticsProduct">
 		INSERT INTO TB_Monthly_Stat_Product(
 			<include refid="StatisticsProductColumns" />
 		)
@@ -57,7 +57,7 @@
 		ORDER BY Create_Dt DESC 
 	</select>
 	
-	<select id="selectMonthlylStatisticsProductList" resultType="com.gms.web.admin.domain.statistics.StatisticsProductVO" parameterType="java.util.Map">		
+	<select id="selectMontlylStatisticsProductList" resultType="com.gms.web.admin.domain.statistics.StatisticsProductVO" parameterType="java.util.Map">		
 		SELECT
 			<include refid="StatisticsProductColumns" />
 		FROM

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gms.web.admin.mapper.statistics.StatisticsBottleMapper">
+	<resultMap id="StatisticsBottleMap" type="com.gms.web.admin.domain.statistics.StatisticsBottleVO" >		
+		<result property="statDt"					column="Stat_Dt"					/>
+		<result property="bottleInputCount"			column="Bottle_Input_Count"			/>
+		<result property="bottleChargeCount"		column="Bottle_Charge_Count"		/>
+		<result property="bottleSalesCount"			column="Bottle_Sales_Count"			/>
+		<result property="bottleBackCount"			column="Bottle_Back_Count"			/>
+		<result property="bottleDiscardCount"		column="Bottle_Discard_Count"		/>
+		<result property="createId"					column="CREATE_ID"					/>
+		<result property="createDt"					column="CREATE_DT"					/>
+	</resultMap>
+	
+	<sql id="StatisticsBottleColumns">
+		 Stat_Dt  
+		 , Bottle_Input_Count    
+		 , Bottle_Charge_Count 	 
+		 , Bottle_Sales_Count    
+		 , Bottle_Back_Count 	 
+		 , Bottle_Discard_Count  
+		 , Create_ID        
+		 , Create_Dt
+	</sql>
+
+	<insert id="inserDailyStatisticsBottle">
+		INSERT INTO TB_Daily_Stat_Bottle(
+			<include refid="StatisticsBottleColumns" />
+		) 
+		SELECT 	DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d'), IFNULL(input_count,0),IFNULL(charge_count,0),IFNULL(sales_count,0),IFNULL(back_count,0),IFNULL(discard_count,0),'admin',now()
+		from 
+		(	SELECT count(bottle_id) input_count 
+			FROM TB_Bottle 
+			WHERE delete_yn='N' AND bottle_work_cd ='0301' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')= DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) a,
+		(	SELECT count(bottle_id) charge_count 
+			FROM TB_Bottle 
+			WHERE delete_yn='N' AND bottle_work_cd ='0305' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) b,
+		(	SELECT count(bottle_id) sales_count 
+			FROM TB_Bottle 
+			WHERE delete_yn='N' AND bottle_work_cd ='0308' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')) c,
+		(	SELECT count(bottle_id) back_count 
+			FROM TB_Bottle 
+			WHERE delete_yn='N' AND bottle_work_cd ='0309' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) d,
+		(	SELECT count(bottle_id) discard_count 
+			FROM TB_Bottle 
+			WHERE delete_yn='N' AND bottle_work_cd ='0399' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')= DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) e
+	</insert>
+	
+	<insert id="inserMonthlyStatisticsBottle">
+		INSERT INTO TB_Monthly_Stat_Product(
+			<include refid="StatisticsBottleColumns" />
+		)
+		SELECT  Product_ID,DATE_FORMAT(A.Create_Dt,'%Y%m'), SUM(Bottle_Count),SUM(Bottle_Amount),#{createId}, NOW()
+		FROM TB_Bottle_Product A, TB_Bottle B
+		WHERE DATE_FORMAT(A.Create_dt,'%Y%m')=  DATE_FORMAT(now(),'%Y%m')
+		AND B.Bottle_Process_CD !='0299'
+		AND B.Bottle_ID = A.Bottle_ID
+		GROUP BY DATE_FORMAT(A.Create_Dt,'%Y%m'),A.Product_Id
+	</insert>
+	
+	
+	<select id="selectDailylStatisticsBottleList" resultType="com.gms.web.admin.domain.statistics.StatisticsBottleVO" parameterType="java.util.Map">		
+		SELECT
+			<include refid="StatisticsBottleColumns" />
+		FROM
+			TB_Daily_Stat_Bottle
+		WHERE
+			0 = 0
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchStatDt)">
+		AND Stat_Dt between  #{searchStatDtFrom} AND  #{searchStatDtEnd} 
+		</if>
+		ORDER BY Create_Dt DESC 
+	</select>
+	
+	<select id="selectMontlylStatisticsBottleList" resultType="com.gms.web.admin.domain.statistics.StatisticsBottleVO" parameterType="java.util.Map">		
+		SELECT
+			<include refid="StatisticsBottleColumns" />
+		FROM
+			TB_Monthly_Stat_Bottle
+		WHERE
+			0 = 0	
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchStatDt)">
+		AND Stat_Dt between  #{searchStatDtFrom} AND  #{searchStatDtEnd} 
+		</if>
+		ORDER BY Create_Dt DESC 
+	</select>
+</mapper>

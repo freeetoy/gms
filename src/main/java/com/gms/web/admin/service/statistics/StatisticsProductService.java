@@ -10,7 +10,7 @@ public interface StatisticsProductService {
 	
 	public List<StatisticsProductVO> getMontlylStatisticsProductList(StatisticsProductVO param);	
 	
-	public int registerDailyStatisticsProduct(StatisticsProductVO param);
+	public int registerDailyStatisticsProduct();
 
-	public int registerMonthlyStatisticsProduct(StatisticsProductVO param);
+	public int registerMonthlyStatisticsProduct();
 }

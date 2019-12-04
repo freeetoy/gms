@@ -73,7 +73,7 @@ public class ExcelDownloadController {
 		    headStyle.setBorderRight(BorderStyle.THIN);
 	
 		    // 배경색은 노란색입니다.
-		    headStyle.setFillForegroundColor(HSSFColorPredefined.YELLOW.getIndex());
+		    headStyle.setFillForegroundColor(HSSFColorPredefined.GREY_25_PERCENT.getIndex());
 		    headStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 	
 		    // 데이터는 가운데 정렬합니다.
@@ -182,7 +182,7 @@ public class ExcelDownloadController {
 		    headStyle.setBorderRight(BorderStyle.THIN);
 	
 		    // 배경색은 노란색입니다.
-		    headStyle.setFillForegroundColor(HSSFColorPredefined.YELLOW.getIndex());
+		    headStyle.setFillForegroundColor(HSSFColorPredefined.GREY_25_PERCENT.getIndex());
 		    headStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 	
 		    // 데이터는 가운데 정렬합니다.

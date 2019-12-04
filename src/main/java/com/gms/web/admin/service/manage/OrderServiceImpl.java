@@ -393,32 +393,29 @@ public class OrderServiceImpl implements OrderService {
 						bottleChangeYn = "Y";
 					}
 					
-					//logger.debug("OrderContoller modifyOrder customerPriceList.size() = "+ customerPriceList.size());
-					
-					for(int j=0;j<productPriceList.size();j++) {
+					//logger.debug("OrderContoller modifyOrder customerPriceList.size() = "+ customerPriceList.size());		
+												
+						
+					for(int k=0;k<productPriceList.size();k++) {
 						orderAmount = 0;
+						tempProduct = productPriceList.get(k);
 						
-						
-						for(int k=0;k<productPriceList.size();k++) {
-							tempProduct = productPriceList.get(k);
+						if(productId == tempProduct.getProductId() && productPriceSeq == tempProduct.getProductPriceSeq()) {
 							
-							if(productId == tempProduct.getProductId() && productPriceSeq == tempProduct.getProductPriceSeq()) {
-								
-								if(i==0) {
-									orderProductNm = tempProduct.getProductNm();
-									orderProductCapa = tempProduct.getProductCapa();
-									logger.debug("OrderContoller modifyOrder productPriceList orderProductNm== "+ orderProductNm);
-									logger.debug("OrderContoller modifyOrder productPriceList orderProductCapa== "+ orderProductCapa);
-								}
-								
-								orderAmount = tempProduct.getProductPrice() *orderCount;	
-								logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
-								productVo.setOrderAmount(orderAmount);
-								orderTotalAmount += orderAmount;								
+							if(i==0) {
+								orderProductNm = tempProduct.getProductNm();
+								orderProductCapa = tempProduct.getProductCapa();
+								logger.debug("OrderContoller modifyOrder productPriceList orderProductNm== "+ orderProductNm);
+								logger.debug("OrderContoller modifyOrder productPriceList orderProductCapa== "+ orderProductCapa);
 							}
+							
+							orderAmount = tempProduct.getProductPrice() *orderCount;	
+							logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
+							productVo.setOrderAmount(orderAmount);
+							orderTotalAmount += orderAmount;								
 						}
-						
-					}		
+					}	
+					
 					logger.debug("OrderContoller modifyOrder orderTotalAmount== "+ orderTotalAmount);
 					
 					productVo.setOrderId(params.getOrderId());

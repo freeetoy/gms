@@ -56,21 +56,20 @@ public class StatisticsProductServiceImpl implements StatisticsProductService {
 		
 		Map<String, Object> map = new HashMap<String, Object>();		
 
-		map.put("searchProductId", param.getSearchProductId());	
-		
+		map.put("searchProductId", param.getSearchProductId());			
 		
 		if(param.getSearchStatDt() != null) {
-			map.put("searchOrderDt", param.getSearchStatDt());
+			map.put("searchStatDt", param.getSearchStatDt());
 			logger.debug("****** getMonthlylStatisticsProductList *****getSearchStatDt===*"+param.getSearchStatDt());
 		}		
 		
 		if(param.getSearchStatDtFrom() != null) {
-			map.put("searchOrderDtFrom", param.getSearchStatDtFrom());
+			map.put("searchStatDtFrom", param.getSearchStatDtFrom());
 			logger.info("****** getMonthlylStatisticsProductList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
 		}
 		
 		if(param.getSearchStatDtEnd() != null) {
-			map.put("searchOrderDtEnd", param.getSearchStatDtEnd());
+			map.put("searchStatDtEnd", param.getSearchStatDtEnd());
 			logger.info("****** getMonthlylStatisticsProductList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
 		}	
 				
@@ -81,15 +80,15 @@ public class StatisticsProductServiceImpl implements StatisticsProductService {
 	}
 
 	@Override
-	public int registerDailyStatisticsProduct(StatisticsProductVO param) {
+	public int registerDailyStatisticsProduct() {
 		// TODO Auto-generated method stub
-		return 0;
+		return statMapper.inserDailyStatisticsProduct();
 	}
 
 	@Override
-	public int registerMonthlyStatisticsProduct(StatisticsProductVO param) {
+	public int registerMonthlyStatisticsProduct() {
 		// TODO Auto-generated method stub
-		return 0;
+		return statMapper.inserMonthlyStatisticsProduct();
 	}
 
 }
