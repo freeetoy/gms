@@ -60,8 +60,28 @@ public class ScheduleServiceImpl implements ScheduleService {
 	@Override
 	@Transactional
 	public int registerMonthlyStatistics() {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		try {
+			//TB_Daily_Statistics_Order
+			result = statOrderService.registerMonthlyStatisticsOrder();
+			
+			// TB_Daily_Statistics_Product
+			result = statProductService.registerMonthlyStatisticsProduct();
+					
+			// TB_Daily_Statistics_Customer
+			result = statCustomerService.registerMonthlyStatisticsCustomer();
+			
+			result  = statBottleService.registerMonthlyStatisticsBottle();
+			
+		} catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+	
+		return result ;
 	}
 
 }

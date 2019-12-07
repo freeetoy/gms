@@ -22,12 +22,16 @@
 	<entry key="common.menu.stat_bottle">sbottle</entry>
 	<entry key="common.menu.user">user</entry>
 	<entry key="common.menu.calendar">calendar</entry>
-	<entry key="common.menu.report">report</entry>
+	<entry key="common.menu.assign">assign</entry>
+	<entry key="common.menu.diary">diary</entry>
 	<entry key="common.menu.vacation">vacation</entry>
 	<entry key="common.menu.self">self</entry>
 	
 
 	<entry key="common.user.SALES">01</entry>
+	
+	<entry key="Bottle.Type.Empty">E</entry>
+	<entry key="Bottle.Type.FULL">F</entry>
 	
 	<!-- 코드  정의 -->	
 	<entry key="common.bottle.status">0300</entry>
@@ -39,7 +43,8 @@
 	<entry key="common.bottle.status.0306">0306</entry>
 	<entry key="common.bottle.status.0307">0307</entry>
 	<entry key="common.bottle.status.0308">0308</entry>
-	<entry key="common.bottle.status.0309">0308</entry>
+	<entry key="common.bottle.status.0309">0309</entry>
+	<entry key="common.bottle.status.0310">0310</entry>
 	
 	
 	<entry key="common.code.order.type">0100</entry>
@@ -59,5 +64,8 @@
 	<entry key="common.code.order.process.06">0206</entry>
 	<entry key="common.code.order.process.07">0207</entry>
 	<entry key="common.code.order.process.08">0208</entry>
+	<entry key="common.code.order.process.07">0209</entry>
+	<entry key="common.code.order.process.08">0210</entry>
+	<entry key="common.code.order.process.08">0299</entry>
 	
 </properties>

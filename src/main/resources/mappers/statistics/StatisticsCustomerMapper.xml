@@ -38,12 +38,15 @@
 		INSERT INTO TB_Monthly_Stat_Customer(
 			<include refid="StatisticsCustomerColumns" />
 		)
-		SELECT  Product_ID,DATE_FORMAT(A.Create_Dt,'%Y%m'), SUM(Order_Count),SUM(Order_Amount),#{createId}, NOW()
-		FROM TB_Order_Product A, TB_Order B
-		WHERE DATE_FORMAT(A.Create_dt,'%Y%m')=  DATE_FORMAT(now(),'%Y%m')
-		AND B.Order_Process_CD !='0299'
-		AND B.Order_ID = A.Order_ID
-		GROUP BY DATE_FORMAT(A.Create_Dt,'%Y%m'),A.Product_Id
+		SELECT Customer_ID
+			 , LEFT(Stat_Dt,7)
+			 , SUM(Order_Count)   
+			 , SUM(Order_Amount)  	 
+			 , 'admin'
+			 , NOW()
+		FROM TB_Daily_Stat_customer
+		WHERE LEFT(Stat_Dt,7)=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m')
+		GROUP BY Customer_ID,LEFT(Stat_Dt,7)
 	</insert>
 	
 	

@@ -164,18 +164,19 @@
 			, NOW()
 		)
 	</insert>
-
-	<select id="selectBottleDetail" parameterType="String" resultType="com.gms.web.admin.domain.manage.BottleVO">
-		SELECT
-			<include refid="BottleColumns" />
-		FROM
-			TB_Bottle
-		WHERE
-			Bottle_ID = #{bottleId}
-		AND
-			Delete_YN = 'N'
-	</select>
-
+	
+	<insert id="insertBottleHistory" parameterType="String">
+		INSERT INTO TB_Bottle_Hist
+		SELECT b.history_seq,a.*
+			FROM TB_Bottle a,
+			(
+				SELECT bottle_id, count(bottle_id)+1 history_seq 
+				FROM TB_Bottle_Hist 
+				WHERE Bottle_Id=#{bottleId}
+			) b 
+		WHERE a.Bottle_Id =#{bottleId}
+	</insert>
+	
 	<update id="updateBottle" parameterType="com.gms.web.admin.domain.manage.BottleVO">
 		UPDATE TB_Bottle
 		SET
@@ -195,7 +196,7 @@
 		UPDATE TB_Bottle
 		SET
 			  Bottle_Work_CD 	= #{bottleWorkCd}
-			, Bottle_Work_ID	= #{bottleWorkId}]
+			, Bottle_Work_ID	= #{bottleWorkId}
 			, Bottle_Type		= #{bottleType}
 			, Bottle_Work_DT	= NOW()
 			, UPDATE_ID 		= #{updateId}
@@ -209,6 +210,9 @@
 		SET
 			Order_Id			= #{orderId}
 			,Order_Product_Seq	= #{orderProductSeq}
+			, Bottle_Work_CD 	= #{bottleWorkCd}
+			, Bottle_Work_ID	= #{bottleWorkId}
+			, Bottle_Type		= #{bottleType}
 			, UPDATE_ID 		= #{updateId}
 			, UPDATE_DT 		= NOW()	
 		WHERE
@@ -237,6 +241,39 @@
 				#{item} 
 			</foreach>
 	</update>
+
+	<select id="selectBottleDetail" parameterType="String" resultType="com.gms.web.admin.domain.manage.BottleVO">
+		SELECT
+			<include refid="BottleSelectColumns" />
+		FROM
+			TB_Bottle TB, TB_CODE TC, TB_Gas TG
+		WHERE
+			Bottle_ID = #{bottleId}
+		AND
+			TB.Delete_YN = 'N'
+		AND 
+			TB.Bottle_Work_CD = TC.CD_ID	
+		AND 
+			TB.Gas_ID = TG.Gas_Id
+	</select>
+	
+	<select id="selectBottleDetails" parameterType="String" resultType="com.gms.web.admin.domain.manage.BottleVO">
+		SELECT
+			<include refid="BottleSelectColumns" />
+		FROM
+			TB_Bottle TB, TB_CODE TC, TB_Gas TG
+		WHERE
+			Bottle_ID in  
+			<foreach collection="bottList" item="item" index="index" open="(" separator="," close=")">
+				#{item} 
+			</foreach>
+		AND
+			TB.Delete_YN = 'N'
+		AND 
+			TB.Bottle_Work_CD = TC.CD_ID	
+		AND 
+			TB.Gas_ID = TG.Gas_Id
+	</select>
 
 	<select id="selectBottleList" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="java.util.Map">
 		SELECT A.*, B.Customer_Nm
@@ -351,17 +388,7 @@
 		ORDER BY Update_Dt DESC 
 	</select>
 	
-	<insert id="insertBottleHistory" parameterType="String">
-		INSERT INTO TB_Bottle_Hist
-		SELECT b.history_seq,a.*
-			FROM TB_Bottle a,
-			(
-				SELECT bottle_id, count(bottle_id)+1 history_seq 
-				FROM TB_Bottle_Hist 
-				WHERE Bottle_Id=#{bottleId}
-			) b 
-		WHERE a.Bottle_Id =#{bottleId}
-	</insert>
+
 	
 	
 	<select id="selectCustomerBottleList" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="Integer">		

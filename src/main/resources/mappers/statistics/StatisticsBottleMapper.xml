@@ -47,15 +47,20 @@
 	</insert>
 	
 	<insert id="inserMonthlyStatisticsBottle">
-		INSERT INTO TB_Monthly_Stat_Product(
+		INSERT INTO TB_Monthly_Stat_Bottle(
 			<include refid="StatisticsBottleColumns" />
 		)
-		SELECT  Product_ID,DATE_FORMAT(A.Create_Dt,'%Y%m'), SUM(Bottle_Count),SUM(Bottle_Amount),#{createId}, NOW()
-		FROM TB_Bottle_Product A, TB_Bottle B
-		WHERE DATE_FORMAT(A.Create_dt,'%Y%m')=  DATE_FORMAT(now(),'%Y%m')
-		AND B.Bottle_Process_CD !='0299'
-		AND B.Bottle_ID = A.Bottle_ID
-		GROUP BY DATE_FORMAT(A.Create_Dt,'%Y%m'),A.Product_Id
+		SELECT LEFT(Stat_Dt,7), 
+			SUM(Bottle_Input_Count)    
+			 , SUM(Bottle_Charge_Count) 	 
+			 , SUM(Bottle_Sales_Count)    
+			 , SUM(Bottle_Back_Count) 	 
+			 , SUM(Bottle_Discard_Count) 
+			 , 'admin'
+			 , NOW()
+		FROM TB_Daily_Stat_Bottle
+		WHERE LEFT(Stat_Dt,7)=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m')
+		GROUP BY LEFT(Stat_Dt,7)
 	</insert>
 	
 	

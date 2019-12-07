@@ -6,6 +6,7 @@
 		<result property="orderTotalCount"			column="Order_Total_Count"			/>
 		<result property="orderTotalAmount"			column="Order_Total_Amount"			/>
 		<result property="orderProductCount"		column="Order_Product_Count"		/>
+		<result property="orderAutoCount"		column="Order_Auto_Count"		/>
 		<result property="orderCancelCount"			column="Order_Cancel_Count"			/>
 		<result property="orderRetrievedCount"		column="Order_Retrieved_Count"		/>
 		<result property="orderCheckCount"			column="Order_Check_Count"			/>
@@ -20,6 +21,7 @@
 		 , Order_Total_Amount 	 
 		 , Order_Product_Count    
 		 , Order_Cancel_Count 	 
+		 , Order_Auto_Count 	
 		 , Order_Retrieved_Count        
 		 , Order_Check_Count
 		 , Order_Etc_Count
@@ -47,13 +49,21 @@
 	<insert id="inserMonthlyStatisticsOrder">
 		INSERT INTO TB_Monthly_Stat_Order(
 			<include refid="StatisticsOrderColumns" />
-		)
-		SELECT  Product_ID,DATE_FORMAT(A.Create_Dt,'%Y%m'), SUM(Order_Count),SUM(Order_Amount),#{createId}, NOW()
-		FROM TB_Order_Product A, TB_Order B
-		WHERE DATE_FORMAT(A.Create_dt,'%Y%m')=  DATE_FORMAT(now(),'%Y%m')
-		AND B.Order_Process_CD !='0299'
-		AND B.Order_ID = A.Order_ID
-		GROUP BY DATE_FORMAT(A.Create_Dt,'%Y%m'),A.Product_Id
+		)		
+		SELECT LEFT(Stat_Dt,7), 
+			SUM(Order_Total_Count)    
+			 , SUM(Order_Total_Amount) 	 
+			 , SUM(Order_Product_Count)    
+			 , SUM(Order_Cancel_Count) 	 
+			 , SUM(Order_Auto_Count) 	
+			 , SUM(Order_Retrieved_Count)        
+			 , SUM(Order_Check_Count)
+			 , SUM(Order_Etc_Count)
+			 , 'admin'
+			 , NOW()
+		FROM TB_Daily_Stat_Order
+		WHERE LEFT(Stat_Dt,7)=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m')
+		GROUP BY LEFT(Stat_Dt,7)
 	</insert>
 	
 	

@@ -20,6 +20,8 @@ public interface BottleMapper {
 	public int insertBottle(BottleVO param);
 
 	public BottleVO selectBottleDetail(String bottleId) ;
+	
+	public List<BottleVO> selectBottleDetails(BottleVO param) ;
 
 	public int updateBottle(BottleVO param);
 	

@@ -25,6 +25,9 @@ public class StatisticsOrderVO extends AbstractVO implements Serializable {
 	/**Order_Product_Count   */
 	private int orderProductCount;
 	
+	/**Order_Auto_Count   */
+	private int orderAutoCount;
+	
 	/**Order_Cancel_Count    */
 	private int orderCancelCount;
 	

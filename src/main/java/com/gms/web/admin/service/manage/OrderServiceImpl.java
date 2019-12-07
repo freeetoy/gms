@@ -18,6 +18,7 @@ import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
+import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.OrderExtVO;
 import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.OrderVO;
@@ -150,8 +151,15 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<OrderVO> getCustomerOrderList(Integer customerId) {
 		// TODO Auto-generated method stub
-		return null;
+		return orderMapper.selectCustomerOrderList(customerId);
 	}
+	
+	@Override
+	public List<OrderVO> getSalseOrderList(String salesId) {
+		// TODO Auto-generated method stub
+		return orderMapper.selectSalesOrderList(salesId);
+	}
+
 
 	@Override
 	public OrderVO getOrderDetail(Integer orderId) {
@@ -212,6 +220,13 @@ public class OrderServiceImpl implements OrderService {
 			String bottleChangeYn = null;
 			CustomerPriceExtVO tempCustomerPrice = null;
 			ProductTotalVO tempProduct = null;
+			
+			
+			// Sales ID 설정
+			CustomerVO customer = customerService.getCustomerDetails(params.getCustomerId());
+			
+			params.setSalesId(customer.getSalesId());
+		
 		
 			if(orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.01")) ||  orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.02"))
 					|| orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.03"))) {
@@ -365,6 +380,11 @@ public class OrderServiceImpl implements OrderService {
 		
 			logger.debug("OrderContoller modifyOrder orderTypeCd== "+ orderTypeCd);
 			
+			// Sales ID 설정
+			CustomerVO customer = customerService.getCustomerDetails(params.getCustomerId());
+			
+			params.setSalesId(customer.getSalesId());
+			
 			if(orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.01")) ||  orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.02"))
 					|| orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.03"))) {
 				
@@ -495,7 +515,45 @@ public class OrderServiceImpl implements OrderService {
 			return 0;
 	}
 
-	
+	@Override
+	public int modifyOrderComplete(OrderProductVO param) {
+		int result = 0;
+		try {
+			//TODO  용기거래테이블 등록 필요
+			BottleVO bottle = new BottleVO();
+			bottle.setBottleId(param.getBottleId());
+			bottle.setOrderId(param.getOrderId());
+			bottle.setOrderProductSeq(param.getOrderProductSeq());
+			bottle.setBottleWorkCd(param.getBottleWorkCd());
+			bottle.setBottleWorkId(param.getUpdateId());		
+			bottle.setBottleType(param.getBottleType());
+			bottle.setUpdateId(param.getUpdateId());
+			
+			result = bottleService.modifyBottleOrder(bottle);
+			
+			if(result >0 ) {
+				result =  orderMapper.updateOrderBottleId(param);
+				/*
+				OrderVOreturn  order = new OrderVO();
+				
+				order.setOrderId(param.getOrderId());
+				order.setOrderProcessCd(PropertyFactory.getProperty("common.code.order.process.04"));
+				order.setUpdateId(param.getUpdateId());
+				
+				return orderMapper.updateOrderProcessCd(order);
+				*/
+			}else {
+				return 0;
+			}
+		} catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	@Override
 	@Transactional
@@ -593,5 +651,4 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	
-
 }

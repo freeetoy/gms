@@ -17,6 +17,8 @@ public interface BottleService {
 	
 	public BottleVO getBottleDetail(String bottleId) ;
 	
+	public List<BottleVO> getBottleDetails(BottleVO param) ;
+	
 	public int getBottleCount(Map<String, Object> map);	
 	
 	public int getBottleIdCheck(BottleVO param);	

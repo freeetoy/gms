@@ -38,6 +38,7 @@
 		<result property="bottleChangeYn"		column="Bottle_Change_YN"	/>
 		<result property="orderAmount"			column="Order_Amount"		/>
 		<result property="bottleId"				column="Bottle_ID"			/>
+		<result property="gasID"				column="GAS_ID"				/>
 		<result property="createId"				column="CREATE_ID"			/>
 		<result property="createDt"				column="CREATE_DT"			/>
 		<result property="updateId"				column="UPDATE_ID"			/>		
@@ -117,14 +118,15 @@
 		 , Order_Product_ETC
 		 , Bottle_Change_YN 
 		 , Order_Amount 
-		 , Bottle_ID           
+		 , Bottle_ID    
+		 , GAS_ID       
 		 , A.Create_ID        
 		 , A.Create_Dt        
 		 , A.Update_ID        
 		 , A.Update_Dt   
 	</sql>
 	
-		<insert id="insertOrder" parameterType="com.gms.web.admin.domain.manage.OrderVO">
+	<insert id="insertOrder" parameterType="com.gms.web.admin.domain.manage.OrderVO">
 		INSERT INTO TB_Order(
 			<include refid="OrderColumns" />
 		) VALUES (
@@ -171,48 +173,29 @@
 	</insert>
 	
 	<insert id="insertOrderProducts" parameterType="java.util.List" >
-	    	INSERT INTO TB_Order_Product(
-				<include refid="OrderProductColumns" />
-			) VALUES 
-			<foreach collection="list" item="item" separator=" , ">
-			(
-				#{item.orderId}
-				, #{item.orderProductSeq}	
-				, #{item.productId}	
-				, #{item.productPriceSeq}					
-				, #{item.orderCount}	
-				, #{item.orderProductEtc}
-				, #{item.bottleChangeYn}		
-				, #{item.orderAmount}		
-				, ''
-				, #{item.createId}			
-				, NOW()
-				, NULL
-				, NOW()
-	    	)
-	    	</foreach>
+    	INSERT INTO TB_Order_Product(
+			<include refid="OrderProductColumns" />
+		) VALUES 
+		<foreach collection="list" item="item" separator=" , ">
+		(
+			#{item.orderId}
+			, #{item.orderProductSeq}	
+			, #{item.productId}	
+			, #{item.productPriceSeq}					
+			, #{item.orderCount}	
+			, #{item.orderProductEtc}
+			, #{item.bottleChangeYn}		
+			, #{item.orderAmount}		
+			, ''
+			, #{item.createId}			
+			, NOW()
+			, NULL
+			, NOW()
+    	)
+    	</foreach>
 	</insert>
 	
-	<select id="selectOrderId" resultType="int">
-		SELECT
-			MAX(IFNULL(Order_id,0))+1
-		FROM
-			TB_ORDER
-	</select>
-	<select id="selectOrderDetail" parameterType="Integer" resultType="com.gms.web.admin.domain.manage.OrderVO">
-		SELECT
-			<include refid="OrderSelectColumns" />
-		FROM
-			TB_Order A, TB_Customer B, TB_CODE C, TB_User D
-		WHERE
-			Order_ID = #{orderId}
-		AND Order_Process_CD !='0299'
-		AND A.Customer_Id = B.Customer_ID		
-		AND Order_Process_CD !='0299'
-		AND A.Order_Process_Cd = C.CD_ID
-		AND A.Create_Id = D.User_ID				
-	</select>
-
+	
 	<update id="updateOrder" parameterType="com.gms.web.admin.domain.manage.OrderVO">
 		UPDATE TB_Order
 		SET
@@ -275,6 +258,7 @@
 			Order_Product_Seq = #{orderProductSeq}	
 	</update>	
 	
+	
 	<update id="deleteOrder" parameterType="com.gms.web.admin.domain.manage.OrderVO">
 		UPDATE TB_Order
 		SET
@@ -289,6 +273,27 @@
 		WHERE
 			Order_ID = #{orderId}		
 	</update>	
+
+	<select id="selectOrderId" resultType="int">
+		SELECT
+			MAX(IFNULL(Order_id,0))+1
+		FROM
+			TB_ORDER
+	</select>
+	
+	<select id="selectOrderDetail" parameterType="Integer" resultType="com.gms.web.admin.domain.manage.OrderVO">
+		SELECT
+			<include refid="OrderSelectColumns" />
+		FROM
+			TB_Order A, TB_Customer B, TB_CODE C, TB_User D
+		WHERE
+			Order_ID = #{orderId}
+		AND Order_Process_CD !='0299'
+		AND A.Customer_Id = B.Customer_ID		
+		AND Order_Process_CD !='0299'
+		AND A.Order_Process_Cd = C.CD_ID
+		AND A.Create_Id = D.User_ID				
+	</select>
 
 	<select id="selectOrderList" resultType="com.gms.web.admin.domain.manage.OrderVO" parameterType="java.util.Map">		
 		SELECT
@@ -364,7 +369,7 @@
 		SELECT
 			<include refid="OrderSelectColumns" />
 		FROM
-			TB_Order A, TB_Customer B, TB_CODE C
+			TB_Order A, TB_Customer B, TB_CODE C, TB_User D
 		WHERE
 			A.Customer_Id = B.Customer_ID	
 		AND 
@@ -372,7 +377,27 @@
 		AND 
 			Customer_id = #{customerId}
 		AND 
+			A.Create_Id = D.User_ID
+		AND 
 			A.Order_Process_Cd = C.CD_ID			
-		ORDER BY Create_Dt DESC 
+		ORDER BY A.Create_Dt DESC 
+	</select>
+	
+	<select id="selectSalesOrderList" resultType="com.gms.web.admin.domain.manage.OrderVO" parameterType="String">		
+		SELECT
+			<include refid="OrderSelectColumns" />
+		FROM
+			TB_Order A, TB_Customer B, TB_CODE C, TB_User D
+		WHERE
+			A.Customer_Id = B.Customer_ID	
+		AND 
+			Order_Process_CD <![CDATA[<]]> '0205'			
+		AND 
+			A.Sales_Id = #{salesId}
+		AND 
+			A.Create_Id = D.User_ID
+		AND 
+			A.Order_Process_Cd = C.CD_ID			
+		ORDER BY Delivery_Req_Dt DESC 
 	</select>
 </mapper>

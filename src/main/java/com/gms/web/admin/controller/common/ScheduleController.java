@@ -17,21 +17,25 @@ public class ScheduleController {
 	@Autowired
 	private ScheduleService scheduleService;
 	
-	@Scheduled(cron="* 0 10 * * *")
+	@Scheduled(cron="0 41 13 * * *")
 	private void scheduleDaily() { 
 		
 		//Daiyl 통계 데이타 등록
 		//statOrderService.
-		
+		logger.info("************* ScheduleController scheduleDaily Start *************");
 		int result = scheduleService.registerDailyStatistics();		
 		
-	}
-	/*
-	
-	//@Scheduled(cron="0 1 1 * * ")
-	private void scheduleMonthly() { 
-		logger.error("hello jeong-pro"); 
+		logger.info("******************* ScheduleController scheduleDaily End*************** ");
 		
 	}
-*/	
+	
+	 
+	@Scheduled(cron="0 7 10 6 * *")
+	private void scheduleMonthly() { 
+		logger.info("************* ScheduleController scheduleMonthly Start *************");
+		int result = scheduleService.registerMonthlyStatistics();	
+		logger.info("************* ScheduleController scheduleMonthly end *************");
+		
+	}
+	
 }

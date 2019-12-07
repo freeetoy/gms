@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gms.web.admin.mapper.manage.WorkReportMapper">
+	<resultMap id="WorkReportMap" type="com.gms.web.admin.domain.manage.WorkReportVO" >
+		<result property="workReportSeq"		column="Work_Report_Seq"		/>
+		<result property="userId"				column="User_ID"				/>
+		<result property="customerId"			column="Customer_ID"			/>
+		<result property="customerNm"			column="Customer_NM"			/>
+		<result property="orderId"				column="Order_ID"				/>
+		<result property="workDt"				column="Work_Dt"				/>
+		<result property="orderAmount"			column="Order_Amount"			/>
+		<result property="receivedAmount"		column="Received_Amount"		/>
+		<result property="orderProductNm"		column="Order_Product_Nm"		/>		
+		<result property="orderProductCapa"		column="Order_Product_Capa"		/>
+		<result property="bottleType"			column="Bottle_Type"			/>
+		<result property="createNm"				column="Create_Nm"				/>
+		<result property="createId"				column="CREATE_ID"				/>
+		<result property="createDt"				column="CREATE_DT"				/>
+		<result property="updateId"				column="UPDATE_ID"				/>		
+		<result property="updateDt"				column="UPDATE_DT"				/>
+	</resultMap>	
+
+	<resultMap id="WorkBottleMap" type="com.gms.web.admin.domain.manage.WorkBottleVO" >
+		<result property="workReportSeq"		column="Work_Report_Seq"		/>				
+		<result property="bottleId"				column="Bottle_ID"				/>
+		<result property="bottleBarCd"			column="Bottle_BarCd"			/>		
+		<result property="customerId"			column="Customer_ID"			/>
+		<result property="customerNm"			column="Customer_NM"			/>
+		<result property="bottleWorkCd"			column="Bottle_Work_CD"			/>
+		<result property="gasID"				column="Gas_ID"					/>
+		<result property="productId"			column="Product_ID"				/>
+		<result property="productPriceSeq"		column="Product_Price_Seq"		/>
+		<result property="bottleType"			column="Bottle_Type"			/>
+		<result property="createId"				column="CREATE_ID"				/>
+		<result property="createDt"				column="CREATE_DT"				/>
+		<result property="updateId"				column="UPDATE_ID"				/>		
+		<result property="updateDt"				column="UPDATE_DT"				/>	
+	</resultMap>
+	
+	<sql id="WorkReportColumns">
+		Work_Report_Seq
+		 , User_ID
+		 , Customer_ID
+		 , Order_ID
+		 , Work_Dt
+		 , Order_Amount
+		 , Received_Amount
+		 , Bottle_Type
+		 , Create_ID        
+		 , Create_Dt        
+		 , Update_ID        
+		 , Update_Dt   
+	</sql>
+	<sql id="SelectWorkReportColumns">
+		 Work_Report_Seq
+		 , User_ID
+		 , tw.Customer_ID
+		 , Customer_NM
+		 , tw.Order_ID
+		 , Work_Dt
+		 , tw.Order_Amount
+		 , Received_Amount
+		 , Bottle_Type
+		 , Order_Product_Nm
+		 , Order_Product_Capa
+		 , tw.Create_ID        
+		 , tw.Create_Dt        
+		 , tw.Update_ID        
+		 , tw.Update_Dt     
+	</sql>
+	<sql id="WorkBottleColumns">
+		 Work_Report_Seq
+		 , Bottle_ID
+		 , Bottle_BarCd       
+		 , Customer_ID         
+		 , Bottle_Work_Cd      
+		 , Gas_ID              
+		 , Product_ID          
+		 , Product_Price_Seq   
+		 , Bottle_Type
+		 , Create_ID        
+		 , Create_Dt        
+		 , Update_ID        
+		 , Update_Dt   
+	</sql>
+	
+	<insert id="insertWorkReport" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">
+		INSERT INTO TB_Work_Report(
+			<include refid="WorkReportColumns" />
+		) VALUES (
+			#{workReportSeq}
+			, #{userId}
+			, #{customerId}	
+			, #{orderId}	
+			, NOW()
+			, #{orderAmount}				
+			, #{receivedAmount}		
+			, #{bottleType}
+			, #{createId}			
+			, NOW()
+			, NULL
+			, NOW()
+		)
+	</insert>
+	
+	<insert id="insertWorkBottle" parameterType="com.gms.web.admin.domain.manage.WorkBottleVO">
+		INSERT INTO TB_Work_Bottle(
+			<include refid="WorkBottleColumns" />
+		) VALUES (
+			#{workReportSeq}
+			, #{bottleId}	
+			, #{bottleBarCd}	
+			, #{customerId}	
+			, #{bottleWorkCd}	
+			, #{gasId}				
+			, #{productId}	
+			, #{productPriceSeq}
+			, #{bottleType}
+			, #{createId}			
+			, NOW()
+			, NULL
+			, NOW()
+		)
+	</insert>
+	
+	<insert id="insertWorkBottles" parameterType="java.util.List">
+		INSERT INTO TB_Work_Bottle(
+			<include refid="WorkBottleColumns" />
+		) VALUES 
+		<foreach collection="list" item="item" separator=" , ">
+		(
+			#{item.workReportSeq}
+			, #{item.bottleId}	
+			, #{item.bottleBarCd}	
+			, #{item.customerId}	
+			, #{item.bottleWorkCd}	
+			, #{item.gasId}				
+			, #{item.productId}	
+			, #{item.productPriceSeq}
+			, #{item.bottleType}
+			, #{item.createId}			
+			, NOW()
+			, NULL
+			, NOW()
+		)
+		</foreach>
+	</insert>
+	
+	<insert id="insertWorkReportList" parameterType="java.util.List">
+		INSERT INTO TB_Work_Bottle(
+			<include refid="WorkBottleColumns" />
+		) VALUES 
+		<foreach collection="list" item="item" separator=" , ">
+		(
+			#{item.workReportSeq}
+			, #{item.bottleId}	
+			, #{item.bottleBarCd}	
+			, #{item.customerId}	
+			, #{item.bottleWorkCd}
+			, #{item.gasID}				
+			, #{item.productId}	
+			, #{item.productPriceSeq}
+			
+			, #{item.bottleType}
+			, #{item.createId}			
+			, NOW()
+			, NULL
+			, NOW()
+		)
+		</foreach>
+	</insert>
+	
+	<select id="selectWorkReportList" resultType="com.gms.web.admin.domain.manage.WorkReportVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
+		SELECT
+			<include refid="SelectWorkReportColumns" />
+		FROM
+			TB_Work_Report tw , TB_Order tr, TB_Customer tc
+		WHERE
+			tw.Customer_ID = tc.Customer_ID
+		AND
+			tw.Order_ID = tr.Order_ID
+		AND	
+			User_id=#{userId}
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
+		AND Work_Dt =   #{searchDt}
+		</if>
+		ORDER BY Work_Report_Seq DESC 
+	</select>
+	
+	<select id="selectWorkReportSeq" resultType="int">
+		SELECT IFNULL(A.Work_Report_Seq, 0)+1
+		FROM 
+		(
+			SELECT max(Work_Report_Seq) Work_Report_Seq
+			FROM TB_Work_Report   ) A
+	</select>
+	
+	
+</mapper>

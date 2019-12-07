@@ -61,7 +61,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
         	
         	LoginUserVO userInfo = new LoginUserVO();
         	// 임시
-        	userInfo.setUserId("TESTER");
+        	userInfo.setUserId("freetoy");
         	userInfo.setUserNm("임의테스터");
         	userInfo.setUserPartCd("03");
         	userInfo.setUserAuthority("99");

@@ -17,6 +17,8 @@ public interface OrderService {
 	
 	public List<OrderVO> getCustomerOrderList(Integer customerId);
 
+	public List<OrderVO> getSalseOrderList(String salesId);
+	
 	public OrderVO getOrderDetail(Integer orderId) ;
 	
 	public OrderExtVO getOrder(Integer orderId) ;
@@ -40,6 +42,8 @@ public interface OrderService {
 	public int modifyOrderProduct(OrderProductVO param);
 	
 	public int modifyOrderBottleId(OrderProductVO param);
+	
+	public int modifyOrderComplete(OrderProductVO param);
 
 	public int changeOrderProcessCd(OrderVO param);
 

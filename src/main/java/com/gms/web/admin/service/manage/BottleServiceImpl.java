@@ -218,8 +218,13 @@ public class BottleServiceImpl implements BottleService {
 				
 		// 정보 등록
 		logger.info("****** modifyBottle.getBottleId()()) *****===*"+param.getBottleId());
+		int result = 0;
 		
-		return bottleMapper.updateBottle(param);
+		result =  bottleMapper.updateBottle(param);
+		
+		if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
+		
+		return result;
 	}
 	
 	@Override
@@ -290,7 +295,23 @@ public class BottleServiceImpl implements BottleService {
 
 	@Override
 	public int modifyBottleOrder(BottleVO param) {
-		return bottleMapper.updateBottleOrderId(param);		
+		
+		int result = 0; 
+				
+		result = bottleMapper.updateBottleOrderId(param);	
+		
+		if(result > 0 ) result = insertBottleHistory(param.getBottleId());
+		
+		return result ;
+	}
+
+	@Override
+	public List<BottleVO> getBottleDetails(BottleVO param) {
+		
+		List<BottleVO> list = (List<BottleVO>) bottleMapper.selectBottleDetails(param);	
+		
+		return list;
+				
 	}
 
 	

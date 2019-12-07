@@ -169,20 +169,20 @@ $(document).ready(function(){
 						$("#btn_process_2").html("생산완료");						
 						$("#btn_process_1").prop('disabled', true);
 						$("#btn_process_2").prop('disabled', true);
-					}else if(data.order.orderProcessCd =='0204'){
+					}else if(data.order.orderProcessCd =='0205'){
 						$("#view_button1").show();
 						$("#view_button").hide();
 						
 						$("#btn_process_6").prop('disabled', true);
 						$("#btn_process_7").prop('disabled', true);
-					}else if(data.order.orderProcessCd =='0206'){
+					}else if(data.order.orderProcessCd =='0207'){
 						$("#view_button1").show();
 						$("#view_button").hide();
 						
 						$("#btn_process_5").html("거래명세서완료");
 						$("#btn_process_5").prop('disabled', true);
 						$("#btn_process_7").prop('disabled', true);
-					}else if(data.order.orderProcessCd =='0207'){
+					}else if(data.order.orderProcessCd =='0208'){
 						$("#view_button1").show();
 						$("#view_button").hide();
 						
@@ -190,7 +190,7 @@ $(document).ready(function(){
 						$("#btn_process_6").html("세금계산서완료");	
 						$("#btn_process_5").prop('disabled', true);
 						$("#btn_process_6").prop('disabled', true);	
-					}else if(data.order.orderProcessCd =='0208'){
+					}else if(data.order.orderProcessCd =='0209'){
 						$("#view_button1").show();
 						$("#view_button").hide();
 						
@@ -266,8 +266,8 @@ $(document).ready(function(){
             break;
           case 'btn_process_3':
             msg = "'판매 확인' 하시겠습니까?";
-            $("#orderProcessCd").val("0204");
-            orderProcessCd ='0204';
+            $("#orderProcessCd").val("0205");
+            orderProcessCd ='0205';
             break;  
           default:
             break;

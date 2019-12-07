@@ -443,8 +443,8 @@
             </ul>
           </li>   
           <!--  사용자관리 메뉴  시작 -->
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+          <li th:if="${menuId=='assign' || menuId=='diary' || menuId=='vacation' || menuId=='self'}" class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-book"></i>
               <p>
                 	마이페이지
@@ -452,18 +452,77 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="../forms/general.html" class="nav-link">
+              <li th:if="${menuId=='assign'}" class="nav-item">
+                <a href="/gms/mypage/assign.do" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>배정된 주문</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="../forms/advanced.html" class="nav-link">
+              <li th:unless="${menuId=='assign'}" class="nav-item">
+                <a href="/gms/mypage/assign.do" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>배정된 주문</p>
+                </a>
+              </li>
+              <li th:if="${menuId=='diary'}" class="nav-item">
+                <a href="/gms/report/list.do" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>업무 일지</p>
                 </a>
               </li>
+              <li th:unless="${menuId=='diary'}" class="nav-item">
+                <a href="/gms/report/list.do" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>업무 일지</p>
+                </a>
+              </li>
+              <li th:if="${menuId=='vacation'}" class="nav-item">
+                <a href="../forms/editors.html" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>휴가 등록</p>
+                </a>
+              </li>
+              <li th:unless="${menuId=='vacation'}" class="nav-item">
+                <a href="../forms/editors.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>휴가 등록</p>
+                </a>
+              </li>
+              <li th:if="${menuId=='self'}" class="nav-item">
+                <a href="../forms/editors.html" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>자기 정보 수정</p>
+                </a>
+              </li>
+              <li th:unless="${menuId=='self'}" class="nav-item">
+                <a href="../forms/editors.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>자기 정보 수정</p>
+                </a>
+              </li>
+            </ul>
+          </li>    
+          <li th:unless="${menuId=='assign' || menuId=='diary' || menuId=='vacation' || menuId=='self'}" class="nav-item has-treeview"> 
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                	마이페이지
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">              
+              <li class="nav-item">
+                <a href="/gms/mypage/assign.do" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>배정된 주문</p>
+                </a>
+              </li>              
+              <li class="nav-item">
+                <a href="/gms/report/list.do" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>업무 일지</p>
+                </a>
+              </li>              
               <li class="nav-item">
                 <a href="../forms/editors.html" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -477,7 +536,7 @@
                 </a>
               </li>
             </ul>
-          </li>     
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
