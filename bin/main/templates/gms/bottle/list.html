@@ -240,6 +240,139 @@ var fn_deleteBottle = function(bottleId){
     			//document.getElementById('result').innerHTML = JSON.stringify(data);
     		});
     }
+	
+	
+$(document).ready(function(){	
+	 var bottleIds = "";
+   $(".btn_select_process1").click(function()  
+	{
+	console.log("start btn_select_process1}");
+	
+   });
+   
+	    
+	    
+$(".btn_bottle_search").click(function()  
+ 	{
+  		console.log("start btn_bottle_search}");
+  		//$("#mcustomerNm").val
+  		var bottleId = $("#bottleId").val(); 
+  		console.log("start bottleId" +bottleId);
+ 			var ajaxInfo ={
+ 					type:"POST",
+ 					url:"/gms/bottle/detail.do",
+ 					data:{
+ 						bottleId : bottleId
+ 					},
+ 					dataType: "json",
+ 				};
+ 				
+ 				ajax = callAjax(ajaxInfo);
+ 				
+ 				ajax.done(function(data){
+ 					console.log(data);
+ 						
+			    var newRow1 = $("<tr>");
+			    var cols1 = "";	
+			    cols1 += '<th>'+data.bottleId+'</th>';
+			    cols1 += '<th>'+data.bottleBarCd+'</th>';
+			    cols1 += '<th>'+data.gasNm+'</th>>';
+			    cols1 += '<th>'+data.bottleChargeDt.substring(0,10)+'</th>';
+			    cols1 += '</tr>'     ;    
+			    newRow1.append(cols1);
+				$("table.mod-doc-list1").append(newRow1);
+						 
+				bottleIds +=bottleId+",";
+				//$("#bottlIds").val(data.order.orderId);
+				console.log("bottleIds " +bottleIds);
+				$("#bottleIds").val(bottleIds);
+ 				})
+ 			       .fail(function(){
+ 				  console.log("fail");
+ 			});
+ 				$("#bottleId").val(""); 
+
+  				//$("#orderAmountView").show();
+  				//$("#view_button").hide();
+  		});
+	    	
+		
+	// 진행 확인 버튼 클릭
+    $(".btn_process_check").click(function()  
+    {
+    
+       var select_pid = $(this).attr('id'); 
+       var msg = '';
+       var bottleWorkCd = '';
+      
+       console.log("bottleIds ="+bottleIds);
+       
+       switch (select_pid){
+          case 'btn_process_1':
+            msg = "'입고' 하시겠습니까?";
+            bottleWorkCd ='0301';
+            break;
+          case 'btn_process_2':
+            msg = "'충전' 하시겠습니까?";
+            bottleWorkCd ='0305';
+            break;
+          case 'btn_process_3':
+            msg = "'상차' 하시겠습니까?";
+            bottleWorkCd ='0307';
+            break;  
+          case 'btn_process_4':
+             msg = "'출고' 하시겠습니까?";;
+             bottleWorkCd ='0306';
+             break;
+           case 'btn_process_5':
+             msg = "'판매' 하시겠습니까?";
+             bottleWorkCd ='0308';
+             break;
+           case 'btn_process_6':
+             msg = "'회수' 하시겠습니까?";
+             bottleWorkCd ='0309';
+             break;  
+           case 'btn_process_7':
+              msg = "'기타' 하시겠습니까?";
+              bottleWorkCd ='0310';
+              break;  
+          default:
+            break;
+
+       }           
+       console.log("bottleWorkCd ="+bottleWorkCd);
+       
+      
+		if(confirm(msg)){
+			
+			var form = document.createElement("form");
+			form.setAttribute("charset","UTF-8");
+			form.setAttribute("method","post");
+			form.setAttribute("action","/gms/bottle/changeBottlesWorkCd.do");			
+	        
+	        var hiddenField1 = document.createElement("input");
+	        hiddenField1.setAttribute("type", "hidden");
+	        hiddenField1.setAttribute("name", "bottleWorkCd");
+	        hiddenField1.setAttribute("value", bottleWorkCd);
+
+	        form.appendChild(hiddenField1);     
+	        
+	        var hiddenField2 = document.createElement("input");
+	        hiddenField2.setAttribute("type", "hidden");
+	        hiddenField2.setAttribute("name", "bottleIds");
+	        hiddenField2.setAttribute("value", bottleIds);
+
+	        form.appendChild(hiddenField2);    
+	        
+	        document.body.appendChild(form);
+	        
+	        form.submit();				
+		}
+      
+	});
+});
+	
+	
 	</script>
    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -320,6 +453,102 @@ var fn_deleteBottle = function(bottleId){
         <!-- /.modal-dialog -->
       </div>
       <!-- /.modal -->
+      
+      <!--  process modat1 start -->  
+		<div class="modal modal-info fade" id="process-modal1">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+		             	<h4 class="modal-title">주문 정보</h4>
+		              	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                <span aria-hidden="true">&times;</span>
+		              	</button>
+		            </div>
+		
+					<div class="modal-body">
+					<div class="clearfix"></div>
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12" >
+							<div class="x_panel">
+								
+								<div class="x_content">
+								<br />
+								<div  class="card-body">
+								<form id="bForm" name="bForm" th:object="${order}" method="post">
+					              <input type="hidden" id="orderId" name="orderId" value="">	
+					              <input type="hidden" id="customerId" name="customerId" value="">	
+					              <input type="hidden" id="bottlIds" name="bottlIds" value="">	
+					              
+									<table id="myTable" class="table order-info">
+									<thead>
+										<tr>
+											<td class="card-footer">용기검색</td>
+											<td  colspan=4><input type="text" class="form-control" id="bottleId"  name="bottleId"> </td>
+											<td><a class="btn_bottle_search btn btn-success btn-xs" href="#"><i class="fas fa-search"></i>검색</a></td>
+										</tr>
+										
+									</thead>
+									</table>
+									
+									<div class="form-group">
+										<label >주문정보</label>
+										<div>
+											<table id="myTable" class="table mod-doc-list1">
+												<tr>
+												<td>용기코드</td>
+												<td>용기바코드</td>
+												<td>가스</td>
+												<td>충전기한</td>
+												</tr>
+												<tr>
+													<td  style="padding-left: 0px;"></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+												</tr>
+											</table>
+										</div>
+									</div>
+									<table id="myTable" class="table order-info">
+										<tr>
+											<div align="center">
+											<button type="button" id="btn_process_1" class="btn btn-info btn btn btn_process_check">입고</button>
+											<button type="button" id="btn_process_2" class="btn btn-info btn btn_process_check">충전</button>
+											<button type="button" id="btn_process_3" class="btn btn-info btn btn_process_check">상차</button>
+											<button type="button" id="btn_process_4" class="btn btn-info btn btn btn_process_check">출고</button>
+											<button type="button" id="btn_process_5" class="btn btn-info btn btn_process_check">판매</button>
+											<button type="button" id="btn_process_6" class="btn btn-info btn btn_process_check">회수</button>
+											<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">기타</button>
+										</div>
+										</tr>										
+									</table>
+											
+									
+									</form>
+									<div class="ln_solid"></div>
+									<div id="view_button" >
+										<div align="center">
+											<button type="button"  class="close" data-dismiss="modal" >Close</button>
+										</div>
+									</div>
+									
+									
+									<div id="test_char">
+									</div>
+								</div>
+							</div> <!-- X_content end -->
+						</div>
+					</div> <!-- /.x_panel end -->
+				</div> <!-- / .col -->
+			</div>
+		</div> <!-- / . modal body -->
+		</div>
+		</div>
+		<!-- /.modal -->
+    	
+      
+      
         <div class="row">        	
             <div class="col-1">
                		충전기한
@@ -436,8 +665,11 @@ var fn_deleteBottle = function(bottleId){
         </div>    
         <!-- /.row -->
         
-         <div class="row">								
-			<div class="col-9">
+         <div class="row">		
+         	<div class="col-1">
+         	<a class="btn_select_process1 btn btn-success btn-xs"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-pencil-alt"></i>일괄변경</a>
+         	</div>						
+			<div class="col-7">
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
 					<ul class="pagination">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
@@ -472,12 +704,12 @@ var fn_deleteBottle = function(bottleId){
 			<a id="select_del" class="btn btn-danger btn-sm" href="#" th:onclick="fn_deleteBottles()">
                               <i class="fas fa-trash"></i>선택삭제</a>   
 			</div>
-			<div class="col-1">
+			<div class="col-2">
 			<form id="form1" name="form1" method="post" enctype="multipart/form-data">
-    <input type="file" id="fileInput" name="fileInput">
-    <button type="button" onclick="doExcelUploadProcess()">엑셀업로드 작업</button>
-    </form>
-               		<a href="/gms/bottle/excelDownload.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀등록</button></a>
+		    <input type="file" id="fileInput" name="fileInput">
+		    <a href="javascript:doExcelUploadProcess()"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀업로드 작업</button></a>
+		    </form>
+               		<!--  <a href="/gms/bottle/excelDownload.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀등록</button></a-->
              <div id="result">
              
               </div>

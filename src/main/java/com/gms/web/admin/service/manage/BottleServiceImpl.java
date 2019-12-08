@@ -7,9 +7,12 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.mapper.manage.BottleMapper;
@@ -242,6 +245,50 @@ public class BottleServiceImpl implements BottleService {
 
 	@Override
 	@Transactional
+	public int changeBottlesWorkCd(BottleVO param) {
+		// TODO Auto-generated method stub
+		int result = 0;
+		
+		logger.debug("BottleServiceImpl getBottlesId "+ param.getBottleIds());
+		logger.debug("BottleServiceImpl bottleWorkdId "+ param.getBottleWorkId());
+		logger.debug("BottleServiceImpl bottleWorkCd "+ param.getBottleWorkCd());
+		logger.debug("BottleServiceImpl getBottlesId "+ param.getBottleIds());
+		
+		try {		
+			List<String> list = null;
+			
+			if(param.getBottleIds()!=null && param.getBottleIds().length() > 0) {
+				//bottleIds= request.getParameter("bottleIds");
+				list = StringUtils.makeForeach(param.getBottleIds(), ","); 		
+				param.setBottList(list);
+			}	
+			
+			
+			if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0305")) 
+					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0306"))
+					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0307")) 
+					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0308")) )
+				param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Full"));
+			else
+				param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
+			
+			result =  bottleMapper.updateBottlesWorkCd(param);
+			
+		} catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	
+	
+	@Override
+	@Transactional
 	public int deleteBottle(BottleVO param) {
 		logger.info("****** deleteBottle *****===*"+param.getBottleId());
 		
@@ -313,7 +360,5 @@ public class BottleServiceImpl implements BottleService {
 		return list;
 				
 	}
-
-	
 	
 }

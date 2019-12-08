@@ -205,6 +205,22 @@
 			Bottle_ID = #{chBottleId}
 	</update>	
 	
+	<update id="updateBottlesWorkCd" parameterType="com.gms.web.admin.domain.manage.BottleVO">
+		UPDATE TB_Bottle
+		SET
+			  Bottle_Work_CD 	= #{bottleWorkCd}
+			, Bottle_Work_ID	= #{bottleWorkId}
+			, Bottle_Type		= #{bottleType}
+			, Bottle_Work_DT	= NOW()
+			, UPDATE_ID 		= #{updateId}
+			, UPDATE_DT 		= NOW()
+		WHERE
+			Bottle_ID in
+			<foreach collection="bottList" item="item" index="index" open="(" separator="," close=")">
+				#{item} 
+			</foreach>
+	</update>	
+	
 	<update id="updateBottleOrderId" parameterType="com.gms.web.admin.domain.manage.BottleVO">
 		UPDATE TB_Bottle
 		SET
@@ -212,6 +228,7 @@
 			,Order_Product_Seq	= #{orderProductSeq}
 			, Bottle_Work_CD 	= #{bottleWorkCd}
 			, Bottle_Work_ID	= #{bottleWorkId}
+			, Bottle_Work_DT	= NOW()	
 			, Bottle_Type		= #{bottleType}
 			, UPDATE_ID 		= #{updateId}
 			, UPDATE_DT 		= NOW()	

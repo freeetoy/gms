@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.DateUtils;
@@ -434,10 +435,10 @@ public class BottleController {
 		RequestUtils.initUserPrgmInfo(request, params);
 		
 		//검색조건 셋팅
-		logger.info("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.info("BottleContoller searchGasId "+ params.getSearchGasId());
-		logger.info("BottleContoller searchBottleId "+ params.getSearchBottleId());
-		logger.info("BottleContoller chBottleId "+ request.getParameter("chBottleId"));
+		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
+		logger.debug("BottleContoller searchGasId "+ params.getSearchGasId());
+		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
+		logger.debug("BottleContoller chBottleId "+ request.getParameter("chBottleId"));
 		
 		String searchChargeDtFrom = null;
 		String searchChargeDtEnd = null;
@@ -490,6 +491,75 @@ public class BottleController {
 		return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchGasId="+params.getSearchGasId();
 	}
 		
+	@RequestMapping(value = "/gms/bottle/changeBottlesWorkCd.do", method = RequestMethod.POST)
+	public ModelAndView modifyBottlesWorkCd(HttpServletRequest request
+			, HttpServletResponse response
+			, BottleVO params) {
+		logger.info("BottleContoller modifyBottleWorkCd");
+		
+		RequestUtils.initUserPrgmInfo(request, params);
+		
+		//검색조건 셋팅
+		logger.info("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
+		logger.info("BottleContoller searchGasId "+ params.getSearchGasId());
+		logger.info("BottleContoller searchBottleId "+ params.getSearchBottleId());
+		logger.info("BottleContoller chBottleId "+ request.getParameter("chBottleId"));
+		
+		String searchChargeDtFrom = null;
+		String searchChargeDtEnd = null;
+		String searchGasId = "";
+		
+		int  result = 0;
+		try {		
+			logger.debug("******params.getBottleId()()) *****===*"+params.getChBottleId());
+			
+			String searchChargetDt = params.getSearchChargeDt();	
+					
+			if(searchChargetDt != null && searchChargetDt.length() > 20) {
+				
+				logger.info("BottleContoller searchChargeDt "+ searchChargetDt.length());
+				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
+				
+				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
+				
+				params.setSearchChargeDtFrom(searchChargeDtFrom);
+				params.setSearchChargeDtEnd(searchChargeDtEnd);
+				
+			}			
+			
+			if(params.getSearchGasId() != null && params.getSearchGasId().length() > 0 ) {
+				searchGasId = params.getSearchGasId();
+				//model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
+			}
+			
+			params.setBottleWorkId(params.getUpdateId());
+			
+			result = bottleService.changeBottlesWorkCd(params);
+			/*
+			model.addAttribute("searchBottleId", params.getSearchBottleId());
+			//model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
+			model.addAttribute("searchChargeDt", params.getSearchChargeDt());			
+			model.addAttribute("currentPage", params.getCurrentPage());
+			*/
+			if (result < 0) {
+				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+				logger.debug("BottleContoller registerBottle error");
+			}
+		} catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		if(result > 0){
+			String alertMessage = "용기를 작업하였습니다.";
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchGasId="+params.getSearchGasId());
+		}
+		return null;
+		//return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchGasId="+params.getSearchGasId();
+	}
+	
 	@RequestMapping(value = "/gms/bottle/delete.do", method = RequestMethod.POST)
 	public String deleteBottle(HttpServletRequest request
 			, HttpServletResponse response

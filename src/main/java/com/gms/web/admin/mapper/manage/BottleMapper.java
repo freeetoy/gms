@@ -17,15 +17,17 @@ public interface BottleMapper {
 	
 	public List<BottleVO> selectCustomerBottleList(Integer customerId);	
 	
-	public int insertBottle(BottleVO param);
-
 	public BottleVO selectBottleDetail(String bottleId) ;
 	
 	public List<BottleVO> selectBottleDetails(BottleVO param) ;
+	
+	public int insertBottle(BottleVO param);		
 
 	public int updateBottle(BottleVO param);
 	
 	public int updateBottleWorkCd(BottleVO param);
+	
+	public int updateBottlesWorkCd(BottleVO param);
 	
 	public int updateBottleOrderId(BottleVO param);
 

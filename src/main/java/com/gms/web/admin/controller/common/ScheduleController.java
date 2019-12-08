@@ -17,7 +17,7 @@ public class ScheduleController {
 	@Autowired
 	private ScheduleService scheduleService;
 	
-	@Scheduled(cron="0 41 13 * * *")
+	@Scheduled(cron="0 12 12 * * *")
 	private void scheduleDaily() { 
 		
 		//Daiyl 통계 데이타 등록

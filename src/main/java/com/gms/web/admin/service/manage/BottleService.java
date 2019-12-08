@@ -32,6 +32,8 @@ public interface BottleService {
 	public int modifyBottleOrder(BottleVO param);
 	
 	public int changeBottleWorkCd(BottleVO param);
+	
+	public int changeBottlesWorkCd(BottleVO param);
 
 	public int deleteBottle(BottleVO param);
 	

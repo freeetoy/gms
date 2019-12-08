@@ -52,7 +52,7 @@ $(document).ready(function(){
 					$("#deliveryReqDt").val(moment(data.order.deliveryReqDt).format('YYYY/MM/DD') + ' ' +Ampm);			
 					$("#orderEtc").val(data.order.orderEtc);			
 					$("#orderTotalAmount").val(numberWithCommas(data.order.orderTotalAmount));	
-					console.log(data.order.OrderTotalAmount);
+					console.log(data.order.orderTotalAmount);
 					
 					
 					
@@ -125,12 +125,11 @@ $(document).ready(function(){
     					$("#deliveryReqDt").val(moment(data.order.deliveryReqDt).format('YYYY/MM/DD') + ' ' +Ampm);			
     					$("#orderEtc").val(data.order.orderEtc);			
     					$("#orderTotalAmount").val(numberWithCommas(data.order.orderTotalAmount));	
-    					console.log(data.order.OrderTotalAmount);
-    					
-    					
+    					console.log("orderTotalAmout =="+data.order.orderTotalAmount);    					
+    					console.log("data.orderProduct.length =="+data.orderProduct.length);    			
     					
     					if(data.orderProduct.length > 0) {
-    						$("table.mod-doc-list").find('tr').remove();
+    						$("table.mod-doc-list0").find('tr').remove();
     			
     						var newRow = $("<tr>");	
     						var cols = "";
@@ -141,7 +140,7 @@ $(document).ready(function(){
     						cols += '<td>용기교환</td></tr>';
 
     						newRow.append(cols);
-    						$("table.mod-doc-list").append(newRow);
+    						$("table.mod-doc-list0").append(newRow);
 
     						for(var i=0;i<data.orderProduct.length;i++){
     					        	var newRow1 = $("<tr>");
@@ -153,7 +152,7 @@ $(document).ready(function(){
     					        	cols1 += '<th>'+data.orderProduct[i].bottleChangeYn+'</th>';
     					        	cols1 += '</tr>'     ;    
     					        	newRow1.append(cols1);
-    						        $("table.mod-doc-list").append(newRow1);
+    						        $("table.mod-doc-list0").append(newRow1);
     						        
     						        newRow1 = "";
     					        }     
@@ -458,7 +457,27 @@ $(document).ready(function(){
 										
 									</thead>
 									</table>
-									
+									<div class="form-group">
+										<label >주문정보</label>
+										<div>
+											<table id="myTable" class="table mod-doc-list0">
+												<tr>
+												<td>품명</td>
+												<td>용량</td>
+												<td>수량</td>
+												<td>기타</td>
+												<td>용기교환</td>
+												</tr>
+												<tr>
+													<td  style="padding-left: 0px;"></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+												</tr>
+											</table>
+										</div>
+									</div>
 									<div class="form-group">
 										<label >주문정보</label>
 										<div>
