@@ -69,6 +69,23 @@ public class WorkReportVO extends AbstractVO implements Serializable {
 	*/
 	private String bottleWorkCd;
 	
+	/** Order_Process_CD   	
+	 * 
+	 * 0201 주문접수
+	 * 0202 주문완료
+	 * 0203 생산완료
+	 * 0204 납품
+	 * 0205 판매완료
+	 * 0206 영업완료 -- 삭제 
+	 * 0207 거래명세서완료
+	 * 0208 세금계산서완료
+	 * 0209 입금완료
+	 * 0210 거래완료
+	 * 0299 삭제			*/
+	private String orderProcessCd;
+	
+	/** Order_Process_Nm   	*/
+	private String orderProcessCdNm;
 
 	private List<String> bottList;
 }

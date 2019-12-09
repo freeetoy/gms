@@ -337,6 +337,28 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	@Transactional
+	public int registerOrderAndProduct(OrderVO order, List<OrderProductVO> orderProduct) {
+		int result = 0;
+		try {
+			result =  orderMapper.insertOrder(order);	
+			
+			result = orderMapper.insertOrderProducts(orderProduct);
+			
+		} catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		
+		
+		return result;
+	}
+
+	
+	@Override
+	@Transactional
 	public int modifyOrder(HttpServletRequest request, OrderVO params) {
 		// 정보 등록
 		logger.info("****** modifyOrder Start *****===*");
@@ -521,6 +543,7 @@ public class OrderServiceImpl implements OrderService {
 		try {
 			//TODO  용기거래테이블 등록 필요
 			BottleVO bottle = new BottleVO();
+			
 			bottle.setBottleId(param.getBottleId());
 			bottle.setOrderId(param.getOrderId());
 			bottle.setOrderProductSeq(param.getOrderProductSeq());
@@ -650,5 +673,6 @@ public class OrderServiceImpl implements OrderService {
 		return result;
 	}
 
+	
 	
 }

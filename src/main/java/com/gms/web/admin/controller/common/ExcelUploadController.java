@@ -32,16 +32,23 @@ public class ExcelUploadController {
 	@RequestMapping(value = "/uploadExcelFile", method = RequestMethod.POST)
 	@ResponseBody
     public List<GasVO> uploadExcelFile(MultipartHttpServletRequest request, Model model) {
-        MultipartFile file = null;
-        Iterator<String> iterator = request.getFileNames();
-        if(iterator.hasNext()) {
-            file = request.getFile(iterator.next());
+		
+		MultipartFile file = null;
+		List<GasVO> gaslist = null;
+		try {
+        
+	        Iterator<String> iterator = request.getFileNames();
+	        if(iterator.hasNext()) {
+	            file = request.getFile(iterator.next());
+	        }
+	        gaslist = excelService.uploadExcelFile(file);	        
+	      
+	        model.addAttribute("gaslist", gaslist);
+		} catch (Exception e) {
+            e.printStackTrace();
+            
+            return null;
         }
-        List<GasVO> gaslist = excelService.uploadExcelFile(file);
-        
-      
-        model.addAttribute("gaslist", gaslist);
-        
         return gaslist;
     }
 

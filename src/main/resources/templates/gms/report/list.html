@@ -124,6 +124,166 @@ $(document).ready(function(){
 		
 		return dfd.promise();
 	}
+  
+  
+  
+	 var bottlesIds = "";
+   $(".btn_select_process1").click(function()  
+	{
+		console.log("start btn_select_process1}");
+		var ajaxInfo ={
+			type:"POST",
+			url:"/gms/common/customerList.do",			
+			dataType: "json",
+		};
+			
+			ajax = callAjax(ajaxInfo);
+			
+			ajax.done(function(data){
+				console.log(data);
+
+				for(i=0; i< data.length;i++) {
+					console.log(data[i]);      
+					$('#customerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')
+					
+				}
+				
+				
+		})
+		       .fail(function(){
+			  console.log("fail");
+		});
+	
+   });
+   
+		    
+		    
+	$(".btn_bottle_search").click(function()  
+	{
+ 		console.log("start btn_bottle_search}");
+ 		//$("#mcustomerNm").val
+ 		var bottleId = $("#bottleId").val(); 
+ 		console.log("start bottleId" +bottleId);
+			var ajaxInfo ={
+					type:"POST",
+					url:"/gms/bottle/detail.do",
+					data:{
+						bottleId : bottleId
+					},
+					dataType: "json",
+				};
+				
+				ajax = callAjax(ajaxInfo);
+				
+				ajax.done(function(data){
+					console.log(data);				
+					
+				    var newRow1 = $("<tr>");
+				    var cols1 = "";	
+				    cols1 += '<th>'+data.bottleId+'</th>';
+				    cols1 += '<th>'+data.bottleBarCd+'</th>';
+				    cols1 += '<th>'+data.gasNm+'</th>>';
+				    cols1 += '<th>'+data.bottleChargeDt.substring(0,10)+'</th>';
+				    cols1 += '</tr>'     ;    
+				    newRow1.append(cols1);
+					$("table.mod-doc-list1").append(newRow1);
+							 
+					bottlesIds +=bottleId+",";
+					//$("#bottlIds").val(data.order.orderId);
+					console.log("bottlesIds " +bottlesIds);
+					$("#bottlesIds").val(bottlesIds);
+				})
+			       .fail(function(){
+				  console.log("fail");
+			});
+				$("#bottleId").val(""); 
+
+ 				//$("#orderAmountView").show();
+ 				//$("#view_button").hide();
+ 		});
+		    	
+			
+		// 진행 확인 버튼 클릭
+	    $(".btn_process_check").click(function()  
+	    {
+	    
+	       var select_pid = $(this).attr('id'); 
+	       var msg = '';
+	       var bottleWorkCd = '';
+	      
+	       console.log("bottlesIds ="+bottlesIds);
+	       customerId= $("#customerId").val();
+	       console.log("customerId ="+customerId);
+	       
+	       switch (select_pid){
+	          case 'btn_process_1':
+	            msg = "'입고' 하시겠습니까?";
+	            bottleWorkCd ='0301';
+	            break;
+	          case 'btn_process_2':
+	            msg = "'충전' 하시겠습니까?";
+	            bottleWorkCd ='0305';
+	            break;
+	          case 'btn_process_3':
+	            msg = "'상차' 하시겠습니까?";
+	            bottleWorkCd ='0307';
+	            break;  
+	          case 'btn_process_4':
+	             msg = "'출고' 하시겠습니까?";;
+	             bottleWorkCd ='0306';
+	             break;
+	           case 'btn_process_5':
+	             msg = "'판매' 하시겠습니까?";
+	             bottleWorkCd ='0308';
+	             break;
+	           case 'btn_process_6':
+	             msg = "'회수' 하시겠습니까?";
+	             bottleWorkCd ='0309';
+	             break;  
+	           case 'btn_process_7':
+	              msg = "'기타' 하시겠습니까?";
+	              bottleWorkCd ='0310';
+	              break;  
+	          default:
+	            break;
+
+	       }           
+	       console.log("bottleWorkCd ="+bottleWorkCd);
+	       
+	      
+			if(confirm(msg)){
+				
+				var form = document.createElement("form");
+				form.setAttribute("charset","UTF-8");
+				form.setAttribute("method","post");
+				form.setAttribute("action","/gms/report/registerAll.do");			
+		        
+				var hiddenField = document.createElement("input");
+		        hiddenField.setAttribute("type", "hidden");
+		        hiddenField.setAttribute("name", "bottleWorkCd");
+		        hiddenField.setAttribute("value", bottleWorkCd);
+		        form.appendChild(hiddenField);   
+		        
+		        var hiddenField1 = document.createElement("input");
+		        hiddenField1.setAttribute("type", "hidden");
+		        hiddenField1.setAttribute("name", "customerId");
+		        hiddenField1.setAttribute("value", customerId);
+
+		        form.appendChild(hiddenField1);     
+		        
+		        var hiddenField2 = document.createElement("input");
+		        hiddenField2.setAttribute("type", "hidden");
+		        hiddenField2.setAttribute("name", "bottlesIds");
+		        hiddenField2.setAttribute("value", bottlesIds);
+
+		        form.appendChild(hiddenField2);    
+		        
+		        document.body.appendChild(form);
+		        
+		        form.submit();				
+			}
+	      
+		});
 });
 	
 </script>
@@ -145,10 +305,10 @@ $(document).ready(function(){
       </div><!-- /.container-fluid -->
     </section>
   
-    <section class="content">        
-    
-    	<!--  process modat start -->  
-		<div class="modal modal-info fade" id="process-modal">
+    <section class="content">           	
+    	
+    	<!--  process modat1 start -->  
+		<div class="modal modal-info fade" id="process-modal1">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -167,33 +327,34 @@ $(document).ready(function(){
 								<div class="x_content">
 								<br />
 								<div  class="card-body">
-								<form id="chForm" name="chForm" th:object="${order}" method="post">
-					              <input type="hidden" id="chOrderId" name="chOrderId" value="">
-					              <input type="hidden" id="orderProcessCd" name="orderProcessCd" value="">	
+								<form id="bForm" name="bForm" th:object="${workReport}" action="/gms/report/registerAll.do" method="post">
+					              <input type="hidden" id="bottlesIds" name="bottlesIds" value="">	
 					              
-									<table id="myTable" class="table order-info">
-									<thead>
+									<table id="myTable" class="table customer-info">									
 										<tr>
-											<td class="card-footer">거래처명</td>
-											<td  colspan=5><input type="text" class="form-control" id="mcustomerNm"  name="mcustomerNm"  disabled> </td>
-										</tr>
+											<td class="card-footer">거래처</td>
+											<td  colspan=5>
+											<select id="customerId" name="customerId" class="form-control">
+						                        <option value="0">옵션</option>			                      	
+										    </select>	
+										</tr>				
 										<tr>
-											<td class="card-footer">납품요청일</td>
-											<td  colspan=5><input type="text" class="form-control" id="deliveryReqDt"  name="deliveryReqDt" disabled> </td>
-										</tr>
-									</thead>
+											<td class="card-footer">용기검색</td>
+											<td  colspan=4><input type="text" class="form-control" id="bottleId"  name="bottleId"> </td>
+											<td><a class="btn_bottle_search btn btn-success btn-xs" href="#"><i class="fas fa-search"></i>검색</a></td>
+										</tr>					
 									</table>
+									
 									
 									<div class="form-group">
 										<label >주문정보</label>
 										<div>
-											<table id="myTable" class="table mod-doc-list">
+											<table id="myTable" class="table mod-doc-list1">
 												<tr>
-												<td>품명</td>
-												<td>용량</td>
-												<td>수량</td>
-												<td>기타</td>
-												<td>용기교환</td>
+												<td>용기코드</td>
+												<td>용기바코드</td>
+												<td>가스</td>
+												<td>충전기한</td>
 												</tr>
 												<tr>
 													<td  style="padding-left: 0px;"></td>
@@ -207,12 +368,15 @@ $(document).ready(function(){
 									</div>
 									<table id="myTable" class="table order-info">
 										<tr>
-											<td class="card-footer">기타</td>
-											<td colspan=5><input type="text" class="form-control" id="orderEtc"  name="orderEtc"  placeholder="" value="" disabled> </td>
-										</tr>		
-										<tr>
-											<td class="card-footer" id="orderAmountView">주문액</td>
-											<td colspan=5><input type="text" class="form-control" id="orderTotalAmount"  name="orderTotalAmount"  placeholder="" value="" disabled> </td>
+											<div align="center">
+											<button type="button" id="btn_process_1" class="btn btn-info btn btn btn_process_check">입고</button>
+											<button type="button" id="btn_process_2" class="btn btn-info btn btn_process_check">충전</button>
+											<button type="button" id="btn_process_3" class="btn btn-info btn btn_process_check">상차</button>
+											<button type="button" id="btn_process_4" class="btn btn-info btn btn btn_process_check">출고</button>
+											<button type="button" id="btn_process_5" class="btn btn-info btn btn_process_check">판매</button>
+											<button type="button" id="btn_process_6" class="btn btn-info btn btn_process_check">회수</button>
+											<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">기타</button>
+										</div>
 										</tr>										
 									</table>
 											
@@ -239,7 +403,6 @@ $(document).ready(function(){
 		</div>
 		<!-- /.modal -->
     	
-    	
         <div class="row">
             <div class="col-1">
             <form id="mainForm" name="mainForm"  method="post">
@@ -249,13 +412,13 @@ $(document).ready(function(){
             <div class="col-4">              
                <input type="text" class="form-control" name="searchDt" th:value="${searchDt}"/>			
             </div>               
-            <div class="col-6">         
+            <div class="col-5">         
             <button class="btn btn-navbar" type="submit"><i class="fas fa-search"></i></button>        
             </div>
             
-            <div class="col-1">
-               		<a href="/gms/order/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">주문 등록</button></a>
-             </div>
+            <div class="col-2">
+         	<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-pencil-alt"></i>주문납품</a>
+         	</div>	
              </form> 
          </div>
          <div class="row">	
@@ -273,7 +436,7 @@ $(document).ready(function(){
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover">                
                   <thead>
-                    <tr align="center">
+                    <tr>
                       <th>순번</th>
                       <th>거래처</th>
                       <th>품명</th>
@@ -287,13 +450,15 @@ $(document).ready(function(){
                   <tbody>
                  
                   	<tr th:if="${not #lists.isEmpty( workList )}" th:each="row : ${workList}" style="font-size:13px;">
-                      <td th:text="${orderList.indexOf(row)+1}"></td>
+                      <td th:text="${workList.indexOf(row)+1}"></td>
                       <td th:text="${row.CustomerNm}"></td>
                       <td th:text="${row.orderProductNm}"></td>
                       <td th:text="${row.orderProductCapa}"></td>
                       <td th:text="${row.bottleType}"></td>
                       <th th:text="${row.orderProcessCdNm}"></th>
-                      <td th:text="${row.orderAmount}"></td>
+                      <td th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
+                      <td th:unless="${row.orderAmount> 0 }" th:text="${row.orderTotalAmount}">
+                     </td>
 		     		  <td th:text="${row.receivedAmount}"></td>
 		     		                  
                     </tr>

@@ -169,6 +169,14 @@ $(document).ready(function(){
 						$("#btn_process_2").html("생산완료");						
 						$("#btn_process_1").prop('disabled', true);
 						$("#btn_process_2").prop('disabled', true);
+					}else if(data.order.orderProcessCd =='0204'){
+						$("#view_button").show();
+						$("#view_button1").hide();
+						
+						$("#btn_process_1").html("접수완료");
+						$("#btn_process_2").html("생산완료");						
+						$("#btn_process_1").prop('disabled', true);
+						$("#btn_process_2").prop('disabled', true);
 					}else if(data.order.orderProcessCd =='0205'){
 						$("#view_button1").show();
 						$("#view_button").hide();

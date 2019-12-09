@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.GasVO;
 import com.gms.web.admin.domain.manage.ProductPriceVO;
 import com.gms.web.admin.domain.manage.ProductTotalVO;
@@ -149,6 +150,14 @@ public class ProductServiceImpl implements ProductService {
 	public List<ProductTotalVO> getCustomerProductTotalList(Integer customerId) {
 		return productMapper.selectCustomerProductTotalList(customerId);
 	}
+	
+	@Override
+	public ProductTotalVO getBottleGasCapa(BottleVO param) {
+	
+		return productMapper.selectBottleGasCapa(param);
+	}
+
+	
 	
 	@Override
 	public int getProductId() {

@@ -14,6 +14,8 @@
 		<result property="orderProductCapa"		column="Order_Product_Capa"		/>
 		<result property="bottleType"			column="Bottle_Type"			/>
 		<result property="createNm"				column="Create_Nm"				/>
+		<result property="orderProcessCd"		column="Order_Process_CD"		/>
+		<result property="orderProcessCdNm"		column="Order_Process_CD_NM"	/>
 		<result property="createId"				column="CREATE_ID"				/>
 		<result property="createDt"				column="CREATE_DT"				/>
 		<result property="updateId"				column="UPDATE_ID"				/>		
@@ -63,6 +65,8 @@
 		 , Bottle_Type
 		 , Order_Product_Nm
 		 , Order_Product_Capa
+		 , Order_Process_CD 
+		 , CD_NM Order_Process_CD_NM
 		 , tw.Create_ID        
 		 , tw.Create_Dt        
 		 , tw.Update_ID        
@@ -159,8 +163,7 @@
 			, #{item.bottleWorkCd}
 			, #{item.gasID}				
 			, #{item.productId}	
-			, #{item.productPriceSeq}
-			
+			, #{item.productPriceSeq}			
 			, #{item.bottleType}
 			, #{item.createId}			
 			, NOW()
@@ -174,15 +177,17 @@
 		SELECT
 			<include refid="SelectWorkReportColumns" />
 		FROM
-			TB_Work_Report tw , TB_Order tr, TB_Customer tc
+			TB_Work_Report tw , TB_Order tr, TB_Customer tc, TB_Code td
 		WHERE
 			tw.Customer_ID = tc.Customer_ID
 		AND
 			tw.Order_ID = tr.Order_ID
+		AND 
+			tr.Order_Process_Cd = td.CD_ID
 		AND	
 			User_id=#{userId}
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
-		AND Work_Dt =   #{searchDt}
+		AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
 		</if>
 		ORDER BY Work_Report_Seq DESC 
 	</select>

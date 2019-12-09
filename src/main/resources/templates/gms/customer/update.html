@@ -231,8 +231,8 @@ var goWrite = function(){
                       <td th:text="${row.bottleBarCd}"></td>                     
                       <td th:text="${row.gasNm}"></td>
                       <td th:text="${row.bottleCapa}"></td>
-                      <td th:if="${row.bottleSalesYn=='N'}" th:text="공병"></td>
-                      <td th:unless="${row.bottleSalesYn=='N'}" th:text="실병"></td>
+                      <td th:if="${row.bottleType=='E'}" th:text="공병"></td>
+                      <td th:unless="${row.bottleType=='E'}" th:text="실병"></td>
                     </tr>
                   	</tbody>
                	</table>   

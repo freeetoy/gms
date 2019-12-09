@@ -2,6 +2,7 @@ package com.gms.web.admin.service.manage;
 
 import java.util.List;
 
+import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.ProductPriceVO;
 import com.gms.web.admin.domain.manage.ProductTotalVO;
 import com.gms.web.admin.domain.manage.ProductVO;
@@ -32,6 +33,8 @@ public interface ProductService {
 	public List<ProductTotalVO> getProductTotalList();
 	
 	public List<ProductTotalVO> getCustomerProductTotalList(Integer customerId);
+	
+	public ProductTotalVO getBottleGasCapa(BottleVO param);
 	
 	public List<ProductPriceVO> getProductPriceList(Integer productId);
 	

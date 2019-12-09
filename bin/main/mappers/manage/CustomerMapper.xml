@@ -74,7 +74,6 @@
 		, Product_ID	
 		, Product_Price_Seq        
 		, Product_Price
-		, Product_Status
 		, CREATE_ID	
 		, CREATE_DT	
 		, UPDATE_ID	

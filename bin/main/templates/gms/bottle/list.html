@@ -250,13 +250,19 @@ $(document).ready(function(){
 	
    });
    
+   $(".btn_select_process2").click(function()  
+{
+console.log("start btn_select_process2}");
+
+  });
+		   
 	    
 	    
 $(".btn_bottle_search").click(function()  
  	{
   		console.log("start btn_bottle_search}");
   		//$("#mcustomerNm").val
-  		var bottleId = $("#bottleId").val(); 
+  		var bottleId = $("#selbottleId").val(); 
   		console.log("start bottleId" +bottleId);
  			var ajaxInfo ={
  					type:"POST",
@@ -290,7 +296,7 @@ $(".btn_bottle_search").click(function()
  			       .fail(function(){
  				  console.log("fail");
  			});
- 				$("#bottleId").val(""); 
+ 				$("#selbottleId").val(""); 
 
   				//$("#orderAmountView").show();
   				//$("#view_button").hide();
@@ -483,7 +489,7 @@ $(".btn_bottle_search").click(function()
 									<thead>
 										<tr>
 											<td class="card-footer">용기검색</td>
-											<td  colspan=4><input type="text" class="form-control" id="bottleId"  name="bottleId"> </td>
+											<td  colspan=4><input type="text" class="form-control" id="selbottleId"  name="selbottleId"> </td>
 											<td><a class="btn_bottle_search btn btn-success btn-xs" href="#"><i class="fas fa-search"></i>검색</a></td>
 										</tr>
 										
@@ -522,8 +528,7 @@ $(".btn_bottle_search").click(function()
 											<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">기타</button>
 										</div>
 										</tr>										
-									</table>
-											
+									</table>									
 									
 									</form>
 									<div class="ln_solid"></div>
@@ -536,6 +541,7 @@ $(".btn_bottle_search").click(function()
 									
 									<div id="test_char">
 									</div>
+									
 								</div>
 							</div> <!-- X_content end -->
 						</div>
@@ -547,6 +553,60 @@ $(".btn_bottle_search").click(function()
 		</div>
 		<!-- /.modal -->
     	
+      
+      <!--  process modat1 start -->  
+		<div class="modal modal-info fade" id="process-modal2">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+		             	<h4 class="modal-title">주문 정보</h4>
+		              	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                <span aria-hidden="true">&times;</span>
+		              	</button>
+		            </div>
+		
+					<div class="modal-body">
+					<div class="clearfix"></div>
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12" >
+							<div class="x_panel">
+								
+								<div class="x_content">
+								<br />
+								<div  class="card-body">
+								<form id="form1" name="form1" method="post" enctype="multipart/form-data">					              
+									<table id="myTable" class="table order-info">
+									<thead>
+										<tr>
+											<td class="card-footer">용기검색</td>
+											<td  colspan=4><input type="file" id="fileInput" name="fileInput"> </td>
+											<td> <div id="result"></td>
+										</tr>
+										
+									</thead>
+									</table>
+									
+													
+									</form>
+									<div class="ln_solid"></div>
+														
+									<div class="modal-footer justify-content-between">
+						              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						              <a class="btn btn-info btn-sm" href="#" onclick="javascript:doExcelUploadProcess()();"><i class="fas fa-pencil-alt"></i>엑셀업로드</a>
+						            </div>
+									<div id="test_char">
+									
+									</div>
+								</div>
+							</div> <!-- X_content end -->
+						</div>
+					</div> <!-- /.x_panel end -->
+				</div> <!-- / .col -->
+			</div>
+		</div> <!-- / . modal body -->
+		</div>
+		</div>
+		<!-- /.modal -->
       
       
         <div class="row">        	
@@ -669,7 +729,7 @@ $(".btn_bottle_search").click(function()
          	<div class="col-1">
          	<a class="btn_select_process1 btn btn-success btn-xs"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-pencil-alt"></i>일괄변경</a>
          	</div>						
-			<div class="col-7">
+			<div class="col-9">
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
 					<ul class="pagination">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
@@ -700,14 +760,15 @@ $(".btn_bottle_search").click(function()
 				</div>
 			</div>
 			
-			<div class="col-2">
-			<a id="select_del" class="btn btn-danger btn-sm" href="#" th:onclick="fn_deleteBottles()">
+			<div class="col-1">
+			<a id="select_del" class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteBottles()">
                               <i class="fas fa-trash"></i>선택삭제</a>   
 			</div>
-			<div class="col-2">
+			<div class="col-1">
 			<form id="form1" name="form1" method="post" enctype="multipart/form-data">
 		    <input type="file" id="fileInput" name="fileInput">
-		    <a href="javascript:doExcelUploadProcess()"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀업로드 작업</button></a>
+		    <a class="btn_select_process2 btn btn-success btn-xs"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-pencil-alt"></i>엑셀업로드</a>
+		    <a href="javascript:doExcelUploadProcess()"><button type="button" class="btn btn-block btn-outline-primary btn-xs" data-toggle="modal" data-target="#modal-default" th:onclick="fn_ChangeBottleWorkCd()" href="#">엑셀업로드 작업</button></a>
 		    </form>
                		<!--  <a href="/gms/bottle/excelDownload.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀등록</button></a-->
              <div id="result">

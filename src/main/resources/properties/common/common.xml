@@ -33,6 +33,9 @@
 	<entry key="Bottle.Type.Empty">E</entry>
 	<entry key="Bottle.Type.FULL">F</entry>
 	
+	<entry key="Order.Request.AM">A</entry>
+	<entry key="Order.Request.PM">P</entry>
+	
 	<!-- 코드  정의 -->	
 	<entry key="common.bottle.status">0300</entry>
 	<entry key="common.bottle.status.0301">0301</entry>

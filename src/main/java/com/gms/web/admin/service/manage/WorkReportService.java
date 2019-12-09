@@ -16,6 +16,8 @@ public interface WorkReportService {
 	
 	public int registerWorkReport(WorkReportVO param);
 	
+	public int registerWorkReportNoOrder(WorkReportVO param);
+	
 	public int registerWorkBottle(WorkBottleVO param);
 	
 	public int registerWorkBottleList(List<WorkBottleVO> param);

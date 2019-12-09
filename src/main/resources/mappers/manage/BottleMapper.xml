@@ -225,7 +225,8 @@
 		UPDATE TB_Bottle
 		SET
 			Order_Id			= #{orderId}
-			,Order_Product_Seq	= #{orderProductSeq}
+			, Order_Product_Seq	= #{orderProductSeq}
+			, CustomerId		= #{customerId}
 			, Bottle_Work_CD 	= #{bottleWorkCd}
 			, Bottle_Work_ID	= #{bottleWorkId}
 			, Bottle_Work_DT	= NOW()	
@@ -290,6 +291,7 @@
 			TB.Bottle_Work_CD = TC.CD_ID	
 		AND 
 			TB.Gas_ID = TG.Gas_Id
+		ORDER BY Gas_Id, Bottle_Capa
 	</select>
 
 	<select id="selectBottleList" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="java.util.Map">
@@ -404,9 +406,6 @@
 		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID														
 		ORDER BY Update_Dt DESC 
 	</select>
-	
-
-	
 	
 	<select id="selectCustomerBottleList" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="Integer">		
 		SELECT

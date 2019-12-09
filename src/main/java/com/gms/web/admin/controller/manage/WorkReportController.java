@@ -70,7 +70,7 @@ public class WorkReportController {
 			, Model model
 			, OrderBottleVO params) {
 		
-		logger.info("WorkReportController modifyBottleWorkCd");
+		logger.info("WorkReportController registerWorkReport");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -98,6 +98,49 @@ public class WorkReportController {
 			e.printStackTrace();
 		}
 		return "redirect:/gms/mypage/assign.do";
+		
+	}
+	
+	@RequestMapping(value = "/gms/report/registerAll.do", method = RequestMethod.POST)
+	public ModelAndView registerWorkReportAll(HttpServletRequest request
+			, HttpServletResponse response
+			, WorkReportVO params) {
+		
+		logger.info("WorkReportController registerWorkReportAll");
+		
+		RequestUtils.initUserPrgmInfo(request, params);
+		
+		ModelAndView mav = new ModelAndView();	
+		//검색조건 셋팅
+		
+		logger.info("WorkReportController bottleWorkCd "+ params.getBottleWorkCd());
+		logger.info("WorkReportController BottleIds "+ params.getBottlesIds());
+		logger.info("WorkReportController customerId "+ params.getCustomerId());
+		
+		int result =0;
+		try {	
+			
+			WorkReportVO work = new WorkReportVO();
+			
+			//work.setOrderId(params.getOrderId());
+			//work.setBottlesIds(params.getBottleIds());
+			//work.setBottleWorkCd(params.getBottleWorkCd());
+			
+			result = workService.registerWorkReportNoOrder(params);					
+
+			//mav.setViewName("/gms/mypage/assign");			
+		
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		//return "redirect:/gms/mypage/assign.do";
+		
+		if(result > 0){
+			String alertMessage = "등록되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/mypage/assign.do");
+		}
+		return null;
 		
 	}
 	
