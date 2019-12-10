@@ -10,6 +10,8 @@ public interface GasService {
 	public boolean registerGas(GasVO param);
 
 	public GasVO getGasDetails(Integer gasId);
+	
+	public GasVO getGasDetailsByNm(String gasNm);
 
 	public boolean deleteGas(Integer gasId);
 

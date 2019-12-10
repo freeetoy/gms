@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
 
+import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.GasVO;
 import com.gms.web.admin.service.common.ExcelService;
 
@@ -29,27 +31,64 @@ public class ExcelUploadController {
 	@Autowired
 	private ExcelService excelService;
 	
-	@RequestMapping(value = "/uploadExcelFile", method = RequestMethod.POST)
-	@ResponseBody
-    public List<GasVO> uploadExcelFile(MultipartHttpServletRequest request, Model model) {
+	@RequestMapping(value = "/uploadExcelFile", method = RequestMethod.POST)	
+    public ModelAndView uploadExcelFile(MultipartHttpServletRequest request
+    		, HttpServletResponse response) {
 		
 		MultipartFile file = null;
-		List<GasVO> gaslist = null;
+		int result = 0;
 		try {
         
 	        Iterator<String> iterator = request.getFileNames();
 	        if(iterator.hasNext()) {
 	            file = request.getFile(iterator.next());
 	        }
-	        gaslist = excelService.uploadExcelFile(file);	        
+	        result = excelService.uploadBottleExcelFile(file);	        
 	      
-	        model.addAttribute("gaslist", gaslist);
+	        //model.addAttribute("gaslist", gaslist);
+	        
+	        logger.info("ExcelUploadContoller result "+ result);
 		} catch (Exception e) {
             e.printStackTrace();
             
             return null;
         }
-        return gaslist;
+		if(result > 0){
+			String alertMessage = "엑셀 등록하였습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/bottle/list.do");
+		}
+		return null;
+		
+    }
+	
+	
+	@RequestMapping(value = "/gms/customer/uploadExcelFile", method = RequestMethod.POST)	
+    public String uploadExcelFileCustomer(MultipartHttpServletRequest request
+    		, HttpServletResponse response
+    		, Model model) {
+		
+		MultipartFile file = null;
+		int result = 0;
+		try {
+        
+	        Iterator<String> iterator = request.getFileNames();
+	        if(iterator.hasNext()) {
+	            file = request.getFile(iterator.next());
+	        }
+	        result = excelService.uploadCustomerExcelFile(file);	        
+	      
+	        //model.addAttribute("gaslist", gaslist);
+	        
+	        logger.info("ExcelUploadContoller result "+ result);
+		} catch (Exception e) {
+            e.printStackTrace();
+            
+            return null;
+        }
+		
+		return "redirect:/gms/customer/list.do";
+		
     }
 
 }

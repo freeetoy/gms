@@ -83,7 +83,7 @@ public class BottleController {
 		model.addAttribute("bottleList", map.get("list"));
 		
 		String searchGasId = "";
-		if(params.getSearchGasId() != null && params.getSearchGasId().length() > 20 ) {
+		if(params.getSearchGasId() != null ) {
 			searchGasId = params.getSearchGasId();
 			model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
 		}

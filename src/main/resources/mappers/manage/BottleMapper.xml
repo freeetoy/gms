@@ -165,6 +165,38 @@
 		)
 	</insert>
 	
+	<insert id="insertBottles" parameterType="java.util.List">
+		INSERT INTO TB_Bottle(
+			<include refid="BottleColumns" />
+		) VALUES 
+		<foreach collection="list" item="item" separator=" , ">
+		(
+			  #{item.bottleId}
+			, #{item.bottleBarCd}
+			, #{item.gasId}
+			, #{item.bottleCapa}
+			, #{item.bottleCreateDt}
+			, #{item.bottleChargeDt}
+			, #{item.bottleVolumn}
+			, #{item.bottleChargePrss}
+			, #{item.bottleSalesYn}
+			, #{item.bottleWorkCd}
+			, #{item.bottleWorkId}
+			, #{item.customerId}
+			, #{item.memberCompSeq}
+			, #{item.orderId}
+			, #{item.orderProductSeq}
+			, #{item.bottleType}
+			, 'N'
+			, NOW()
+			, #{item.createId}			
+			, NOW()
+			, NULL
+			, NOW()
+		)
+		</foreach>
+	</insert>
+	
 	<insert id="insertBottleHistory" parameterType="String">
 		INSERT INTO TB_Bottle_Hist
 		SELECT b.history_seq,a.*
@@ -175,6 +207,23 @@
 				WHERE Bottle_Id=#{bottleId}
 			) b 
 		WHERE a.Bottle_Id =#{bottleId}
+	</insert>
+	
+	<insert id="insertBottleHistorys" parameterType="java.util.List">
+		INSERT INTO TB_Bottle_Hist
+		SELECT b.history_seq,a.*
+			FROM TB_Bottle a,
+			(
+				SELECT c.bottle_id, IFNULL(max(d.bottle_id)+1,1) history_seq 
+				FROM TB_Bottle c Left Join  TB_Bottle_Hist d ON c.Bottle_Id=d.bottle_id
+				WHERE c.Bottle_Id in (
+				<foreach collection="list" item="item" separator=" , ">
+				#{item.bottleId} 
+				</foreach>
+				)
+				GROUP BY C.Bottle_Id
+			) b 
+		WHERE a. Bottle_ID = b.Bottle_Id 			
 	</insert>
 	
 	<update id="updateBottle" parameterType="com.gms.web.admin.domain.manage.BottleVO">

@@ -304,13 +304,16 @@ var fn_deleteBottle = function(bottleId){
                <input type="text" id="searchBottleId" name="searchBottleId" class="form-control" placeholder="search" th:value="${searchBottleId}">
             </div>  
                         
-              <div class="col-2">
+              <div class="col-5">
                 <button class="btn btn-navbar" type="submit">
             <i class="fas fa-search"></i>
           </button>
            </form>
               </div>
-             
+              <div class="col-1">
+              	<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchGasId= ${searchGasId} ,searchChargeDt=${searchChargeDt},menuType=3)}"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
+               
+              </div>
              
          </div>
         <div class="row">	

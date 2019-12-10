@@ -531,7 +531,7 @@ $(document).ready(function(){
                		<a href="/gms/order/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">주문 등록</button></a>
               </div>
               <div class="col-1">
-               		<a href="/gms/order/excelDownload.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
+              	<a th:href="@{/gms/order/excelDownload.do( searchCustomerNm=${searchCustomerNm},searchOrderDt= ${searchOrderDt}  )}"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
               </div>
               </form>  
          </div>

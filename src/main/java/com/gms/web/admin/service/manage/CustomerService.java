@@ -12,10 +12,16 @@ public interface CustomerService {
 	public Map<String,Object> getCustomerList(CustomerVO param);
 	
 	public Map<String,Object> searchCustomerList(String param);
+	
+	public List<CustomerVO> searchCustomerListExcel(String param);
 
 	public CustomerVO getCustomerDetails(Integer customerId);
+	
+	public CustomerVO getCustomerDetailsByNm(String customerNm);
 
 	public boolean registerCustomer(CustomerVO param);	
+	
+	public int registerCustomers(List<CustomerVO> param);	
 	
 	public boolean modifyCustomer(CustomerVO param);
 	

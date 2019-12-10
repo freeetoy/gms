@@ -47,6 +47,12 @@ public class GasServiceImpl implements GasService {
 		return gasMapper.selectGasDetail(gasId);		
 	}
 
+	
+	@Override
+	public GasVO getGasDetailsByNm(String gasNm) {
+		return gasMapper.selectGasDetailByNm(gasNm);	
+	}
+	
 	@Override
 	@Transactional
 	public boolean deleteGas(Integer gasId) {
@@ -73,5 +79,7 @@ public class GasServiceImpl implements GasService {
 		logger.info("****** getGasList *****===*");
 		return gasMapper.selectGasList();
 	}
+
+	
 
 }

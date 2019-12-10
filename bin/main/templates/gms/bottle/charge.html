@@ -334,8 +334,12 @@ var fn_deleteBottle = function(bottleId){
            </form>
               </div>
              
-              <div class="col-2">
+              <div class="col-1">
                		<a href="/gms/bottle/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">용기 등록</button></a>
+              </div>
+              <div class="col-1">
+              	<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchGasId= ${searchGasId} ,searchChargeDt=${searchChargeDt},menuType=2)}"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
+               
               </div>
          </div>
         <div class="row">	

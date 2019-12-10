@@ -26,6 +26,8 @@ public interface BottleService {
 	public int getBottleBarCdCheck(BottleVO param);	
 	
 	public int registerBottle(BottleVO param);	
+	
+	public int registerBottles(List<BottleVO> param);	
 
 	public int modifyBottle(BottleVO param);
 	

@@ -3,6 +3,7 @@
 <properties version="1.0">
 	<!-- 공통화면 -->
 	<entry key="common.page.title">GMS System</entry>
+	<entry key="common.Member.Comp.Daehan">1</entry>
 	
 	
 	
@@ -48,6 +49,8 @@
 	<entry key="common.bottle.status.0308">0308</entry>
 	<entry key="common.bottle.status.0309">0309</entry>
 	<entry key="common.bottle.status.0310">0310</entry>
+	<entry key="common.bottle.status.0399">0399</entry>
+	<entry key="common.bottle.status.0388">0388</entry>
 	
 	
 	<entry key="common.code.order.type">0100</entry>
@@ -70,5 +73,10 @@
 	<entry key="common.code.order.process.07">0209</entry>
 	<entry key="common.code.order.process.08">0210</entry>
 	<entry key="common.code.order.process.08">0299</entry>
+	
+	
+	<entry key="excel.bottle.title">용기,바코드/RFID,가스,용기체적,충전용량,충전기한,충전압력	,제조일,거래처,작업,소유</entry>
+	<entry key="excel.order.title">순번,거래처명,상품명,용량,접수자,상태,요청일자,접수일</entry>
+	
 	
 </properties>

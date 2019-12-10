@@ -16,13 +16,19 @@ public interface CustomerMapper {
 	
 	public List<CustomerVO> searchCustomerList(String searchCustomerNm);
 	
+	public List<CustomerVO> searchCustomerListExcel(String searchCustomerNm);
+	
 	public int selectCustomerCount(Map<String, Object> map);	
 	
 	public int selectBusinessRegId(CustomerVO param);	
 	
 	public CustomerVO selectCustomerDetail(Integer customerId) ;
+	
+	public CustomerVO selectCustomerDetailByNm(String customerNm) ;
 
 	public int insertCustomer(CustomerVO param);
+	
+	public int insertCustomers(List<CustomerVO> param);
 	
 	public int updateCustomer(CustomerVO param);
 	

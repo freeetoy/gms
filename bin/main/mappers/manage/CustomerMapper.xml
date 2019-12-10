@@ -100,6 +100,31 @@
 			, NOW()
 		)
 	</insert>
+	
+	<insert id="insertCustomers" parameterType="java.util.List">
+		INSERT INTO TB_CUSTOMER(
+			<include refid="InsertCustomerColumns" />
+		) VALUES 
+		<foreach collection="list" item="item" separator=" , ">
+		(
+			 #{item.memberCompSeq}
+			, #{item.customerNm}
+			, #{item.businessRegId}
+			, #{item.customerRepNm}
+			, #{item.customerBusiType}
+			, #{item.customerItem}
+			, #{item.customerAddr}
+			, #{item.customerPhone}
+			, #{item.customerEmail}
+			, #{item.salesId}
+			, '2'
+			, #{item.createId}			
+			, NOW()
+			, NULL
+			, NOW()
+		)
+		</foreach>
+	</insert>
 
 	<insert id="insertCustomerPrice" parameterType="com.gms.web.admin.domain.manage.CustomerPriceVO">
 		INSERT INTO TB_CUSTOMER_PRODUCT_PRICE(
@@ -121,11 +146,22 @@
 		SELECT
 			<include refid="CustomerColumns" />
 		FROM
-			TB_CUSTOMER A, TB_USER B
+			TB_CUSTOMER A Left Join TB_USER B on A.Sales_ID = B.User_ID
 		WHERE
 			Customer_Status != '0'		
 		AND
 			CUSTOMER_ID = #{customerId}
+	</select>
+	
+	<select id="selectCustomerDetailByNm" parameterType="String" resultType="com.gms.web.admin.domain.manage.CustomerVO">
+		SELECT
+			<include refid="CustomerColumns" />
+		FROM
+			TB_CUSTOMER A, TB_USER B
+		WHERE
+			Customer_Status != '0'		
+		AND
+			CUSTOMER_NM = #{customerNm}
 		AND A.Sales_ID = B.User_ID
 	</select>
 
@@ -161,11 +197,9 @@
 		SELECT
 			<include refid="CustomerColumns" />
 		FROM
-			TB_CUSTOMER A, TB_USER B
+			TB_CUSTOMER A Left Join  TB_USER B On A.Sales_ID = B.User_ID
 		WHERE
 			Customer_Status != '0'
-		AND 
-			A.Sales_ID = B.User_ID
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
 		AND Customer_NM	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
 		</if>
@@ -200,11 +234,22 @@
 		SELECT
 			<include refid="CustomerColumns" />
 		FROM
-			TB_CUSTOMER A, TB_USER B
+			TB_CUSTOMER A  Left Join  TB_USER B On A.Sales_ID = B.User_ID
 		WHERE
 			Customer_Status != '0'
-		AND 
-			A.Sales_ID = B.User_ID
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
+		AND Customer_NM	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
+		</if>
+		ORDER BY Customer_Nm desc 
+	</select>
+
+	<select id="searchCustomerListExcel" resultType="com.gms.web.admin.domain.manage.CustomerVO" parameterType="String">
+		SELECT
+			<include refid="CustomerColumns" />
+		FROM
+			TB_CUSTOMER A  Left Join  TB_USER B On A.Sales_ID = B.User_ID
+		WHERE
+			Customer_Status != '0'
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
 		AND Customer_NM	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
 		</if>

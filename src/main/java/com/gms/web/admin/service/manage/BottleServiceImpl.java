@@ -1,5 +1,8 @@
 package com.gms.web.admin.service.manage;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,27 +119,9 @@ public class BottleServiceImpl implements BottleService {
 		logger.info("****** getBottleListToExcel *****start===*");
 		
 		
-		logger.info("****** getBottleListToExcel *****param.getSearchBottleId===*" + param.getSearchBottleId());
-		logger.info("****** getBottleListToExcel *****param.getRowPerPage===*" + param.getRowPerPage());
+		logger.info("****** getBottleListToExcel *****param.getMenuType===*" + param.getMenuType());		
 		
-		int currentPage = param.getCurrentPage();
-		int ROW_PER_PAGE = param.getRowPerPage();
-		
-		int starPageNum =1;
-		
-		int lastPageNum = ROW_PER_PAGE;
-		
-		if(currentPage > (ROW_PER_PAGE/2)) {
-			lastPageNum += (starPageNum-1);
-		}
-		
-		int startRow = (currentPage-1) * ROW_PER_PAGE;
-		
-		Map<String, Object> map = new HashMap<String, Object>();		
-		
-		map.put("startRow", startRow);
-		map.put("rowPerPage", ROW_PER_PAGE);	
-		map.put("searchBottleId", param.getSearchBottleId());	
+		Map<String, Object> map = new HashMap<String, Object>();			
 		
 		if(param.getSearchGasId() != null) {
 			map.put("searchGasId", param.getSearchGasId());
@@ -146,7 +131,29 @@ public class BottleServiceImpl implements BottleService {
 		if(param.getSearchChargeDt() != null) {
 			map.put("searchChargeDt", param.getSearchChargeDt());
 			logger.info("****** getBottleList *****getSearchChargeDt===*"+param.getSearchChargeDt());
-		}		
+		}else {
+			if(param.getMenuType()==2) {
+				// Date 로 구하기
+			    SimpleDateFormat fm1 = new SimpleDateFormat("yyyy/MM/dd");
+			    String fromDate = fm1.format(new Date());
+			    logger.info("현재시간 년월일 = " + fromDate);
+
+			    Calendar cal = Calendar.getInstance();;
+			    cal.setTime(new Date());
+			    cal.add(Calendar.DAY_OF_YEAR, 7); // 하루를 더한다.
+			    	    
+			    String endDate = fm1.format(cal.getTime());
+			    logger.info("현재시간 년월일 = " + endDate);
+			    
+			    String searchChargeDt = fromDate+" - "+endDate;
+			    
+			    param.setSearchChargeDt(searchChargeDt);
+			    map.put("searchChargeDt", param.getSearchChargeDt());
+				
+				param.setSearchChargeDtFrom(fromDate);
+				param.setSearchChargeDtEnd(endDate); 
+			}
+		}
 		
 		if(param.getSearchChargeDtFrom() != null) {
 			map.put("searchChargeDtFrom", param.getSearchChargeDtFrom());
@@ -163,9 +170,10 @@ public class BottleServiceImpl implements BottleService {
 			logger.info("****** getBottleListToExcel *****getSearchSalesYn===*"+param.getSearchSalesYn());
 		}
 		
-		logger.info("****** getBottleListToExcel *****currentPage===*"+currentPage);
-				
-		
+		if(param.getMenuType()==3) {
+			param.setSearchSalesYn("Y");
+			map.put("searchSalesYn", param.getSearchSalesYn());
+		}
 		List<BottleVO> bottleList = bottleMapper.selectBottleListToExcel(map);
 		
 		
@@ -215,6 +223,17 @@ public class BottleServiceImpl implements BottleService {
 		
 	}
 
+	
+	@Override
+	public int registerBottles(List<BottleVO> param) {
+
+		int result = 0;
+		result =  bottleMapper.insertBottles(param);	
+		if(result > 0 ) result = bottleMapper.insertBottleHistorys(param);
+		return result;
+	}
+	
+	
 	@Override
 	@Transactional
 	public int modifyBottle(BottleVO param) {
@@ -360,5 +379,6 @@ public class BottleServiceImpl implements BottleService {
 		return list;
 				
 	}
+
 	
 }

@@ -85,6 +85,12 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerMapper.selectCustomerDetail(customerId);	
 	}
 
+
+	@Override
+	public CustomerVO getCustomerDetailsByNm(String customerNm) {
+		return customerMapper.selectCustomerDetailByNm(customerNm);
+	}
+	
 	@Override
 	@Transactional
 	public boolean registerCustomer(CustomerVO param) {
@@ -101,6 +107,17 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		return successFlag;
 	}
+	
+	@Override
+	public int registerCustomers(List<CustomerVO> param) {
+		
+		// 정보 등록
+		int result = 0;		
+		result = customerMapper.insertCustomers(param);
+				
+		return result;
+	}
+
 
 	@Override
 	@Transactional
@@ -177,6 +194,15 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
+	public List<CustomerVO> searchCustomerListExcel(String param) {
+		
+		List<CustomerVO> customerList = customerMapper.searchCustomerList(param);
+		// TODO Auto-generated method stub
+		return customerList;
+	}
+
+	
+	@Override
 	@Transactional
 	public boolean registerCustomerPrice(CustomerPriceVO[] param) {
 		boolean successFlag = false;
@@ -222,5 +248,8 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<CustomerPriceExtVO> getCustomerPriceList(Integer customerId) {
 		return customerMapper.selectCustomerPriceList(customerId);
 	}
+
+	
+	
 
 }
