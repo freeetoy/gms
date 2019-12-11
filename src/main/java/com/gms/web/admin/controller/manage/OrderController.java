@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.common.CodeVO;
 import com.gms.web.admin.domain.manage.BottleVO;
@@ -310,6 +311,9 @@ public class OrderController {
 		
 		model.addAttribute("orderExt", result);
 		
+		model.addAttribute("orderTotalAmountHan",StringUtils.numberToHan(String.valueOf(result.getOrder().getOrderTotalAmount())));
+		
+		//logger.debug("OrderContoller getPopupOrderDetail Money 1024 "+StringUtils.numberToHan("1024"));
 		CustomerVO customer = customerService.getCustomerDetails(result.getOrder().getCustomerId());			
 		
 		model.addAttribute("customer", customer);

@@ -121,6 +121,7 @@ var goWrite = function(){
 	    singleDatePicker: true,
 	    showDropdowns: true,
 	    autoUpdateInput: false,
+	    startDate: new Date(),
 	      locale: {
 	          cancelLabel: 'Clear'
 	      }
@@ -151,8 +152,47 @@ var goWrite = function(){
 		      $(this).val('');
 		  });
 	});
-	</script>
+
+
+$(document).ready(function(){ 
 	
+	$('#productId').change( function(){
+
+		var productId = $('#productId').val();		
+		initCapa(productId);
+	});
+	
+	function initCapa(productId){
+	      
+		console.log(productId);      
+		
+		$.ajax({
+			url: '/gms/product/priceList.do',
+			type: 'POST',
+			data: 'productId='+ productId ,
+			dataType: 'json',
+
+		 })
+		.done(function(data){	           
+		  
+			console.log(data);     
+			
+	    	var i=0;
+			
+			for(i=0; i< data.length;i++) {
+				console.log(data[i]);      
+				$('#productPriceSeq').append('<option value='+data[i].productPriceSeq+'>'+data[i].productCapa+'</option>')				
+			}			
+		})
+		.fail(function(){
+			console.log("fail");
+		 });
+
+	} 
+
+	
+});
+
 </script>
 
    <div class="content-wrapper">
@@ -183,7 +223,7 @@ var goWrite = function(){
               <!-- /.card-header -->
               <div class="col-8">
               <form id="writeForm" class="form-horizontal" th:action="@{/gms/bottle/register.do}" th:object="${bottle}" method="post" >
-                
+                <input type="hidden" id="gasId" name="gasId" value="">
                 <table class="table table-hover">
                   <thead>
                     <tr>
@@ -197,11 +237,11 @@ var goWrite = function(){
                     <tr>
                       <th class="card-footer">가스</th>
                       <th>
-                      <select id="gasId" name="gasId" class="form-control">
+                      <select id="productId" name="productId" class="form-control">
                           <option value="0">가스선택</option>				    
-					        <option th:each="row : ${gasList}"
-					                th:text="${row.gasNm}"
-					                th:value="${row.gasId}"
+					        <option th:each="row : ${productList}"
+					                th:text="${row.productNm}"
+					                th:value="${row.productId}"
 					               >
 					        </option>					
                         </select>
@@ -209,7 +249,10 @@ var goWrite = function(){
                     </tr>
                     <tr>
                       <th class="card-footer">가스 용량</th>
-                      <th><input type="text" class="form-control" id="bottleCapa" name="bottleCapa" placeholder="가스 용량"></th>
+                      <th>
+                      <select id="productPriceSeq" name="productPriceSeq" class="form-control" >
+	                        <option value="0">옵션</option>			                      	
+					   </select>	                       
                     </tr>
                      <tr>                                   
                       <th class="card-footer">제조일</th>
@@ -244,9 +287,11 @@ var goWrite = function(){
             
           
       		<div class="card-footer">
+      			<div class="col-8">
                  <a href="/gms/bottle/list.do" class="btn btn-secondary float-left">취소</a>
 		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">
-                </div>		     		
+                </div>		  
+                </div>   		
             </form>   
           	<!-- /.col-12 -->
           </div>

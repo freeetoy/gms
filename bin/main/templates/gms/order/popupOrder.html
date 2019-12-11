@@ -1,6 +1,8 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="gms/layout/blank">
 
 <th:block layout:fragment="content"> 
+  <!-- jQuery -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <style type="text/css">
 .border_out {font-family: 굴림;border: 3px double black;}
 body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: #000000; border:0px;}
@@ -25,7 +27,13 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 }
 
 </style>
-
+<script type="text/javascript">	
+$(document).ready(function(){ 	
+	
+	alert("3333 "+ fromHumanify(33333));
+});
+	
+</script>	
 
 <div class="print_area" style="margin-top: 50px;page-break-before:always">
 	<table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto;">
@@ -47,7 +55,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 					<td class="border_in" align="center" style="border-top-style:none">작성일</td>    
 				      </tr>
 				      <tr>
-					<td width="30" class="border_in" align="center" style="border-top-style:none;border-bottom-style:none;font-size: 12px;">2019-11-27 10:47</td>               
+					<td width="30" class="border_in" align="center" style="border-top-style:none;border-bottom-style:none;font-size: 12px;" th:text="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm')}"></td>               
 				       
 				      </tr>
 				    </tbody>
@@ -145,10 +153,10 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 	<table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto;margin-top: 5px;">
 	<tbody>
 		<tr height="30">
-			<td width="80%" style="border-style: solid none solid solid;border-width: 2px;padding-left: 10px;font-size: 12pt;font-weight: bold ">
+			<td width="80%" style="border-style: solid none solid solid;border-width: 2px;padding-left: 10px;font-size: 12pt;font-weight: bold " th:text="|합계금액 : ${orderTotalAmountHan}원정|">
 			합계금액 : 삼만삼천원정    </td>
-			<td style="border-style: solid solid solid none;border-width: 2px;">
-			(₩33,000원) /  VAT포함
+			<td style="border-style: solid solid solid none;border-width: 2px;" th:text="|(₩${#numbers.formatInteger(orderExt.order.orderTotalAmount, 3, 'COMMA')})원 /  VAT포함|">
+			
 			</td>
 		</tr>
 	</tbody>
@@ -168,13 +176,13 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 			<td class="tl_dot" style="border-right-style: solid;border-right-width: 1px;" align="center">적 요</td>
 		</tr>
 		<tr height="20" th:if="${not #lists.isEmpty( orderExt.orderProduct )}" th:each="row : ${orderExt.orderProduct}"> 
-			<td class="border_in" style="border-top-style:none;" align="center">0</td>
-			<td class="border_in" style="border-top-style:none;border-left-style:none" align="center">0</td>
+			<td class="border_in" style="border-top-style:none;" align="center" th:text="${#calendars.format( row.updateDt, 'MM' )}"> </td>
+			<td class="border_in" style="border-top-style:none;border-left-style:none" align="center" th:text="${#calendars.format( row.updateDt, 'dd' )}"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.productNm}"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.productCapa}"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderCount}"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderAmount/row.orderCount}"></td>
-			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderAmount}"></td>
+			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderAmount*0.1}"></td>
 			<td class="tl_dot" style="border-top-style:none;border-right-width: 1px;" align="center"></td>
 		</tr>
@@ -200,13 +208,13 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">1</td>
 
 			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">공급가액</td>
-			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">30,000</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center" th:text="${#numbers.formatInteger(orderExt.order.orderTotalAmount, 3, 'COMMA')}"></td>
 
 			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">부가세</td>
-			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">3,000</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center" th:text="${#numbers.formatInteger(orderExt.order.orderTotalAmount*0.1, 3, 'COMMA')}">3,000</td>
 
 			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">합계</td>
-			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">33,000</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center" th:text="${#numbers.formatInteger(orderExt.order.orderTotalAmount*1.1, 3, 'COMMA')}">33,000</td>
 
 			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">인수</td>
 			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="right">(인)</td>
@@ -254,7 +262,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 					<td class="border_in" align="center" style="border-top-style:none">작성일</td>    
 				      </tr>
 				      <tr>
-					<td width="30" class="border_in" align="center" style="border-top-style:none;border-bottom-style:none;font-size: 12px;">2019-11-27 10:47</td>               
+					<td width="30" class="border_in" align="center" style="border-top-style:none;border-bottom-style:none;font-size: 12px;" th:text="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm')}"></td>               
 				       
 				      </tr>
 				    </tbody>
@@ -352,10 +360,10 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 	<table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto;margin-top: 5px;">
 	<tbody>
 		<tr height="30">
-			<td width="80%" style="border-style: solid none solid solid;border-width: 2px;padding-left: 10px;font-size: 12pt;font-weight: bold ">
-			합계금액 : 삼만삼천원정    </td>
-			<td style="border-style: solid solid solid none;border-width: 2px;">
-			(₩33,000원) /  VAT포함
+			<td width="80%" style="border-style: solid none solid solid;border-width: 2px;padding-left: 10px;font-size: 12pt;font-weight: bold " th:text="|합계금액 : ${orderTotalAmountHan}원정|">
+			 </td>
+			<td style="border-style: solid solid solid none;border-width: 2px;" th:text="|(₩${#numbers.formatInteger(orderExt.order.orderTotalAmount, 3, 'COMMA')})원 /  VAT포함|">
+			
 			</td>
 		</tr>
 	</tbody>
@@ -375,8 +383,8 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 			<td class="tl_dot" style="border-right-style: solid;border-right-width: 1px;" align="center">적 요</td>
 		</tr>
 		<tr height="20" th:if="${not #lists.isEmpty( orderExt.orderProduct )}" th:each="row : ${orderExt.orderProduct}"> 
-			<td class="border_in" style="border-top-style:none;" align="center">0</td>
-			<td class="border_in" style="border-top-style:none;border-left-style:none" align="center">0</td>
+			<td class="border_in" style="border-top-style:none;" align="center" th:text="${#calendars.format( row.updateDt, 'MM' )}"> </td>
+			<td class="border_in" style="border-top-style:none;border-left-style:none" align="center" th:text="${#calendars.format( row.updateDt, 'dd' )}"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.productNm}"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.productCapa}"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderCount}"></td>
@@ -406,13 +414,13 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">1</td>
 
 			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">공급가액</td>
-			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">30,000</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center" th:text="${#numbers.formatInteger(orderExt.order.orderTotalAmount, 3, 'COMMA')}"></td>
 
 			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">부가세</td>
-			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">3,000</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center" th:text="${#numbers.formatInteger(orderExt.order.orderTotalAmount*0.1, 3, 'COMMA')}">3,000</td>
 
 			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">합계</td>
-			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center">33,000</td>
+			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center" th:text="${#numbers.formatInteger(orderExt.order.orderTotalAmount*1.1, 3, 'COMMA')}">33,000</td>
 
 			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">인수</td>
 			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="right">(인)</td>
@@ -422,7 +430,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 		<td colspan="9" style="border-style: none solid solid none;border-width: 1px;" align="center"></td>
 		</tr>
 	</tbody>
-	</table>	    
+	</table>    
 	<p></p>
 	<br>
 <input type="button" onclick="pagePrintPreview()" value="프린트하기"> <input type="button" value="뒤로" onclick="window.history.go(-1)">
@@ -432,5 +440,10 @@ function pagePrintPreview(){
 alert("print");
 	window.print();
 } 
+
+
+
+
+
 </script>
 </th:block>

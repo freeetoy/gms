@@ -23,6 +23,10 @@ public interface ProductService {
 
 
 	public ProductVO getProductDetails(Integer productId);
+	
+	public ProductTotalVO getProductTotalDetails(ProductTotalVO param);
+	
+	public ProductPriceVO getProductPriceDetails(ProductPriceVO param);
 
 	public boolean deleteProduct(Integer productId);
 	
@@ -41,4 +45,6 @@ public interface ProductService {
 	public int getProductProductSeq(Integer productId) ;
 	
 	public List<ProductVO> getProductList();
+	
+	public List<ProductVO> getGasProductList();
 }

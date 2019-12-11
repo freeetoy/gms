@@ -31,7 +31,7 @@ function validationOfForm(form) {
 function fn_modifyBottleWorkCd(){				
 		
 		var form = $("#chForm");	
-    	chForm.action="/gms/bottle/changeWorkCd.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]";
+    	chForm.action="/gms/bottle/changeWorkCd.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchProductId=[[ ${searchProductId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]";
     	chForm.submit();
 	}
 	
@@ -42,7 +42,7 @@ var fn_deleteBottle = function(bottleId){
 		var form = document.createElement("form");
 		form.setAttribute("charset","UTF-8");
 		form.setAttribute("method","post");
-		form.setAttribute("action","/gms/bottle/delete.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
+		form.setAttribute("action","/gms/bottle/delete.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchProductId=[[ ${searchProductId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
 		
 		var hiddenField = document.createElement("input");
         hiddenField.setAttribute("type", "hidden");
@@ -200,7 +200,7 @@ var fn_deleteBottle = function(bottleId){
 			var form = document.createElement("form");
 			form.setAttribute("charset","UTF-8");
 			form.setAttribute("method","post");
-			form.setAttribute("action","/gms/bottle/deleteChecked.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
+			form.setAttribute("action","/gms/bottle/deleteChecked.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchProductId=[[ ${searchProductId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
 			
 			var hiddenField = document.createElement("input");
 	        hiddenField.setAttribute("type", "hidden");
@@ -247,6 +247,53 @@ var fn_deleteBottle = function(bottleId){
 	
 $(document).ready(function(){	
 	 var bottleIds = "";
+	 
+	 
+	 $(".btn_select_process").click(function()  
+	{
+		console.log("start btn_select_process}");
+		
+		
+		
+		var bottleId = $(this).attr('bottleId'); 
+		
+		console.log("start btn_select_process bottleId "+bottleId);
+		var ajaxInfo ={
+				type:"POST",
+				url:"/gms/bottle/detail.do",
+				data:{
+					bottleId : bottleId
+				},
+				dataType: "json",
+			};
+			
+			ajax = callAjax(ajaxInfo);
+			
+			ajax.done(function(data){
+				console.log(data);
+
+				$("#chBottleId").val(data.bottleId);
+				$("#bottleBarCd").val(data.bottleBarCd);
+				
+				$('select[id="bottleWorkCd"]').find('option:contains(data.bottleWorkCd)').attr("selected",true);
+
+				$("#bottleWorkCd").val(data.bottleWorkCd);		
+				
+				$('select[id="bottleType"]').find('option:contains(data.bottleType)').attr("selected",true);
+
+				$("#bottleType").val(data.bottleType);		
+					
+				if(data.result == "fail"){
+					alert("용기가 존재하지 않습니다");			
+					return;
+				}
+				
+			});
+			
+	
+   });
+	 
+	 
    $(".btn_select_process1").click(function()  
 	{
 		console.log("start btn_select_process1}");
@@ -637,17 +684,17 @@ $(document).ready(function(){
                <input type="text" id="searchBottleId" name="searchBottleId" class="form-control" placeholder="search" th:value="${searchBottleId}">
             </div>  
             <div class="col-2">
-               	<select id="searchGasId" name="searchGasId" class="form-control">
+               	<select id="searchProductId" name="searchProductId" class="form-control">
                     <option value="">가스선택</option>				    
-			        <option th:each="row : ${gasList}"
-			                th:text="${row.gasNm}"
-			                th:value="${row.gasId}"
-			                th:if="${searchGasId ==row.gasId}" selected>					             
+			        <option th:each="row : ${proudctList}"
+			                th:text="${row.productNm}"
+			                th:value="${row.productId}"
+			                th:if="${searchProductId ==row.productId}" selected>					             
 			        </option>	
-			        <option th:each="row : ${gasList}"
-			                th:text="${row.gasNm}"
-			                th:value="${row.gasId}"
-			                th:unless="${searchGasId ==row.gasId}">					             
+			        <option th:each="row : ${productList}"
+			                th:text="${row.productNm}"
+			                th:value="${row.productId}"
+			                th:unless="${searchProductId ==row.productId}">					             
 			        </option>					        				
                  </select>
               </div>                   
@@ -662,7 +709,7 @@ $(document).ready(function(){
                		<a href="/gms/bottle/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">용기 등록</button></a>
               </div>
               <div class="col-1">
-              	<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchGasId= ${searchGasId} ,searchChargeDt=${searchChargeDt},menuType=1 )}"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
+              	<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchProductId= ${searchProductId} ,searchChargeDt=${searchChargeDt},menuType=1 )}"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
                
               </div>
          </div>
@@ -700,13 +747,13 @@ $(document).ready(function(){
                       <a href="#" th:onclick="goUpdate([[ ${row.bottleId} ]])" th:text="${row.bottleId}"></a>                     
                       </td>
                       <td th:text="${row.bottleBarCd}"></td>
-                      <td th:text="${row.gasNm}"></td>
+                      <td th:text="${row.productNm}"></td>
                       <td th:text="${row.bottleCapa}"></td>
                       <td th:text="${row.bottleWorkCdNm}"></td>
                       <td th:text="${row.CustomerNm}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>  
                       <td>                      
-						<a class="btn btn-info btn-xs" th:bottleId="${row.bottleId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_ChangeBottleWorkCd([[ ${row.bottleId} ]])" href="#"><i class="fas fa-pencil-alt"></i>상태변경 </a>
+						<a class="btn_select_process btn btn-info btn-xs" th:bottleId="${row.bottleId}" data-toggle="modal" data-target="#modal-default"  href="#"><i class="fas fa-pencil-alt"></i>상태변경 </a>
 						<a class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteBottle([[ ${row.bottleId} ]])">
                               <i class="fas fa-trash"></i>삭제</a>
                       </td>                     

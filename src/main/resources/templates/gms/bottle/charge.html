@@ -312,20 +312,20 @@ var fn_deleteBottle = function(bottleId){
                <input type="text" id="searchBottleId" name="searchBottleId" class="form-control" placeholder="search" th:value="${searchBottleId}">
             </div>  
             <div class="col-2">
-               	<select id="searchGasId" name="searchGasId" class="form-control">
+               	<select id="searchProductId" name="searchProductId" class="form-control">
                     <option value="">가스선택</option>				    
-			        <option th:each="row : ${gasList}"
-			                th:text="${row.gasNm}"
-			                th:value="${row.gasId}"
-			                th:if="${searchGasId ==row.gasId}" selected>					             
+			        <option th:each="row : ${proudctList}"
+			                th:text="${row.productNm}"
+			                th:value="${row.productId}"
+			                th:if="${searchProductId ==row.productId}" selected>					             
 			        </option>	
-			        <option th:each="row : ${gasList}"
-			                th:text="${row.gasNm}"
-			                th:value="${row.gasId}"
-			                th:unless="${searchGasId ==row.gasId}">					             
-			        </option>			
-				        				
+			        <option th:each="row : ${productList}"
+			                th:text="${row.productNm}"
+			                th:value="${row.productId}"
+			                th:unless="${searchProductId ==row.productId}">					             
+			        </option>					        				
                  </select>
+			        
               </div>                   
               <div class="col-2">
                 <button class="btn btn-navbar" type="submit">
@@ -374,7 +374,7 @@ var fn_deleteBottle = function(bottleId){
                       <a href="#" th:onclick="goUpdate([[ ${row.bottleId} ]])" th:text="${row.bottleId}"></a>                     
                       </td>
                       <td th:text="${row.bottleBarCd}"></td>
-                      <td th:text="${row.gasNm}"></td>
+                      <td th:text="${row.productNm}"></td>
                       <td th:text="${row.bottleCapa}"></td>
                       <td th:text="${row.bottleWorkCdNm}"></td>
                       <td th:text="${row.CustomerNm}"></td>

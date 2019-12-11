@@ -31,7 +31,7 @@ function validationOfForm(form) {
 function fn_modifyBottleWorkCd(){				
 		
 		var form = $("#chForm");	
-    	chForm.action="/gms/bottle/changeWorkCd.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]";
+    	chForm.action="/gms/bottle/changeWorkCd.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchProductId=[[ ${searchProductId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]";
     	chForm.submit();
 	}
 	
@@ -42,7 +42,7 @@ var fn_deleteBottle = function(bottleId){
 		var form = document.createElement("form");
 		form.setAttribute("charset","UTF-8");
 		form.setAttribute("method","post");
-		form.setAttribute("action","/gms/bottle/delete.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
+		form.setAttribute("action","/gms/bottle/delete.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchProductId=[[ ${searchProductId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
 		
 		var hiddenField = document.createElement("input");
         hiddenField.setAttribute("type", "hidden");
@@ -195,7 +195,7 @@ var fn_deleteBottle = function(bottleId){
 			var form = document.createElement("form");
 			form.setAttribute("charset","UTF-8");
 			form.setAttribute("method","post");
-			form.setAttribute("action","/gms/bottle/deleteChecked.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
+			form.setAttribute("action","/gms/bottle/deleteChecked.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchProductId=[[ ${searchProductId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
 			
 			var hiddenField = document.createElement("input");
 	        hiddenField.setAttribute("type", "hidden");
@@ -311,7 +311,7 @@ var fn_deleteBottle = function(bottleId){
            </form>
               </div>
               <div class="col-1">
-              	<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchGasId= ${searchGasId} ,searchChargeDt=${searchChargeDt},menuType=3)}"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
+              	<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchProductId= ${searchProductId} ,searchChargeDt=${searchChargeDt},menuType=3)}"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
                
               </div>
              
@@ -348,7 +348,7 @@ var fn_deleteBottle = function(bottleId){
                       <a href="#" th:onclick="goUpdate([[ ${row.bottleId} ]])" th:text="${row.bottleId}"></a>                     
                       </td>
                       <td th:text="${row.bottleBarCd}"></td>
-                      <td th:text="${row.gasNm}"></td>
+                      <td th:text="${row.productNm}"></td>
                       <td th:text="${row.bottleCapa}"></td>
                       <td th:text="${row.bottleWorkCdNm}"></td>
                       <td th:text="${row.CustomerNm}"></td>

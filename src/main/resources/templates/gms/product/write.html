@@ -28,27 +28,7 @@ function validationOfForm(form) {
 }
 // end of function
 
-var fn_deleteGas = function(gasId){
-	               		
-	if(confirm("삭제하시겠습니까?")){	
-		
-		var form = document.createElement("form");
-		form.setAttribute("charset","UTF-8");
-		form.setAttribute("method","post");
-		form.setAttribute("action","/gms/gas/delete.do");
-		
-		var hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", "gasId");
-        hiddenField.setAttribute("value", gasId);
 
-        form.appendChild(hiddenField);
-        
-        document.body.appendChild(form);
-
-        form.submit();			
-	}                  		
-}
 
 //Ajax공통 호출
 function callAjax(ajaxInfo){
@@ -61,37 +41,6 @@ function callAjax(ajaxInfo){
 }
 
 
-var fn_modifyGas = function(gasId){
-
-	var ajaxInfo ={
-		type:"POST",
-		url:"/gms/gas/detail.do",
-		data:{
-			gasId : gasId
-		},
-		dataType: "json",
-	};
-	
-	ajax = callAjax(ajaxInfo);
-	
-	ajax.done(function(data){
-		console.log(data);
-	
-		console.log("####gasCd---"+data.gasCd);		
-		
-		$("#gasId").val(data.gasId);
-		$("#gasNm").val(data.gasNm);
-		$("#gasCd").val(data.gasCd);
-		//document.form1.gasNm1.value=data.gasNm;
-			
-		if(data.result == "fail"){
-			alert("가스가 존재하지 않습니다");			
-			return;
-		}
-		
-	});
-
-};
 
 
 $(document).ready(function(){ 
@@ -303,7 +252,7 @@ $(document).ready(function(){
             <!-- /.card -->
             
             <div class="card-footer">
-                 <a href="/gms/user/list.do" class="btn btn-secondary float-left">취소</a>
+                 <a href="/gms/product/list.do" class="btn btn-secondary float-left">취소</a>
 		          <input type="submit" value="저장" class="btn btn-success float-right">
                 </div>		     		
             </form>   

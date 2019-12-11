@@ -1849,4 +1849,49 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	public static boolean notEquals(String cs1, String cs2) {
         return cs1 == null ? cs2 == null : !cs1.equals(cs2);
 	}
+	
+	
+	
+	public static String numberToHan(String p_money) {
+
+		StringBuffer l_result = new StringBuffer();
+		String[] l_kr1 = { "", "일", "이", "삼", "사", "오", "육",  "칠", "팔", "구" };
+		String[] l_kr2 = { "", "십", "백", "천" };
+		String[] l_kr3 = { "", "만", "억", "조" };	 
+
+		int l_count = 0; // 0 갯수카운트변수
+		int l_len = p_money.length(); // 숫자 길이
+		int l_target; // 해당숫자
+
+		for (int i = 0; i < l_len; i++) {
+
+			// i번째 숫자 캐싱
+			l_target = Integer.parseInt(p_money.charAt(i) + "");
+			l_result.append(l_kr1[l_target]);
+
+			if (l_target > 0) {
+				l_result.append(l_kr2[(l_len - 1 - i) % 4]); // 십 백 천
+
+			} else {
+				l_count++; // 0인경우 카운트 증가
+			}
+
+			if ((l_len - 1 - i) % 4 == 0) { // 자리가 4의배수인경우
+				// 0이 아닌게 한번이라도 있는경우 만억조 출력
+
+				if (l_count != 4) { 
+					// 만 억 조
+					l_result.append(l_kr3[(l_len - 1 - i) / 4]); 
+
+				}
+
+				l_count = 0; // 초기화
+
+			}
+		}
+
+		return l_result.toString();
+
+	}
+
 }

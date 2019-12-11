@@ -24,7 +24,11 @@ function validationOfForm(form) {
 }
 // end of function
 
-
+function doExcelUploadProcess(){
+		
+    form1.submit();
+}
+    
 $(document).ready(function(){ 
 	
 	var counter = 0;
@@ -411,6 +415,59 @@ $(document).ready(function(){
     </section>
   
     <section class="content">   
+    	<!--  process modat1 start -->  
+		<div class="modal modal-info fade" id="process-modal2">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+		             	<h4 class="modal-title">엑셀파일 등록</h4>
+		              	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                <span aria-hidden="true">&times;</span>
+		              	</button>
+		            </div>
+		
+					<div class="modal-body">
+					<div class="clearfix"></div>
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12" >
+							<div class="x_panel">
+								
+								<div class="x_content">
+								<br />
+								<div  class="card-body">
+								<form id="form1" name="form1" method="post" action="/gms/price/uploadExcelFile"enctype="multipart/form-data">					              
+									<table id="myTable" class="table order-info">
+									<thead>
+										<tr>
+											<td class="card-footer">파일선택</td>
+											<td  colspan=4><input type="file" id="fileInput" name="fileInput"> </td>
+											<td> <div id="result"></td>
+										</tr>										
+									</thead>
+									</table>								
+													
+									</form>
+									<div class="ln_solid"></div>
+														
+									<div class="modal-footer justify-content-between">
+						              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						              <a class="btn btn-info btn-sm" href="#" onclick="javascript:doExcelUploadProcess()();"><i class="fas fa-pencil-alt"></i>엑셀업로드</a>
+						            </div>
+									<div id="test_char">
+									
+									</div>
+								</div>
+							</div> <!-- X_content end -->
+						</div>
+					</div> <!-- /.x_panel end -->
+				</div> <!-- / .col -->
+			</div>
+		</div> <!-- / . modal body -->
+		</div>
+		</div>
+		<!-- /.modal -->
+		
+		
         <div class="row">
     	
               <div class="col-1">
@@ -438,7 +495,8 @@ $(document).ready(function(){
               </div>
              
               <div class="col-2">
-               		<a href="/gms/customer/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">거래처 등록</button></a>
+              	<a class="btn_select_process2 btn btn-success btn-xs"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-pencil-alt"></i>엑셀업로드</a>
+               		<!-- a href="/gms/customer/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀 등록</button></a> -->
               </div>
          </div>
          <div class="row">	
@@ -503,9 +561,11 @@ $(document).ready(function(){
             <!-- /.card -->
             
             <div class="card-footer">
+            	<div class="col-8">
                  <a href="/gms/user/list.do" class="btn btn-secondary float-left">취소</a>
 		         <input type="button" id="save" value="저장"  class="btn btn-success float-right">
-                </div>			
+                </div>		
+               </div>	
             </form>             	
         </div>
         

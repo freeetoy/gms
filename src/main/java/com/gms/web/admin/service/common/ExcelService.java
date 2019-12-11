@@ -1,10 +1,13 @@
 package com.gms.web.admin.service.common;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 public interface ExcelService {
 
-	public int uploadBottleExcelFile(MultipartFile excelFile);
+	public int uploadBottleExcelFile(MultipartHttpServletRequest request, MultipartFile excelFile);
 	
-	public int uploadCustomerExcelFile(MultipartFile excelFile);
+	public int uploadCustomerExcelFile(MultipartHttpServletRequest request, MultipartFile excelFile);
+	
+	public int uploadCustomerPriceExcelFile(MultipartHttpServletRequest request, MultipartFile excelFile);
 }

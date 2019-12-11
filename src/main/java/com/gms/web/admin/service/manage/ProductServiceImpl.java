@@ -87,6 +87,19 @@ public class ProductServiceImpl implements ProductService {
 	public ProductVO getProductDetails(Integer prodcutId) {
 		return productMapper.selectProductDetail(prodcutId);	
 	}
+	
+
+	@Override
+	public ProductTotalVO getProductTotalDetails(ProductTotalVO param) {
+		return productMapper.selectProductTotalDetail(param);	
+	}
+
+	
+	@Override
+	public ProductPriceVO getProductPriceDetails(ProductPriceVO param) {
+		return productMapper.selectProductPriceDetail(param);	
+	}
+
 
 	@Override
 	@Transactional
@@ -320,5 +333,12 @@ public class ProductServiceImpl implements ProductService {
 		return productMapper.selectProductList();
 	}
 
+	@Override
+	public List<ProductVO> getGasProductList() {
+		logger.info("****** getGasProductList *****===*");
+		return productMapper.selectGasProductList();
+	}
+
+	
 	
 }

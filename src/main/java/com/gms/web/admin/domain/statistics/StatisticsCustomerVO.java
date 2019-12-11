@@ -37,4 +37,9 @@ private static final long serialVersionUID = 8474003342300538104L;
 	
 	/** searchStatDtEnd	*/
 	private String  searchStatDtEnd;
+	
+	/** periodType
+	 * 1 daily
+	 * 2 monthly	*/
+	private int  periodType;
 }

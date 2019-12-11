@@ -24,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.DateUtils;
+import com.gms.web.admin.common.utils.ExcelStyle;
+import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.statistics.StatisticsBottleVO;
 import com.gms.web.admin.service.statistics.StatisticsBottleService;
 
@@ -167,10 +169,13 @@ public class StatisticsBottleController {
 				searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
 				logger.debug("****** getStatisticsBottleDaily else *****getSearchStatDtEnd===*"+searchStatDtEnd);
 		
+				
 				params.setSearchStatDtFrom(searchStatDtFrom);
 				params.setSearchStatDtEnd(searchStatDtEnd);
 		
 				searchStatDt = searchStatDtFrom +" - "+ searchStatDtEnd;
+				
+				params.setSearchStatDt(searchStatDt);
 			}		
 			
 			List<StatisticsBottleVO> statBottleList = statService.getDailylStatisticsBottleList(params);
@@ -186,74 +191,54 @@ public class StatisticsBottleController {
 		    // 테이블 헤더용 스타일
 		    CellStyle headStyle = wb.createCellStyle();
 	
-		    // 가는 경계선을 가집니다.
-		    headStyle.setBorderTop(BorderStyle.THIN);
-		    headStyle.setBorderBottom(BorderStyle.THIN);
-		    headStyle.setBorderLeft(BorderStyle.THIN);
-		    headStyle.setBorderRight(BorderStyle.THIN);
-	
-		    // 배경색은 노란색입니다.
-		    headStyle.setFillForegroundColor(HSSFColorPredefined.YELLOW.getIndex());
-		    headStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-	
-		    // 데이터는 가운데 정렬합니다.
-		    headStyle.setAlignment(HorizontalAlignment.CENTER);
-	
+		    headStyle= ExcelStyle.getHeadStyle(headStyle);
+
 		    // 데이터용 경계 스타일 테두리만 지정
 		    CellStyle bodyStyle = wb.createCellStyle();
-		    bodyStyle.setBorderTop(BorderStyle.THIN);
-		    bodyStyle.setBorderBottom(BorderStyle.THIN);
-		    bodyStyle.setBorderLeft(BorderStyle.THIN);
-		    bodyStyle.setBorderRight(BorderStyle.THIN);
+		    
+		    bodyStyle= ExcelStyle.getBodyStyle(bodyStyle);
 
-		    // 헤더 생성
+		    // 헤더 생성 날짜,입고,충전,판매,회수,폐기
 		    row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
-		    cell = row.createCell(0);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("날짜");
-		    cell = row.createCell(1);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("입고");
-		    cell = row.createCell(2);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("충전");
-		    cell = row.createCell(3);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("판매");
-		    cell = row.createCell(4);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("작업");
-		    cell = row.createCell(5);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("회수");
-		   
-	
-		   // 용기코드	바코드	가스	용량	작업	거래처	등록일
+		    
+		    List<String> list = null;		    
+		    list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.stat.bottle.title"), ","); 		
+		    
+		    for(int i =0;i<list.size();i++) {
+		    
+			    cell = row.createCell(i);
+			    cell.setCellStyle(headStyle);
+			    cell.setCellValue(list.get(i));		    
+		    }
+		    
+		   // 날짜,입고,충전,판매,회수,폐기
 		    // 데이터 부분 생성
 		    for(StatisticsBottleVO vo : statBottleList) {
 		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
 		        cell = row.createCell(0);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getStatDt());
+		        
 		        cell = row.createCell(1);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleInputCount());
+		        
 		        cell = row.createCell(2);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleChargeCount());
+		        
 		        cell = row.createCell(3);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleSalesCount());
+		        
 		        cell = row.createCell(4);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleBackCount());
-		        cell = row.createCell(5);
-		        cell.setCellStyle(bodyStyle);	
 		    }	
 	
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel");
-		    response.setHeader("Content-Disposition", "attachment;filename=StatisticsBottle.xls");	
+		    response.setHeader("Content-Disposition", "attachment;filename=StatisticsBottleDaily_"+DateUtils.getDate()+".xls");	
 	
 		    // 엑셀 출력
 		    wb.write(response.getOutputStream());
@@ -296,6 +281,8 @@ public class StatisticsBottleController {
 				params.setSearchStatDtEnd(searchStatDtEnd);
 		
 				searchStatDt = searchStatDtFrom +" - "+ searchStatDtEnd;
+				
+				params.setSearchStatDt(searchStatDt);
 			}		
 			
 			List<StatisticsBottleVO> statBottleList = statService.getMontlylStatisticsBottleList(params);
@@ -311,46 +298,24 @@ public class StatisticsBottleController {
 		    // 테이블 헤더용 스타일
 		    CellStyle headStyle = wb.createCellStyle();
 	
-		    // 가는 경계선을 가집니다.
-		    headStyle.setBorderTop(BorderStyle.THIN);
-		    headStyle.setBorderBottom(BorderStyle.THIN);
-		    headStyle.setBorderLeft(BorderStyle.THIN);
-		    headStyle.setBorderRight(BorderStyle.THIN);
-	
-		    // 배경색은 노란색입니다.
-		    headStyle.setFillForegroundColor(HSSFColorPredefined.GREY_25_PERCENT.getIndex());
-		    headStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-	
-		    // 데이터는 가운데 정렬합니다.
-		    headStyle.setAlignment(HorizontalAlignment.CENTER);
-	
+		    headStyle= ExcelStyle.getHeadStyle(headStyle);
+
 		    // 데이터용 경계 스타일 테두리만 지정
 		    CellStyle bodyStyle = wb.createCellStyle();
-		    bodyStyle.setBorderTop(BorderStyle.THIN);
-		    bodyStyle.setBorderBottom(BorderStyle.THIN);
-		    bodyStyle.setBorderLeft(BorderStyle.THIN);
-		    bodyStyle.setBorderRight(BorderStyle.THIN);
-
-		    // 헤더 생성
+		    
+		    bodyStyle= ExcelStyle.getBodyStyle(bodyStyle);
+		 // 헤더 생성 날짜,입고,충전,판매,회수,폐기
 		    row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
-		    cell = row.createCell(0);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("날짜");
-		    cell = row.createCell(1);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("입고");
-		    cell = row.createCell(2);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("충전");
-		    cell = row.createCell(3);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("판매");
-		    cell = row.createCell(4);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("작업");
-		    cell = row.createCell(5);
-		    cell.setCellStyle(headStyle);
-		    cell.setCellValue("회수");
+		    
+		    List<String> list = null;		    
+		    list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.stat.bottle.title"), ","); 		
+		    
+		    for(int i =0;i<list.size();i++) {
+		    
+			    cell = row.createCell(i);
+			    cell.setCellStyle(headStyle);
+			    cell.setCellValue(list.get(i));		    
+		    }
 		   
 	
 		   // 용기코드	바코드	가스	용량	작업	거래처	등록일
@@ -372,13 +337,12 @@ public class StatisticsBottleController {
 		        cell = row.createCell(4);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleBackCount());
-		        cell = row.createCell(5);
-		        cell.setCellStyle(bodyStyle);	
+		        
 		    }	
 	
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel");
-		    response.setHeader("Content-Disposition", "attachment;filename=StatisticsBottleMonthly.xls");	
+		    response.setHeader("Content-Disposition", "attachment;filename=StatisticsBottleMonthly_"+DateUtils.getDate()+".xls");	
 	
 		    // 엑셀 출력
 		    wb.write(response.getOutputStream());

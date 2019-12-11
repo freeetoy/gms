@@ -24,6 +24,15 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	/** Bottle_BarCd	*/
 	private String bottleBarCd;
 
+	/** Product_ID */
+	private Integer productId;
+	
+	/** Product Nm */
+	private String productNm ;
+		
+	/** Product_Price_Seq */
+	private Integer productPriceSeq;
+	
 	/** Gas ID */
 	private Integer gasId ;
 	
@@ -106,6 +115,9 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	
 	/** SearchGasId		*/
 	private String  searchGasId;
+	
+	/** SearchProductId		*/
+	private String  searchProductId;
 	
 	/** searchChargeDt	*/
 	private String  searchChargeDt;

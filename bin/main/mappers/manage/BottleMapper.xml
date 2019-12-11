@@ -5,6 +5,8 @@
 	<resultMap id="BottleMap" type="com.gms.web.admin.domain.manage.BottleVO" >
 		<result property="bottleId"			column="Bottle_ID"			/>
 		<result property="bottleBarCd"		column="Bottle_BarCd"		/>		
+		<result property="productId"		column="Product_ID"			/>
+		<result property="productPriceSeq"	column="product_Price_Seq"	/>	
 		<result property="gasId"			column="Gas_ID"				/>
 		<result property="gasNm"			column="Gas_NM"				/>
 		<result property="bottleCapa"		column="Bottle_Capa"		/>
@@ -32,7 +34,9 @@
 	<resultMap id="BottleHistoryMap" type="com.gms.web.admin.domain.manage.BottleHistoryVO" >
 		<result property="bottleHistSeq"		column="Bottle_HIST_SEQ"	/>
 		<result property="bottleId"				column="Bottle_ID"			/>
-		<result property="bottleBarCd"			column="Bottle_BarCd"		/>		
+		<result property="bottleBarCd"			column="Bottle_BarCd"		/>	
+		<result property="productId"		column="Product_ID"			/>
+		<result property="productPriceSeq"	column="product_Price_Seq"	/>		
 		<result property="gasId"				column="Gas_ID"				/>
 		<result property="gasNm"				column="Gas_NM"				/>
 		<result property="bottleCapa"			column="Bottle_Capa"		/>
@@ -61,6 +65,8 @@
 	<sql id="BottleColumns">
 		  Bottle_ID
 		, Bottle_BarCd
+		, Product_ID
+		, Product_Price_Seq
 		, Gas_ID	
 		, Bottle_Capa
 		, Bottle_Create_Dt	
@@ -86,8 +92,10 @@
 	<sql id="BottleSelectColumns">
 		  Bottle_ID
 		, Bottle_BarCd
+		, TB.Product_ID
+		, TB.Product_Price_Seq
 		, TB.Gas_ID	
-		, Gas_Nm
+		, Product_Nm
 		, Bottle_Capa
 		, Bottle_Create_Dt	
 		, Bottle_Charge_Dt	
@@ -113,8 +121,10 @@
 		  Bottle_HIST_SEQ
 		, Bottle_ID
 		, Bottle_BarCd
+		, TB.Product_ID
+		, TB.Product_Price_Seq
 		, TB.Gas_ID	
-		, Gas_Nm
+		, Product_Nm
 		, Bottle_Capa
 		, Bottle_Create_Dt	
 		, Bottle_Charge_Dt	
@@ -142,6 +152,8 @@
 		) VALUES (
 			  #{bottleId}
 			, #{bottleBarCd}
+			, #{productId}
+			, #{productPriceSeq}
 			, #{gasId}
 			, #{bottleCapa}
 			, #{bottleCreateDt}
@@ -173,6 +185,8 @@
 		(
 			  #{item.bottleId}
 			, #{item.bottleBarCd}
+			, #{item.productId}
+			, #{item.productPriceSeq}
 			, #{item.gasId}
 			, #{item.bottleCapa}
 			, #{item.bottleCreateDt}
@@ -230,6 +244,8 @@
 		UPDATE TB_Bottle
 		SET
 			Bottle_BarCd		= #{bottleBarCd}
+			, Product_ID		= #{productId}
+			, Product_Price_Seq	= #{productPriceSeq}
 			, Gas_ID			= #{gasId}
 			, Bottle_Capa		= #{bottleCapa}
 			, Bottle_Create_Dt	= #{bottleCreateDt}
@@ -313,7 +329,7 @@
 		SELECT
 			<include refid="BottleSelectColumns" />
 		FROM
-			TB_Bottle TB, TB_CODE TC, TB_Gas TG
+			TB_Bottle TB, TB_CODE TC, TB_Product TG
 		WHERE
 			Bottle_ID = #{bottleId}
 		AND
@@ -321,14 +337,14 @@
 		AND 
 			TB.Bottle_Work_CD = TC.CD_ID	
 		AND 
-			TB.Gas_ID = TG.Gas_Id
+			TB.Product_ID = TG.Product_Id
 	</select>
 	
 	<select id="selectBottleDetails" parameterType="String" resultType="com.gms.web.admin.domain.manage.BottleVO">
 		SELECT
 			<include refid="BottleSelectColumns" />
 		FROM
-			TB_Bottle TB, TB_CODE TC, TB_Gas TG
+			TB_Bottle TB, TB_CODE TC, TB_Product TG
 		WHERE
 			Bottle_ID in  
 			<foreach collection="bottList" item="item" index="index" open="(" separator="," close=")">
@@ -339,8 +355,8 @@
 		AND 
 			TB.Bottle_Work_CD = TC.CD_ID	
 		AND 
-			TB.Gas_ID = TG.Gas_Id
-		ORDER BY Gas_Id, Bottle_Capa
+			TB.Product_ID = TG.Product_Id
+		ORDER BY Product_Id, Bottle_Capa
 	</select>
 
 	<select id="selectBottleList" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="java.util.Map">
@@ -349,14 +365,14 @@
 			SELECT
 				<include refid="BottleSelectColumns" />
 			FROM
-				TB_Bottle TB, TB_CODE TC, TB_Gas TG
+				TB_Bottle TB, TB_CODE TC, TB_Product TG
 			WHERE
 				TB.Delete_YN = 'N'
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchBottleId)">
 			AND Bottle_ID	 LIKE CONCAT('%', CONCAT(#{searchBottleId}, '%'))
 			</if>
-			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchGasId)">
-			AND TG.Gas_ID=  #{searchGasId}
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchProductId)">
+			AND TG.Product_ID=  #{searchProductId}
 			</if>
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
 			AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
@@ -365,7 +381,7 @@
 			AND Bottle_Sales_Yn =  #{searchSalesYn}
 			</if>			
 			AND TB.Bottle_Work_CD = TC.CD_ID	
-			AND TB.Gas_ID = TG.Gas_Id
+			AND TB.Product_ID = TG.Product_Id
 		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID														
 		ORDER BY Create_Dt DESC 
 		Limit #{startRow}, #{rowPerPage}
@@ -377,14 +393,14 @@
 			SELECT
 				<include refid="BottleSelectColumns" />
 			FROM
-				TB_Bottle TB, TB_CODE TC, TB_Gas TG
+				TB_Bottle TB, TB_CODE TC, TB_ProductTG
 			WHERE
 				TB.Delete_YN = 'N'
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchBottleId)">
 			AND Bottle_ID	 LIKE CONCAT('%', CONCAT(#{searchBottleId}, '%'))
 			</if>
-			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchGasId)">
-			AND TG.Gas_ID=  #{searchGasId}
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchProductId)">
+			AND TG.Product_ID=  #{searchProductId}
 			</if>
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
 			AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
@@ -393,7 +409,7 @@
 			AND Bottle_Sales_Yn =  #{searchSalesYn}
 			</if>			
 			AND TB.Bottle_Work_CD = TC.CD_ID	
-			AND TB.Gas_ID = TG.Gas_Id
+			AND TB.Product_ID = TG.Product_Id
 		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID														
 		ORDER BY Create_Dt DESC 
 	</select>
@@ -408,9 +424,9 @@
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchBottleId)">
 		AND Bottle_ID	 LIKE CONCAT('%', CONCAT(#{searchBottleId}, '%'))
 		</if>
-		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchGasId)">
-		AND Gas_ID=  #{searchGasId}
-		</if>
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchProductId)">
+			AND Product_ID=  #{searchProductId}
+			</if>
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
 		AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
 		</if>		
@@ -447,11 +463,11 @@
 			SELECT
 				<include refid="BottleHistorySelectColumns" />
 			FROM
-				TB_Bottle_Hist TB, TB_CODE TC, TB_Gas TG
+				TB_Bottle_Hist TB, TB_CODE TC, TB_Product TG
 			WHERE
 				Bottle_Id=#{bottleId}
 			AND TB.Bottle_Work_CD = TC.CD_ID	
-			AND TB.Gas_ID = TG.Gas_Id
+			AND TB.Product_ID = TG.Product_Id
 		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID														
 		ORDER BY Update_Dt DESC 
 	</select>
@@ -460,12 +476,12 @@
 		SELECT
 			<include refid="BottleSelectColumns" />
 		FROM
-			TB_Bottle TB, TB_CODE TC, TB_Gas TG
+			TB_Bottle TB, TB_CODE TC, TB_Product TG
 		WHERE
 			TB.Delete_YN = 'N'			
 		AND Customer_id = #{customerId}
 		AND TB.Bottle_Work_CD = TC.CD_ID	
-		AND TB.Gas_ID = TG.Gas_Id
+		AND TB.Product_ID = TG.Product_Id
 		
 	</select>
 </mapper>

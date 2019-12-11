@@ -68,7 +68,7 @@ $(function() {
                 <button class="btn btn-navbar" type="submit"><i class="fas fa-search"></i></button>           
             </div>  
             <div class="col-1">
-               		<a href="/gms/statistics/bottle/excelMonthly.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
+               		<a th:href="@{/gms/statistics/bottle/excelMonthly.do(searchStatDt=${searchStatDt})}"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
             </div>
             </form>  
          </div>       

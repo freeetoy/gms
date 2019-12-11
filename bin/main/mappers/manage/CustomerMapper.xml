@@ -240,7 +240,7 @@
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
 		AND Customer_NM	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
 		</if>
-		ORDER BY Customer_Nm desc 
+		ORDER BY Customer_Nm Asc 
 	</select>
 
 	<select id="searchCustomerListExcel" resultType="com.gms.web.admin.domain.manage.CustomerVO" parameterType="String">
@@ -253,7 +253,7 @@
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
 		AND Customer_NM	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
 		</if>
-		ORDER BY Customer_Nm desc 
+		ORDER BY A.Creat_Dt desc 
 	</select>
 
 	<select id="selectCustomerPriceList" resultType="com.gms.web.admin.domain.manage.CustomerPriceExtVO" parameterType="Integer">

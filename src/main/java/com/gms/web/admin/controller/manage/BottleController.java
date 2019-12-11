@@ -29,9 +29,12 @@ import com.gms.web.admin.domain.common.CodeVO;
 import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.GasVO;
+import com.gms.web.admin.domain.manage.ProductPriceVO;
+import com.gms.web.admin.domain.manage.ProductVO;
 import com.gms.web.admin.service.common.CodeService;
 import com.gms.web.admin.service.manage.BottleService;
 import com.gms.web.admin.service.manage.GasService;
+import com.gms.web.admin.service.manage.ProductService;
 
 @Controller
 public class BottleController {
@@ -47,6 +50,9 @@ public class BottleController {
 	private GasService gasService;
 	
 	@Autowired
+	private ProductService productService;
+	
+	@Autowired
 	private CodeService codeService;
 	
 	
@@ -56,7 +62,7 @@ public class BottleController {
 		logger.info("BottleContoller getBottleList");
 		logger.info("BottleContoller currentPage "+ params.getCurrentPage());
 		logger.info("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.info("BottleContoller searchGasId "+ params.getSearchGasId());
+		logger.info("BottleContoller searchProductId "+ params.getSearchProductId());
 		logger.info("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		
 		String searchChargeDt = params.getSearchChargeDt();	
@@ -82,15 +88,21 @@ public class BottleController {
 		
 		model.addAttribute("bottleList", map.get("list"));
 		
-		String searchGasId = "";
-		if(params.getSearchGasId() != null ) {
-			searchGasId = params.getSearchGasId();
-			model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
+		String searchProductId = "";
+		if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
+			searchProductId = params.getSearchProductId();
+			model.addAttribute("searchProductId", Integer.parseInt(searchProductId));
+			
+			logger.debug("BottleContoller **** searchProductId "+ searchProductId);
 		}
 		
 		// 가스 정보 불러오기
-		List<GasVO> gasList = gasService.getGasList();
-		model.addAttribute("gasList", gasList);
+		//List<GasVO> gasList = gasService.getGasList();
+		//model.addAttribute("gasList", gasList);
+		
+		// 상품 정보 불러오기
+		List<ProductVO> productList = productService.getGasProductList();
+		model.addAttribute("productList", productList);		
 		
 		//BOTTLE_WORK_CD 코드정보 불러오기 
 		List<CodeVO> codeList = codeService.getCodeList(PropertyFactory.getProperty("common.bottle.status"));
@@ -98,7 +110,7 @@ public class BottleController {
 		
 		//검색어 셋팅
 		model.addAttribute("searchBottleId", params.getSearchBottleId());		
-		//model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
+		//model.addAttribute("searchProductId", Integer.parseInt(params.getSearchProductId()) );
 		model.addAttribute("searchChargeDt", params.getSearchChargeDt());	
 		
 		model.addAttribute("currentPage", map.get("currentPage"));
@@ -119,7 +131,7 @@ public class BottleController {
 		logger.info("BottleContoller getBottleList");
 		logger.info("BottleContoller currentPage "+ params.getCurrentPage());
 		logger.info("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.info("BottleContoller searchGasId "+ params.getSearchGasId());
+		logger.info("BottleContoller searchProductId "+ params.getSearchProductId());
 		logger.info("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		
 		String searchChargeDt = params.getSearchChargeDt();	
@@ -166,15 +178,19 @@ public class BottleController {
 		
 		model.addAttribute("bottleList", map.get("list"));
 		
-		String searchGasId = "";
-		if(params.getSearchGasId() != null && params.getSearchGasId().length() > 20 ) {
-			searchGasId = params.getSearchGasId();
-			model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
+		//String searchProductId = "";
+		if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
+			//searchProductId = params.getSearchGasId();
+			model.addAttribute("searchProductId", Integer.parseInt(params.getSearchProductId()));
 		}
 		
 		// 가스 정보 불러오기
-		List<GasVO> gasList = gasService.getGasList();
-		model.addAttribute("gasList", gasList);
+		//List<GasVO> gasList = gasService.getGasList();
+		//model.addAttribute("gasList", gasList);
+		
+		// 상품 정보 불러오기
+		List<ProductVO> productList = productService.getGasProductList();
+		model.addAttribute("productList", productList);		
 		
 		//BOTTLE_WORK_CD 코드정보 불러오기 
 		List<CodeVO> codeList = codeService.getCodeList(PropertyFactory.getProperty("common.bottle.status"));
@@ -201,7 +217,7 @@ public class BottleController {
 		logger.info("BottleContoller getBottleList");
 		logger.info("BottleContoller currentPage "+ params.getCurrentPage());
 		logger.info("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.info("BottleContoller searchGasId "+ params.getSearchGasId());
+		logger.info("BottleContoller searchProductId "+ params.getSearchProductId());
 		logger.info("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		
 		String searchChargeDt = params.getSearchChargeDt();	
@@ -231,15 +247,18 @@ public class BottleController {
 		
 		model.addAttribute("bottleList", map.get("list"));
 		
-		String searchGasId = "";
-		if(params.getSearchGasId() != null && params.getSearchGasId().length() > 20 ) {
-			searchGasId = params.getSearchGasId();
-			model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
+		if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
+			//searchProductId = params.getSearchGasId();
+			model.addAttribute("searchProductId", Integer.parseInt(params.getSearchProductId()));
 		}
 		
 		// 가스 정보 불러오기
-		List<GasVO> gasList = gasService.getGasList();
-		model.addAttribute("gasList", gasList);
+		//List<GasVO> gasList = gasService.getGasList();
+		//model.addAttribute("gasList", gasList);
+		
+		// 상품 정보 불러오기
+		List<ProductVO> productList = productService.getGasProductList();
+		model.addAttribute("productList", productList);		
 		
 		//BOTTLE_WORK_CD 코드정보 불러오기 
 		List<CodeVO> codeList = codeService.getCodeList(PropertyFactory.getProperty("common.bottle.status"));
@@ -268,6 +287,10 @@ public class BottleController {
 		// 가스 정보 불러오기
 		List<GasVO> gasList = gasService.getGasList();
 		model.addAttribute("gasList", gasList);		
+		
+		// 상품 정보 불러오기
+		List<ProductVO> productList = productService.getGasProductList();
+		model.addAttribute("productList", productList);		
 					
 		return "/gms/bottle/write";
 	}
@@ -330,10 +353,18 @@ public class BottleController {
 			if (bottle == null) {
 				return "redirect:/gms/bottle/list.do";
 			}
-			
+			/*
 			// 가스 정보 불러오기
 			List<GasVO> gasList = gasService.getGasList();
 			model.addAttribute("gasList", gasList);		
+			*/
+			
+			// 상품 정보 불러오기
+			List<ProductVO> productList = productService.getGasProductList();
+			model.addAttribute("productList", productList);		
+			
+			List<ProductPriceVO> productPriceList = productService.getProductPriceList(bottle.getProductId());
+			model.addAttribute("productPriceList", productPriceList);		
 			
 			// 용기 이력 정보 불러오기
 			List<BottleHistoryVO> historyList = bottleService.selectBottleHistoryList(params.getBottleId());

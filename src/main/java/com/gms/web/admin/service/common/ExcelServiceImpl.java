@@ -22,14 +22,18 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
+import com.gms.web.admin.domain.manage.ProductTotalVO;
 import com.gms.web.admin.mapper.manage.BottleMapper;
 import com.gms.web.admin.service.manage.BottleService;
 import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.manage.GasService;
+import com.gms.web.admin.service.manage.ProductService;
 
 @Service
 public class ExcelServiceImpl implements ExcelService {
@@ -44,11 +48,15 @@ public class ExcelServiceImpl implements ExcelService {
 	private GasService gasService;
 	
 	@Autowired
+	private ProductService productService;
+	
+	@Autowired
 	private CustomerService customerService;
 	
 	@Override
 	@Transactional
-	public int uploadBottleExcelFile(MultipartFile excelFile) {
+	public int uploadBottleExcelFile(MultipartHttpServletRequest request,
+			MultipartFile excelFile) {
 		
         List<BottleVO> list = new ArrayList<BottleVO>();
         
@@ -79,7 +87,9 @@ public class ExcelServiceImpl implements ExcelService {
                 //Y:타사소유
                 String colValue="";
                
-                
+                String productNm = "";
+            	String productCapa = "";
+            	
                 for(int j=0; j< 12; j++) {
                 	XSSFCell cell = row.getCell(j);
                 //if(null != cell) fruit.setGasNm(cell.getNumericCellValue());
@@ -123,12 +133,16 @@ public class ExcelServiceImpl implements ExcelService {
                     //N:자사소유
                     //Y:타사소유
                 	
+                	
                 	if(j == 0) bottle.setBottleId(colValue);
                 	else if(j == 1) bottle.setBottleBarCd(colValue);
-                	else if(j == 2) bottle.setGasId(gasService.getGasDetailsByNm(colValue).getGasId());
-                	//else if(j == 3) bottle.set
+                	//else if(j == 2) bottle.setGasId(gasService.getGasDetailsByNm(colValue).getGasId());
+                	else if(j == 3) productNm = colValue;
                 	else if(j == 4) bottle.setBottleVolumn(colValue);
-                	else if(j == 5) bottle.setBottleCapa(colValue);
+                	else if(j == 5) {
+                		bottle.setBottleCapa(colValue);
+                		productCapa = colValue;
+                	}
                 	//else if(j == 6) bottle.setBottleChargeDt(DateUtils.);
                 	else if(j == 7) bottle.setBottleChargePrss(colValue);
                 	//else if(j == 8) bottle.setBottleId(colValue);
@@ -142,6 +156,22 @@ public class ExcelServiceImpl implements ExcelService {
                 		else bottle.setBottleSalesYn("Y");
                 	}
                 }
+                
+                ProductTotalVO productTotal = new ProductTotalVO();
+                productTotal.setProductNm(productNm);
+                productTotal.setProductCapa(productCapa);
+                
+                logger.debug("&&&  ExcelService productNm "+ productNm);
+                logger.debug("$$$$$$$$$$$$$$ ExcelService productCapa "+ productCapa);
+                
+                productTotal = productService.getProductTotalDetails(productTotal);
+                
+                bottle.setProductId(productTotal.getProductId());
+                bottle.setProductPriceSeq(productTotal.getProductPriceSeq());
+                bottle.setGasId(productTotal.getGasId());
+                RequestUtils.initUserPrgmInfo(request, bottle);
+                bottle.setBottleWorkId(bottle.getCreateId());
+                
                 bottle.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
                 bottle.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
               
@@ -164,7 +194,8 @@ public class ExcelServiceImpl implements ExcelService {
 	
 	
 	@Override
-	public int uploadCustomerExcelFile(MultipartFile excelFile) {
+	public int uploadCustomerExcelFile(MultipartHttpServletRequest request,
+			MultipartFile excelFile) {
 		List<CustomerVO> list = new ArrayList<CustomerVO>();
         
         int result = 0;
@@ -239,6 +270,7 @@ public class ExcelServiceImpl implements ExcelService {
                 	else if(j == 7) customer.setCustomerEmail(colValue);
                 	
                 }
+                RequestUtils.initUserPrgmInfo(request, customer);
                 
                 customer.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
               
@@ -258,6 +290,108 @@ public class ExcelServiceImpl implements ExcelService {
 		}
         return result;
 	}
+
+	
+
+	@Override
+	public int uploadCustomerPriceExcelFile(MultipartHttpServletRequest request, 
+			MultipartFile excelFile) {
+		
+			List<CustomerVO> list = new ArrayList<CustomerVO>();
+        
+        int result = 0;
+        try {
+        	
+            OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream());
+            XSSFWorkbook workbook = new XSSFWorkbook(opcPackage);
+            
+            // 첫번째 시트 불러오기
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            
+            int COLUMN_COUNT = 8;
+            for(int i=1; i<sheet.getLastRowNum() + 1; i++) {
+            	
+            	CustomerVO customer = new CustomerVO();
+                XSSFRow row = sheet.getRow(i);
+                
+                // 행이 존재하기 않으면 패스
+                if(null == row) {
+                    continue;
+                }                             
+                
+                //	거래처명	거래처주소	거래처사업자등록번호	거래처전화	대표자	업태	종목	이메일
+                //		0		1		2				3	4		5	6	7	
+                             
+                String colValue="";               
+                
+                for(int j=0; j< COLUMN_COUNT; j++) {
+                	XSSFCell cell = row.getCell(j);
+                //if(null != cell) fruit.setGasNm(cell.getNumericCellValue());
+                	//logger.debug("ExcelSerive uploadExcelFile i=="+i+ "== "+ cell.getNumericCellValue());                	
+                	
+                	switch (cell.getCellType()) {
+	                    case Cell.CELL_TYPE_STRING:
+	                        colValue = cell.getRichStringCellValue().getString();
+	                        break;
+	                    case Cell.CELL_TYPE_NUMERIC:
+	                        if (DateUtil.isCellDateFormatted(cell)) {
+	                            colValue = cell.getDateCellValue().toString();	                            
+	                        } else {
+	                            Long roundVal = Math.round(cell.getNumericCellValue());
+	                            Double doubleVal = cell.getNumericCellValue();
+	                            if (doubleVal.equals(roundVal.doubleValue())) {
+	                                colValue = String.valueOf(roundVal);
+	                            } else {
+	                                colValue = String.valueOf(doubleVal);
+	                            }
+	                        }
+	                        break;
+	                    case Cell.CELL_TYPE_BOOLEAN:
+	                        colValue = String.valueOf(cell.getBooleanCellValue());
+	                        break;
+	                    case Cell.CELL_TYPE_FORMULA:
+	                        colValue = cell.getCellFormula();
+	                        break;
+	         
+	                    default:
+	                        colValue = "";
+                    }
+                	
+                	logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ colValue);
+                	
+                	//사업자등록번호	거래처명	거래처주소	거래처사업자등록번호	거래처전화	대표자	업태	종목	이메일
+                    //			0		1		2				3		4		5	6	7	
+                	if(j == 0) customer.setCustomerNm(colValue);
+                	else if(j == 1) customer.setCustomerAddr(colValue);
+                	else if(j == 2) customer.setBusinessRegId(colValue);
+                	else if(j == 3) customer.setCustomerPhone(colValue);
+                	else if(j == 4) customer.setCustomerRepNm(colValue);
+                	else if(j == 5) customer.setCustomerBusiType(colValue);
+                	else if(j == 6) customer.setCustomerItem(colValue);
+                	else if(j == 7) customer.setCustomerEmail(colValue);
+                	
+                }
+                RequestUtils.initUserPrgmInfo(request, customer);
+                
+                customer.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
+              
+                list.add(customer);
+            }
+            
+            result = customerService.registerCustomers(list);
+            
+            logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result);
+            
+        } catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+        return result;
+	}
+
 
 	
 	public void readExcelXLSX(String excel) {

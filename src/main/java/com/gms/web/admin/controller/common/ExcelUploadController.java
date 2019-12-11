@@ -43,7 +43,7 @@ public class ExcelUploadController {
 	        if(iterator.hasNext()) {
 	            file = request.getFile(iterator.next());
 	        }
-	        result = excelService.uploadBottleExcelFile(file);	        
+	        result = excelService.uploadBottleExcelFile(request, file);	        
 	      
 	        //model.addAttribute("gaslist", gaslist);
 	        
@@ -64,7 +64,7 @@ public class ExcelUploadController {
 	
 	
 	@RequestMapping(value = "/gms/customer/uploadExcelFile", method = RequestMethod.POST)	
-    public String uploadExcelFileCustomer(MultipartHttpServletRequest request
+    public ModelAndView uploadExcelFileCustomer(MultipartHttpServletRequest request
     		, HttpServletResponse response
     		, Model model) {
 		
@@ -76,7 +76,7 @@ public class ExcelUploadController {
 	        if(iterator.hasNext()) {
 	            file = request.getFile(iterator.next());
 	        }
-	        result = excelService.uploadCustomerExcelFile(file);	        
+	        result = excelService.uploadCustomerExcelFile(request,file);	        
 	      
 	        //model.addAttribute("gaslist", gaslist);
 	        
@@ -87,8 +87,45 @@ public class ExcelUploadController {
             return null;
         }
 		
-		return "redirect:/gms/customer/list.do";
+		if(result > 0){
+			String alertMessage = "엑셀 등록하였습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/customer/list.do");
+		}
+		return null;
 		
     }
 
+	
+	@RequestMapping(value = "/gms/price/uploadExcelFile", method = RequestMethod.POST)	
+    public ModelAndView uploadExcelFileCustomerPrice(MultipartHttpServletRequest request
+    		, HttpServletResponse response) {
+		
+		MultipartFile file = null;
+		int result = 0;
+		try {
+        
+	        Iterator<String> iterator = request.getFileNames();
+	        if(iterator.hasNext()) {
+	            file = request.getFile(iterator.next());
+	        }
+	        result = excelService.uploadCustomerExcelFile(request,file);	        
+	      
+	        //model.addAttribute("gaslist", gaslist);
+	        
+	        logger.info("ExcelUploadContoller result "+ result);
+		} catch (Exception e) {
+            e.printStackTrace();
+            
+            return null;
+        }
+		
+		if(result > 0){
+			String alertMessage = "엑셀 등록하였습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/price/write.do");
+		}
+		return null;
+		
+    }
 }

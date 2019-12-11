@@ -9,7 +9,7 @@ var isOkay = false;
 $(document).ready(function(){
 	$("#bottleId").on("focusout", function(){
 		if($(this).val() != ""){
-			checkName();
+			
 		}
 	});
 	
@@ -164,7 +164,45 @@ var goList = function(){
 		      $(this).val('');
 		  });
 	});
-	</script>
+
+
+	$(document).ready(function(){ 
+		
+		$('#productId').change( function(){
+
+			var productId = $('#productId').val();		
+			initCapa(productId);
+		});
+		
+		function initCapa(productId){
+		      
+			console.log(productId);      
+			
+			$.ajax({
+				url: '/gms/product/priceList.do',
+				type: 'POST',
+				data: 'productId='+ productId ,
+				dataType: 'json',
+
+			 })
+			.done(function(data){	           
+			  
+				console.log(data);     				
+		    	var i=0;
+		    	$('#productPriceSeq').find('option').remove(); 
+				for(i=0; i< data.length;i++) {
+					console.log(data[i]);      
+					$('#productPriceSeq').append('<option value='+data[i].productPriceSeq+'>'+data[i].productCapa+'</option>')				
+				}			
+			})
+			.fail(function(){
+				console.log("fail");
+			 });
+
+		} 
+
+		
+	});
 	
 </script>
 
@@ -204,7 +242,7 @@ var goList = function(){
                   <thead>
                     <tr>
                       <th class="card-footer">용기 코드</th>
-                      <th><input type="text" class="form-control" id="bottleId" name="bottleId" th:value="${bottle.bottleId}"></th>
+                      <th><input type="text" class="form-control" id="bottleId" name="bottleId" th:value="${bottle.bottleId}" readonly></th>
                     </tr>
                      <tr>                                   
                       <th class="card-footer">용기 바코드</th>
@@ -213,24 +251,36 @@ var goList = function(){
                     <tr>
                       <th class="card-footer">가스</th>
                       <th>
-                      <select id="gasId" name="gasId" class="form-control">
+                      <select id="productId" name="productId" class="form-control">
                           <option value="0">가스선택</option>				    
-					        <option th:each="row : ${gasList}"
-					                th:text="${row.gasNm}"
-					                th:value="${row.gasId}"
-					                th:if="${bottle.gasId ==row.gasId}" selected>					             
+					        <option th:each="row : ${productList}"
+					                th:text="${row.productNm}"
+					                th:value="${row.productId}"
+					                th:if="${bottle.productId ==row.productId}" selected>					             
 					        </option>	
-					        <option th:each="row : ${gasList}"
-					                th:text="${row.gasNm}"
-					                th:value="${row.gasId}"
-					                th:unless="${bottle.gasId ==row.gasId}">					             
+					        <option th:each="row : ${productList}"
+					                th:text="${row.productNm}"
+					                th:value="${row.productId}"
+					                th:unless="${bottle.productId ==row.productId}">					             
 					        </option>					
                         </select>
 					  </th>   
                     </tr>
                     <tr>
                       <th class="card-footer">가스 용량</th>
-                      <th><input type="text" class="form-control" id="bottleCapa" name="bottleCapa" th:value="${bottle.bottleCapa}"></th>
+                      <th>
+                      <select id="productPriceSeq" name="productPriceSeq" class="form-control" >
+	                        <option th:each="row : ${productPriceList}"
+					                th:text="${row.productCapa}"
+					                th:value="${row.productPriceSeq}"
+					                th:if="${bottle.productPriceSeq ==row.productPriceSeq}" selected>	
+					         <option th:each="row : ${productPriceList}"
+					                th:text="${row.productCapa}"
+					                th:value="${row.productPriceSeq}"
+					                th:unless="${bottle.productPriceSeq ==row.productPriceSeq}">					             
+					        </option>			                      	
+					   </select>	                      
+                      </th>
                     </tr>
                      <tr>                                   
                       <th class="card-footer">제조일</th>

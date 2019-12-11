@@ -18,6 +18,8 @@ import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
+import com.gms.web.admin.domain.manage.ProductPriceVO;
+import com.gms.web.admin.domain.manage.ProductVO;
 import com.gms.web.admin.mapper.manage.BottleMapper;
 
 @Service
@@ -28,6 +30,8 @@ public class BottleServiceImpl implements BottleService {
 	@Autowired
 	private BottleMapper bottleMapper;
 	
+	@Autowired
+	private ProductService productService;
 	
 	@Override
 	public Map<String,Object> getBottleList(BottleVO param) {
@@ -59,6 +63,11 @@ public class BottleServiceImpl implements BottleService {
 		if(param.getSearchGasId() != null) {
 			map.put("searchGasId", param.getSearchGasId());
 			logger.info("****** getBottleList *****searchGasId===*"+param.getSearchGasId());
+		}
+		
+
+		if(param.getSearchProductId() != null  ) {			
+			map.put("searchProductId", param.getSearchProductId());
 		}
 		
 		if(param.getSearchChargeDt() != null) {
@@ -126,6 +135,10 @@ public class BottleServiceImpl implements BottleService {
 		if(param.getSearchGasId() != null) {
 			map.put("searchGasId", param.getSearchGasId());
 			logger.info("****** getBottleList *****searchGasId===*"+param.getSearchGasId());
+		}
+		
+		if(param.getSearchProductId() != null  ) {			
+			map.put("searchProductId", param.getSearchProductId());
 		}
 		
 		if(param.getSearchChargeDt() != null) {
@@ -216,6 +229,20 @@ public class BottleServiceImpl implements BottleService {
 		// 정보 등록
 		logger.info("****** registerBottle.getBottleId()()) *****===*"+param.getBottleId());
 		int result = 0;
+		
+		ProductPriceVO productPrice = new ProductPriceVO();
+		productPrice.setProductId(param.getProductId());
+		productPrice.setProductPriceSeq(param.getProductPriceSeq());
+		
+		ProductPriceVO productPrice1 = productService.getProductPriceDetails(productPrice);
+		
+		logger.debug("****** registerBottle.botteLCapa()()) *****===*"+productPrice1.getProductCapa());
+		
+		param.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
+		param.setBottleWorkId(param.getCreateId());
+		param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
+		param.setBottleCapa(productPrice1.getProductCapa());
+		
 		result =  bottleMapper.insertBottle(param);		
 		if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
 		
@@ -235,7 +262,6 @@ public class BottleServiceImpl implements BottleService {
 	
 	
 	@Override
-	@Transactional
 	public int modifyBottle(BottleVO param) {
 				
 		// 정보 등록
@@ -244,7 +270,7 @@ public class BottleServiceImpl implements BottleService {
 		
 		result =  bottleMapper.updateBottle(param);
 		
-		if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
+		//if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
 		
 		return result;
 	}

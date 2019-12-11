@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.DateUtils;
+import com.gms.web.admin.common.utils.ExcelStyle;
 import com.gms.web.admin.common.utils.ResultRowDataHandler;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.manage.BottleVO;
@@ -76,26 +77,12 @@ public class ExcelDownloadController {
 		    // 테이블 헤더용 스타일
 		    CellStyle headStyle = wb.createCellStyle();
 	
-		    // 가는 경계선을 가집니다.
-		    headStyle.setBorderTop(BorderStyle.THIN);
-		    headStyle.setBorderBottom(BorderStyle.THIN);
-		    headStyle.setBorderLeft(BorderStyle.THIN);
-		    headStyle.setBorderRight(BorderStyle.THIN);
-	
-		    // 배경색은 GREY_25_PERCENT 입니다.
-		    headStyle.setFillForegroundColor(HSSFColorPredefined.GREY_25_PERCENT.getIndex());
-		    headStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-	
-		    // 데이터는 가운데 정렬합니다.
-		    headStyle.setAlignment(HorizontalAlignment.CENTER);
-	
+		    headStyle= ExcelStyle.getHeadStyle(headStyle);
+
 		    // 데이터용 경계 스타일 테두리만 지정
 		    CellStyle bodyStyle = wb.createCellStyle();
-		    bodyStyle.setBorderTop(BorderStyle.THIN);
-		    bodyStyle.setBorderBottom(BorderStyle.THIN);
-		    bodyStyle.setBorderLeft(BorderStyle.THIN);
-		    bodyStyle.setBorderRight(BorderStyle.THIN);
-	
+		    
+		    bodyStyle= ExcelStyle.getBodyStyle(bodyStyle);
 		    
 		    // 헤더 생성
 		    row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
@@ -127,7 +114,7 @@ public class ExcelDownloadController {
 		        
 		        cell = row.createCell(k++);;
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getGasNm());
+		        cell.setCellValue(vo.getProductNm());
 		        
 		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
@@ -199,27 +186,11 @@ public class ExcelDownloadController {
 		    // 테이블 헤더용 스타일
 		    CellStyle headStyle = wb.createCellStyle();
 	
-		    // 가는 경계선을 가집니다.
-		    headStyle.setBorderTop(BorderStyle.THIN);
-		    headStyle.setBorderBottom(BorderStyle.THIN);
-		    headStyle.setBorderLeft(BorderStyle.THIN);
-		    headStyle.setBorderRight(BorderStyle.THIN);
-	
-		    // 배경색은 노란색입니다.
-		    headStyle.setFillForegroundColor(HSSFColorPredefined.GREY_25_PERCENT.getIndex());
-		    headStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-	
-		    // 데이터는 가운데 정렬합니다.
-		    headStyle.setAlignment(HorizontalAlignment.CENTER);
+		    headStyle= ExcelStyle.getHeadStyle(headStyle);
 	
 		    // 데이터용 경계 스타일 테두리만 지정
 		    CellStyle bodyStyle = wb.createCellStyle();
-		    bodyStyle.setBorderTop(BorderStyle.THIN);
-		    bodyStyle.setBorderBottom(BorderStyle.THIN);
-		    bodyStyle.setBorderLeft(BorderStyle.THIN);
-		    bodyStyle.setBorderRight(BorderStyle.THIN);
-	
-		   
+		    bodyStyle= ExcelStyle.getBodyStyle(bodyStyle);		   
 		   
 		    row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
 		    //순번,거래처명,상품명,용량,접수자,상태,요청일자,접수일
@@ -288,11 +259,11 @@ public class ExcelDownloadController {
 
 	   try {
 		   // 가스 정보 불러오기
-			List<CustomerVO> orderlist = customerService.searchCustomerListExcel(param.getSearchCustomerNm());
+			List<CustomerVO> customerlist = customerService.searchCustomerListExcel(param.getSearchCustomerNm());
 		    // 워크북 생성
 	
 		    Workbook wb = new HSSFWorkbook();
-		    Sheet sheet = (Sheet) wb.createSheet("주문");
+		    Sheet sheet = (Sheet) wb.createSheet("거래처");
 		    Row row = null;
 		    Cell cell = null;
 	
@@ -301,33 +272,21 @@ public class ExcelDownloadController {
 		    // 테이블 헤더용 스타일
 		    CellStyle headStyle = wb.createCellStyle();
 	
-		    // 가는 경계선을 가집니다.
-		    headStyle.setBorderTop(BorderStyle.THIN);
-		    headStyle.setBorderBottom(BorderStyle.THIN);
-		    headStyle.setBorderLeft(BorderStyle.THIN);
-		    headStyle.setBorderRight(BorderStyle.THIN);
-	
-		    // 배경색은 노란색입니다.
-		    headStyle.setFillForegroundColor(HSSFColorPredefined.GREY_25_PERCENT.getIndex());
-		    headStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-	
-		    // 데이터는 가운데 정렬합니다.
-		    headStyle.setAlignment(HorizontalAlignment.CENTER);
+		    headStyle= ExcelStyle.getHeadStyle(headStyle);
 	
 		    // 데이터용 경계 스타일 테두리만 지정
 		    CellStyle bodyStyle = wb.createCellStyle();
-		    bodyStyle.setBorderTop(BorderStyle.THIN);
-		    bodyStyle.setBorderBottom(BorderStyle.THIN);
-		    bodyStyle.setBorderLeft(BorderStyle.THIN);
-		    bodyStyle.setBorderRight(BorderStyle.THIN);
-	
+		    
+		    bodyStyle= ExcelStyle.getBodyStyle(bodyStyle);
 		   
 		   
 		    row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
-		    //순번,거래처명,상품명,용량,접수자,상태,요청일자,접수일
+		    //거래처명	거래처주소	거래처사업자등록번호	거래처전화	대표자	업태	종목	이메일
+		    //0		1		2				3		4		5	6	7
+
 		    // 헤더 생성
 		    List<String> list = null;		    
-		    list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.order.title"), ","); 		
+		    list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.customer.title"), ","); 		
 		    
 		    for(int i =0;i<list.size();i++) {		    
 			    cell = row.createCell(i);
@@ -335,39 +294,49 @@ public class ExcelDownloadController {
 			    cell.setCellValue(list.get(i));		    
 		    }
 		    
-		    //순번	거래처	품명	용량	접수자	상태	요청일자	접수일
+		  //거래처명	거래처주소	거래처사업자등록번호	거래처전화	대표자	업태	종목	이메일
+		    //0		1		2				3		4		5	6	7
 		    // 데이터 부분 생성
 		    int i = 1;
-		    /*
-		    for(OrderVO vo : orderlist) {
+		    
+		    for(CustomerVO vo : customerlist) {
 		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
+		        
+		        
 		        cell = row.createCell(0);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(i++);
+		        cell.setCellValue(vo.getCustomerNm());
+		        
 		        cell = row.createCell(1);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getCustomerNm());
+		        cell.setCellValue(vo.getCustomerAddr());
+		        
 		        cell = row.createCell(2);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getOrderProductNm());
+		        cell.setCellValue(vo.getBusinessRegId());
+		        
 		        cell = row.createCell(3);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getOrderProductCapa());
+		        cell.setCellValue(vo.getCustomerPhone());
+		        
 		        cell = row.createCell(4);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getCreateNm()+"("+vo.getCreateId()+")");
+		        cell.setCellValue(vo.getCustomerRepNm());
+		        
 		        cell = row.createCell(5);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getOrderProcessCdNm());
+		        cell.setCellValue(vo.getCustomerBusiType());
+		        
 		        cell = row.createCell(6);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(DateUtils.convertDateFormat(vo.getDeliveryReqDt(), "yyyy/MM/dd"));
+		        cell.setCellValue(vo.getCustomerItem());
+		        
 		        cell = row.createCell(7);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(DateUtils.convertDateFormat(vo.getCreateDt(), "yyyy/MM/dd"));
+		        cell.setCellValue(vo.getCustomerEmail());
 	
 		    }	
-	*/
+	
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel");
 		    response.setHeader("Content-Disposition", "attachment;filename=customer_"+DateUtils.getDate()+".xls");	

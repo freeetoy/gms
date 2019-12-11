@@ -18,6 +18,10 @@ public interface ProductMapper {
 
 	public ProductVO selectProductDetail(Integer productId) ;
 	
+	public ProductTotalVO selectProductTotalDetail(ProductTotalVO param) ;
+	
+	public ProductPriceVO selectProductPriceDetail(ProductPriceVO param) ;
+	
 	public List<ProductPriceVO> selectProductPriceList(Integer productId);
 
 	public int updateProduct(ProductVO param);
@@ -43,4 +47,6 @@ public interface ProductMapper {
 	public int selectProductPriceSeq(Integer productId);
 	
 	public List<ProductVO> selectProductList();
+	
+	public List<ProductVO> selectGasProductList();
 }

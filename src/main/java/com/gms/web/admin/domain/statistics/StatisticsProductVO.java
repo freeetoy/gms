@@ -36,5 +36,10 @@ public class StatisticsProductVO extends AbstractVO implements Serializable {
 	
 	/** searchStatDtEnd	*/
 	private String  searchStatDtEnd;
+	
+	/** periodType
+	 * 1 daily
+	 * 2 monthly	*/
+	private int  periodType;
 
 }

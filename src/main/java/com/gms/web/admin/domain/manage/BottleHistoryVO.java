@@ -27,6 +27,12 @@ public class BottleHistoryVO extends AbstractVO implements Serializable {
 	/** Bottle_BarCd	*/
 	private String bottleBarCd;
 
+	/** Product_ID */
+	private Integer productId;
+		
+	/** Product_Price_Seq */
+	private Integer productPriceSeq;
+	
 	/** Gas ID */
 	private Integer gasId ;	
 	

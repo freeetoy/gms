@@ -5,16 +5,28 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.DateUtils;
+import com.gms.web.admin.common.utils.ExcelStyle;
+import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.manage.ProductVO;
+import com.gms.web.admin.domain.statistics.StatisticsOrderVO;
 import com.gms.web.admin.domain.statistics.StatisticsProductVO;
 import com.gms.web.admin.service.manage.ProductService;
 import com.gms.web.admin.service.statistics.StatisticsProductService;
@@ -65,6 +77,7 @@ public class StatisticsProductController {
 			params.setSearchStatDtEnd(searchStatDtEnd);
 			
 			searchStatDt = searchStatDtFrom +" - "+ searchStatDtEnd;
+			params.setSearchStatDt(searchStatDt);
 		}
 		
 		
@@ -121,6 +134,8 @@ public class StatisticsProductController {
 			params.setSearchStatDtEnd(searchStatDtEnd);
 			
 			searchStatDt = searchStatDtFrom +" - "+ searchStatDtEnd;
+			
+			params.setSearchStatDt(searchStatDt);
 		}
 		
 		
@@ -141,5 +156,124 @@ public class StatisticsProductController {
 		mav.setViewName("/gms/statistics/product/monthly");
 		
 		return mav;
+	}
+	
+	
+	@RequestMapping(value = "/gms/statistics/product/excelDown.do")
+	public void excelDownloadBottle(HttpServletResponse response,StatisticsProductVO params){
+	// 게시판 목록조회
+
+	   try {
+		   // 가스 정보 불러오기
+		   String searchStatDt = params.getSearchStatDt();	
+			
+			String searchStatDtFrom = null;
+			String searchStatDtEnd = null;
+					
+			if(searchStatDt != null && searchStatDt.length() > 20) {						
+				searchStatDtFrom = searchStatDt.substring(0, 10) ;			
+				searchStatDtEnd = searchStatDt.substring(13, searchStatDt.length()) ;
+				
+				params.setSearchStatDtFrom(searchStatDtFrom);
+				params.setSearchStatDtEnd(searchStatDtEnd);			
+			}else {						
+					
+				searchStatDtFrom = DateUtils.getNextDate(-30,"yyyy/MM/dd");
+				logger.debug("****** getStatisticsBottleDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
+		
+				searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
+				logger.debug("****** getStatisticsBottleDaily else *****getSearchStatDtEnd===*"+searchStatDtEnd);
+		
+				
+				params.setSearchStatDtFrom(searchStatDtFrom);
+				params.setSearchStatDtEnd(searchStatDtEnd);
+		
+				searchStatDt = searchStatDtFrom +" - "+ searchStatDtEnd;
+				
+				params.setSearchStatDt(searchStatDt);
+			}		
+			
+			ProductVO product = productService.getProductDetails(params.getSearchProductId());
+			String sheetName = "상품";
+			if(product!= null) sheetName = product.getProductNm();
+			
+			List<StatisticsProductVO> statProductList = null;
+			
+			String fileName="StatisticProduct_"+sheetName;
+			if(params.getPeriodType()==1) {
+				statProductList = statService.getDailylStatisticsProductList(params);
+				fileName +="Daily_"+DateUtils.getDate()+".xls";
+			}else {
+				statProductList = statService.getMontlylStatisticsProductList(params);
+				fileName +="Monthly_"+DateUtils.getDate()+".xls";
+			}
+		    // 워크북 생성
+	
+		    Workbook wb = new HSSFWorkbook();
+		    Sheet sheet = (Sheet) wb.createSheet(sheetName);
+		    Row row = null;
+		    Cell cell = null;
+	
+		    int rowNo = 0;
+		    
+		    // 테이블 헤더용 스타일
+		    CellStyle headStyle = wb.createCellStyle();
+	
+		    headStyle= ExcelStyle.getHeadStyle(headStyle);
+
+		    // 데이터용 경계 스타일 테두리만 지정
+		    CellStyle bodyStyle = wb.createCellStyle();
+		    
+		    bodyStyle= ExcelStyle.getBodyStyle(bodyStyle);
+		   
+		    // 헤더 생성 날짜		주문건수	주문금액
+		    //			0	1		2		
+		    row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
+		    
+		    List<String> list = null;		    
+		    list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.stat.product.title"), ","); 		
+		    
+		    for(int i =0;i<list.size();i++) {
+		    
+			    cell = row.createCell(i);
+			    cell.setCellStyle(headStyle);
+			    cell.setCellValue(list.get(i));		    
+		    }
+		    
+		   // 날짜		주문건수	주문금액
+		    // 데이터 부분 생성
+		    for(StatisticsProductVO vo : statProductList) {
+		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
+		        cell = row.createCell(0);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getStatDt());
+		        
+		        cell = row.createCell(1);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getOrderCount());
+		        
+		        cell = row.createCell(2);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getOrderAmount());	        
+		       
+		    }	
+	
+		    // 컨텐츠 타입과 파일명 지정
+		    response.setContentType("ms-vnd/excel");
+		    
+		    
+		    response.setHeader("Content-Disposition", "attachment;filename="+fileName);	
+	
+		    // 엑셀 출력
+		    wb.write(response.getOutputStream());
+		    wb.close();
+		    
+	   } catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
 	}
 }
