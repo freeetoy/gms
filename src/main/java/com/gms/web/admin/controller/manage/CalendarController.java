@@ -1,5 +1,7 @@
 package com.gms.web.admin.controller.manage;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -10,16 +12,24 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.common.utils.utilClass;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.CalendarParam;
 import com.gms.web.admin.domain.manage.CalendarVO;
+import com.gms.web.admin.domain.manage.EventVO;
+import com.gms.web.admin.domain.manage.ScheduleVO;
 import com.gms.web.admin.service.manage.CalendarService;
 import com.gms.web.admin.service.manage.OrderService;
+import com.gms.web.admin.service.manage.ScheduleService;
 
 
 
@@ -29,93 +39,60 @@ public class CalendarController {
 	
 	@Autowired
 	private CalendarService calendarService;
+	
+	@Autowired
+	private ScheduleService scheduleService;
 
-	@RequestMapping(value = "/gms/calendar/list.do")
+	@RequestMapping(value = "/gms/calendar/calendar.do")
 	public String getCalendarList(Model model, HttpServletRequest req, String year, String month) {
 
 		logger.info("CalendarContoller getCalendarList");
 		
-		
-		utilClass util = new utilClass();
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DATE, 1);
-
-        /*
-        String syear = request.getParameter("year");
-        String smonth = request.getParameter("month");
-		*/
+		List<ScheduleVO> scheduleList = scheduleService.getScheduleList();
+		JSONObject obj =  new JSONObject();
+        JSONArray jArray = new JSONArray();
         
-        int yearn = cal.get(Calendar.YEAR);
-        if(util.nvl(year) == false){	// 파라메타가 넘어왔을때
-        	yearn = Integer.parseInt(year);
-        }
-        int monthn = cal.get(Calendar.MONTH) + 1;
-        if(util.nvl(month) == false){
-        	monthn = Integer.parseInt(month);
-        }
-
-        if(monthn < 1){
-        	monthn = 12;
-        	yearn--;
-        }
-        if(monthn > 12){
-        	monthn = 1;
-        	yearn++;
-        }
-
-        cal.set(yearn, monthn - 1, 1);
-
-        //요일
-        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-
-        //<<	year--
-        String pp = String.format("<a href='%s?year=%d&month=%d'><img src='image/left.gif'></a>", 
-        					"calendar.do", yearn-1, monthn);
-
-        //<		month--
-        String p = String.format("<a href='%s?year=%d&month=%d'><img src='image/prec.gif'></a>", 
-        					"calendar.do", yearn, monthn-1);
-
-        //>		month++
-        String n = String.format("<a href='%s?year=%d&month=%d'><img src='image/next.gif'></a>", 
-        					"calendar.do", yearn, monthn+1);
-
-        //>>	year++
-        String nn = String.format("<a href='%s?year=%d&month=%d'><img src='image/last.gif'></a>", 
-        					"calendar.do", yearn+1, monthn);
-
-
+        
+		try {
+			
+			ScheduleVO temp = new ScheduleVO();		
+			
+			
+			for(int i=0;i<scheduleList.size();i++) {
+				temp = scheduleList.get(i);				
+				
+				JSONObject sObject = new JSONObject();
+				
+                sObject.put("title", temp.getScheduleTitle());
+                sObject.put("start", DateUtils.convertDateFormat(temp.getScheduleStartDt(),"yyyy-MM-dd"));
+                sObject.put("end", DateUtils.convertDateFormat(temp.getScheduleEndDt(),"yyyy-MM-dd"));
+                sObject.put("groupId", temp.getScheduleSeq());
+                sObject.put("url", "/test/schedule?field="+temp.getScheduleSeq());
+                jArray.put(sObject);
+				
+			}
 		
-		HttpSession session = req.getSession();
-		
-		//RequestUtils.initUserPrgmInfo(request, params);		
-		//MemberDto user = (MemberDto)session.getAttribute("login");
-
-		CalendarParam param = new CalendarParam("freetoy", yearn+util.two(monthn+""));
-		
-		List<CalendarVO> list = calendarService.getCalendarList(param);
-		
-		//logger.info(param.toString());
-		//logger.info(list.toString());
-		
-		model.addAttribute("pp", pp);
-		model.addAttribute("p", p);
-		model.addAttribute("n", n);
-		model.addAttribute("nn", nn);
-		
-		model.addAttribute("year", yearn);
-		model.addAttribute("month", monthn);
-		
-		model.addAttribute("dayOfWeek", dayOfWeek);
-		
-		model.addAttribute("cal", cal);
-		
-		int lastDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-		model.addAttribute("lastDay", lastDay);
-		model.addAttribute("list", list);
+			obj.put("item", jArray);
+			
+			 model.addAttribute("list", obj);
+			 
+		}catch(Exception e) {
+			
+		}
+        model.addAttribute("scheduleList", scheduleList);
 		
 		
-		return "gms/calendar/list";
+		return "gms/calendar/calendar";
 	}
+	
+	@RequestMapping("/gms/calendar/getEvent.do")
+	@ResponseBody
+	public List<ScheduleVO> getEvents() {
+		List<ScheduleVO> scheduleList = scheduleService.getScheduleList();		
+		
+        return scheduleList;
+    }
+	
+	
 	
 }

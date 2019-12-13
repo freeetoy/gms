@@ -308,7 +308,7 @@ public class ExcelServiceImpl implements ExcelService {
             // 첫번째 시트 불러오기
             XSSFSheet sheet = workbook.getSheetAt(0);
             
-            int COLUMN_COUNT = 8;
+            int COLUMN_COUNT = 128;
             for(int i=1; i<sheet.getLastRowNum() + 1; i++) {
             	
             	CustomerVO customer = new CustomerVO();
@@ -358,9 +358,56 @@ public class ExcelServiceImpl implements ExcelService {
                     }
                 	
                 	logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ colValue);
+                	/*
+                	 * 거래처,본사사업자등록번호,거래처사업자등록번호,소계,
+                	 * 1	2				3			4	
+                	 * O2(의료용)_40,O2(의료용)_20,O2(의료용)_10,O2(의료용)_5,O2(의료용)_4.6,O2(의료용)_2.8,
+                	 * 5			6			7			8			9			10			
+                	 * 물통(국산)게이지,헤리스게이지_2.5bar,헤리스게이지_5bar,헤리스게이지_16bar,크라운게이지_O2,크라운게이지_N2O,지요다게이지_O2,지요다게이지_N2,지요다게이지_N2O,삼성게이지,
+                	 * 11			12				13				14				15			16			17			18			19			20	
                 	
-                	//사업자등록번호	거래처명	거래처주소	거래처사업자등록번호	거래처전화	대표자	업태	종목	이메일
-                    //			0		1		2				3		4		5	6	7	
+                	 * 플로우메타,1단 받침대,이동카_40L,이동카_20L,이동카_10L,캡,아답타,호스,플렉시블,
+                	 * 21		22		23		24		25		26	27	28	29		
+                	 * O2_40,O2_10,O2(N45),O2(N50),
+                 	 * 30	31		32		33		
+                	 * LO2(의료용)_160,LO2(의료용)_80,LO2(의료용)_45,LO2_160,
+                	 * 34			35				36			37		
+                	 * CO2(의료용)_47,CO2(의료용)_40,CO2(의료용)_20,CO2(의료용)_13.5,CO2(의료용)_10,CO2(의료용)_5,
+                	 * 38			39			40				41			42				43			
+                	 * CO2_47,CO2_40,CO2_10,CO2_5,CO2(H.P)_47,
+                	 * 44	45		46		47		48					
+                	 * LN2(의료용)_240,LN2(의료용)_230,LN2(의료용)_160,LN2(의료용)_80,LN2_230,LN2_160,LN2_병,LN2_L,
+                	 * 49				50				51			52			53		54		55		56	
+                	 * N2(의료용)_40,N2(의료용)_10,N2(의료용)_2.8,
+                	 * 57			58			59				
+                	 * N2_40,N2_10,N2(N50)_47,N2(N50)_10,N2(N60)_47,
+                	 * 60		61	62			63			64			
+                	 * 대한E.O가스(HF)_50,대한E.O가스(HF)_25,대한E.O가스_25,대한E.O가스_10,
+                	 * 65				66				67			68			
+                	 * AC(DMF)_5,AC(일반)_3,AC(일반)_5,
+                	 * 69			70		71		
+                	 * Air_40,Air_10,Air_4.6,Air(H.P)_47,Air(H.P)_10,	
+                	 * 72		73		74		75			76	
+                	 * Ar_47,Ar_20,Ar_10,Ar_5,Ar(N50)_47,Ar(N50)_10,Ar(N50)_5,Ar(N60)_47,
+                	 * 77	78		79	80		81			82		83			84			
+                	 * H2_40,H2_10,H2(N50)_47,H2(N50)_10,H2(N60)_47,H2(N60)_10,
+                	 * 85		86		87		88			89			90			
+                	 * He_47,He_10,He(N50)_47,He(N50)_10,He(N60)_47,He(N60)_10,
+                	 * 91		92		93		94			95			96		
+                	 * LAr(160L),LN2_230,LN2_160,LN2(의료용)_240,LN2(의료용)_230,LN2(의료용)_160,LN2(의료용)_80,
+                	 * 	97			98		99		100			101				102			103				
+                	 * LO2_160,LO2(의료용)_160,LO2(의료용)_80,LO2(의료용)_45,	
+                	 * 104		105			106			107	                	
+                	 * N2O_25,N2O_20,N2O_15,N2O_18,N2O_5,
+                	 * 108		109	110		111		112		
+                	 * 냉매가스,특수가스,고순도믹스가스_47,고순도믹스가스_20,고순도믹스가스_10,믹스가스_40,용기검사비,
+                	 * 113		114		115			116				117			118		119		
+                	 * 용기및가스_47L,용기및가스_40L,용기및가스_35L,용기및가스_20L,용기및가스_13.5L,용기및가스_10L,용기및가스_5L,용기및가스_4.6L,용기및가스_2.8L
+                	 * 120			121			122			123			124			125			126			127			128
+                	       	
+                	//CustomerId / ProductId, Product_Price_Seq
+                	*/
+                	/*
                 	if(j == 0) customer.setCustomerNm(colValue);
                 	else if(j == 1) customer.setCustomerAddr(colValue);
                 	else if(j == 2) customer.setBusinessRegId(colValue);
@@ -370,15 +417,18 @@ public class ExcelServiceImpl implements ExcelService {
                 	else if(j == 6) customer.setCustomerItem(colValue);
                 	else if(j == 7) customer.setCustomerEmail(colValue);
                 	
+                	*/
+                	
+                	
                 }
                 RequestUtils.initUserPrgmInfo(request, customer);
                 
-                customer.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
+               // customer.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
               
-                list.add(customer);
+                //list.add(customer);
             }
             
-            result = customerService.registerCustomers(list);
+           //result = customerService.registerCustomers(list);
             
             logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result);
             

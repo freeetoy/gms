@@ -49,6 +49,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
             userId 		= StringUtils.defaultString(sessionInfo.getUserId());
             systemRole 	= StringUtils.defaultString(sessionInfo.getUserAuthority());
             log.info("preHandle userId ************ "+userId);
+            log.info("preHandle userNm ************ "+StringUtils.defaultString(sessionInfo.getUserNm()));
             log.info("preHandle systemRole ************ "+systemRole);
             // Session에 있는 ID가 존재하는지 확인하여 없으면, 강제 로그아웃 처리
             if ("".equals(userId) || "".equals(systemRole)) {

@@ -37,6 +37,16 @@
 	<entry key="Order.Request.AM">A</entry>
 	<entry key="Order.Request.PM">P</entry>
 	
+	<entry key="Schedule.Type.Private">1</entry>
+	<entry key="Schedule.Type.Public">2</entry>
+	<entry key="Schedule.Type.Holiday">3</entry>
+	
+	
+	<entry key="Schedule.vacation.All">1</entry>
+	<entry key="Schedule.vacation.AM">2</entry>
+	<entry key="Schedule.vacation.PM">3</entry>
+	
+	
 	<!-- 코드  정의 -->	
 	<entry key="common.bottle.status">0300</entry>
 	<entry key="common.bottle.status.0301">0301</entry>

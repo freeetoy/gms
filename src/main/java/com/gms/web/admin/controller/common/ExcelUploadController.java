@@ -109,7 +109,7 @@ public class ExcelUploadController {
 	        if(iterator.hasNext()) {
 	            file = request.getFile(iterator.next());
 	        }
-	        result = excelService.uploadCustomerExcelFile(request,file);	        
+	        result = excelService.uploadCustomerPriceExcelFile(request,file);	        
 	      
 	        //model.addAttribute("gaslist", gaslist);
 	        

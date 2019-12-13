@@ -3,129 +3,38 @@
 <div class="wrapper">
 
 <th:block layout:fragment="content"> 
+<script type="text/javascript">
 
-<script type="text/javascript">	
-
-function checkAll(){
-   
-    
-    if( $("#checkAll").is(':checked') ) {
-
-        $("input[name=check_id]").prop("checked", true);
-
-	} else {
+	function validationOfForm(form) {
 	
-	        $("input[name=check_id]").prop("checked", false);
-	
+		var result = (
+				   isValid(form.gasNm, "가스명", null, null)
+				&& isValid(form.gasCd, "가스코드", null, null)
+		);
+		
+		if ( result === false ) {
+			return false;
+		}
 	}
-}
-
+	// end of function
 	
-function validationOfForm(form) {
-	
-	console.log(form.chBottle.value);
-	return ture;
-}
-	
-
-
-function fn_modifyBottleWorkCd(){				
-		
-		var form = $("#chForm");	
-    	chForm.action="/gms/bottle/changeWorkCd.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]";
-    	chForm.submit();
-	}
-	
-var fn_deleteBottle = function(bottleId){
-		
-	if(confirm("삭제하시겠습니까?")){	
-		
-		var form = document.createElement("form");
-		form.setAttribute("charset","UTF-8");
-		form.setAttribute("method","post");
-		form.setAttribute("action","/gms/bottle/delete.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
-		
-		var hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", "bottleId");
-        hiddenField.setAttribute("value", bottleId);
-
-        form.appendChild(hiddenField);      
-        document.body.appendChild(form);
-
-        form.submit();			
-	}                  		
-}
-	//Ajax공통 호출
-	function callAjax(ajaxInfo){
-		var dfd = $.Deferred();
-		$.ajax(ajaxInfo).done(function(data){
-			dfd.resolve(data);
-		});
-		
-		return dfd.promise();
-	}
-	
-	
-	var fn_ChangeBottleWorkCd = function(bottleId){
-	
-		//$("table.table-hover").find('tr').remove();
-		
-		var ajaxInfo ={
-			type:"POST",
-			url:"/gms/bottle/detail.do",
-			data:{
-				bottleId : bottleId
-			},
-			dataType: "json",
-		};
-		
-		ajax = callAjax(ajaxInfo);
-		
-		ajax.done(function(data){
-			console.log(data);
-
-			$("#chBottleId").val(data.bottleId);
-			$("#bottleBarCd").val(data.bottleBarCd);
+	var fn_deleteUser = function(userId){
+		var form = document.deleteform;	
+		               		
+		if(confirm("삭제하시겠습니까?")){	
 			
-			$('select[id="bottleWorkCd"]').find('option:contains(data.bottleWorkCd)').attr("selected",true);
-
-			$("#bottleWorkCd").val(data.bottleWorkCd);		
+			$("#userId").val(userId);  			
 			
-			$('select[id="bottleType"]').find('option:contains(data.bottleType)').attr("selected",true);
-
-			$("#bottleType").val(data.bottleType);		
-				
-			if(data.result == "fail"){
-				alert("용기가 존재하지 않습니다");			
-				return;
-			}
 			
-		});
-		
-	};
-	
-	    
-	var goUpdate = function(bottleId){		
-		
-		//alert("goUpdate "+bottleId);
-		console.log("goUpdate bottleId ="+bottleId);
-		var form = $("#mainForm");	
-
-		$("#bottleId").val(bottleId);
-    	
-    	//document.getElementById("priceCount").value = totalCount;
-    	mainForm.action="/gms/bottle/update.do";
-    	form.submit();
+	        form.submit();			
+		}                  		
 	}
 	
 	// 입력된 내용을 작성한다.
 	function goSearch(){	
 		
 		var form = document.mainForm;	
-		$("#currentPage").val(1);  
-		form.currentPage.value=1;
-		form.action="/gms/bottle/list.do?currentPage=1";
+		
 		form.submit();
 	};
 
@@ -136,118 +45,20 @@ var fn_deleteBottle = function(bottleId){
 		var form =  document.mainForm;			
 		
 		$("#currentPage").val(pageNo);  
-		 mainForm.action="/gms/bottle/list.do";
+    	
         //validate checkt시 confirm 중복되는 부분 처리 
-       
+        
     	mainForm.submit();
     }
-	
+</script>
 
-	$(function() {
-	
-	  $('input[name="searchChargeDt"]').daterangepicker({
-	      autoUpdateInput: false,
-	      locale: {
-	          cancelLabel: 'Clear'
-	      }
-	  });
-	
-	  $('input[name="searchChargeDt"]').on('apply.daterangepicker', function(ev, picker) {
-	      $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
-	  });
-	
-	  $('input[name="searchChargeDt"]').on('cancel.daterangepicker', function(ev, picker) {
-	      $(this).val('');
-	  });
-	
-	});	
-
-	
-	function fn_deleteBottles()
-	{
-		/*
-		var checked_len = $("input[name='check_id[]']:checked").length;
-		alert("checked_len="+checked_len);
-		if(checked_len <1){
-			alert('삭제할 항목을 선택 하세요.');
-				return false;
-		}
-		*/
-		var checkedValue = ""; 
-		var chki=0;
-		var inputElements = document.getElementsByClassName('IdCheckbox');
-		for(var i=0; inputElements[i]; ++i){
-		      if(inputElements[i].checked){	
-		    	  
-		    	   //checkedValue +="'";
-		           checkedValue += (inputElements[i].value);
-		           chki++;
-		           //break;
-		           checkedValue +=",";
-		      }
-		}
-		
-		if(chki < 1){
-			alert('삭제할 항목을 선택 하세요.');
-			return false;
-			
-		}
-		console.log("chki="+chki);	
-		console.log("checkeValue="+checkedValue);		
-		
-		if(confirm("정말로 삭제 하시겠습니까?")){
-
-			var form = document.createElement("form");
-			form.setAttribute("charset","UTF-8");
-			form.setAttribute("method","post");
-			form.setAttribute("action","/gms/bottle/deleteChecked.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchGasId=[[ ${searchGasId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
-			
-			var hiddenField = document.createElement("input");
-	        hiddenField.setAttribute("type", "hidden");
-	        hiddenField.setAttribute("name", "bottleIds");
-	        hiddenField.setAttribute("value", checkedValue);
-
-	        form.appendChild(hiddenField);
-	       
-	        document.body.appendChild(form);
-
-	        form.submit();			
-			
-		}else{
-
-		return false;
-		}
-
-	}
-	
-	
-	function doExcelUploadProcess(){
-        var f = new FormData(document.getElementById('form1'));
-        
-        var ajaxInfo ={
-        		url: "/uploadExcelFile",
-                data: f,
-                processData: false,
-                contentType: false,
-                type: "POST",
-    			dataType: "json",
-    		};
-    		
-    		ajax = callAjax(ajaxInfo);
-    		
-    		ajax.done(function(data){
-    			console.log(data);
-    			//document.getElementById('result').innerHTML = JSON.stringify(data);
-    		});
-    }
-	</script>
    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>휴가</h1>
+            <h1>내휴가 목록</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -259,121 +70,65 @@ var fn_deleteBottle = function(bottleId){
       </div><!-- /.container-fluid -->
     </section>
   
-    <section class="content">        
-     <!-- modal start-->   
-        <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">용기 상태 변경</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <form id="chForm" name="chForm" th:object="${bottle}" method="post">
-              
-              <div class="card-body">
-            	<table class="table table-hover">
-                  <thead>
-                  <tr>
-                      <th class="card-footer">용기 코드</th>
-                      <th><input type="text" class="form-control" id="chBottleId" name="chBottleId" placeholder="용기 코드" ></th>
-                    </tr>
-                     <tr>                                   
-                      <th class="card-footer">용기 바코드</th>
-                      <th><input type="text" class="form-control" id="bottleBarCd" name="bottleBarCd" placeholder="용기 바코드" ></th>
-                    </tr>
-                    <tr>
-                      <th class="card-footer">상태</th>
-                      <th>
-                      <select id="bottleWorkCd" name="bottleWorkCd" class="form-control">
-                          <option value="">상태</option>				    
-					        <option th:each="row : ${codeList}"
-					                th:text="${row.cdNm}"
-					                th:value="${row.cdId}"
-					               >
-					        </option>					
-                        </select>
-					  </th>   
-                    </tr>
-                    <tr>
-                      <th class="card-footer">용기타입</th>
-                      <th>
-                      <select id="bottleType" name="bottleType" class="form-control">
-                          <option value="E">공병</option>
-                          <option value="F">실병</option>	
-                        </select>
-					  </th>   
-                    </tr>
-                  </thead>                              
-                </table>       
-                
-              </div>            
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <a class="btn btn-info btn-sm" href="#" onclick="javascript:fn_modifyBottleWorkCd();"><i class="fas fa-pencil-alt"></i>상태변경</a>
-            </div>
-            </form>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
+    <section class="content">          
         
+    	<div class="row">
+              <div class="col-10">
+              </div>               
+             
+              <div class="col-2">
+               		<a href="/gms/schedule/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">휴가등록</button></a>
+              </div>
+        </div>
+        <div class="row">	
+	        <div class="col-12">
+	        <table class="table table-hover">
+	         </table>
+	        </div>
+        </div>
         <div class="row">	
           <div class="col-12">
             <div class="card">
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
-              	<table class="table table-bordered">
-              	
-              	<thead>
-				  	<tr height="50">
-					<td align="center">일</td>
-					<td align="center">월</td>
-					<td align="center">화</td>
-					<td align="center">수</td>
-					<td align="center">목</td>
-					<td align="center">금</td>
-					<td align="center">토</td>
-					</tr>
-				  </thead>
-				  <tr height="100" align="left" valign="top">
-				  <tr height="20" > 			  
-					<td th:if="${dayOfWeek> 1}"  th:each="seq : ${#numbers.sequence(1,dayOfWeek)}"></td>
-					<td th:each="seq1 : ${#numbers.sequence(1,lastDay)}" th:text="${seq1}"></td>
+                <table class="table table-hover">
+                <form id="deleteform" name="deleteform" th:action="@{/gms/user/delete.do}" method="post">
+                	<input type="hidden" id="userId" name="userId" value="">
+                </form>
+                  <thead>
+                    <tr>
+                      <th>순번</th>
+                      <th>휴가종류</th>
+                      <th>휴가일</th>
+                      <th>휴가구분</th>
+                      <th>등록일</th>
+                      <th>삭제</th>                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                  	<tr th:if="${not #lists.isEmpty( scheduleList )}" th:each="row : ${scheduleList}"  style="font-size:14px;">
+                      <td th:text="${scheduleList.indexOf(row)+1}"></td>
+                      <td th:text="${row.scheduleTypeNm}">                     
+                      </td>
+                      <td th:if="${row.scheduleStartDt == row.scheduleEndDt}"  th:text="${#calendars.format(row.scheduleStartDt, 'yyyy-MM-dd' )}"></td> 
+                      <td th:unless="${row.scheduleStartDt == row.scheduleEndDt}"  th:text="|${#calendars.format(row.scheduleStartDt, 'yyyy-MM-dd' )}~${row.scheduleEndDt}|"></td>
+                      <td th:text="${row.vacationGubunNm}"></td>
+                      <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
+                      <td th:if="${row.dateDiffs > 0 }" > 
+                      <a class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteUser([[ ${row.scheduleSeq} ]])">
+                              <i class="fas fa-trash">
+                              </i>
+                              Delete
+                          </a>      
+                      <td th:unless="${row.dateDiffs > 0 }" >                     
+                      </td>
+                    </tr>
+                    <tr th:unless="${not #lists.isEmpty( userList )}">
+						<td colspan="6">조회된 결과가 없습니다.</td>
+					</tr>						
+                  </tbody>
 					
-				  </tr><tr th:if="${(seq1 + dayOfWeek - 1) % 7 == 0 && seq1 != lastDay}">
-				  <tr>
-					<td th:text="${dayOfWeek}"></td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td>5</td>
-					<td>6</td>
-					<td>7</td>
-				  </tr>
-				  <tr>
-					<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td>5</td>
-					<td>6</td>
-					<td>7</td>
-				  </tr>
-				  <tr>
-					<td>1</td>
-					<td>2</td>
-					<td>3</td>
-					<td>4</td>
-					<td>5</td>
-					<td>6</td>
-					<td>7</td>
-				  </tr>
-				  </table>
-                
+                </table>
               </div>
               <!-- /.card-body -->
             </div>
