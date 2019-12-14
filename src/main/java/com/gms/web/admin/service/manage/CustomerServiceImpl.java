@@ -91,6 +91,14 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerMapper.selectCustomerDetailByNm(customerNm);
 	}
 	
+	
+	@Override
+	public CustomerVO getCustomerDetailsByNmBusi(CustomerVO param) {
+		return customerMapper.selectCustomerDetailByNmBusi(param);
+	}
+
+	
+	
 	@Override
 	@Transactional
 	public boolean registerCustomer(CustomerVO param) {
@@ -228,6 +236,15 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
+	public int registerCustomerPrices(List<CustomerPriceVO> param) {
+		int result = 0;		
+		result = customerMapper.insertCustomerPrices(param);
+				
+		return result;
+	}
+
+	
+	@Override
 	@Transactional
 	public boolean deleteCustomerPrice(Integer customerId) {
 		boolean successFlag = false;
@@ -249,6 +266,7 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerMapper.selectCustomerPriceList(customerId);
 	}
 
+	
 	
 	
 

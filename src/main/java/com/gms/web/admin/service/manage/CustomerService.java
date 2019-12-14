@@ -18,6 +18,8 @@ public interface CustomerService {
 	public CustomerVO getCustomerDetails(Integer customerId);
 	
 	public CustomerVO getCustomerDetailsByNm(String customerNm);
+	
+	public CustomerVO getCustomerDetailsByNmBusi(CustomerVO param);
 
 	public boolean registerCustomer(CustomerVO param);	
 	
@@ -34,6 +36,8 @@ public interface CustomerService {
 	public List<CustomerPriceExtVO>  getCustomerPriceList(Integer customerId);
 	
 	public boolean registerCustomerPrice(CustomerPriceVO[] param);
+	
+	public int registerCustomerPrices(List<CustomerPriceVO> param);	
 	
 	public boolean deleteCustomerPrice(Integer customerId);
 }

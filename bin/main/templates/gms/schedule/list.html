@@ -50,6 +50,31 @@
         
     	mainForm.submit();
     }
+	
+	
+	var deleteVacation = function(scheduleSeq){
+		console.log(scheduleSeq);            
+		var strMessage= "삭제하시겠습니까?";
+		//if(productStatus==1) strMessage = "판매중지하시겠습니까?";
+		if(confirm(strMessage)){	
+			
+			var form = document.createElement("form");
+			form.setAttribute("charset","UTF-8");
+			form.setAttribute("method","post");
+			form.setAttribute("action","/gms/schedule/delete.do");
+			
+			var hiddenField = document.createElement("input");
+	        hiddenField.setAttribute("type", "hidden");
+	        hiddenField.setAttribute("name", "scheduleSeq");
+	        hiddenField.setAttribute("value", scheduleSeq);
+	        form.appendChild(hiddenField);
+	        
+	        document.body.appendChild(form);
+
+	        form.submit();			
+		}                  		
+	}
+	
 </script>
 
    <div class="content-wrapper">
@@ -58,7 +83,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>내휴가 목록</h1>
+            <h1>휴가 목록</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -108,22 +133,18 @@
                   <tbody>
                   	<tr th:if="${not #lists.isEmpty( scheduleList )}" th:each="row : ${scheduleList}"  style="font-size:14px;">
                       <td th:text="${scheduleList.indexOf(row)+1}"></td>
-                      <td th:text="${row.scheduleTypeNm}">                     
-                      </td>
+                      <td th:text="${row.scheduleTypeNm}"></td>
                       <td th:if="${row.scheduleStartDt == row.scheduleEndDt}"  th:text="${#calendars.format(row.scheduleStartDt, 'yyyy-MM-dd' )}"></td> 
-                      <td th:unless="${row.scheduleStartDt == row.scheduleEndDt}"  th:text="|${#calendars.format(row.scheduleStartDt, 'yyyy-MM-dd' )}~${row.scheduleEndDt}|"></td>
+                      <td th:unless="${row.scheduleStartDt == row.scheduleEndDt}"  th:text="|${#calendars.format(row.scheduleStartDt, 'yyyy-MM-dd' )} ~ ${#calendars.format(row.scheduleEndDt, 'yyyy-MM-dd')}|"></td>
                       <td th:text="${row.vacationGubunNm}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
                       <td th:if="${row.dateDiffs > 0 }" > 
-                      <a class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteUser([[ ${row.scheduleSeq} ]])">
-                              <i class="fas fa-trash">
-                              </i>
-                              Delete
-                          </a>      
+                      <a class="btn btn-danger btn-xs" href="#" th:onclick="scheduleSeq ${row.scheduleSeq} ]])">
+                              <i class="fas fa-trash"></i>삭제 </a>      
                       <td th:unless="${row.dateDiffs > 0 }" >                     
                       </td>
                     </tr>
-                    <tr th:unless="${not #lists.isEmpty( userList )}">
+                    <tr th:unless="${not #lists.isEmpty( scheduleList )}">
 						<td colspan="6">조회된 결과가 없습니다.</td>
 					</tr>						
                   </tbody>

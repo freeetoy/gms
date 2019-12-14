@@ -25,6 +25,8 @@ public interface CustomerMapper {
 	public CustomerVO selectCustomerDetail(Integer customerId) ;
 	
 	public CustomerVO selectCustomerDetailByNm(String customerNm) ;
+	
+	public CustomerVO selectCustomerDetailByNmBusi(CustomerVO param ) ;
 
 	public int insertCustomer(CustomerVO param);
 	
@@ -37,6 +39,8 @@ public interface CustomerMapper {
 	public int deleteCustomer(Integer customerId);	
 		
 	public int insertCustomerPrice(CustomerPriceVO param);
+	
+	public int insertCustomerPrices(List<CustomerPriceVO> param);
 	
 	public int deleteCustomerPrice(Integer customerId);	
 	

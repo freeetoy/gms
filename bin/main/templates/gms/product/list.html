@@ -9,8 +9,10 @@
 	// end of function
 	
 	var fn_modifyProduct = function(productId, productPriceSeq, productStatus){
-		console.log(productId+"=="+productPriceSeq+"=="+productStatus);               		
-		if(confirm("삭제하시겠습니까?")){	
+		console.log(productId+"=="+productPriceSeq+"=="+productStatus);            
+		var strMessage= "삭제하시겠습니까?";
+		if(productStatus==1) strMessage = "판매중지하시겠습니까?";
+		if(confirm(strMessage)){	
 			
 			var form = document.createElement("form");
 			form.setAttribute("charset","UTF-8");

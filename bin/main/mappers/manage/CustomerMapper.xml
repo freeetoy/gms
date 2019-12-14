@@ -142,6 +142,25 @@
 	</insert>
 	
 	
+	<insert id="insertCustomerPrices" parameterType="java.util.List">
+		INSERT INTO TB_CUSTOMER_PRODUCT_PRICE(
+			<include refid="InsertCustomerPriceColumns" />
+		) VALUES 
+		<foreach collection="list" item="item" separator=" , ">
+		(
+			 #{item.customerId}
+			, #{item.productId}
+			, #{item.productPriceSeq}
+			, #{item.productPrice}
+			, #{item.createId}			
+			, NOW()
+			, NULL
+			, NOW()
+		)
+		</foreach>
+	</insert>
+	
+	
 	<select id="selectCustomerDetail" parameterType="Integer" resultType="com.gms.web.admin.domain.manage.CustomerVO">
 		SELECT
 			<include refid="CustomerColumns" />
@@ -163,6 +182,21 @@
 		AND
 			CUSTOMER_NM = #{customerNm}
 		AND A.Sales_ID = B.User_ID
+	</select>
+	
+	<select id="selectCustomerDetailByNmBusi" parameterType="String" resultType="com.gms.web.admin.domain.manage.CustomerVO">
+		SELECT
+			<include refid="CustomerColumns" />
+		FROM
+			TB_CUSTOMER A, TB_USER B
+		WHERE
+			Customer_Status != '0'		
+		AND
+			CUSTOMER_NM = #{customerNm}
+		AND 
+			Business_Reg_ID = #{businessRegId}
+		AND
+			A.Sales_ID = B.User_ID
 	</select>
 
 	<update id="updateCustomer" parameterType="com.gms.web.admin.domain.manage.CustomerVO">

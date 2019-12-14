@@ -65,9 +65,10 @@ public class CalendarController {
 				
                 sObject.put("title", temp.getScheduleTitle());
                 sObject.put("start", DateUtils.convertDateFormat(temp.getScheduleStartDt(),"yyyy-MM-dd"));
-                sObject.put("end", DateUtils.convertDateFormat(temp.getScheduleEndDt(),"yyyy-MM-dd"));
+                if(!temp.getScheduleStartDt().equals(temp.getScheduleEndDt()))
+                	sObject.put("end", DateUtils.convertDateFormat(temp.getScheduleEndDt(),"yyyy-MM-dd"));
                 sObject.put("groupId", temp.getScheduleSeq());
-                sObject.put("url", "/test/schedule?field="+temp.getScheduleSeq());
+                //sObject.put("url", "/test/schedule?field="+temp.getScheduleSeq());
                 jArray.put(sObject);
 				
 			}

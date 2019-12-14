@@ -11,18 +11,19 @@
             header: {
                 left: 'prev,next today',
                 //right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-                right: 'title'
+                center: 'title',
+                right: 'dayGridMonth,listMonth'
             },
             defaultDate: defaultDate,
             weekNumbers: true,
             weekNumbersWithinDays: true,
             weekNumberCalculation: 0,
             locale: 'ko',
-            allDayDefault: false,
+            allDayDefault: true,
             editable: true,
             weekNumbers: false,
             eventLimit: true, // allow "more" link when too many events
-            events: eval(JSON.stringify(jsonConvertList.item))
+            events: eval(JSON.stringify(jsonConvertList.item))         
         });
         calendar.render();
     });
