@@ -33,10 +33,8 @@ import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.ProductTotalVO;
-import com.gms.web.admin.mapper.manage.BottleMapper;
 import com.gms.web.admin.service.manage.BottleService;
 import com.gms.web.admin.service.manage.CustomerService;
-import com.gms.web.admin.service.manage.GasService;
 import com.gms.web.admin.service.manage.ProductService;
 
 @Service
@@ -47,9 +45,6 @@ public class ExcelServiceImpl implements ExcelService {
 	
 	@Autowired
 	private BottleService bottleService;
-	
-	@Autowired
-	private GasService gasService;
 	
 	@Autowired
 	private ProductService productService;
@@ -576,7 +571,8 @@ public class ExcelServiceImpl implements ExcelService {
             	logger.debug("---ExcelSerive uploadExcelFile price="+ temp.getProductPrice());
             }
             
-           logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result);
+            result = customerService.registerCustomerPrices(list);
+            logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result);
             
     } catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달

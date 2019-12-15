@@ -95,7 +95,8 @@ public class ScheduleController {
 		}
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.vacation"));		
 		
-		
+		logger.debug("ScheduleController registerSchedule params.getScheduleStartDt() " + params.getScheduleStartDt());
+		if(params.getScheduleEndDt()!=null) params.setScheduleEndDt(params.getScheduleStartDt());
 		int result = 0;
 		
 		result = scheduleService.registerSchedule(params);

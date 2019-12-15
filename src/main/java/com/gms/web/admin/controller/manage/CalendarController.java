@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.common.utils.utilClass;
 import com.gms.web.admin.common.web.utils.RequestUtils;
@@ -64,7 +65,19 @@ public class CalendarController {
 				JSONObject sObject = new JSONObject();
 				
                 sObject.put("title", temp.getScheduleTitle());
-                sObject.put("start", DateUtils.convertDateFormat(temp.getScheduleStartDt(),"yyyy-MM-dd"));
+                if(temp.getVacationGubun().equals(PropertyFactory.getProperty("Schedule.vacation.All"))) {
+                	sObject.put("start", DateUtils.convertDateFormat(temp.getScheduleStartDt(),"yyyy-MM-dd"));
+                	
+                }else {
+                	
+                	
+                	String startH = DateUtils.convertDateFormat(temp.getScheduleStartDt(),"HH:mm:ss");
+                	
+                	sObject.put("start", DateUtils.convertDateFormat(temp.getScheduleStartDt(),"yyyy-MM-dd")+"T"+startH);
+                	logger.info("CalendarContoller getCalendarList temp.getScheduleStartDt() " +DateUtils.convertDateFormat(temp.getScheduleStartDt(),"yyyy-MM-dd")+"T"+startH);
+                	
+                }
+                
                 if(!temp.getScheduleStartDt().equals(temp.getScheduleEndDt()))
                 	sObject.put("end", DateUtils.convertDateFormat(temp.getScheduleEndDt(),"yyyy-MM-dd"));
                 sObject.put("groupId", temp.getScheduleSeq());
@@ -73,14 +86,13 @@ public class CalendarController {
 				
 			}
 		
-			obj.put("item", jArray);
-			
-			 model.addAttribute("list", obj);
+			obj.put("item", jArray);			
+			model.addAttribute("list", obj);
 			 
 		}catch(Exception e) {
 			
 		}
-        model.addAttribute("scheduleList", scheduleList);
+        //model.addAttribute("scheduleList", scheduleList);
 		
 		
 		return "gms/calendar/calendar";

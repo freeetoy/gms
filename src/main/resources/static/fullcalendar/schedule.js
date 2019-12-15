@@ -19,7 +19,8 @@
             weekNumbersWithinDays: true,
             weekNumberCalculation: 0,
             locale: 'ko',
-            allDayDefault: true,
+            //allDayDefault: true,
+            businessHours: true, // display business hours
             editable: true,
             weekNumbers: false,
             eventLimit: true, // allow "more" link when too many events

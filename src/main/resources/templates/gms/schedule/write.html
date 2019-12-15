@@ -56,7 +56,10 @@ var goWrite = function(){
 	if(!isOkay){
 		return;
 	}
+	alert(scheduleStartDt.value);
+	alert(scheduleEndDt.value);
 	
+	if(scheduleEndDt.value=="") scheduleEndDt.value = scheduleStartDt.value;
 	var form = $("#writeForm");	
 	
 	form.submit();

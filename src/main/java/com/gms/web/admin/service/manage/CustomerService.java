@@ -40,4 +40,6 @@ public interface CustomerService {
 	public int registerCustomerPrices(List<CustomerPriceVO> param);	
 	
 	public boolean deleteCustomerPrice(Integer customerId);
+	
+	public int deleteCustomerPrices(List<CustomerPriceVO> param);
 }

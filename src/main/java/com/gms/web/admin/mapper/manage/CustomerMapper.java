@@ -44,6 +44,8 @@ public interface CustomerMapper {
 	
 	public int deleteCustomerPrice(Integer customerId);	
 	
+	public int deleteCustomerPrices(List<CustomerPriceVO> param);	
+	
 	public List<CustomerPriceExtVO> selectCustomerPriceList(Integer customerId);
 
 }

@@ -310,6 +310,18 @@
 		WHERE
 			CUSTOMER_ID = #{customerId}
 	</update>
+	
+	<delete id="deleteCustomerPrices" parameterType="java.util.List">
+		DELETE
+		FROM  TB_CUSTOMER_PRODUCT_PRICE		
+		WHERE
+			CUSTOMER_ID in
+		(
+		<foreach collection="list" item="item" separator=" , ">			
+			 #{item.customerId}
+		</foreach>
+		)
+	</delete>
 		
 
 </mapper>

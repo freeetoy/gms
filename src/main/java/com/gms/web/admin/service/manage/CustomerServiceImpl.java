@@ -236,8 +236,12 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
+	@Transactional
 	public int registerCustomerPrices(List<CustomerPriceVO> param) {
-		int result = 0;		
+		int result = 0;	
+		
+		result = customerMapper.deleteCustomerPrices(param);
+		
 		result = customerMapper.insertCustomerPrices(param);
 				
 		return result;
@@ -264,6 +268,12 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public List<CustomerPriceExtVO> getCustomerPriceList(Integer customerId) {
 		return customerMapper.selectCustomerPriceList(customerId);
+	}
+
+	@Override
+	public int deleteCustomerPrices(List<CustomerPriceVO> param) {
+		// TODO Auto-generated method stub
+		return customerMapper.deleteCustomerPrices(param);
 	}
 
 	
