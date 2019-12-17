@@ -1,6 +1,14 @@
 # gms
 
+//2019-12-17
+adminlte.css 파일
 
+.table th,
+.table td {
+  padding: 0.75rem; => 50rem 으로 수정
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
 
 DB
 
