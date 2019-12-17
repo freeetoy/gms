@@ -93,12 +93,7 @@
           <div class="col-sm-6">
             <h1>가스 목록</h1>
           </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tables</li>
-            </ol>
-          </div>
+          
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -144,7 +139,7 @@
           <div class="col-md-6">         
             <!-- /.card -->
 			<form role="form" id="regForm" th:action="@{/gms/gas/register.do}" th:object="${gas}" method="post" onsubmit="return validationOfForm(this)">
-            <div class="card card-danger">
+            <div class="card card-success">
               <div class="card-header">
                 <h3 class="card-title">가스 등록</h3>
               </div>
@@ -189,8 +184,8 @@
                   <tbody>
                   	<tr th:if="${not #lists.isEmpty( gasList )}" th:each="row : ${gasList}" style="font-size:14px;">
                       <td th:text="${gasList.indexOf(row)+1}"></td>
-                      <td th:text="${row.gasNm}"></td>
-                      <td th:text="${row.gasCd}"></td>
+                      <th th:text="${row.gasNm}"></th>
+                      <th th:text="${row.gasCd}"></th>
                       <td th:text="${row.createId}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
                       <td><a class="btn btn-info btn-xs" href="#" th:gasId="${row.gasId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_modifyGas([[ ${row.gasId} ]])"><i class="fas fa-pencil-alt"></i>수정 </a> 

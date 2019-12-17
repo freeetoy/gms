@@ -55,37 +55,6 @@
 	}
 	
 	
-	var fn_modifyGas = function(gasId){
-	
-		var ajaxInfo ={
-			type:"POST",
-			url:"/gms/gas/detail.do",
-			data:{
-				gasId : gasId
-			},
-			dataType: "json",
-		};
-		
-		ajax = callAjax(ajaxInfo);
-		
-		ajax.done(function(data){
-			console.log(data);
-		
-			console.log("####gasCd---"+data.gasCd);		
-			
-			$("#gasId").val(data.gasId);
-			$("#gasNm").val(data.gasNm);
-			$("#gasCd").val(data.gasCd);
-			//document.form1.gasNm1.value=data.gasNm;
-				
-			if(data.result == "fail"){
-				alert("가스가 존재하지 않습니다");			
-				return;
-			}
-			
-		});
-
-	};
 
 </script>
 
@@ -97,23 +66,18 @@
           <div class="col-sm-6">
             <h1>상품 목록</h1>
           </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tables</li>
-            </ol>
-          </div>
+          
         </div>
       </div><!-- /.container-fluid -->
     </section>
   
     <section class="content">   
         <div class="row">
-              <div class="col-10">
+              <div class="col-11">
               </div>               
              
-              <div class="col-2">
-               		<a href="/gms/product/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">상품추가</button></a>
+              <div class="col-1">
+               		<a href="/gms/product/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm"><i class="far fa-edit"></i>추가</button></a>
               </div>
          </div>
          <div class="row">	
@@ -145,16 +109,16 @@
                   <tbody>
                   	<tr th:if="${not #lists.isEmpty( productList )}" th:each="row : ${productList}" style="font-size:14px;">
                       <td th:text="${productList.indexOf(row)+1}"></td>
-                      <td th:if="${row.productPriceSeq == 1}" th:rowspan="${row.productPriceCount}">
+                      <th th:if="${row.productPriceSeq == 1}" th:rowspan="${row.productPriceCount}">
                       <a th:href="@{/gms/product/update.do( productId=${row.productId} )}" th:text="${row.ProductNm}"></a>
-                      </td>
-                      <td th:text="${row.productCapa}"></td>
+                      </th>
+                      <th th:text="${row.productCapa}"></th>
                       <td th:text="${#numbers.formatInteger(row.productPrice, 3, 'COMMA')}"></td>
                       <td th:text="${row.CreateId}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
                       <td> 
                       <a class="btn btn-danger btn-xs" href="#"  th:if="${row.productOrderCount==0}"  th:onclick="fn_modifyProduct([[ ${row.productId} ]],[[ ${row.productPriceSeq} ]], 0)"><i class="fas fa-trash"></i>삭제</a>
-                      <a class="btn btn-success btn-xs" href="#"  th:unless="${row.productOrderCount==0}"  th:onclick="fn_modifyProduct([[ ${row.productId} ]],[[ ${row.productPriceSeq} ]],1)"><i class="fas fa-pencil-alt"></i>판매중지</a>
+                      <a class="btn btn-success btn-xs" href="#"  th:unless="${row.productOrderCount==0}"  th:onclick="fn_modifyProduct([[ ${row.productId} ]],[[ ${row.productPriceSeq} ]],1)"><i class="fas fa-ban"></i>판매중지</a>
                       </td>
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( productList )}">

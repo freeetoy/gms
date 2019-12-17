@@ -438,12 +438,7 @@ $(document).ready(function(){
           <div class="col-sm-6">
             <h1>용기 목록</h1>
           </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tables</li>
-            </ol>
-          </div>
+          
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -700,17 +695,16 @@ $(document).ready(function(){
               </div>                   
               <div class="col-2">
                 <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-           </form>
-              </div>
-             
-              <div class="col-1">
+		            <i class="fas fa-search"></i>
+		          </button>
+           		</form>
+              </div>             
+              <!-- div class="col-1">
                		<a href="/gms/bottle/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">용기 등록</button></a>
-              </div>
-              <div class="col-1">
-              	<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchProductId= ${searchProductId} ,searchChargeDt=${searchChargeDt},menuType=1 )}"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
-               
+              </div-->
+              <div class="col-2">
+              		<a class="btn btn-outline-primary btn-sm" href="/gms/bottle/write.do"><i class="far fa-edit"></i>용기등록</a>
+              		<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchProductId= ${searchProductId} ,searchChargeDt=${searchChargeDt},menuType=1 )}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>               
               </div>
          </div>
         <div class="row">	
@@ -743,17 +737,17 @@ $(document).ready(function(){
                   <form name="checkForm" id="checkForm">
                   	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}" style="font-size:14px;">
                       <td><input class="IdCheckbox"  name="check_id" type="checkbox" th:value="${row.bottleId}"></td>
-                      <td>
+                      <th>
                       <a href="#" th:onclick="goUpdate([[ ${row.bottleId} ]])" th:text="${row.bottleId}"></a>                     
-                      </td>
-                      <td th:text="${row.bottleBarCd}"></td>
+                      </th>
+                      <th th:text="${row.bottleBarCd}"></th>
                       <td th:text="${row.productNm}"></td>
                       <td th:text="${row.bottleCapa}"></td>
                       <td th:text="${row.bottleWorkCdNm}"></td>
                       <td th:text="${row.CustomerNm}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>  
                       <td>                      
-						<a class="btn_select_process btn btn-info btn-xs" th:bottleId="${row.bottleId}" data-toggle="modal" data-target="#modal-default"  href="#"><i class="fas fa-pencil-alt"></i>상태변경 </a>
+						<a class="btn_select_process btn btn-info btn-xs" th:bottleId="${row.bottleId}" data-toggle="modal" data-target="#modal-default"  href="#"><i class="fas fa-check-circle"></i>상태변경 </a>
 						<a class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteBottle([[ ${row.bottleId} ]])">
                               <i class="fas fa-trash"></i>삭제</a>
                       </td>                     
@@ -775,7 +769,7 @@ $(document).ready(function(){
         
          <div class="row">		
          	<div class="col-1">
-         	<a class="btn_select_process1 btn btn-success btn-xs"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-pencil-alt"></i>일괄변경</a>
+         		<a id="select_del" class="btn btn-danger btn-sm" href="#" th:onclick="fn_deleteBottles()"><i class="fas fa-trash"></i>선택삭제</a>            	
          	</div>						
 			<div class="col-9">
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
@@ -808,9 +802,9 @@ $(document).ready(function(){
 				</div>
 			</div>
 			
-			<div class="col-2">
-			<a id="select_del" class="btn btn-danger btn-xs" href="#" th:onclick="fn_deleteBottles()"><i class="fas fa-trash"></i>선택삭제</a>   
-            <a class="btn_select_process2 btn btn-success btn-xs"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-pencil-alt"></i>엑셀업로드</a>
+			<div class="col-2" align='right'>
+				<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i>용기변경</a>
+            	<a class="btn_select_process2 btn btn-primary btn-sm"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-upload"></i>엑셀등록</a>
 			</div>
 			
 		</div>

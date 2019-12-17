@@ -138,7 +138,7 @@ public class WorkReportController {
 		
 		if(result > 0){
 			String alertMessage = "등록되었습니다.";
-			RequestUtils.responseWriteException(response, alertMessage, "/gms/mypage/assign.do");
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/report/list.do");
 		}
 		return null;
 		

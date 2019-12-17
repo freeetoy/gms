@@ -44,13 +44,15 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
         
         LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);
         
-        if(session != null || sessionInfo != null) {
+        if(sessionInfo != null) {
             
             userId 		= StringUtils.defaultString(sessionInfo.getUserId());
             systemRole 	= StringUtils.defaultString(sessionInfo.getUserAuthority());
             log.info("preHandle userId ************ "+userId);
             log.info("preHandle userNm ************ "+StringUtils.defaultString(sessionInfo.getUserNm()));
+            log.info("preHandle userPartCd ************ "+StringUtils.defaultString(sessionInfo.getUserPartCd()));
             log.info("preHandle systemRole ************ "+systemRole);
+            
             // Session에 있는 ID가 존재하는지 확인하여 없으면, 강제 로그아웃 처리
             if ("".equals(userId) || "".equals(systemRole)) {
                 request.getSession().invalidate();
@@ -59,7 +61,8 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
             }
         }
         else {   
-        	
+        	log.info("preHandle userId ************null ");
+        	/*
         	LoginUserVO userInfo = new LoginUserVO();
         	// 임시
         	userInfo.setUserId("freetoy");
@@ -70,7 +73,11 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
         	
         	SessionUtil sessionUtil = new SessionUtil();
         	boolean isSuccess = sessionUtil.saveSessionInfo(request, userInfo);
-        	
+        	*/
+        	//request.getSession().invalidate();
+        	response.sendRedirect(request.getContextPath() + "/login");
+			return false;   	
+			//response.sendRedirect("/login");
         }
         
         //return super.preHandle(request, response, handler);

@@ -16,7 +16,7 @@ public class AbstractVO implements Serializable {
 	/**
 	 * 생성자 ID
 	 */
-	private String createId = "TESTUSER";
+	private String createId = "";
 	
 	/**
 	 * 생성 일자
@@ -26,7 +26,7 @@ public class AbstractVO implements Serializable {
 	/**
 	 * 수정자 ID
 	 */
-	private String updateId = "TESTUSER";
+	private String updateId = "";
 	
 	/**
 	 * 수정 일자

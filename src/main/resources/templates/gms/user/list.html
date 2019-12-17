@@ -60,12 +60,7 @@
           <div class="col-sm-6">
             <h1>사용자 목록</h1>
           </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tables</li>
-            </ol>
-          </div>
+          
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -77,19 +72,19 @@
                		사용자명
               </div>               
               <div class="col-5">
-              <form id="mainForm" name=""mainForm"" th:action="@{/gms/user/list.do}" method="post">
-              <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
-               <input type="text" id="searchUserNm" name="searchUserNm" class="form-control" placeholder="search" th:value="${searchUserNm}">
+	              <form id="mainForm" name=""mainForm"" th:action="@{/gms/user/list.do}" method="post">
+	              <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
+	               <input type="text" id="searchUserNm" name="searchUserNm" class="form-control" placeholder="search" th:value="${searchUserNm}">
               </div>               
-              <div class="col-4">
+              <div class="col-5">
                 <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-           </form>
+		            <i class="fas fa-search"></i>
+		          </button>
+           			</form>
               </div>
              
-              <div class="col-2">
-               		<a href="/gms/user/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">사용자 등록</button></a>
+              <div class="col-1" align=right>
+               		<a href="/gms/user/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm"><i class="far fa-edit"></i> 등록</button></a>
               </div>
          </div>
         <div class="row">	
@@ -124,11 +119,11 @@
                   </thead>
                   <tbody>
                   	<tr th:if="${not #lists.isEmpty( userList )}" th:each="row : ${userList}"  style="font-size:14px;">
-                      <td th:text="${totalCount-((currentPage-1)*10) - userList.indexOf(row)}"></td>
-                      <td>
+                      <td th:text="${totalCount-((currentPage-1) * rowPerPage) - userList.indexOf(row)}"></td>
+                      <th>
                       <a th:href="@{/gms/user/update.do( userId=${row.userId} )}" th:text="${row.userNm}"></a>
-                      </td>
-                      <td th:text="${row.userId}"></td>
+                      </th>
+                      <th th:text="${row.userId}"></th>
                       <td th:if="${row.userAuthority =='01'}" th:text="사용자">
                       <td th:unless="${row.userAuthority =='01'}" th:text="관리자">
                       </td>

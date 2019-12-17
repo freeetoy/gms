@@ -47,6 +47,8 @@ public interface OrderService {
 	
 	public int modifyOrderComplete(OrderProductVO param);
 
+	public int modifyOrderProductBottle(OrderProductVO param);
+	
 	public int changeOrderProcessCd(OrderVO param);
 
 	public int deleteOrder(OrderVO param);

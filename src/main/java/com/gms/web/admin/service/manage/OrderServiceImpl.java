@@ -114,6 +114,8 @@ public class OrderServiceImpl implements OrderService {
 		resutlMap.put("lastPageNum", lastPageNum);
 		resutlMap.put("totalCount", orderCount);
 		
+		resutlMap.put("rowPerPage", ROW_PER_PAGE);
+		
 		return resutlMap;
 	}
 
@@ -578,6 +580,13 @@ public class OrderServiceImpl implements OrderService {
 		return result;
 	}
 
+	
+	@Override
+	public int modifyOrderProductBottle(OrderProductVO param) {
+		return orderMapper.updateOrderBottleId(param);
+	}
+
+	
 	@Override
 	@Transactional
 	public int changeOrderProcessCd(OrderVO params) {
@@ -673,6 +682,7 @@ public class OrderServiceImpl implements OrderService {
 		return result;
 	}
 
+	
 	
 	
 }

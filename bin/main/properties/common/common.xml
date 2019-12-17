@@ -6,6 +6,8 @@
 	<entry key="common.Member.Comp.Daehan">1</entry>
 	
 	
+	<entry key="common.crypto.key">daehangaskey1234</entry>
+	<entry key="common.ROW.PER.PAGE">15</entry>
 	
 	<!-- Menu ID 정의 -->
 	<entry key="common.menu.order">order</entry>

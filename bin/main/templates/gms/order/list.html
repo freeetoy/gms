@@ -324,9 +324,6 @@ $(document).ready(function(){
               center: 'screen',
               scrollbars: 'true'
           });
-
-
-
     });
 	
 	//Ajax공통 호출
@@ -361,12 +358,7 @@ $(document).ready(function(){
           <div class="col-sm-6">
             <h1>주문 목록</h1>
           </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tables</li>
-            </ol>
-          </div>
+          
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -527,11 +519,14 @@ $(document).ready(function(){
                 <button class="btn btn-navbar" type="submit"><i class="fas fa-search"></i></button>           
               </div>  
                        
-              <div class="col-1">
-               		<a href="/gms/order/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">주문 등록</button></a>
-              </div>
-              <div class="col-1">
-              	<a th:href="@{/gms/order/excelDownload.do( searchCustomerNm=${searchCustomerNm},searchOrderDt= ${searchOrderDt}  )}"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
+              <!-- >div class="col-1">
+               		
+              </div-->
+              <div class="col-2">
+              	<a class="btn btn-outline-primary btn-sm" href="/gms/order/write.do"><i class="far fa-edit"></i>주문등록</a>
+              		<a th:href="@{/gms/order/excelDownload.do( searchCustomerNm=${searchCustomerNm},searchOrderDt= ${searchOrderDt}  )}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>      
+              	<!-- a href="/gms/order/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm"><i class="far fa-edit"></i>주문등록</button></a>
+              	<a th:href="@{/gms/order/excelDownload.do( searchCustomerNm=${searchCustomerNm},searchOrderDt= ${searchOrderDt}  )}"><button type="button" class="btn btn-primary btn-sm float-righ"><i class="fas fa-download"></i>엑 셀</button></a> -->
               </div>
               </form>  
          </div>
@@ -565,25 +560,25 @@ $(document).ready(function(){
                   <tbody>
                  
                   	<tr th:if="${not #lists.isEmpty( orderList )}" th:each="row : ${orderList}" style="font-size:13px;">
-                      <td th:text="${totalCount-((currentPage-1)*10) - orderList.indexOf(row)}"></td>
-                      <td th:text="${row.CustomerNm}"></td>
-                      <td th:text="${row.orderProductNm}"></td>
+                      <td th:text="${totalCount-((currentPage-1)*rowPerPage) - orderList.indexOf(row)}"></td>
+                      <th th:text="${row.CustomerNm}"></th>
+                      <th th:text="${row.orderProductNm}"></th>
                       <td th:text="${row.orderProductCapa}"></td>
                       <td th:text="|${row.createNm}(${row.createId})|"></td>
-                      <th th:if="${row.orderProcessCdNm=='0201'}" th:text="${row.orderProcessCdNm}">
-                      <th th:unless="${row.orderProcessCdNm=='0201'}" style="color: red" th:text="${row.orderProcessCdNm}">
+                      <th th:if="${row.orderProcessCd=='0201'|| row.orderProcessCd=='0202'}" style="color: red"  th:text="${row.orderProcessCdNm}">
+                      <th th:unless="${row.orderProcessCd=='0201' || row.orderProcessCd=='0202'}" th:text="${row.orderProcessCdNm}">
                       </th>
                       <td th:text="${#calendars.format( row.deliveryReqDt, 'yyyy-MM-dd' )}"></td>
 		     		  <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>  
                       <td>                      
-						<a class="btn_select_process btn btn-success btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal" href="#"><i class="fas fa-pencil-alt"></i>진행확인</a>
+						<a class="btn_select_process btn btn-success btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal" href="#"><i class="fas fa-check-circle"></i>진행확인</a>
 					  </td>
 					  <td>  	
 					  <a class="btn btn-info btn-xs" href="#" th:onclick="javascript:goUpdate([[ ${row.orderId} ]])"><i class="fas fa-pencil-alt"></i>수정 </a>
 						<a class="btn btn-danger btn-xs" href="#" th:onclick="goDelete([[ ${row.orderId} ]])">
                               <i class="fas fa-trash"></i>삭제</a>
                           <a class="btn_order_print btn btn-secondary btn-xs" th:orderId="${row.orderId}"  href="#" >
-                              <i class="fas fa-folder"></i>거래명세서</a>
+                              <i class="fas fa-print"></i>거래명세서</a>
                       </td>
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( orderList )}">

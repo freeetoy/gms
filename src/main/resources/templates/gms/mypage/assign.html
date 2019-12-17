@@ -9,14 +9,14 @@
 
 $(document).ready(function(){ 	
 	
- 	// 거래명세서 출력
+ 	// 
     $(".btn_order_print").click(function()  
     {
     
        var orderId = $(this).attr('orderId'); 
 
-       $.popupWindow('/gms/order/popupOrder.do?orderId=' + orderId, {
-              width: 1300,
+       $.popupWindow('/gms/mypage/print.do', {
+              width: 1000,
               height: 500,
               center: 'screen',
               scrollbars: 'true'
@@ -52,8 +52,7 @@ $(document).ready(function(){
 					$("#deliveryReqDt").val(moment(data.order.deliveryReqDt).format('YYYY/MM/DD') + ' ' +Ampm);			
 					$("#orderEtc").val(data.order.orderEtc);			
 					$("#orderTotalAmount").val(numberWithCommas(data.order.orderTotalAmount));	
-					console.log(data.order.orderTotalAmount);
-					
+					console.log(data.order.orderTotalAmount);				
 					
 					
 					if(data.orderProduct.length > 0) {
@@ -101,6 +100,19 @@ $(document).ready(function(){
 		console.log("start btn_selelct_pr}");
 		bottleIds = "";	
 		var orderId = $(this).attr('orderId'); 
+		$("table.mod-doc-list1").find('tr').remove();			
+		
+		var newRowlist1 = $("<tr>");	
+		var colslist1 = "";
+	
+		colslist1 += '<td>용기코드</td>';
+		colslist1 += '<td>용기바코드</td>';
+		colslist1 += '<td>가스</td>';
+		colslist1 += '<td>충전기한</td>';
+		colslist1 += '</tr>';
+		
+		newRowlist1.append(colslist1);
+		$("table.mod-doc-list1").append(newRowlist1);
 
 		var ajaxInfo ={
  					type:"POST",
@@ -193,7 +205,7 @@ $(document).ready(function(){
 				    var cols1 = "";	
 				    cols1 += '<th>'+data.bottleId+'</th>';
 				    cols1 += '<th>'+data.bottleBarCd+'</th>';
-				    cols1 += '<th>'+data.gasNm+'</th>>';
+				    cols1 += '<th>'+data.productNm+'</th>>';
 				    cols1 += '<th>'+data.bottleChargeDt.substring(0,10)+'</th>';
 				    cols1 += '</tr>'     ;    
 				    newRow1.append(cols1);
@@ -318,12 +330,7 @@ $(document).ready(function(){
           <div class="col-sm-6">
             <h1>배정 주문</h1>
           </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tables</li>
-            </ol>
-          </div>
+          
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -536,7 +543,14 @@ $(document).ready(function(){
 		<!-- /.modal -->
     	
     	
-    	
+    	<div class="row">
+            <div class="col-10">
+           	</div>
+            <div class="col-2" align=right>
+         		<a href="#" class="btn_order_print btn btn-default"><i class="fas fa-print"></i> 인쇄</a>
+         	</div>	
+             </form> 
+         </div>
         <div class="row">	
 	        <div class="col-12">
 	        <table>
@@ -578,7 +592,7 @@ $(document).ready(function(){
 		     		  <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>   
 		     		  <td>                      
 						<a class="btn_select_process btn btn-success btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal" href="#"><i class="fas fa-pencil-alt"></i>주문정보</a>
-						<a class="btn_select_process1 btn btn-success btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-pencil-alt"></i>납품</a>
+						<a class="btn_select_process1 btn btn-info btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i>납품</a>
 					  </td>                     
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( orderList )}">

@@ -282,8 +282,8 @@
 		WHERE p.Product_ID = pp.Product_ID
 		and p.Product_Status != '0'
 		and pp.Product_Status != '0'
-		and Gas_ID = #{gasId}		
-		and Product_Capa = #{bottleCapa}
+		and p.Product_ID = #{productId}		
+		and Product_Price_Seq = #{productPriceSeq}
 	</select>
 	
 	

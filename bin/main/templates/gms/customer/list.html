@@ -85,12 +85,7 @@
           <div class="col-sm-6">
             <h1>거래처 목록</h1>
           </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tables</li>
-            </ol>
-          </div>
+          
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -159,22 +154,22 @@
                		거래처명
               </div>               
               <div class="col-5">
-              <form id="mainForm" name=""mainForm"" th:action="@{/gms/customer/list.do}" method="post">
-              <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
-               <input type="text" id="searchUCustomerNm" name="searchCustomerNm" class="form-control" placeholder="search" th:value="${searchCustomerNm}">
-              </div>               
-              <div class="col-3">
-                <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-           </form>
+	              <form id="mainForm" name=""mainForm"" th:action="@{/gms/customer/list.do}" method="post">
+	              <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
+	               <input type="text" id="searchUCustomerNm" name="searchCustomerNm" class="form-control" placeholder="search" th:value="${searchCustomerNm}">
+	           </div>               
+	           <div class="col-4">
+	                <button class="btn btn-navbar" type="submit">
+	            		<i class="fas fa-search"></i>
+	          		</button>
+	           </form>
               </div>
              
-              <div class="col-2">
-               		<a href="/gms/customer/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">거래처 등록</button></a>
+              <div class="col-1">
+               		<a href="/gms/customer/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm"><i class="far fa-edit"></i>등록</button></a>
               </div>
               <div class="col-1">
-              	<a th:href="@{/gms/customer/excelDownload.do( searchCustomerNm=${searchCustomerNm}  )}"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
+              	<a th:href="@{/gms/customer/excelDownload.do( searchCustomerNm=${searchCustomerNm}  )}"><button type="button" class="btn  btn-primary btn-sm float-righ"><i class="far fa-file-excel"></i> 엑셀받기</button></a>
               </div>
          </div>
         <div class="row">	
@@ -210,7 +205,7 @@
                   </thead>
                   <tbody>
                   	<tr th:if="${not #lists.isEmpty( customerList )}" th:each="row : ${customerList}" style="font-size:14px;">
-                      <td th:text="${totalCount-((currentPage-1)*10) - customerList.indexOf(row)}"></td>
+                      <td th:text="${totalCount-((currentPage-1)* rowPerPage) - customerList.indexOf(row)}"></td>
                       <td>
                       <a th:href="@{/gms/customer/update.do( customerId=${row.customerId} )}" th:text="${row.customerNm}"></a>
                       </td>
@@ -269,9 +264,8 @@
 				</div>
 			</div>
 			
-			<div class="col-1">
-			
-				<a  data-toggle="modal" data-target="#process-modal2" href=""><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀등록</button></a>
+			<div class="col-1">			
+				<a  data-toggle="modal" data-target="#process-modal2" href=""><button type="button" class="btn btn-block btn-primary btn-sm"><i class="fas fa-upload"></i>엑셀등록</button></a>
 	        </div>
 		</div>
         

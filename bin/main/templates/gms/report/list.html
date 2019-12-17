@@ -46,10 +46,8 @@ $(document).ready(function(){
  	
     $(".btn_select_process").click(function()  
 		{
-		console.log("start btn_selelct_pr}");
-		
+		console.log("start btn_selelct_pr}");		
 		var orderId = $(this).attr('orderId'); 
-
 					    
 			var ajaxInfo ={
 					type:"POST",
@@ -74,8 +72,6 @@ $(document).ready(function(){
 					$("#orderEtc").val(data.order.orderEtc);			
 					$("#orderTotalAmount").val(numberWithCommas(data.order.orderTotalAmount));	
 					console.log(data.order.OrderTotalAmount);
-					
-					
 					
 					if(data.orderProduct.length > 0) {
 						$("table.mod-doc-list").find('tr').remove();
@@ -131,7 +127,22 @@ $(document).ready(function(){
 	 var bottlesIds = "";
    $(".btn_select_process1").click(function()  
 	{
-		console.log("start btn_select_process1}");
+		console.log("start btn_select_process1}");		
+		
+		$("table.mod-doc-list1").find('tr').remove();			
+		
+		var newRowlist1 = $("<tr>");	
+		var colslist1 = "";
+	
+		colslist1 += '<td>용기코드</td>';
+		colslist1 += '<td>용기바코드</td>';
+		colslist1 += '<td>가스</td>';
+		colslist1 += '<td>충전기한</td>';
+		colslist1 += '</tr>';
+		
+		newRowlist1.append(colslist1);
+		$("table.mod-doc-list1").append(newRowlist1);
+		
 		var ajaxInfo ={
 			type:"POST",
 			url:"/gms/common/customerList.do",			
@@ -145,10 +156,8 @@ $(document).ready(function(){
 
 				for(i=0; i< data.length;i++) {
 					console.log(data[i]);      
-					$('#customerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')
-					
-				}
-				
+					$('#customerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')					
+				}			
 				
 		})
 		       .fail(function(){
@@ -183,7 +192,7 @@ $(document).ready(function(){
 				    var cols1 = "";	
 				    cols1 += '<th>'+data.bottleId+'</th>';
 				    cols1 += '<th>'+data.bottleBarCd+'</th>';
-				    cols1 += '<th>'+data.gasNm+'</th>>';
+				    cols1 += '<th>'+data.productNm+'</th>>';
 				    cols1 += '<th>'+data.bottleChargeDt.substring(0,10)+'</th>';
 				    cols1 += '</tr>'     ;    
 				    newRow1.append(cols1);
@@ -296,12 +305,7 @@ $(document).ready(function(){
           <div class="col-sm-6">
             <h1>업무 일지</h1>
           </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tables</li>
-            </ol>
-          </div>
+          
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -336,13 +340,13 @@ $(document).ready(function(){
 											<td class="card-footer">거래처</td>
 											<td  colspan=5>
 											<select id="customerId" name="customerId" class="form-control">
-						                        <option value="0">옵션</option>			                      	
+						                        <option value="0">거래처 선택</option>			                      	
 										    </select>	
 										</tr>				
 										<tr>
 											<td class="card-footer">용기검색</td>
 											<td  colspan=4><input type="text" class="form-control" id="bottleId"  name="bottleId"> </td>
-											<td><a class="btn_bottle_search btn btn-success btn-xs" href="#"><i class="fas fa-search"></i>검색</a></td>
+											<td><a class="btn_bottle_search btn btn-success btn-sm" href="#"><i class="fas fa-search"></i>검색</a></td>
 										</tr>					
 									</table>
 									
@@ -417,8 +421,8 @@ $(document).ready(function(){
             <button class="btn btn-navbar" type="submit"><i class="fas fa-search"></i></button>        
             </div>
             
-            <div class="col-2">
-         	<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-pencil-alt"></i>주문납품</a>
+            <div class="col-2" align=right>
+         	<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i>주문납품</a>
          	</div>	
              </form> 
          </div>
@@ -455,7 +459,9 @@ $(document).ready(function(){
                       <td th:text="${row.CustomerNm}"></td>
                       <td th:text="${row.orderProductNm}"></td>
                       <td th:text="${row.orderProductCapa}"></td>
-                      <td th:text="${row.bottleType}"></td>
+                      <td th:if="${row.bottleType =='E' }" >공병
+                      <td th:unless="${row.bottleType =='E' }">실병
+                      </td>
                       <th th:text="${row.orderProcessCdNm}"></th>
                       <td th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
                       <td th:unless="${row.orderAmount> 0 }" th:text="${row.orderTotalAmount}">

@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.utils.AES256Util;
+import com.gms.web.admin.common.utils.CryptoUtils;
 import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.mapper.manage.UserMapper;
 
@@ -31,7 +33,14 @@ public class UserServiceImpl implements UserService {
 		// 정보 등록
 		int result = 0;
 		logger.info("****** registerUser.getUserId()()) *****===*"+param.getUserId());
-		
+		try {
+			AES256Util aescipher = new AES256Util(PropertyFactory.getProperty("common.crypto.key"));
+			
+			param.setUserPasswd(aescipher.aesEncode( param.getUserPasswd()) );
+	
+		}catch(Exception e) {
+			logger.error("****** registerUser. Exception===*"+e.getMessage());
+		}
 		result = userMapper.insertUser(param);
 		if (result > 0) {
 			successFlag = true;
@@ -49,10 +58,19 @@ public class UserServiceImpl implements UserService {
 		int result = 0;
 		logger.info("****** modifyUser()()) *****===*"+param.getUserId());
 		
-			result = userMapper.updateUser(param);
-			if (result > 0) {
-				successFlag = true;
-			}	
+		try {
+			AES256Util aescipher = new AES256Util(PropertyFactory.getProperty("common.crypto.key"));
+			
+			param.setUserPasswd(aescipher.aesEncode( param.getUserPasswd()) );
+	
+		}catch(Exception e) {
+			logger.error("****** registerUser. Exception===*"+e.getMessage());
+		}
+		
+		result = userMapper.updateUser(param);
+		if (result > 0) {
+			successFlag = true;
+		}	
 		
 		return successFlag;
 		
@@ -60,7 +78,22 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public UserVO getUserDetails(String userId) {
-		return userMapper.selectUserDetail(userId);	
+		
+		UserVO user = userMapper.selectUserDetail(userId);
+		
+		try {
+			//user.setUserPasswd(CryptoUtils.decryptAES256(user.getUserPasswd(),  PropertyFactory.getProperty("common.crypto.key")) );
+			logger.debug("****** getUserDetails. start user.getUserPasswd()===*"+user.getUserPasswd());
+			AES256Util aescipher = new AES256Util(PropertyFactory.getProperty("common.crypto.key"));
+			
+			logger.debug("****** getUserDetails. user.getUserPasswd()===*"+user.getUserPasswd());
+			user.setUserPasswd(aescipher.aesDecode( user.getUserPasswd()) );
+			logger.debug("****** getUserDetails. after decode user.getUserPasswd()===*"+user.getUserPasswd());
+		}catch(Exception e) {
+			logger.error("****** getUserDetails. Exception===*"+e.getMessage());
+			return null;
+		}
+		return user;	
 	}
 
 	@Override

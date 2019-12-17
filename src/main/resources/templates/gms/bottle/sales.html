@@ -224,12 +224,6 @@ var fn_deleteBottle = function(bottleId){
           <div class="col-sm-6">
             <h1>용기 판매</h1>
           </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tables</li>
-            </ol>
-          </div>
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -311,7 +305,7 @@ var fn_deleteBottle = function(bottleId){
            </form>
               </div>
               <div class="col-1">
-              	<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchProductId= ${searchProductId} ,searchChargeDt=${searchChargeDt},menuType=3)}"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀받기</button></a>
+              	<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchProductId= ${searchProductId} ,searchChargeDt=${searchChargeDt},menuType=3)}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>
                
               </div>
              

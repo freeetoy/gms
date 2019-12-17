@@ -33,12 +33,7 @@
           <div class="col-sm-6">
             <h1>자기정보 수정</h1>
           </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">사용자 관리</li>
-            </ol>
-          </div>
+          
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -46,12 +41,12 @@
     <section class="content">   
         
         <div class="row">
-          <div class="col-12">
+          <div class="col-8">
             <div class="card">             
               
              <!-- general form elements -->                        
               <!-- /.card-header -->
-              <div class="col-8">
+              
               <form class="form-horizontal" th:action="@{/gms/mypage/modify.do}" th:object="${user}" method="post" onsubmit="return validationOfForm(this)">
                 <input type="hidden" id="userId" name="userId" th:value="${user.userId}">
                 <input type="hidden" id="userNm" name="userNm" th:value="${user.userNm}">
@@ -103,14 +98,14 @@
                               
                 </table>
               </div>
-            </div>
+            
             <!-- /.card -->           
             
             <div class="card-footer">
-            	<div class="col-8">
+            	
                  <a href="#" th:onclick="history.back()"  class="btn btn-secondary float-left">취소</a>
 		          <input type="submit" value="저장" class="btn btn-success float-right">
-                </div>		
+               
              </div>     		
             </form>   
           	

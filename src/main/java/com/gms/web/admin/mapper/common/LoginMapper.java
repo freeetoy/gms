@@ -7,7 +7,7 @@ import com.gms.web.admin.domain.common.LoginUserVO;
 @Mapper
 public interface LoginMapper {
 	public LoginUserVO selectUserInfo(LoginUserVO param);
-	//public int updatePwdErrCnt(LoginUserVO param);
+	public int updateUserLastConnect(LoginUserVO param);
 	//public int updateLoginUserSvcStat(LoginUserVO param);
 	//public int selectPwdUptDtCheck(LoginUserVO param);
 	////public List<CodeVO> selectAdminConfOptList(CodeVO param);

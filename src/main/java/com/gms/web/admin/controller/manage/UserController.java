@@ -48,6 +48,7 @@ public class UserController {
 		model.addAttribute("startPageNum", map.get("startPageNum"));
 		model.addAttribute("lastPageNum", map.get("lastPageNum"));
 		model.addAttribute("totalCount", map.get("totalCount"));
+		model.addAttribute("rowPerPage", params.getRowPerPage());
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.user"));	    
 		return "gms/user/list";

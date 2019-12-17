@@ -72,7 +72,7 @@ public class OrderVO extends AbstractSearchVO implements Serializable {
 	private String orderProcessCdNm;
 
 	/** Order_Delivery_Dt   	*/
-	private Date orderDeliveryDt;
+	private String orderDeliveryDt;
 	
 	/** Sales_ID           	*/
 	private String salesId;

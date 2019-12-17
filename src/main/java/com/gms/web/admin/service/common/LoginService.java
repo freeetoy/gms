@@ -4,4 +4,6 @@ import com.gms.web.admin.domain.common.LoginUserVO;
 
 public interface LoginService {
 	public LoginUserVO modifyUserInfo(LoginUserVO param);
+	
+	public LoginUserVO getUserInfo(LoginUserVO param);
 }

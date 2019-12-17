@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
-import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.common.CodeVO;
@@ -59,11 +58,11 @@ public class BottleController {
 	@RequestMapping(value = "/gms/bottle/list.do")
 	public String getBottleList(BottleVO params, Model model) {
 
-		logger.info("BottleContoller getBottleList");
-		logger.info("BottleContoller currentPage "+ params.getCurrentPage());
-		logger.info("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.info("BottleContoller searchProductId "+ params.getSearchProductId());
-		logger.info("BottleContoller searchBottleId "+ params.getSearchBottleId());
+		logger.debug("BottleContoller getBottleList");
+		logger.debug("BottleContoller currentPage "+ params.getCurrentPage());
+		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
+		logger.debug("BottleContoller searchProductId "+ params.getSearchProductId());
+		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		
 		String searchChargeDt = params.getSearchChargeDt();	
 		
@@ -72,7 +71,7 @@ public class BottleController {
 				
 		if(searchChargeDt != null && searchChargeDt.length() > 20) {
 			
-			logger.info("BottleContoller searchChargeDt "+ searchChargeDt.length());
+			logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
 			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;
 			
 			searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;
@@ -128,11 +127,11 @@ public class BottleController {
 	@RequestMapping(value = "/gms/bottle/charge.do")
 	public String getBottleTestList(BottleVO params, Model model) {
 
-		logger.info("BottleContoller getBottleList");
-		logger.info("BottleContoller currentPage "+ params.getCurrentPage());
-		logger.info("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.info("BottleContoller searchProductId "+ params.getSearchProductId());
-		logger.info("BottleContoller searchBottleId "+ params.getSearchBottleId());
+		logger.debug("BottleContoller getBottleList");
+		logger.debug("BottleContoller currentPage "+ params.getCurrentPage());
+		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
+		logger.debug("BottleContoller searchProductId "+ params.getSearchProductId());
+		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		
 		String searchChargeDt = params.getSearchChargeDt();	
 		
@@ -141,7 +140,7 @@ public class BottleController {
 				
 		if(searchChargeDt != null && searchChargeDt.length() > 20) {
 			
-			logger.info("BottleContoller searchChargeDt "+ searchChargeDt.length());
+			logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
 			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;
 			
 			searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;
@@ -154,14 +153,14 @@ public class BottleController {
 			// Date 로 구하기
 		    SimpleDateFormat fm1 = new SimpleDateFormat("yyyy/MM/dd");
 		    String fromDate = fm1.format(new Date());
-		    logger.info("현재시간 년월일 = " + fromDate);
+		    logger.debug("현재시간 년월일 = " + fromDate);
 
 		    Calendar cal = Calendar.getInstance();;
 		    cal.setTime(new Date());
 		    cal.add(Calendar.DAY_OF_YEAR, 7); // 하루를 더한다.
 		    	    
 		    String endDate = fm1.format(cal.getTime());
-		    logger.info("현재시간 년월일 = " + endDate);
+		    logger.debug("현재시간 년월일 = " + endDate);
 		    
 		    searchChargeDt = fromDate+" - "+endDate;
 		    
@@ -171,7 +170,7 @@ public class BottleController {
 			params.setSearchChargeDtEnd(endDate); 
 			
 		}
-		logger.info("BottleContoller searchChargeDt "+ searchChargeDt);
+		logger.debug("BottleContoller searchChargeDt "+ searchChargeDt);
 		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
 		
 		Map<String, Object> map = bottleService.getBottleList(params);
@@ -206,6 +205,8 @@ public class BottleController {
 		model.addAttribute("lastPageNum", map.get("lastPageNum"));
 		model.addAttribute("totalCount", map.get("totalCount"));
 		
+		
+		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.boottle.test"));	 
 		
 		return "gms/bottle/charge";
@@ -214,11 +215,11 @@ public class BottleController {
 	@RequestMapping(value = "/gms/bottle/sales.do")
 	public String getBottleSalesList(BottleVO params, Model model) {
 
-		logger.info("BottleContoller getBottleList");
-		logger.info("BottleContoller currentPage "+ params.getCurrentPage());
-		logger.info("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.info("BottleContoller searchProductId "+ params.getSearchProductId());
-		logger.info("BottleContoller searchBottleId "+ params.getSearchBottleId());
+		logger.debug("BottleContoller getBottleList");
+		logger.debug("BottleContoller currentPage "+ params.getCurrentPage());
+		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
+		logger.debug("BottleContoller searchProductId "+ params.getSearchProductId());
+		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		
 		String searchChargeDt = params.getSearchChargeDt();	
 		
@@ -227,7 +228,7 @@ public class BottleController {
 				
 		if(searchChargeDt != null && searchChargeDt.length() > 20) {
 			
-			logger.info("BottleContoller searchChargeDt "+ searchChargeDt.length());
+			logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
 			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;
 			
 			searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;
@@ -237,11 +238,11 @@ public class BottleController {
 			
 		}
 		
-		logger.info("BottleContoller searchChargeDt "+ searchChargeDt);
+		logger.debug("BottleContoller searchChargeDt "+ searchChargeDt);
 		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
 		
 		params.setSearchSalesYn("Y");
-		logger.info("BottleContoller searchSalesYn "+ params.getSearchSalesYn());
+		logger.debug("BottleContoller searchSalesYn "+ params.getSearchSalesYn());
 		
 		Map<String, Object> map = bottleService.getBottleList(params);
 		
@@ -342,7 +343,7 @@ public class BottleController {
 	public String openBottleUpdate(BottleVO params, Model model) {
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.bottle"));
-		logger.info("BottleContoller openBottleUpdate bottleId "+ params.getBottleId());
+		logger.debug("BottleContoller openBottleUpdate bottleId "+ params.getBottleId());
 		
 		if (params.getBottleId() == null) {
 			return "redirect:/gms/bottle/list.do";
@@ -385,13 +386,13 @@ public class BottleController {
 			, HttpServletResponse response
 			, Model model
 			, BottleVO params) {
-		logger.info("BottleContoller modifyBottle");
+		logger.debug("BottleContoller modifyBottle");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
-		logger.info("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.info("BottleContoller searchGasId "+ params.getSearchGasId());
-		logger.info("BottleContoller searchBottleId "+ params.getSearchBottleId());
+		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
+		logger.debug("BottleContoller searchGasId "+ params.getSearchGasId());
+		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		
 		String searchChargetDt = params.getSearchChargeDt();	
 		
@@ -400,7 +401,7 @@ public class BottleController {
 				
 		if(searchChargetDt != null && searchChargetDt.length() > 20) {
 			
-			logger.info("BottleContoller searchChargeDt "+ searchChargetDt.length());
+			logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
 			searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
 			
 			searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
@@ -449,8 +450,8 @@ public class BottleController {
 		
 		BottleVO result = bottleService.getBottleDetail(bottleId);		
 		
-		if(result != null) logger.info("******result *****===*"+result.getGasId());
-		else logger.info("******result is null  *****===*"); 
+		if(result != null) logger.debug("******result *****===*"+result.getGasId());
+		else logger.debug("******result is null  *****===*"); 
 		
 		return result;
 	}
@@ -461,7 +462,7 @@ public class BottleController {
 			, HttpServletResponse response
 			, Model model
 			, BottleVO params) {
-		logger.info("BottleContoller modifyBottleWorkCd");
+		logger.debug("BottleContoller modifyBottleWorkCd");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -483,7 +484,7 @@ public class BottleController {
 					
 			if(searchChargetDt != null && searchChargetDt.length() > 20) {
 				
-				logger.info("BottleContoller searchChargeDt "+ searchChargetDt.length());
+				logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
 				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
 				
 				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
@@ -526,15 +527,15 @@ public class BottleController {
 	public ModelAndView modifyBottlesWorkCd(HttpServletRequest request
 			, HttpServletResponse response
 			, BottleVO params) {
-		logger.info("BottleContoller modifyBottleWorkCd");
+		logger.debug("BottleContoller modifyBottleWorkCd");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
 		//검색조건 셋팅
-		logger.info("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.info("BottleContoller searchGasId "+ params.getSearchGasId());
-		logger.info("BottleContoller searchBottleId "+ params.getSearchBottleId());
-		logger.info("BottleContoller chBottleId "+ request.getParameter("chBottleId"));
+		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
+		logger.debug("BottleContoller searchGasId "+ params.getSearchGasId());
+		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
+		logger.debug("BottleContoller chBottleId "+ request.getParameter("chBottleId"));
 		
 		String searchChargeDtFrom = null;
 		String searchChargeDtEnd = null;
@@ -548,7 +549,7 @@ public class BottleController {
 					
 			if(searchChargetDt != null && searchChargetDt.length() > 20) {
 				
-				logger.info("BottleContoller searchChargeDt "+ searchChargetDt.length());
+				logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
 				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
 				
 				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
@@ -596,14 +597,14 @@ public class BottleController {
 			, HttpServletResponse response
 			, Model model
 			, BottleVO params) {
-		logger.info("BottleContoller modifyBottleWorkCd");
+		logger.debug("BottleContoller modifyBottleWorkCd");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
 		//검색조건 셋팅
-		logger.info("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.info("BottleContoller searchGasId "+ params.getSearchGasId());
-		logger.info("BottleContoller searchBottleId "+ params.getSearchBottleId());
+		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
+		logger.debug("BottleContoller searchGasId "+ params.getSearchGasId());
+		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		
 		String searchChargetDt = params.getSearchChargeDt();	
 		
@@ -615,7 +616,7 @@ public class BottleController {
 			
 			if(searchChargetDt != null && searchChargetDt.length() > 20) {
 				
-				logger.info("BottleContoller searchChargeDt "+ searchChargetDt.length());
+				logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
 				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
 				
 				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
@@ -659,16 +660,16 @@ public class BottleController {
 			, HttpServletResponse response
 			, Model model
 			, BottleVO params) {
-		logger.info("BottleContoller modifyBottleWorkCd");
+		logger.debug("BottleContoller modifyBottleWorkCd");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
 		//검색조건 셋팅
-		logger.info("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.info("BottleContoller searchGasId "+ params.getSearchGasId());
-		logger.info("BottleContoller searchBottleId "+ params.getSearchBottleId());
+		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
+		logger.debug("BottleContoller searchGasId "+ params.getSearchGasId());
+		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		
-		logger.info("BottleContoller datastring "+ request.getParameter("bottleIds"));
+		logger.debug("BottleContoller datastring "+ request.getParameter("bottleIds"));
 		
 		String bottleIds = null;
 		
@@ -683,7 +684,7 @@ public class BottleController {
 			
 			if(searchChargetDt != null && searchChargetDt.length() > 20) {
 				
-				logger.info("BottleContoller searchChargeDt "+ searchChargetDt.length());
+				logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
 				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
 				
 				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;

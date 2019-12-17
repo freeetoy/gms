@@ -38,8 +38,8 @@ public class BottleServiceImpl implements BottleService {
 		logger.info("****** getBottleList *****start===*");
 		
 		
-		logger.info("****** getBottleList *****param.getSearchBottleId===*" + param.getSearchBottleId());
-		logger.info("****** getBottleList *****param.getRowPerPage===*" + param.getRowPerPage());
+		logger.debug("****** getBottleList *****param.getSearchBottleId===*" + param.getSearchBottleId());
+		logger.debug("****** getBottleList *****param.getRowPerPage===*" + param.getRowPerPage());
 		
 		int currentPage = param.getCurrentPage();
 		int ROW_PER_PAGE = param.getRowPerPage();
@@ -62,7 +62,7 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchGasId() != null) {
 			map.put("searchGasId", param.getSearchGasId());
-			logger.info("****** getBottleList *****searchGasId===*"+param.getSearchGasId());
+			logger.debug("****** getBottleList *****searchGasId===*"+param.getSearchGasId());
 		}
 		
 
@@ -72,45 +72,47 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchChargeDt() != null) {
 			map.put("searchChargeDt", param.getSearchChargeDt());
-			logger.info("****** getBottleList *****getSearchChargeDt===*"+param.getSearchChargeDt());
+			logger.debug("****** getBottleList *****getSearchChargeDt===*"+param.getSearchChargeDt());
 		}		
 		
 		if(param.getSearchChargeDtFrom() != null) {
 			map.put("searchChargeDtFrom", param.getSearchChargeDtFrom());
-			logger.info("****** getBottleList *****getSearchChargeDtFrom===*"+param.getSearchChargeDtFrom());
+			logger.debug("****** getBottleList *****getSearchChargeDtFrom===*"+param.getSearchChargeDtFrom());
 		}
 		
 		if(param.getSearchChargeDtEnd() != null) {
 			map.put("searchChargeDtEnd", param.getSearchChargeDtEnd());
-			logger.info("****** getBottleList *****getSearchChargeDtEnd===*"+param.getSearchChargeDtEnd());
+			logger.debug("****** getBottleList *****getSearchChargeDtEnd===*"+param.getSearchChargeDtEnd());
 		}
 		
 		if(param.getSearchSalesYn() != null) {
 			map.put("searchSalesYn", param.getSearchSalesYn());
-			logger.info("****** getBottleList *****getSearchSalesYn===*"+param.getSearchSalesYn());
+			logger.debug("****** getBottleList *****getSearchSalesYn===*"+param.getSearchSalesYn());
 		}
 		
-		logger.info("****** getBottleList *****currentPage===*"+currentPage);
+		logger.debug("****** getBottleList *****currentPage===*"+currentPage);
 		
 		
 		int bottleCount = bottleMapper.selectBottleCount(map);
 		
-		logger.info("****** getBottleList.bottleCount *****===*"+bottleCount);
+		logger.debug("****** getBottleList.bottleCount *****===*"+bottleCount);
 		
 		//int lastPage = (int)(Math.ceil(bottleCount/ROW_PER_PAGE));
 		int lastPage = (int)((double)bottleCount/ROW_PER_PAGE+0.95);
 		
-		logger.info("****** getBottleList.lastPage *****===*"+lastPage);
+		logger.debug("****** getBottleList.lastPage *****===*"+lastPage);
 		
 		if(currentPage >= (lastPage-4)) {
 			lastPageNum = lastPage;
 		}
 		
+		if(lastPageNum ==0) lastPageNum=1;
+		
 		Map<String, Object> resutlMap = new HashMap<String, Object>();
 		
 		List<BottleVO> bottleList = bottleMapper.selectBottleList(map);
 		
-		logger.info("****** getBottleList.bottleList *****===*"+bottleList.size());
+		logger.debug("****** getBottleList.bottleList *****===*"+bottleList.size());
 		
 		resutlMap.put("list",  bottleList);
 		
@@ -120,6 +122,11 @@ public class BottleServiceImpl implements BottleService {
 		resutlMap.put("lastPageNum", lastPageNum);
 		resutlMap.put("totalCount", bottleCount);
 		
+		logger.debug("BottleService startPageNum "+ starPageNum);
+		logger.debug("BottleService lastPageNum "+ lastPageNum);
+		logger.debug("BottleService lastPage "+ lastPage);
+		
+		
 		return resutlMap;
 	}
 	
@@ -128,13 +135,13 @@ public class BottleServiceImpl implements BottleService {
 		logger.info("****** getBottleListToExcel *****start===*");
 		
 		
-		logger.info("****** getBottleListToExcel *****param.getMenuType===*" + param.getMenuType());		
+		logger.debug("****** getBottleListToExcel *****param.getMenuType===*" + param.getMenuType());		
 		
 		Map<String, Object> map = new HashMap<String, Object>();			
 		
 		if(param.getSearchGasId() != null) {
 			map.put("searchGasId", param.getSearchGasId());
-			logger.info("****** getBottleList *****searchGasId===*"+param.getSearchGasId());
+			logger.debug("****** getBottleList *****searchGasId===*"+param.getSearchGasId());
 		}
 		
 		if(param.getSearchProductId() != null  ) {			
@@ -143,7 +150,7 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchChargeDt() != null) {
 			map.put("searchChargeDt", param.getSearchChargeDt());
-			logger.info("****** getBottleList *****getSearchChargeDt===*"+param.getSearchChargeDt());
+			logger.debug("****** getBottleList *****getSearchChargeDt===*"+param.getSearchChargeDt());
 		}else {
 			if(param.getMenuType()==2) {
 				// Date 로 구하기
@@ -170,17 +177,17 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchChargeDtFrom() != null) {
 			map.put("searchChargeDtFrom", param.getSearchChargeDtFrom());
-			logger.info("****** getBottleList *****getSearchChargeDtFrom===*"+param.getSearchChargeDtFrom());
+			logger.debug("****** getBottleList *****getSearchChargeDtFrom===*"+param.getSearchChargeDtFrom());
 		}
 		
 		if(param.getSearchChargeDtEnd() != null) {
 			map.put("searchChargeDtEnd", param.getSearchChargeDtEnd());
-			logger.info("****** getBottleListToExcel *****getSearchChargeDtEnd===*"+param.getSearchChargeDtEnd());
+			logger.debug("****** getBottleListToExcel *****getSearchChargeDtEnd===*"+param.getSearchChargeDtEnd());
 		}
 		
 		if(param.getSearchSalesYn() != null) {
 			map.put("searchSalesYn", param.getSearchSalesYn());
-			logger.info("****** getBottleListToExcel *****getSearchSalesYn===*"+param.getSearchSalesYn());
+			logger.debug("****** getBottleListToExcel *****getSearchSalesYn===*"+param.getSearchSalesYn());
 		}
 		
 		if(param.getMenuType()==3) {
@@ -265,7 +272,7 @@ public class BottleServiceImpl implements BottleService {
 	public int modifyBottle(BottleVO param) {
 				
 		// 정보 등록
-		logger.info("****** modifyBottle.getBottleId()()) *****===*"+param.getBottleId());
+		logger.debug("****** modifyBottle.getBottleId()()) *****===*"+param.getBottleId());
 		int result = 0;
 		
 		result =  bottleMapper.updateBottle(param);
@@ -279,7 +286,7 @@ public class BottleServiceImpl implements BottleService {
 	@Transactional
 	public int changeBottleWorkCd(BottleVO param) {
 		// 정보 등록
-		logger.info("****** modifyBottle.getChBottleId()()) *****===*"+param.getChBottleId());
+		logger.debug("****** modifyBottle.getChBottleId()()) *****===*"+param.getChBottleId());
 		int result = 0;
 		result =  bottleMapper.updateBottleWorkCd(param);
 		
@@ -380,7 +387,7 @@ public class BottleServiceImpl implements BottleService {
 	
 	private int insertBottleHistory(String bottleId) {
 		// 정보 등록
-		logger.info("****** registerBottle.getBottleId()()) *****===*" +bottleId);
+		logger.debug("****** registerBottle.getBottleId()()) *****===*" +bottleId);
 		
 		return bottleMapper.insertBottleHistory(bottleId);		
 	}

@@ -57,10 +57,7 @@ public class OrderController {
 	public ModelAndView getOrderList(OrderVO params) {
 
 		logger.info("BottleContoller getBottleList");
-		logger.info("BottleContoller currentPage "+ params.getCurrentPage());
-		logger.info("BottleContoller searchOrderDt "+ params.getSearchOrderDt());
-		logger.info("BottleContoller searchCustomerNm "+ params.getSearchCustomerNm());
-		
+
 		ModelAndView mav = new ModelAndView();
 		
 		String searchOrderDt = params.getSearchOrderDt();	
@@ -90,6 +87,7 @@ public class OrderController {
 		mav.addObject("startPageNum", map.get("startPageNum"));
 		mav.addObject("lastPageNum", map.get("lastPageNum"));
 		mav.addObject("totalCount", map.get("totalCount"));
+		mav.addObject("rowPerPage", params.getRowPerPage());
 		
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));	 
 		

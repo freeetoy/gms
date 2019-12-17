@@ -291,7 +291,7 @@
 		SET
 			Order_Id			= #{orderId}
 			, Order_Product_Seq	= #{orderProductSeq}
-			, CustomerId		= #{customerId}
+			, Customer_Id		= #{customerId}
 			, Bottle_Work_CD 	= #{bottleWorkCd}
 			, Bottle_Work_ID	= #{bottleWorkId}
 			, Bottle_Work_DT	= NOW()	

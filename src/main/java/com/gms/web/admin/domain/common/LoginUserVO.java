@@ -19,10 +19,17 @@ public class LoginUserVO implements Serializable {
 	/** 사용자명 */
 	private String userNm;
 	
-	/** 사용자부서 */
+	/** 사용자부서
+	 * 01:영업팀
+	 * 02:회계팀
+	 * 03:관리
+	 *  */
 	private String userPartCd;
 	
-	/** 사용자권한 */
+	/** 사용자권한
+	 * 01:사용자
+	 * 99:관리자 
+	 * */
 	private String userAuthority;
 	
 	/** 패스워드 */

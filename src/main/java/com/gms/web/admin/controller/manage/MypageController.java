@@ -60,6 +60,31 @@ public class MypageController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/gms/mypage/print.do")
+	public ModelAndView getAssignListPrint(
+			HttpServletRequest request
+			, HttpServletResponse response
+			, OrderVO params) {
+
+		logger.info("MypageContoller getAssignListPrint");
+		
+		RequestUtils.initUserPrgmInfo(request, params);		
+		
+		
+		ModelAndView mav = new ModelAndView();		
+		
+		List<OrderVO> orderList = orderService.getSalseOrderList(params.getCreateId());
+		
+		mav.addObject("orderList", orderList);	
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.assign"));	 	
+		
+		mav.setViewName("gms/mypage/print");
+		
+		return mav;
+	}
+	
+	
+	
 	@RequestMapping(value = "/gms/mypage/update.do")
 	public ModelAndView getMyInfoUpdate(
 			HttpServletRequest request

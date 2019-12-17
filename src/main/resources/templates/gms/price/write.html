@@ -72,7 +72,7 @@ $(document).ready(function(){
 
 	});
 
-	// 품명 선택 변경
+	//상품추가
 
     $('#productId_0').change( function(){
 
@@ -402,13 +402,7 @@ $(document).ready(function(){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>상품 등록</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tables</li>
-            </ol>
+            <h1>거래처 단가 등록</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -484,47 +478,45 @@ $(document).ready(function(){
 				     </option>		
 			    </select>	   
 			   </div>
-              <div class="col-3">
-              <input type="text" id="searchCustomerNm" name="searchCustomerNm" class="form-control" placeholder="search" th:value="${searchCustomerNm}">
+              <div class="col-2">
+              	<input type="text" id="searchCustomerNm" name="searchCustomerNm" class="form-control" placeholder="search" th:value="${searchCustomerNm}">
               </div>               
-              <div class="col-2">
+              <div class="col-1">
                 <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-           </form>
-              </div>
-             
-              <div class="col-2">
-              	<a class="btn_select_process2 btn btn-success btn-xs"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-pencil-alt"></i>엑셀업로드</a>
-               		<!-- a href="/gms/customer/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">엑셀 등록</button></a> -->
+		            <i class="fas fa-search"></i>
+		          </button>
+           		</form>
+              </div>             
+              <div class="col-2" align=right>
+              	<a class="btn_select_process2 btn btn-primary btn-sm"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-upload"></i>엑셀등록</a>
               </div>
          </div>
          <div class="row">	
-	        <div class="col-12">
+	        <div class="col-10">
 	        <table class="table table-hover">
 	         </table>
 	        </div>
         </div>
         <div class="row">
-          <div class="col-12">
+          <div class="col-10">
             <div class="card">
              
               
              <!-- general form elements -->                        
               <!-- /.card-header -->
-              <div class="col-8">
+              <div class="col-10">
               <form name="writeForm" id="writeForm" class="form-horizontal" th:action="@{/gms/price/register.do}"  method="post" onsubmit="return validationOfForm(this)">
               <input type="hidden" id="priceCount" name="priceCount" value="">
               <input type="hidden" id="customerId1" name="customerId1" value="">
                 <div class="form-group">	
-			        <div class="col-12">
+			        <div class="col-10">
 			        <table class="table table-hover">
 			         </table>
 			        </div>
 		        </div>
                 <div class="form-group">
                    <label class="control-label col-8">상품정보</label>
-                   <div class="col-md-10 col-sm-10 col-xs-12">
+                   <div class="col-md-10 col-sm-10 col-xs-10">
                        <table id="myTable" class="table doc-list">
 	                       <tr>
 	                         <td>상품</td>
