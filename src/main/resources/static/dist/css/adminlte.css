@@ -1533,7 +1533,7 @@ pre code {
 .table th,
 .table td {
   padding: 0.50rem;
-  vertical-align: top;
+  vertical-align: cetner;
   border-top: 1px solid #dee2e6;
 }
 

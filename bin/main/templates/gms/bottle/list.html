@@ -247,13 +247,12 @@ var fn_deleteBottle = function(bottleId){
 	
 $(document).ready(function(){	
 	 var bottleIds = "";
-	 
+	 $("#view_car").hide();
+	 $("#view_type").hide();
 	 
 	 $(".btn_select_process").click(function()  
 	{
-		console.log("start btn_select_process}");
-		
-		
+		console.log("start btn_select_process}");		
 		
 		var bottleId = $(this).attr('bottleId'); 
 		
@@ -313,7 +312,7 @@ $(document).ready(function(){
   		console.log("start btn_bottle_search}");
   		//$("#mcustomerNm").val
   		var bottleId = $("#selbottleId").val(); 
-  		console.log("start bottleId" +bottleId);
+  		console.log("start bottleId " +bottleId);
  			var ajaxInfo ={
  					type:"POST",
  					url:"/gms/bottle/detail.do",
@@ -332,7 +331,7 @@ $(document).ready(function(){
 			    var cols1 = "";	
 			    cols1 += '<th>'+data.bottleId+'</th>';
 			    cols1 += '<th>'+data.bottleBarCd+'</th>';
-			    cols1 += '<th>'+data.gasNm+'</th>>';
+			    cols1 += '<th>'+data.productNm+'</th>>';
 			    cols1 += '<th>'+data.bottleChargeDt.substring(0,10)+'</th>';
 			    cols1 += '</tr>'     ;    
 			    newRow1.append(cols1);
@@ -356,17 +355,23 @@ $(document).ready(function(){
 	// 진행 확인 버튼 클릭
     $(".btn_process_check").click(function()  
     {
-    
+   
        var select_pid = $(this).attr('id'); 
        var msg = '';
        var bottleWorkCd = '';
-      
+       $("#view_car").hide();
        console.log("bottleIds ="+bottleIds);
+       if(bottleIds ==''){
+    	   alert("용기를 선택하세요");
+    	   return ;
+       }
        
        switch (select_pid){
           case 'btn_process_1':
             msg = "'입고' 하시겠습니까?";
             bottleWorkCd ='0301';
+            $("#view_car").show();
+            $("#view_type").show();
             break;
           case 'btn_process_2':
             msg = "'충전' 하시겠습니까?";
@@ -375,6 +380,8 @@ $(document).ready(function(){
           case 'btn_process_3':
             msg = "'상차' 하시겠습니까?";
             bottleWorkCd ='0307';
+            $("#view_car").show();
+            $("#view_type").show();
             break;  
           case 'btn_process_4':
              msg = "'출고' 하시겠습니까?";;
@@ -397,15 +404,27 @@ $(document).ready(function(){
 
        }           
        console.log("bottleWorkCd ="+bottleWorkCd);
-       
+       if(bottleWorkCd=='0301'){
+    	  // $("#view_car").show();
+    	   console.log("bottleWorkCd11 ="+bottleWorkCd);
+       }
       
 		if(confirm(msg)){
 			
 			var form = document.createElement("form");
+			
+			var customerId = $("#customerId").val(); 
+			var bottleType = $("#bottleType1").val(); 
+			
+			console.log("customerId " + customerId);
+			console.log("bottleType " + bottleType);
+			
+			
 			form.setAttribute("charset","UTF-8");
 			form.setAttribute("method","post");
-			form.setAttribute("action","/gms/bottle/changeBottlesWorkCd.do");			
+			form.setAttribute("action","/gms/bottle/changeBottlesWorkCd.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchProductId=[[ ${searchProductId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");			
 	        
+
 	        var hiddenField1 = document.createElement("input");
 	        hiddenField1.setAttribute("type", "hidden");
 	        hiddenField1.setAttribute("name", "bottleWorkCd");
@@ -417,12 +436,35 @@ $(document).ready(function(){
 	        hiddenField2.setAttribute("type", "hidden");
 	        hiddenField2.setAttribute("name", "bottleIds");
 	        hiddenField2.setAttribute("value", bottleIds);
-
+	        
 	        form.appendChild(hiddenField2);    
+			
+	        if(bottleWorkCd=='0301' || bottleWorkCd=='0307'){	   	 
+		    	  
+				if(customerId ==''){
+					alert("차량은 선택해주세요");
+					return;
+				}else {				
+			        
+			        var hiddenField3 = document.createElement("input");
+			        hiddenField3.setAttribute("type", "hidden");
+			        hiddenField3.setAttribute("name", "customerId");
+			        hiddenField3.setAttribute("value", customerId);
+
+			        form.appendChild(hiddenField3);    
+			        
+			        var hiddenField4 = document.createElement("input");
+			        hiddenField4.setAttribute("type", "hidden");
+			        hiddenField4.setAttribute("name", "bottleType");
+			        hiddenField4.setAttribute("value", bottleType);
+
+			        form.appendChild(hiddenField4);    
+				}
+		     }
+			
+			document.body.appendChild(form);
 	        
-	        document.body.appendChild(form);
-	        
-	        form.submit();				
+	        form.submit();			
 		}
       
 	});
@@ -510,7 +552,7 @@ $(document).ready(function(){
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-		             	<h4 class="modal-title">주문 정보</h4>
+		             	<h4 class="modal-title">용기</h4>
 		              	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		                <span aria-hidden="true">&times;</span>
 		              	</button>
@@ -527,7 +569,6 @@ $(document).ready(function(){
 								<div  class="card-body">
 								<form id="bForm" name="bForm" th:object="${order}" method="post">
 					              <input type="hidden" id="orderId" name="orderId" value="">	
-					              <input type="hidden" id="customerId" name="customerId" value="">	
 					              <input type="hidden" id="bottlIds" name="bottlIds" value="">	
 					              
 									<table id="myTable" class="table order-info">
@@ -540,6 +581,25 @@ $(document).ready(function(){
 										
 									</thead>
 									</table>
+									<div class="form-group" id="view_car" >
+										<div align="center">
+											<select id="customerId" name="customerId" class="form-control">
+							                    <option value="">차량선택</option>				    
+										        <option th:each="row : ${customerList}"
+										                th:text="${row.customerNm}"
+										                th:value="${row.customerId}">					             
+										        </option>												              				
+							                 </select>
+										</div>
+									</div>
+									<div class="form-group" id="view_type" >
+										<div align="center">
+											<select id="bottleType1" name="bottleType1" class="form-control">
+										        <option value="E">공병</option>	
+										        <option value="F">실병</option>							              				
+							                 </select>
+					                     </div>
+									</div>
 									
 									<div class="form-group">
 										<label >주문정보</label>
@@ -568,7 +628,7 @@ $(document).ready(function(){
 											<button type="button" id="btn_process_2" class="btn btn-info btn btn_process_check">충전</button>
 											<button type="button" id="btn_process_3" class="btn btn-info btn btn_process_check">상차</button>
 											<button type="button" id="btn_process_4" class="btn btn-info btn btn btn_process_check">출고</button>
-											<button type="button" id="btn_process_5" class="btn btn-info btn btn_process_check">판매</button>
+											<!--  button type="button" id="btn_process_5" class="btn btn-info btn btn_process_check">판매</button>-->
 											<button type="button" id="btn_process_6" class="btn btn-info btn btn_process_check">회수</button>
 											<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">기타</button>
 										</div>
@@ -656,13 +716,13 @@ $(document).ready(function(){
             <div class="col-1">
                		충전기한
             </div>               
-            <div class="col-5">
+            <div class="col-3">
               <form id="mainForm" name="mainForm"  method="post">
               <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
               <input type="hidden" id="bottleId" name="bottleId" value="">
                <input type="text" class="form-control" name="searchChargeDt" th:value="${searchChargeDt}"/>			
             </div>               
-            <div class="col-3">               
+            <div class="col-5">               
             </div>
          </div>
          <div class="row">	
@@ -675,8 +735,8 @@ $(document).ready(function(){
            	<div class="col-1">
                		용기코드
             </div>               
-            <div class="col-5">              
-               <input type="text" id="searchBottleId" name="searchBottleId" class="form-control" placeholder="search" th:value="${searchBottleId}">
+            <div class="col-3">              
+               <input type="text" id="searchBottleId" name="searchBottleId" class="form-control"  th:value="${searchBottleId}">
             </div>  
             <div class="col-2">
                	<select id="searchProductId" name="searchProductId" class="form-control">
@@ -693,7 +753,7 @@ $(document).ready(function(){
 			        </option>					        				
                  </select>
               </div>                   
-              <div class="col-2">
+              <div class="col-4">
                 <button class="btn btn-navbar" type="submit">
 		            <i class="fas fa-search"></i>
 		          </button>
@@ -736,7 +796,8 @@ $(document).ready(function(){
                   <tbody>
                   <form name="checkForm" id="checkForm">
                   	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}" style="font-size:14px;">
-                      <td><input class="IdCheckbox"  name="check_id" type="checkbox" th:value="${row.bottleId}"></td>
+                      <td>
+                      <input class="IdCheckbox"  name="check_id" type="checkbox" th:value="${row.bottleId}"></td>
                       <th>
                       <a href="#" th:onclick="goUpdate([[ ${row.bottleId} ]])" th:text="${row.bottleId}"></a>                     
                       </th>

@@ -396,7 +396,7 @@
 		AND 
 			Order_Process_CD <![CDATA[<]]> '0205'			
 		AND 
-			A.Sales_Id = #{salesId}
+			B.Sales_Id = #{salesId}
 		AND 
 			A.Create_Id = D.User_ID
 		AND 

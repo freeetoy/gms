@@ -240,6 +240,11 @@ $(document).ready(function(){
        
        console.log("orderId ="+orderId);
        console.log("bottleIds ="+bottleIds);
+       
+       if(bottleIds ==''){
+    	   alert("용기를 검색하세요");
+    	   return;
+       }
        switch (select_pid){
           case 'btn_process_1':
             msg = "'입고' 하시겠습니까?";
@@ -574,7 +579,7 @@ $(document).ready(function(){
                       <th>상태</th>
                       <th>요청일자</th>
                       <th>접수일</th>
-                      <th>주문정보</th>
+                      <th>관리</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -592,7 +597,7 @@ $(document).ready(function(){
 		     		  <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>   
 		     		  <td>                      
 						<a class="btn_select_process btn btn-success btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal" href="#"><i class="fas fa-pencil-alt"></i>주문정보</a>
-						<a class="btn_select_process1 btn btn-info btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i>납품</a>
+						<a class="btn_select_process1 btn btn-info btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i>관리</a>
 					  </td>                     
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( orderList )}">

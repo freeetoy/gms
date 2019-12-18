@@ -27,11 +27,13 @@ import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.common.CodeVO;
 import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
+import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.GasVO;
 import com.gms.web.admin.domain.manage.ProductPriceVO;
 import com.gms.web.admin.domain.manage.ProductVO;
 import com.gms.web.admin.service.common.CodeService;
 import com.gms.web.admin.service.manage.BottleService;
+import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.manage.GasService;
 import com.gms.web.admin.service.manage.ProductService;
 
@@ -53,6 +55,9 @@ public class BottleController {
 	
 	@Autowired
 	private CodeService codeService;
+	
+	@Autowired
+	private CustomerService customerService;
 	
 	
 	@RequestMapping(value = "/gms/bottle/list.do")
@@ -106,6 +111,9 @@ public class BottleController {
 		//BOTTLE_WORK_CD 코드정보 불러오기 
 		List<CodeVO> codeList = codeService.getCodeList(PropertyFactory.getProperty("common.bottle.status"));
 		model.addAttribute("codeList", codeList);
+		
+		List<CustomerVO> customerList = customerService.searchCustomerListCar();
+		model.addAttribute("customerList", customerList);		
 		
 		//검색어 셋팅
 		model.addAttribute("searchBottleId", params.getSearchBottleId());		
@@ -533,9 +541,10 @@ public class BottleController {
 		
 		//검색조건 셋팅
 		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.debug("BottleContoller searchGasId "+ params.getSearchGasId());
+		logger.debug("BottleContoller getSearchProductId "+ params.getSearchProductId());
 		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		logger.debug("BottleContoller chBottleId "+ request.getParameter("chBottleId"));
+		logger.debug("BottleContoller customerId "+ params.getCustomerId());
 		
 		String searchChargeDtFrom = null;
 		String searchChargeDtEnd = null;

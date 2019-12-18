@@ -65,12 +65,12 @@ public class WorkReportController {
 	}
 	
 	@RequestMapping(value = "/gms/report/register.do", method = RequestMethod.POST)
-	public String registerWorkReport(HttpServletRequest request
+	public String registerWorkReportForOrder(HttpServletRequest request
 			, HttpServletResponse response
 			, Model model
 			, OrderBottleVO params) {
 		
-		logger.info("WorkReportController registerWorkReport");
+		logger.info("WorkReportController registerWorkReportForOrder");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -88,8 +88,10 @@ public class WorkReportController {
 			work.setOrderId(params.getOrderId());
 			work.setBottlesIds(params.getBottleIds());
 			work.setBottleWorkCd(params.getBottleWorkCd());
+			work.setUserId(params.getCreateId());
+			work.setCreateId(params.getCreateId());
 			
-			result = workService.registerWorkReport(work);					
+			result = workService.registerWorkReportForOrder(work);					
 
 			//mav.setViewName("/gms/mypage/assign");			
 		
@@ -137,7 +139,7 @@ public class WorkReportController {
 		//return "redirect:/gms/mypage/assign.do";
 		
 		if(result > 0){
-			String alertMessage = "등록되었습니다.";
+			String alertMessage = "처리되었습니다.";
 			RequestUtils.responseWriteException(response, alertMessage, "/gms/report/list.do");
 		}
 		return null;

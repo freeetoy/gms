@@ -18,6 +18,8 @@ public interface CustomerMapper {
 	
 	public List<CustomerVO> searchCustomerListExcel(String searchCustomerNm);
 	
+	public List<CustomerVO> selectCustomerListCar();
+	
 	public int selectCustomerCount(Map<String, Object> map);	
 	
 	public int selectBusinessRegId(CustomerVO param);	

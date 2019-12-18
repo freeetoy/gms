@@ -166,7 +166,48 @@ $(document).ready(function(){
 	
    });
    
-		    
+   $("#btn_search").click(function()  
+	{
+	
+	 	var strCustomerNm = $("#strCustomerNm").val();
+	
+	 	$("table.mod-doc-list1").find('tr').remove();			
+		
+		var newRowlist1 = $("<tr>");	
+		var colslist1 = "";
+	
+		colslist1 += '<td>용기코드</td>';
+		colslist1 += '<td>용기바코드</td>';
+		colslist1 += '<td>가스</td>';
+		colslist1 += '<td>충전기한</td>';
+		colslist1 += '</tr>';
+		
+		newRowlist1.append(colslist1);
+		$("table.mod-doc-list1").append(newRowlist1);
+		
+		var ajaxInfo ={
+			type:"POST",
+			url:"/gms/common/customerList.do?searchCustomerNm="+strCustomerNm,			
+			dataType: "json",
+		};
+			
+			ajax = callAjax(ajaxInfo);
+			
+			ajax.done(function(data){
+				console.log(data);
+				 $('#customerId').find('option').remove(); 
+				for(i=0; i< data.length;i++) {
+					console.log(data[i]);      
+					$('#customerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')					
+				}			
+				
+		})
+		       .fail(function(){
+			  console.log("fail");
+		});
+	
+	  });
+	    
 		    
 	$(".btn_bottle_search").click(function()  
 	{
@@ -225,6 +266,17 @@ $(document).ready(function(){
 	       customerId= $("#customerId").val();
 	       console.log("customerId ="+customerId);
 	       
+	       
+	       if(customerId ==0){
+	    	   alert("거래처를 선택해주세요");
+	    	   return;
+	       }
+
+	       if(bottlesIds ==''){
+	    	   alert("용기를 선택해주세요");
+	    	   return;
+	       }
+
 	       switch (select_pid){
 	          case 'btn_process_1':
 	            msg = "'입고' 하시겠습니까?";
@@ -317,7 +369,7 @@ $(document).ready(function(){
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-		             	<h4 class="modal-title">주문 정보</h4>
+		             	<h4 class="modal-title">용기정보</h4>
 		              	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		                <span aria-hidden="true">&times;</span>
 		              	</button>
@@ -338,10 +390,20 @@ $(document).ready(function(){
 									<table id="myTable" class="table customer-info">									
 										<tr>
 											<td class="card-footer">거래처</td>
-											<td  colspan=5>
+											<td  colspan=3>
 											<select id="customerId" name="customerId" class="form-control">
 						                        <option value="0">거래처 선택</option>			                      	
 										    </select>	
+										    </td>
+										    <td class="card-footer">
+										    <input type="text" id="strCustomerNm" name="strCustomerNm" class="form-control" placeholder="">
+											</td>
+										   	<td class="card-footer">
+										    	<button class="btn btn-navbar" id="btn_search" type="button">
+									            <i class="fas fa-search"></i>
+									          </button>
+		          
+											</td>
 										</tr>				
 										<tr>
 											<td class="card-footer">용기검색</td>
@@ -374,13 +436,13 @@ $(document).ready(function(){
 									<table id="myTable" class="table order-info">
 										<tr>
 											<div align="center">
-											<button type="button" id="btn_process_1" class="btn btn-info btn btn btn_process_check">입고</button>
+											<!-- <button type="button" id="btn_process_1" class="btn btn-info btn btn btn_process_check">입고</button>
 											<button type="button" id="btn_process_2" class="btn btn-info btn btn_process_check">충전</button>
 											<button type="button" id="btn_process_3" class="btn btn-info btn btn_process_check">상차</button>
-											<button type="button" id="btn_process_4" class="btn btn-info btn btn btn_process_check">출고</button>
+											<button type="button" id="btn_process_4" class="btn btn-info btn btn btn_process_check">출고</button> -->
 											<button type="button" id="btn_process_5" class="btn btn-info btn btn_process_check">판매</button>
-											<button type="button" id="btn_process_6" class="btn btn-info btn btn_process_check">회수</button>
-											<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">기타</button>
+											<!--<button type="button" id="btn_process_6" class="btn btn-info btn btn_process_check">회수</button>
+											<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">기타</button>-->
 										</div>
 										</tr>										
 									</table>
@@ -422,7 +484,7 @@ $(document).ready(function(){
             </div>
             
             <div class="col-2" align=right>
-         	<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i>주문납품</a>
+         	<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 판매&납품</a>
          	</div>	
              </form> 
          </div>
@@ -457,14 +519,14 @@ $(document).ready(function(){
                   	<tr th:if="${not #lists.isEmpty( workList )}" th:each="row : ${workList}" style="font-size:13px;">
                       <td th:text="${workList.indexOf(row)+1}"></td>
                       <td th:text="${row.CustomerNm}"></td>
-                      <td th:text="${row.orderProductNm}"></td>
-                      <td th:text="${row.orderProductCapa}"></td>
+                      <td th:text="${row.workProductNm}"></td>
+                      <td th:text="${row.workProductCapa}"></td>
                       <td th:if="${row.bottleType =='E' }" >공병
                       <td th:unless="${row.bottleType =='E' }">실병
                       </td>
-                      <th th:text="${row.orderProcessCdNm}"></th>
+                      <th th:text="${row.workCdNm}"></th>
                       <td th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
-                      <td th:unless="${row.orderAmount> 0 }" th:text="${row.orderTotalAmount}">
+                      <td th:unless="${row.orderAmount> 0 }" th:text="${row.orderAmount}">
                      </td>
 		     		  <td th:text="${row.receivedAmount}"></td>
 		     		                  

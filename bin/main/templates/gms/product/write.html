@@ -44,7 +44,6 @@ function callAjax(ajaxInfo){
 
 
 $(document).ready(function(){ 
-
 	
 	var counter = 0;
 	$("#addrow").on("click", function () {
@@ -63,44 +62,33 @@ $(document).ready(function(){
         var cols = "";
 
         cols += '<td style="padding-left:0px;">';
-        cols += '<input type="text" class="form-control" id="productPrice_'+ counter + '" name="productPrice_'+ counter + '" placeholder="상품가격">';
-        
+        cols += '<input type="text" class="form-control" id="productPrice_'+ counter + '" name="productPrice_'+ counter + '" placeholder="상품가격">';        
 		cols += '</td><td>';
 		cols += '<input type="text" class="form-control" id="productCapa_'+ counter + '" name="productCapa_'+ counter + '" placeholder="상품용량">';
         cols += '</td><td>';
-
         cols += ' <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" value="삭제" />';
         cols += '</td>';
-
-        cols +='</tr>';
-        
+        cols +='</tr>';        
 
         newRow.append(cols);
         
         console.log("newRow=="+newRow);
         $("#priceCount").val(counter+1);
         $("table.doc-list").append(newRow);
-
      
     });
 
 
     //수정시 row 추가
-
      var mod_counter = 0;
-
-
-
+    
     $("table.mod-doc-list").on("click", ".ibtnAddMod", function (event) {
          
         console.log("추가 클릭");
-
         mod_counter++;
-       
 
         console.log("추가 mod_counter:" + mod_counter);
-
-
+        
         if (mod_counter > 11){
 
           alert('더 이상 추가 할수 없습니다.');
@@ -112,41 +100,24 @@ $(document).ready(function(){
         var cols = "";
 
         cols += '<td style="padding-left:0px;">';
-        cols += '<select class="form-control" id="mod_sel_pumname_' + mod_counter +  '" name="mod_sel_pumname_' + mod_counter + '" style="width:160px"></select>';
-      
+        cols += '<select class="form-control" id="mod_sel_pumname_' + mod_counter +  '" name="mod_sel_pumname_' + mod_counter + '" style="width:160px"></select>';      
         cols += '</td><td>';
-
-
         cols += ' <select class="form-control" id="mod_sel_storage_' + mod_counter + '" name="mod_sel_storage_' + mod_counter + '" style="width:160px"></select> ';
-
-
         cols += '</td><td>';
-
-        cols += ' <input type="text" id="mod_order_cnt_' + mod_counter + '" name="mod_order_cnt_' + mod_counter + '" style="width:80px;height:35px;">';
-                     
+        cols += ' <input type="text" id="mod_order_cnt_' + mod_counter + '" name="mod_order_cnt_' + mod_counter + '" style="width:80px;height:35px;">';                     
         cols += '</td><td>';
-
         cols += '<input type="text" id="mod_order_etc_' + mod_counter + '" name="mod_order_etc_' + mod_counter + '" style="width:80px;height:35px;">';
-
         cols += '</td><td>';
-
         cols += ' <input type="button" class="ibtnDelMod btn btn-md btn-danger" id="addrow" value="삭제" />';
         cols += '</td>';
-
         cols +='</tr>';
-
-
 
         newRow.append(cols);
         $("table.mod-doc-list").append(newRow);
 
-
-
         init_mod(mod_counter);
 
         init_mod_storage(mod_counter);
-
-
     });
     
     
@@ -179,12 +150,6 @@ $(document).ready(function(){
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1>상품 등록</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tables</li>
-            </ol>
           </div>
         </div>
       </div><!-- /.container-fluid -->

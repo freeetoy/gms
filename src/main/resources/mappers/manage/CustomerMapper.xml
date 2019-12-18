@@ -13,9 +13,10 @@
 		<result property="customerAddr"			column="Customer_Addr"		/>
 		<result property="customerPhone"		column="Customer_Phone"		/>	
 		<result property="customerEmail"		column="Customer_Email"		/>	
-		<result property="salesId"				column="Sales_ID"		/>
-		<result property="salesNm"				column="Sales_Nm"		/>
+		<result property="salesId"				column="Sales_ID"			/>
+		<result property="salesNm"				column="Sales_Nm"			/>
 		<result property="customerStatus"		column="Customer_Status"	/>		
+		<result property="carYn"				column="Car_YN"				/>		
 		<result property="createId"				column="CREATE_ID"		/>
 		<result property="createDt"				column="CREATED_DT"		/>
 		<result property="updateId"				column="UPDATE_ID"		/>		
@@ -45,6 +46,7 @@
 		, Customer_Email	
 		, Sales_ID
 		, Customer_Status
+		, Car_Yn
 		, CREATE_ID	
 		, CREATE_DT	
 		, UPDATE_ID	
@@ -64,6 +66,7 @@
 		, Sales_ID
 		, User_Nm Sales_Nm
 		, Customer_Status
+		, Car_YN
 		, A.CREATE_ID	
 		, A.CREATE_DT	
 		, A.UPDATE_ID	
@@ -94,6 +97,7 @@
 			, #{customerEmail}
 			, #{salesId}
 			, '2'
+			, #{carYn}
 			, #{createId}			
 			, NOW()
 			, NULL
@@ -118,6 +122,7 @@
 			, #{item.customerEmail}
 			, #{item.salesId}
 			, '2'
+			, #{item.carYn}
 			, #{item.createId}			
 			, NOW()
 			, NULL
@@ -288,6 +293,18 @@
 		AND Customer_NM	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
 		</if>
 		ORDER BY A.Creat_Dt desc 
+	</select>
+	
+	<select id="selectCustomerListCar" resultType="com.gms.web.admin.domain.manage.CustomerVO">
+		SELECT
+			<include refid="CustomerColumns" />
+		FROM
+			TB_CUSTOMER A  Left Join  TB_USER B On A.Sales_ID = B.User_ID
+		WHERE
+			Customer_Status != '0'		
+		AND 
+			Car_YN = 'Y'
+		ORDER BY A.Customer_Nm desc 
 	</select>
 
 	<select id="selectCustomerPriceList" resultType="com.gms.web.admin.domain.manage.CustomerPriceExtVO" parameterType="Integer">

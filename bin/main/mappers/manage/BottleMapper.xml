@@ -228,7 +228,7 @@
 		SELECT b.history_seq,a.*
 			FROM TB_Bottle a,
 			(
-				SELECT c.bottle_id, IFNULL(max(d.bottle_id)+1,1) history_seq 
+				SELECT c.bottle_id, IFNULL(count(d.bottle_id)+1,1) history_seq 
 				FROM TB_Bottle c Left Join  TB_Bottle_Hist d ON c.Bottle_Id=d.bottle_id
 				WHERE c.Bottle_Id in (
 				<foreach collection="list" item="item" separator=" , ">
@@ -275,6 +275,7 @@
 		SET
 			  Bottle_Work_CD 	= #{bottleWorkCd}
 			, Bottle_Work_ID	= #{bottleWorkId}
+			, Customer_ID		= #{customerId}
 			, Bottle_Type		= #{bottleType}
 			, Bottle_Work_DT	= NOW()
 			, UPDATE_ID 		= #{updateId}
@@ -478,10 +479,12 @@
 		FROM
 			TB_Bottle TB, TB_CODE TC, TB_Product TG
 		WHERE
+			Bottle_Work_CD='0308'
+		AND
 			TB.Delete_YN = 'N'			
 		AND Customer_id = #{customerId}
 		AND TB.Bottle_Work_CD = TC.CD_ID	
 		AND TB.Product_ID = TG.Product_Id
-		
+		Order By Bottle_Work_DT
 	</select>
 </mapper>

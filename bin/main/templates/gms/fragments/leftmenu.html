@@ -30,7 +30,7 @@
                
           <li th:if="${menuId=='order'|| menuId=='transaction'}" class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-shopping-cart"></i>
               <p>
                 	주문관리
                 <i class="right fas fa-angle-left"></i>
@@ -65,7 +65,7 @@
           </li>       
           <li th:unless="${menuId=='order'|| menuId=='transaction'}" class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-shopping-cart"></i>
               <p>
                 	주문관리
                 <i class="right fas fa-angle-left"></i>
@@ -89,7 +89,7 @@
           <!--  용기관리 strar -->   
           <li th:if="${menuId=='bottle'|| menuId=='bottlet' || menuId=='bottles'}" class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-copy"></i>
+              <i class="nav-icon fas fa-prescription-bottle-alt"></i>
               <p>
                 	용기 관리
                 <i class="fas fa-angle-left right"></i>
@@ -136,7 +136,7 @@
           </li>
           <li th:unless="${menuId=='bottle'|| menuId=='bottlet' || menuId=='bottles'}" class="nav-item has-treeview">
           <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-copy"></i>
+              <i class="nav-icon fas fa-prescription-bottle-alt"></i>
               <p>
                 	용기 관리
                 <i class="fas fa-angle-left right"></i>
@@ -167,7 +167,7 @@
           <!--  거래처관리 메뉴  시작 -->
           <li th:if="${menuId=='customer'|| menuId=='price'}" class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-chart-pie"></i>
+              <i class="nav-icon fas fa-hospital"></i>
               <p>
                 	거래처 관리
                 <i class="right fas fa-angle-left"></i>
@@ -202,7 +202,7 @@
           </li>
           <li th:unless="${menuId=='customer'|| menuId=='price'}" class="nav-item has-treeview">
           <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
+              <i class="nav-icon fas fa-hospital"></i>
               <p>
                 	거래처 관리
                 <i class="right fas fa-angle-left"></i>
@@ -227,7 +227,7 @@
           <!--  상품관리 메뉴  시작 -->
           <li th:if="${menuId=='gas' || menuId=='product' }" class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tree"></i>
+              <i class="nav-icon fas fa-gas-pump"></i>
               <p>
                 	상품 관리
                 <i class="fas fa-angle-left right"></i>
@@ -262,7 +262,7 @@
           </li>
           <li th:unless="${menuId=='gas' || menuId=='product'}" class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tree"></i>
+              <i class="nav-icon fas fa-gas-pump"></i>
               <p>
                 	상품 관리
                 <i class="fas fa-angle-left right"></i>
@@ -287,7 +287,7 @@
            
           <li th:if="${menuId=='sorder'|| menuId=='sproduct' || menuId=='scustomer' || menuId=='sbottle'}" class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
+              <i class="nav-icon fas fa-table"></i>
               <p>
                 	통계 관리
                 <i class="fas fa-angle-left right"></i>
@@ -349,7 +349,7 @@
           </li>
           <li th:unless="${menuId=='sorder'|| menuId=='sproduct' || menuId=='scustomer' || menuId=='sbottle'}" class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
+              <i class="nav-icon fas fa-table"></i>
               <p>
                 	통계 관리
                 <i class="fas fa-angle-left right"></i>
@@ -386,7 +386,7 @@
           
           <li th:if="${menuId=='user' || menuId=='calendar' }" class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-table"></i>
+              <i class="nav-icon fas fa-users"></i>
               <p>
                 	사용자 관리
                 <i class="fas fa-angle-left right"></i>
@@ -422,7 +422,7 @@
           </li>    
           <li th:unless="${menuId=='user' || menuId=='calendar' }" class="nav-item has-treeview">
           <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
+              <i class="nav-icon fas fa-users"></i>
               <p>
                 	사용자 관리
                 <i class="fas fa-angle-left right"></i>
@@ -446,7 +446,7 @@
           <!--  사용자관리 메뉴  시작 -->
           <li th:if="${menuId=='assign' || menuId=='diary' || menuId=='vacation' || menuId=='self'}" class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-book"></i>
+              <i class="nav-icon fas fa-user-check"></i>
               <p>
                 	마이페이지
                 <i class="fas fa-angle-left right"></i>
@@ -505,7 +505,7 @@
           </li>    
           <li th:unless="${menuId=='assign' || menuId=='diary' || menuId=='vacation' || menuId=='self'}" class="nav-item has-treeview"> 
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-book"></i>
+              <i class="nav-icon fas fa-user-check"></i>
               <p>
                 	마이페이지
                 <i class="fas fa-angle-left right"></i>

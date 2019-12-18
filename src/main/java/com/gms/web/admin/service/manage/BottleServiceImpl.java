@@ -20,6 +20,7 @@ import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.ProductPriceVO;
 import com.gms.web.admin.domain.manage.ProductVO;
+import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.mapper.manage.BottleMapper;
 
 @Service
@@ -32,6 +33,9 @@ public class BottleServiceImpl implements BottleService {
 	
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private WorkReportService workService;
 	
 	@Override
 	public Map<String,Object> getBottleList(BottleVO param) {
@@ -304,7 +308,8 @@ public class BottleServiceImpl implements BottleService {
 		logger.debug("BottleServiceImpl getBottlesId "+ param.getBottleIds());
 		logger.debug("BottleServiceImpl bottleWorkdId "+ param.getBottleWorkId());
 		logger.debug("BottleServiceImpl bottleWorkCd "+ param.getBottleWorkCd());
-		logger.debug("BottleServiceImpl getBottlesId "+ param.getBottleIds());
+		logger.debug("BottleServiceImpl customerId "+ param.getCustomerId());
+		logger.debug("BottleServiceImpl bottleType "+ param.getBottleType());
 		
 		try {		
 			List<String> list = null;
@@ -313,19 +318,44 @@ public class BottleServiceImpl implements BottleService {
 				//bottleIds= request.getParameter("bottleIds");
 				list = StringUtils.makeForeach(param.getBottleIds(), ","); 		
 				param.setBottList(list);
-			}	
+			}				
 			
+			if(param.getBottleType() == null) {
+				if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0305")) 
+						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0306"))
+						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0307")) 
+						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0308")) )
+					param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Full"));
+				else
+					param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
+			}
 			
-			if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0305")) 
-					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0306"))
-					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0307")) 
-					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0308")) )
-				param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Full"));
-			else
-				param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
+			List<BottleVO> bottleList = getBottleDetails(param);
+			
+			// TB_Work_Report & TB_Work_Bottle 등록
+			WorkReportVO workReport = new WorkReportVO();
+			
+			//Work_Report_Seq 가져오기
+			//int workReportSeq = workService.getWorkReportSeq();
+			
+			//workReport.setWorkReportSeq(workReportSeq);
+			workReport.setBottleWorkCd(param.getBottleWorkCd());
+			workReport.setBottleType(param.getBottleType());
+			workReport.setUserId(param.getCreateId());
+			workReport.setCreateId(param.getCreateId());
+			workReport.setBottlesIds(param.getBottleIds());		
+			workReport.setCustomerId(param.getCustomerId());
+			//workReport.set
+			
+			//logger.debug("WorkReportServiceImpl registerWorkReport workReportSeq =" + workReportSeq);
+			
+			result = workService.registerWorkReportByBottle(workReport, bottleList);
+			if(result <= 0) return result;
 			
 			result =  bottleMapper.updateBottlesWorkCd(param);
 			
+			if(result > 0 ) result = bottleMapper.insertBottleHistorys(bottleList);
+		
 		} catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();

@@ -53,6 +53,8 @@ public class CustomerVO extends AbstractSearchVO implements Serializable {
 	/**Customer_Status */
 	private String customerStatus;
 	
+	/**Car_YN */
+	private String carYn = "N";
 	
 	/** 거래처명 검색	 */
 	private String searchCustomerNm;

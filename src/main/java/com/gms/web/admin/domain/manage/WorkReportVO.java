@@ -28,6 +28,18 @@ public class WorkReportVO extends AbstractVO implements Serializable {
 	/** Order_ID		*/
 	private Integer orderId;
 	
+	/**Work_Product_NM              */
+	private String workProductNm;
+	
+	/**Work_Product_Capa              */
+	private String workProductCapa;
+	
+	/**Work_CD              */
+	private String workCd;
+	
+	/**Work_CD_NM              */
+	private String workCdNm;
+	
 	/**Work_Dt              */
 	private Date workDt;	
 	

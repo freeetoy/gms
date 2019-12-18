@@ -224,7 +224,7 @@ var goWrite = function(){
                   	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}">
                       <td th:text="${row.bottleId}"></td>
                       <td th:text="${row.bottleBarCd}"></td>                     
-                      <td th:text="${row.gasNm}"></td>
+                      <td th:text="${row.productNm}"></td>
                       <td th:text="${row.bottleCapa}"></td>
                       <td th:if="${row.bottleType=='E'}" th:text="공병"></td>
                       <td th:unless="${row.bottleType=='E'}" th:text="실병"></td>

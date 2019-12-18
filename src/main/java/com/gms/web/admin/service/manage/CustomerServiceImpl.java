@@ -132,14 +132,16 @@ public class CustomerServiceImpl implements CustomerService {
 	public boolean modifyCustomer(CustomerVO param) {
 		boolean successFlag = false;
 
-		// 가스정보 등록
+		// 거래처 정보 수정
 		int result = 0;
-		logger.info("****** modifyCustomer()()) *****===*"+param.getCustomerId());
+		logger.info("****** modifyCustomer()()) *****===*"+param.getCustomerId());	
 		
-			result = customerMapper.updateCustomer(param);
-			if (result > 0) {
-				successFlag = true;
-			}	
+		result = customerMapper.updateCustomer(param);
+		if (result > 0) {
+			successFlag = true;
+			
+			//미지정된 해당 거래처
+		}	
 		
 		return successFlag;
 	}
@@ -210,6 +212,16 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	
+
+	@Override
+	public List<CustomerVO> searchCustomerListCar() {
+		List<CustomerVO> customerList = customerMapper.selectCustomerListCar();
+		// TODO Auto-generated method stub
+		return customerList;
+	}
+
+	
+	
 	@Override
 	@Transactional
 	public boolean registerCustomerPrice(CustomerPriceVO[] param) {
@@ -276,7 +288,6 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerMapper.deleteCustomerPrices(param);
 	}
 
-	
 	
 	
 

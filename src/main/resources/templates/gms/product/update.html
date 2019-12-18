@@ -27,7 +27,7 @@ function validationOfForm(form) {
 	}
 }
 // end of function
-
+/*
 var fn_deleteGas = function(gasId){
 	               		
 	if(confirm("삭제하시겠습니까?")){	
@@ -49,7 +49,7 @@ var fn_deleteGas = function(gasId){
         form.submit();			
 	}                  		
 }
-
+*/
 //Ajax공통 호출
 function callAjax(ajaxInfo){
 	var dfd = $.Deferred();
@@ -60,7 +60,7 @@ function callAjax(ajaxInfo){
 	return dfd.promise();
 }
 
-
+/*
 var fn_modifyGas = function(gasId){
 
 	var ajaxInfo ={
@@ -92,7 +92,7 @@ var fn_modifyGas = function(gasId){
 	});
 
 };
-
+*/
 
 $(document).ready(function(){ 
 
@@ -101,7 +101,6 @@ $(document).ready(function(){
 	
 	
 	$("#addrow").on("click", function () {
-
         counter++;
 
         console.log("counter=="+counter);
@@ -116,12 +115,10 @@ $(document).ready(function(){
         var cols = "";
 
         cols += '<td style="padding-left:0px;">';
-        cols += '<input type="text" class="form-control" id="productPrice_'+ counter + '" name="productPrice_'+ counter + '" placeholder="상품가격">';
-        
+        cols += '<input type="text" class="form-control" id="productPrice_'+ counter + '" name="productPrice_'+ counter + '" placeholder="상품가격">';        
 		cols += '</td><td>';
 		cols += '<input type="text" class="form-control" id="productCapa_'+ counter + '" name="productCapa_'+ counter + '" placeholder="상품용량">';
         cols += '</td><td>';
-
         cols += ' <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" value="삭제" />';
         cols += '</td>';
 
@@ -137,68 +134,39 @@ $(document).ready(function(){
      
     });
 
-
     //수정시 row 추가
 
      var mod_counter = 0;
-
-
-
     $("table.mod-doc-list").on("click", ".ibtnAddMod", function (event) {
-         
-        console.log("추가 클릭");
 
-        mod_counter++;
-       
-
-        console.log("추가 mod_counter:" + mod_counter);
-
-
+        mod_counter++;       
         if (mod_counter > 11){
-
           alert('더 이상 추가 할수 없습니다.');
           return false;
-
         }
      
         var newRow = $("<tr>");
         var cols = "";
 
         cols += '<td style="padding-left:0px;">';
-        cols += '<select class="form-control" id="mod_sel_pumname_' + mod_counter +  '" name="mod_sel_pumname_' + mod_counter + '" style="width:160px"></select>';
-      
+        cols += '<select class="form-control" id="mod_sel_pumname_' + mod_counter +  '" name="mod_sel_pumname_' + mod_counter + '" style="width:160px"></select>';      
         cols += '</td><td>';
-
-
         cols += ' <select class="form-control" id="mod_sel_storage_' + mod_counter + '" name="mod_sel_storage_' + mod_counter + '" style="width:160px"></select> ';
-
-
         cols += '</td><td>';
-
-        cols += ' <input type="text" id="mod_order_cnt_' + mod_counter + '" name="mod_order_cnt_' + mod_counter + '" style="width:80px;height:35px;">';
-                     
+        cols += ' <input type="text" id="mod_order_cnt_' + mod_counter + '" name="mod_order_cnt_' + mod_counter + '" style="width:80px;height:35px;">';                     
         cols += '</td><td>';
-
         cols += '<input type="text" id="mod_order_etc_' + mod_counter + '" name="mod_order_etc_' + mod_counter + '" style="width:80px;height:35px;">';
-
         cols += '</td><td>';
-
         cols += ' <input type="button" class="ibtnDelMod btn btn-md btn-danger" id="addrow" value="삭제" />';
         cols += '</td>';
-
         cols +='</tr>';
-
-
 
         newRow.append(cols);
         $("table.mod-doc-list").append(newRow);
 
-
-
         init_mod(mod_counter);
 
         init_mod_storage(mod_counter);
-
 
     });
     
@@ -212,19 +180,12 @@ $(document).ready(function(){
         $("#priceCount").val(counter+1);
     });
 
-
-
-
     $("table.mod-doc-list").on("click", ".ibtnDelMod", function (event) {
         $(this).closest("tr").remove();       
         mod_counter -= 1
     });
 
-
 });
-
-
-
 
 
 </script>
@@ -236,12 +197,6 @@ $(document).ready(function(){
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1>상품 조회 수정</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Simple Tables</li>
-            </ol>
           </div>
         </div>
       </div><!-- /.container-fluid -->

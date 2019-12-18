@@ -7,6 +7,10 @@
 		<result property="customerId"			column="Customer_ID"			/>
 		<result property="customerNm"			column="Customer_NM"			/>
 		<result property="orderId"				column="Order_ID"				/>
+		<result property="workProductNm"		column="Work_Product_NM"		/>
+		<result property="workProductCapa"		column="Work_Product_Capa"		/>
+		<result property="workCd"				column="Work_CD"				/>
+		<result property="workCdNm"				column="Work_CD_NM"				/>
 		<result property="workDt"				column="Work_Dt"				/>
 		<result property="orderAmount"			column="Order_Amount"			/>
 		<result property="receivedAmount"		column="Received_Amount"		/>
@@ -44,8 +48,10 @@
 		 , User_ID
 		 , Customer_ID
 		 , Order_ID
+		 , Work_Product_NM
+		 , Work_Product_Capa
+		 , Work_CD
 		 , Work_Dt
-		 , Order_Amount
 		 , Received_Amount
 		 , Bottle_Type
 		 , Create_ID        
@@ -59,14 +65,18 @@
 		 , tw.Customer_ID
 		 , Customer_NM
 		 , tw.Order_ID
+		 , Work_Product_NM
+		 , Work_Product_Capa
+		 , Work_CD
+		 , CD_NM Work_CD_NM
 		 , Work_Dt
-		 , tw.Order_Amount
+		 , Order_Total_Amount Order_Amount
 		 , Received_Amount
 		 , Bottle_Type
 		 , Order_Product_Nm
 		 , Order_Product_Capa
 		 , Order_Process_CD 
-		 , CD_NM Order_Process_CD_NM
+		 , (SELECT CD_NM FROM TB_Code Where Cd_ID= Order_Process_CD) Order_Process_CD_NM
 		 , tw.Create_ID        
 		 , tw.Create_Dt        
 		 , tw.Update_ID        
@@ -96,8 +106,10 @@
 			, #{userId}
 			, #{customerId}	
 			, #{orderId}	
-			, NOW()
-			, #{orderAmount}				
+			, #{workProductNm}	
+			, #{workProductCapa}	
+			, #{workCd}	
+			, NOW()	
 			, #{receivedAmount}		
 			, #{bottleType}
 			, #{createId}			
@@ -177,15 +189,13 @@
 		SELECT
 			<include refid="SelectWorkReportColumns" />
 		FROM
-			TB_Work_Report tw , TB_Order tr, TB_Customer tc, TB_Code td
+			TB_Customer tc, TB_CODE td , TB_Work_Report tw Left Join  TB_Order tr on tw.Order_ID = tr.Order_ID
 		WHERE
-			tw.Customer_ID = tc.Customer_ID
-		AND
-			tw.Order_ID = tr.Order_ID
-		AND 
-			tr.Order_Process_Cd = td.CD_ID
+			tw.Customer_ID = tc.Customer_ID					
 		AND	
-			User_id=#{userId}
+			User_id = #{userId}
+		AND 
+			tw.Work_CD = td.CD_ID
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
 		AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
 		</if>

@@ -3,6 +3,7 @@ package com.gms.web.admin.service.manage;
 import java.util.List;
 import java.util.Map;
 
+import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 
@@ -14,7 +15,9 @@ public interface WorkReportService {
 	
 	public int getWorkReportSeq() ;
 	
-	public int registerWorkReport(WorkReportVO param);
+	public int registerWorkReportByBottle(WorkReportVO param, List<BottleVO> bottleList);
+	
+	public int registerWorkReportForOrder(WorkReportVO param);
 	
 	public int registerWorkReportNoOrder(WorkReportVO param);
 	

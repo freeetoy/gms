@@ -146,7 +146,8 @@ public class ExcelServiceImpl implements ExcelService {
                 	else if(j == 7) bottle.setBottleChargePrss(colValue);
                 	//else if(j == 8) bottle.setBottleId(colValue);
                 	else if(j == 9) {
-                		if(customerService.getCustomerDetailsByNm(colValue) != null)
+                		CustomerVO customer = customerService.getCustomerDetailsByNm(colValue) ;
+                		if(customer != null &&  customer.getCustomerId()!=null)
                 			bottle.setCustomerId(customerService.getCustomerDetailsByNm(colValue).getCustomerId());
                 	}
                 	else if(j == 10) bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0388"));

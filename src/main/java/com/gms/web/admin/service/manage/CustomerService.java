@@ -14,6 +14,8 @@ public interface CustomerService {
 	public Map<String,Object> searchCustomerList(String param);
 	
 	public List<CustomerVO> searchCustomerListExcel(String param);
+	
+	public List<CustomerVO> searchCustomerListCar();
 
 	public CustomerVO getCustomerDetails(Integer customerId);
 	

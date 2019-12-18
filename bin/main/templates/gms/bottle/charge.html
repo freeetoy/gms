@@ -284,13 +284,13 @@ var fn_deleteBottle = function(bottleId){
             <div class="col-1">
                		충전기한
             </div>               
-            <div class="col-5">
+            <div class="col-3">
               <form id="mainForm" name=""mainForm""  method="post">
               <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
               <input type="hidden" id="bottleId" name="bottleId" value="">
                <input type="text" class="form-control" name="searchChargeDt" th:value="${searchChargeDt}"/>			
             </div>               
-            <div class="col-3">               
+            <div class="col-5">               
             </div>
          </div>
          <div class="row">	
@@ -303,8 +303,8 @@ var fn_deleteBottle = function(bottleId){
            	<div class="col-1">
                		용기코드
             </div>               
-            <div class="col-5">              
-               <input type="text" id="searchBottleId" name="searchBottleId" class="form-control" placeholder="search" th:value="${searchBottleId}">
+            <div class="col-3">              
+               <input type="text" id="searchBottleId" name="searchBottleId" class="form-control" th:value="${searchBottleId}">
             </div>  
             <div class="col-2">
                	<select id="searchProductId" name="searchProductId" class="form-control">
@@ -322,13 +322,12 @@ var fn_deleteBottle = function(bottleId){
                  </select>
 			        
               </div>                   
-              <div class="col-2">
+              <div class="col-4">
                 <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-           </form>
-              </div>
-             
+		            <i class="fas fa-search"></i>
+		          </button>
+		           </form>
+              </div>             
               <div class="col-1">
                		<a href="/gms/bottle/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">용기 등록</button></a>
               </div>
