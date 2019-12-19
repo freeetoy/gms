@@ -61,7 +61,7 @@ $(document).ready(function(){
 		var cols = "";
 
 		cols += '<td style="padding-left:0px;">';
-		cols += '<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:150px"></select>'; 
+		cols += '<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:200px"></select>'; 
 		cols += '</td><td>';
 		cols += ' <select class="form-control" id="productPriceSeq_' + counter + '" name="productPriceSeq_' + counter + '" style="width:80px"><option value=0>옵션</option></select> ';
 		cols += '</td><td>';
@@ -392,7 +392,7 @@ $(document).ready(function(){
 		        var newRow = $("<tr>");
 				var cols = "";
 				cols += '<td style="padding-left:0px;">';
-				cols += '<select class="form-control" id="productId_0" name="productId_0" style="width:150px"></select>'; 
+				cols += '<select class="form-control" id="productId_0" name="productId_0" style="width:200px"></select>'; 
 				cols += '</td><td>';
 				cols += ' <select class="form-control" id="productPriceSeq_0" name="productPriceSeq_0" style="width:80px"><option value=0>옵션</option></select> ';
 				cols += '</td><td>';
@@ -438,7 +438,7 @@ $(document).ready(function(){
 		            cols = "";
 				
 					cols += '<td style="padding-left:0px;">';
-					cols += '	<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:150px">'; 
+					cols += '	<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:200px">'; 
 					cols += '	<option value="' + data[i].productId +'" selected>' + data[i].productNm + '</option>';
 					cols += '	</select>';
 					cols += '</td><td>';
@@ -503,7 +503,7 @@ $(document).ready(function(){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>주문 등록</h1>
+            <h1>주문 수정</h1>
           </div>
           
         </div>
@@ -513,18 +513,16 @@ $(document).ready(function(){
     <section class="content">   
         
          <div class="row">	
-	        <div class="col-12">
+	        <div class="col-md-9">
 	        <table class="table table-hover">
 	         </table>
 	        </div>
         </div>
         <div class="row">
-          <div class="col-12">
+          <div class="col-md-9">
             <div class="card">          
               
-             <!-- general form elements -->                        
-              <!-- /.card-header -->
-              <div class="col-10">
+             <!-- general form elements -->
               <form id="writeForm" class="form-horizontal" th:action="@{/gms/order/modify.do}" method="post" >
               	<input type="hidden" id="orderId" name="orderId" th:value="${order.orderId}">
               	<input type="hidden" id="productCount" name="productCount" value="">
@@ -533,7 +531,7 @@ $(document).ready(function(){
         		<input type="hidden" id="searchOrderDt" name="searchOrderDt" th:value="${searchOrderDt}">
               
               	<div class="form-group">	
-			        <div class="col-10">
+			        
 			        <table class="table table-hover">
 				        <thead>
 	                    <tr>
@@ -595,18 +593,17 @@ $(document).ready(function(){
 	                     </thead>   
 			         </table>
 			         
-			        </div>
+			        
 		        </div>
                 <div class="form-group">	
-			        <div class="col-10">
+			        <div class="col-md-9">
 			        <table class="table table-hover">
 			         </table>
 			        </div>
 		        </div>
                 <div class="form-group">
-                	<div class="col-10">
 	                   <label class="control-label col-10">상품정보</label>
-	                   <div class="col-12">
+	                  
 	                       <table id="myTable" class="table doc-list">
 		                       <tr>
 		                         <td>상품</td>
@@ -642,18 +639,17 @@ $(document).ready(function(){
 			                       </td>
 		                       </tr>
 		                     </table>
-	                     </div>
-	                 </div>
+	                   
                 	</div>
-              </div>
+             
             </div>
             <!-- /.card -->
-            <div class="col-8">
+            
 	            <div class="card-footer">
 	                 <a href="#" th:onclick="history.back()"  class="btn btn-secondary float-left">취소</a>
 			         <input type="button" id="save" value="저장"  class="btn btn-success float-right">
 	            </div>	
-	       	</div> 		
+	       
 	            </form>             	
         </div>
         

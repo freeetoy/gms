@@ -34,8 +34,7 @@ var validation = function(){
 	*/
 	var result = (
 			isValid(customerNm, "거래처명", null, null)
-		&& isValid(customerAddr, "거래처주소", null, null)
-		&&  isValid(customerPhone, "거래처연락처", null, "phone")			
+		&& isValid(customerAddr, "거래처주소", null, null)		
 		&& isValid(salesId, "영업 담당자", null, null)
 	);
 	
@@ -104,9 +103,8 @@ function containsCharsOnly(input,chars) {
 
 // 입력된 내용을 작성한다.
 var goWrite = function(){
-	validation();
+	validation();	
 	
-	alert("isOkay=="+isOkay);
 	if(!isOkay){
 		return;
 	}
@@ -124,7 +122,7 @@ var goWrite = function(){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>거래처 등록</h1>
+            <h1>거래처 수정</h1>
           </div>
           
         </div>
@@ -134,14 +132,16 @@ var goWrite = function(){
     <section class="content">   
         
         <div class="row">
-          <div class="col-10">          
+          <div class="col-md-8">          
               
              <!-- general form elements -->                        
               <!-- /.card-header -->
-            <div class="col-8">
+           
               <div class="card">
               <form id="writeForm" class="form-horizontal" th:action="@{/gms/customer/modify.do}" th:object="${customer}" method="post" >
                 <input type="hidden" id="customerId" name="customerId" th:value="${customer.customerId}">
+                <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
+                <input type="hidden" id="searchCustomerNm" name="searchCustomerNm" th:value="${searchCustomerNm}">
                 <table class="table table-hover">
                   <thead>
                     <tr>
@@ -193,23 +193,28 @@ var goWrite = function(){
 					     </option>		
 					    </select>	                      
 						</th>   
-                    </tr>                   
-                    
-                  </thead>
-                              
+                    </tr>    
+                  </thead>                              
                 </table>
-                
-                
               </div>
             </div>
             
             <!-- /.card -->
-      		                          
+      		<div class="col-md-8">
+      			<div class="card-footer">
+                 <a href="/gms/customer/list.do" class="btn btn-secondary float-left">취소</a>
+		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">
+                </div>		     		
+            </form>   
+             </div>                          
               <!-- /.card-header -->
-              
-			<div class="col-8">
-            <div class="card">        
-            	
+              <div class="col-md-8">
+            <table class="table table-hover">
+	         </table>
+            </div>
+            
+			<div class="col-md-8">
+              <div class="card">    
             	<table class="table table-hover">	         	
 	         		<thead>
                     <tr>
@@ -233,18 +238,11 @@ var goWrite = function(){
                	</table>   
                </div>
             </div>
-            <div class="col-8">
-            <table class="table table-hover">
-	         
-            </div>
-      		<div class="card-footer">
-                 <a href="/gms/customer/list.do" class="btn btn-secondary float-left">취소</a>
-		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">
-                </div>		     		
-            </form>   
+           
           	<!-- /.col-12 -->
           </div>
         </div>      
+        
         
         
         <!-- /.row -->

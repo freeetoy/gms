@@ -45,7 +45,7 @@ public interface BottleMapper {
 	
 	public List<BottleHistoryVO> selectBottleHistoryList(String bottleId);	
 	
-	public int insertBottleHistory(String bottleId);
+	public int insertBottleHistory(BottleVO param);
 	
 	public int insertBottleHistorys(List<BottleVO> param);
 }

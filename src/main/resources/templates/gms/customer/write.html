@@ -34,8 +34,7 @@ var validation = function(){
 	*/
 	var result = (
 				isValid(customerNm, "거래처명", null, null)
-			&& isValid(customerAddr, "거래처주소", null, null)
-			&&  isValid(customerPhone, "거래처연락처", null, "phone")			
+			&& isValid(customerAddr, "거래처주소", null, null)		
 			&& isValid(salesId, "영업 담당자", null, null)
 	);
 	
@@ -134,12 +133,12 @@ var goWrite = function(){
     <section class="content">   
         
         <div class="row">
-          <div class="col-10">
+          <div class="col-md-8">
             <div class="card">
               
              <!-- general form elements -->                        
               <!-- /.card-header -->
-              <div class="col-8">
+         
               <form id="writeForm" class="form-horizontal" th:action="@{/gms/customer/register.do}" th:object="${customer}" method="post" >
                 
                 <table class="table table-hover">
@@ -188,61 +187,15 @@ var goWrite = function(){
 					     </option>		
 					    </select>	                      
 						</th>   
-                    </tr>                   
-                    
+                    </tr>         
                   </thead>
-                              
-                </table>
-                
-                
-              </div>
+                </table>             
             </div>
-            
-            <!-- /.card -->
-      		 <div class="card">                                  
-              <!-- /.card-header -->
-              <!-- 
-              <div class="col-8">
-              <div class="form-group">
-                   <label class="control-label col-8">상품정보</label>
-                   <div class="col-md-10 col-sm-10 col-xs-12">
-                       <table id="myTable" class="table doc-list">
-                       <tr>
-                         <td>상품</td>
-                         <td>용량</td>
-                         <td>단가</td>
-                         <td></td>
-                       </tr>
-                       <tr>
-                       <td  style="padding-left: 0px;">                                           
-                         <select id="gasId" name="salesId" class="form-control">
-	                        <option value="0">상품</option>
-	                      	<option th:each="row : ${productList}"
-						                th:text="${row.productNm}"
-						                th:value="${row.productId}"
-						               >
-						     </option>		
-					    </select>	   
-                       </td>
-                       <td> 
-                         <input type="text" class="form-control" id="productCapa_0" name="productCapa_0" placeholder="상품용량">
-                       </td>   
-                       <td>
-                       <input type="button" class="btn btn-default btn-success" id="addrow" value="추가" />
-                       </td>
-                       </tr>
-                     </table>
-                     </div>
-                 </div>
-              </div>
-            </div>
-            
-              -->
-      		<div class="card-footer">
-      			<div class="col-8">
+ 
+      		<div class="card-footer">      			
                  <a href="/gms/customer/list.do" class="btn btn-secondary float-left">취소</a>
 		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">
-                </div>		     	
+                     	
               </div>	
             </form>   
           	<!-- /.col-12 -->

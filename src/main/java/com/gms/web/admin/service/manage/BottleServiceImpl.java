@@ -1,6 +1,7 @@
 package com.gms.web.admin.service.manage;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,7 +19,9 @@ import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
+import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.ProductPriceVO;
+import com.gms.web.admin.domain.manage.ProductTotalVO;
 import com.gms.web.admin.domain.manage.ProductVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.mapper.manage.BottleMapper;
@@ -240,7 +243,7 @@ public class BottleServiceImpl implements BottleService {
 		// 정보 등록
 		logger.info("****** registerBottle.getBottleId()()) *****===*"+param.getBottleId());
 		int result = 0;
-		
+		/*
 		ProductPriceVO productPrice = new ProductPriceVO();
 		productPrice.setProductId(param.getProductId());
 		productPrice.setProductPriceSeq(param.getProductPriceSeq());
@@ -248,14 +251,19 @@ public class BottleServiceImpl implements BottleService {
 		ProductPriceVO productPrice1 = productService.getProductPriceDetails(productPrice);
 		
 		logger.debug("****** registerBottle.botteLCapa()()) *****===*"+productPrice1.getProductCapa());
+		*/
+		ProductTotalVO product = productService.getBottleGasCapa(param);
 		
-		param.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
+		param.setBottleCapa(product.getProductCapa());
+		param.setGasId(product.getGasId());		
+		
+		param.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0388"));
 		param.setBottleWorkId(param.getCreateId());
 		param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
-		param.setBottleCapa(productPrice1.getProductCapa());
+		//param.setBottleCapa(productPrice1.getProductCapa());
 		
 		result =  bottleMapper.insertBottle(param);		
-		if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
+		if(result > 0 ) result = bottleMapper.insertBottleHistory(param);
 		
 		return result;
 		
@@ -278,6 +286,11 @@ public class BottleServiceImpl implements BottleService {
 		// 정보 등록
 		logger.debug("****** modifyBottle.getBottleId()()) *****===*"+param.getBottleId());
 		int result = 0;
+				
+		ProductTotalVO product = productService.getBottleGasCapa(param);
+		
+		param.setBottleCapa(product.getProductCapa());
+		param.setGasId(product.getGasId());		
 		
 		result =  bottleMapper.updateBottle(param);
 		
@@ -292,9 +305,37 @@ public class BottleServiceImpl implements BottleService {
 		// 정보 등록
 		logger.debug("****** modifyBottle.getChBottleId()()) *****===*"+param.getChBottleId());
 		int result = 0;
-		result =  bottleMapper.updateBottleWorkCd(param);
+		result =  bottleMapper.updateBottleWorkCd(param);	
 		
-		if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
+		
+		param.setBottleId(param.getChBottleId());
+		
+		if(result > 0 ) result = bottleMapper.insertBottleHistory(param);
+		
+		//TODO TB_Work_Report 추가
+		param = getBottleDetail(param.getChBottleId());
+		
+		// TB_Work_Report & TB_Work_Bottle 등록
+		WorkReportVO workReport = new WorkReportVO();
+		
+		//Work_Report_Seq 가져오기
+		//int workReportSeq = workService.getWorkReportSeq();
+
+		List<BottleVO> bottleList = new ArrayList<BottleVO>();
+		
+		bottleList.add(param );
+		
+		//workReport.setWorkReportSeq(workReportSeq);
+		workReport.setBottleWorkCd(param.getBottleWorkCd());
+		workReport.setBottleType(param.getBottleType());
+		workReport.setUserId(param.getCreateId());
+		workReport.setCreateId(param.getCreateId());
+		workReport.setBottlesIds(param.getBottleIds());		
+		workReport.setCustomerId(param.getCustomerId());
+		
+		
+		result = workService.registerWorkReportByBottle(workReport, bottleList);
+		if(result <= 0) return result;
 		
 		return result;
 	}
@@ -377,7 +418,7 @@ public class BottleServiceImpl implements BottleService {
 		int result = 0;
 		result =   bottleMapper.deleteBottle(param);
 		
-		if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
+		if(result > 0 ) result = bottleMapper.insertBottleHistory(param);
 		
 		return result;
 		
@@ -419,7 +460,9 @@ public class BottleServiceImpl implements BottleService {
 		// 정보 등록
 		logger.debug("****** registerBottle.getBottleId()()) *****===*" +bottleId);
 		
-		return bottleMapper.insertBottleHistory(bottleId);		
+		BottleVO bottle = bottleMapper.selectBottleDetail(bottleId);
+		
+		return bottleMapper.insertBottleHistory(bottle);		
 	}
 
 	@Override

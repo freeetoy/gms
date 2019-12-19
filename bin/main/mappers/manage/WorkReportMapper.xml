@@ -63,7 +63,7 @@
 		 Work_Report_Seq
 		 , User_ID
 		 , tw.Customer_ID
-		 , Customer_NM
+		 , (SELECT Customer_Nm FROM TB_Customer Where Customer_ID= tw.Customer_Id) Customer_NM
 		 , tw.Order_ID
 		 , Work_Product_NM
 		 , Work_Product_Capa
@@ -189,10 +189,8 @@
 		SELECT
 			<include refid="SelectWorkReportColumns" />
 		FROM
-			TB_Customer tc, TB_CODE td , TB_Work_Report tw Left Join  TB_Order tr on tw.Order_ID = tr.Order_ID
+			TB_CODE td , TB_Work_Report tw Left Join  TB_Order tr on tw.Order_ID = tr.Order_ID
 		WHERE
-			tw.Customer_ID = tc.Customer_ID					
-		AND	
 			User_id = #{userId}
 		AND 
 			tw.Work_CD = td.CD_ID

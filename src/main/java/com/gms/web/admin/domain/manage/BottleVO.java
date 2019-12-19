@@ -138,4 +138,11 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	 * 3:sales
 	 * 	*/
 	private int  menuType;
+	
+	
+	/** Car Customer_ID		*/
+	private String carCustomerId;
+	
+
+	
 }

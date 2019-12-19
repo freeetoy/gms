@@ -51,7 +51,7 @@ $(document).ready(function(){
 		var cols = "";
 
 		cols += '<td style="padding-left:0px;">';
-		cols += '<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:150px"></select>'; 
+		cols += '<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:200px"></select>'; 
 		cols += '</td><td>';
 		cols += ' <select class="form-control" id="productPriceSeq_' + counter + '" name="productPriceSeq_' + counter + '" style="width:80px"><option value=0>옵션</option></select> ';
 		cols += '</td><td>';
@@ -105,7 +105,7 @@ $(document).ready(function(){
         var cols = "";
 
         cols += '<td style="padding-left:0px;">';
-        cols += '<select class="form-control" id="productId_' + mod_counter +  '" name="productId_' + mod_counter + '" style="width:150px"></select>';
+        cols += '<select class="form-control" id="productId_' + mod_counter +  '" name="productId_' + mod_counter + '" style="width:200px"></select>';
         cols += '</td><td>';
         cols += ' <select class="form-control" id="productPriceSeq_' + mod_counter + '" name="productPriceSeq_' + mod_counter + '" style="width:80px"></select> ';
 		cols += '</td><td>';
@@ -375,16 +375,16 @@ $(document).ready(function(){
 	        </div>
         </div>
         <div class="row">
-          <div class="col-12">
+          <div class="col-md-8">
             <div class="card">          
               
              <!-- general form elements -->                        
               <!-- /.card-header -->
-              <div class="col-10">
+              
               <form id="writeForm" class="form-horizontal" th:action="@{/gms/order/register.do}" method="post" >
               <input type="hidden" id="productCount" name="productCount" value="">
               	<div class="form-group">	
-			        <div class="col-10">
+			        
 			        <table class="table table-hover">
 				        <thead>
 	                    <tr>
@@ -433,18 +433,18 @@ $(document).ready(function(){
 	                     </thead>   
 			         </table>
 			         
-			        </div>
-		        </div>
+			        
+		        
                 <div class="form-group">	
-			        <div class="col-10">
+			        <div class="col-md-9">
 			        <table class="table table-hover">
 			         </table>
 			        </div>
 		        </div>
                 <div class="form-group">
-                	<div class="col-10">
+                	
 	                   <label class="control-label col-10">상품정보</label>
-	                   <div class="col-12">
+	                   
 	                       <table id="myTable" class="table doc-list">
 		                       <tr>
 		                         <td>상품</td>
@@ -456,7 +456,7 @@ $(document).ready(function(){
 		                       </tr>
 		                       <tr>
 		                       <td  style="padding-left: 0px;">                                           
-		                         <select id="productId_0" name="productId_0" class="form-control" style="width:150px">
+		                         <select id="productId_0" name="productId_0" class="form-control" style="width:200px">
 			                        
 							    </select>	   
 		                       </td>
@@ -481,18 +481,18 @@ $(document).ready(function(){
 		                       </td>
 		                       </tr>
 		                     </table>
-	                     </div>
-	                 </div>
+	                     
+	                
                 	</div>
               </div>
             </div>
             <!-- /.card -->
-            <div class="col-8">
+            
 	            <div class="card-footer">
 	                 <a href="#" th:onclick="history.back()"  class="btn btn-secondary float-left">취소</a>
 			         <input type="button" id="save" value="저장"  class="btn btn-success float-right">
 	            </div>	
-	       	</div> 		
+	       
 	            </form>             	
         </div>
         

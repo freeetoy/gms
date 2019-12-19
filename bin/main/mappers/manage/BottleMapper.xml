@@ -211,7 +211,7 @@
 		</foreach>
 	</insert>
 	
-	<insert id="insertBottleHistory" parameterType="String">
+	<insert id="insertBottleHistory" parameterType="com.gms.web.admin.domain.manage.BottleVO">
 		INSERT INTO TB_Bottle_Hist
 		SELECT b.history_seq,a.*
 			FROM TB_Bottle a,
@@ -262,6 +262,9 @@
 		SET
 			  Bottle_Work_CD 	= #{bottleWorkCd}
 			, Bottle_Work_ID	= #{bottleWorkId}
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(carCustomerId)">
+			, Customer_ID		= #{customerId}
+			</if>
 			, Bottle_Type		= #{bottleType}
 			, Bottle_Work_DT	= NOW()
 			, UPDATE_ID 		= #{updateId}

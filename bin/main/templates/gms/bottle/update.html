@@ -212,7 +212,7 @@ var goList = function(){
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>용기 등록</h1>
+            <h1>용기 수정</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -221,8 +221,8 @@ var goList = function(){
     <section class="content">   
         
         <div class="row">
-          <div class="col-12">
-            <div class="col-8">
+          
+            <div class="col-md-7">
               
              <!-- general form elements -->                        
               <!-- /.card-header -->
@@ -307,11 +307,19 @@ var goList = function(){
               </div>
             </div>
             
+            <div class="col-md-7">
+            <table class="table table-hover">	         
+            </div>
+          
+      		<div class="card-footer">      		
+                 <a href="#" th:onclick="history.back()"  class="btn btn-secondary float-left">취소</a>
+		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">                  		
+            	</form>   
+            </div>
+            
             <!-- history 이력 -->
-            <div class="col-8">
-            <div class="card">
-           
-            	
+            <div class="col-md-7">
+            	<div class="card">   
             	<table class="table table-hover">	         	
 	         		<thead>
                     <tr>
@@ -337,18 +345,7 @@ var goList = function(){
                	</table>   
                </div>
             </div>
-            <div class="col-8">
-            <table class="table table-hover">
-	         
-            </div>
-          
-      		<div class="card-footer">
-      			<div class="col-8">
-                 <a href="#" th:onclick="history.back()"  class="btn btn-secondary float-left">취소</a>
-		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">
-                </div>		     		
-            	</form>   
-            </div>
+            
           	<!-- /.col-12 -->
           </div>
         </div>      

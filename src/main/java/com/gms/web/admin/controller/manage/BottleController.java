@@ -112,8 +112,8 @@ public class BottleController {
 		List<CodeVO> codeList = codeService.getCodeList(PropertyFactory.getProperty("common.bottle.status"));
 		model.addAttribute("codeList", codeList);
 		
-		List<CustomerVO> customerList = customerService.searchCustomerListCar();
-		model.addAttribute("customerList", customerList);		
+		List<CustomerVO> carList = customerService.searchCustomerListCar();
+		model.addAttribute("carList", carList);		
 		
 		//검색어 셋팅
 		model.addAttribute("searchBottleId", params.getSearchBottleId());		
@@ -315,26 +315,29 @@ public class BottleController {
 	
 	
 	@RequestMapping(value = "/gms/bottle/register.do", method = RequestMethod.POST)
-	public String registerBottle(HttpServletRequest request
+	public ModelAndView registerBottle(HttpServletRequest request
 			, HttpServletResponse response
-			, Model model
 			, BottleVO params) {
 		logger.debug("BottleContoller registerBottle");
 		
+		ModelAndView mav = new ModelAndView();
 		RequestUtils.initUserPrgmInfo(request, params);
 		
-		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.bottle"));
-		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.bottle"));
+		int result = 0;
 		try {
 			//임시
 			params.setMemberCompSeq(1);
 			
 			//ID 중복체크
 			
-			int result = bottleService.registerBottle(params);
+			result = bottleService.registerBottle(params);
 			if (result < 0) {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 				logger.debug("BottleContoller registerBottle error");
+				
+				String alertMessage = "에러가 되었습니다.";
+				RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do");
 			}
 		} catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -343,8 +346,12 @@ public class BottleController {
 			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();
 		}
-	
-		return "redirect:/gms/bottle/list.do";
+		if(result > 0){
+			String alertMessage = "용기가 등록되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do");
+		}
+		//return "redirect:/gms/bottle/list.do";
+		return null;
 	}
 	
 	@RequestMapping(value = "/gms/bottle/update.do")
@@ -381,7 +388,7 @@ public class BottleController {
 			
 			model.addAttribute("bottle", bottle);
 			model.addAttribute("currentPage", params.getCurrentPage());
-			model.addAttribute("searchGasId", params.getSearchGasId());
+			model.addAttribute("searchProductId", params.getSearchProductId());
 			model.addAttribute("searchBottleId", params.getSearchBottleId());
 			model.addAttribute("searchChargeDt", params.getSearchChargeDt());
 		}
@@ -421,8 +428,8 @@ public class BottleController {
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.bottle"));
 		
-		String searchGasId = "";
-		if(params.getSearchGasId() != null ) searchGasId = params.getSearchGasId();
+		String searchProductId = "";
+		if(params.getSearchProductId() != null ) searchProductId = params.getSearchProductId();
 		
 		
 		try {
@@ -432,7 +439,8 @@ public class BottleController {
 			int  result = bottleService.modifyBottle(params);
 			
 			model.addAttribute("searchBottleId", params.getSearchBottleId());
-			model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
+			model.addAttribute("searchProductId", searchProductId);
+			
 			model.addAttribute("searchChargeDt", params.getSearchChargeDt());			
 			model.addAttribute("currentPage", params.getCurrentPage());
 			
@@ -448,7 +456,7 @@ public class BottleController {
 			e.printStackTrace();
 		}
 	
-		return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchGasId="+params.getSearchGasId();
+		return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId();
 	}
 	
 	
@@ -466,24 +474,28 @@ public class BottleController {
 	
 	
 	@RequestMapping(value = "/gms/bottle/changeWorkCd.do", method = RequestMethod.POST)
-	public String modifyBottleWorkCd(HttpServletRequest request
+	public ModelAndView modifyBottleWorkCd(HttpServletRequest request
 			, HttpServletResponse response
-			, Model model
 			, BottleVO params) {
 		logger.debug("BottleContoller modifyBottleWorkCd");
 		
+		ModelAndView mav = new ModelAndView();
 		RequestUtils.initUserPrgmInfo(request, params);
 		
 		//검색조건 셋팅
-		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.debug("BottleContoller searchGasId "+ params.getSearchGasId());
+		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());		
 		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		logger.debug("BottleContoller chBottleId "+ request.getParameter("chBottleId"));
 		
+		logger.debug("BottleContoller customerId "+ params.getCarCustomerId());
+		if(params.getCarCustomerId() != null && params.getCarCustomerId().length()>0)
+			params.setCustomerId(Integer.parseInt(request.getParameter("carCustomerId"))) ; 
+		
 		String searchChargeDtFrom = null;
 		String searchChargeDtEnd = null;
-		String searchGasId = "";
+		String searchProductId = "";
 		
+		int  result = 0;
 		
 		try {		
 			logger.debug("******params.getBottleId()()) *****===*"+params.getChBottleId());
@@ -502,23 +514,31 @@ public class BottleController {
 				
 			}			
 			
-			if(params.getSearchGasId() != null && params.getSearchGasId().length() > 0 ) {
-				searchGasId = params.getSearchGasId();
-				model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
+			if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
+				searchProductId = params.getSearchProductId();
+				//model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
+				mav.addObject("searchProductId", searchProductId);	
 			}
 			
 			params.setBottleWorkId(params.getUpdateId());
 			
-			int  result = bottleService.changeBottleWorkCd(params);
-			
+			result = bottleService.changeBottleWorkCd(params); 
+			/*
 			model.addAttribute("searchBottleId", params.getSearchBottleId());
 			//model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
 			model.addAttribute("searchChargeDt", params.getSearchChargeDt());			
 			model.addAttribute("currentPage", params.getCurrentPage());
+			*/
+			mav.addObject("searchBottleId", params.getSearchBottleId());	
+			mav.addObject("searchChargeDt", params.getSearchChargeDt());	
+			mav.addObject("currentPage", params.getCurrentPage());	
 			
 			if (result < 0) {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 				logger.debug("BottleContoller registerBottle error");
+				
+				String alertMessage = "처리중 에러가 발생하였습니다.";
+				RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId());
 			}
 		} catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -527,8 +547,14 @@ public class BottleController {
 			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();
 		}
-	
-		return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchGasId="+params.getSearchGasId();
+		
+		if(result > 0){
+			String alertMessage = "용기를 작업하였습니다.";
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId());
+		}
+		return null;
+		
+		//return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchGasId="+params.getSearchGasId();
 	}
 		
 	@RequestMapping(value = "/gms/bottle/changeBottlesWorkCd.do", method = RequestMethod.POST)
@@ -548,7 +574,7 @@ public class BottleController {
 		
 		String searchChargeDtFrom = null;
 		String searchChargeDtEnd = null;
-		String searchGasId = "";
+		String searchProductId = "";
 		
 		int  result = 0;
 		try {		
@@ -568,8 +594,8 @@ public class BottleController {
 				
 			}			
 			
-			if(params.getSearchGasId() != null && params.getSearchGasId().length() > 0 ) {
-				searchGasId = params.getSearchGasId();
+			if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
+				searchProductId = params.getSearchProductId();
 				//model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
 			}
 			
@@ -595,7 +621,7 @@ public class BottleController {
 		}
 		if(result > 0){
 			String alertMessage = "용기를 작업하였습니다.";
-			RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchGasId="+params.getSearchGasId());
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchPrdouctId="+params.getSearchProductId());
 		}
 		return null;
 		//return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchGasId="+params.getSearchGasId();
@@ -612,14 +638,13 @@ public class BottleController {
 		
 		//검색조건 셋팅
 		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.debug("BottleContoller searchGasId "+ params.getSearchGasId());
 		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		
 		String searchChargetDt = params.getSearchChargeDt();	
 		
 		String searchChargeDtFrom = null;
 		String searchChargeDtEnd = null;			
-		String searchGasId = "";	
+		String searchProductId = "";	
 		
 		try {
 			
@@ -635,9 +660,9 @@ public class BottleController {
 				
 			}			
 			
-			if(params.getSearchGasId() != null && params.getSearchGasId().length() > 0 ) {
-				searchGasId = params.getSearchGasId();
-				model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
+			if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
+				searchProductId = params.getSearchProductId();
+				model.addAttribute("searchProductId", Integer.parseInt(searchProductId));
 			}			
 						
 			logger.debug("******params.getBottleId()()) *****===*"+params.getBottleId());
@@ -660,7 +685,7 @@ public class BottleController {
 			e.printStackTrace();
 		}
 	
-		return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchGasId="+params.getSearchGasId();
+		return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId();
 	}
 	
 	
@@ -675,19 +700,16 @@ public class BottleController {
 		
 		//검색조건 셋팅
 		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.debug("BottleContoller searchGasId "+ params.getSearchGasId());
-		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
-		
+		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());		
 		logger.debug("BottleContoller datastring "+ request.getParameter("bottleIds"));
 		
-		String bottleIds = null;
-		
+		String bottleIds = null;	
 		
 		String searchChargetDt = params.getSearchChargeDt();	
 		
 		String searchChargeDtFrom = null;
 		String searchChargeDtEnd = null;			
-		String searchGasId = "";	
+		String searchProductId = "";	
 		
 		try {
 			
@@ -703,9 +725,9 @@ public class BottleController {
 				
 			}			
 			
-			if(params.getSearchGasId() != null && params.getSearchGasId().length() > 0 ) {
-				searchGasId = params.getSearchGasId();
-				model.addAttribute("searchGasId", Integer.parseInt(searchGasId));
+			if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
+				searchProductId = params.getSearchGasId();
+				model.addAttribute("searchProductId", Integer.parseInt(searchProductId));
 			}			
 						
 			logger.debug("******params.getBottleId()()) *****===*"+params.getBottleId());
@@ -735,6 +757,6 @@ public class BottleController {
 			e.printStackTrace();
 		}
 		
-		return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchGasId="+params.getSearchGasId();
+		return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId();
 	}
 }

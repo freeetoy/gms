@@ -31,6 +31,17 @@ function validationOfForm(form) {
 function fn_modifyBottleWorkCd(){				
 		
 		var form = $("#chForm");	
+		
+		var carCustomerId = $('#carCustomerId').val();	
+		var bottleWorkCd = $('#bottleWorkCd').val();	
+		
+		console.log("carCustomerId = "+carCustomerId);
+		//chForm.carCustomer.val(carCustomerId);
+		
+		if(bottleWorkCd=='0301' || bottleWorkCd == '0307'){
+			$("#carCustomerId").val(carCustomerId);
+		}
+				
     	chForm.action="/gms/bottle/changeWorkCd.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchProductId=[[ ${searchProductId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]";
     	chForm.submit();
 	}
@@ -254,6 +265,7 @@ $(document).ready(function(){
 	{
 		console.log("start btn_select_process}");		
 		
+		$("#view_custom").hide();
 		var bottleId = $(this).attr('bottleId'); 
 		
 		console.log("start btn_select_process bottleId "+bottleId);
@@ -292,10 +304,20 @@ $(document).ready(function(){
 	
    });
 	 
+	$('#bottleWorkCd').change( function(){
+
+		var bottleWorkCd = $('#bottleWorkCd').val();	
+		
+		if(bottleWorkCd=='0301' || bottleWorkCd=='0307')			
+			$("#view_custom").show();
+			
+	});
+
 	 
    $(".btn_select_process1").click(function()  
 	{
 		console.log("start btn_select_process1}");
+		
 	
    });
    
@@ -382,6 +404,7 @@ $(document).ready(function(){
             bottleWorkCd ='0307';
             $("#view_car").show();
             $("#view_type").show();
+            
             break;  
           case 'btn_process_4':
              msg = "'출고' 하시겠습니까?";;
@@ -512,14 +535,26 @@ $(document).ready(function(){
                     <tr>
                       <th class="card-footer">상태</th>
                       <th>
-                      <select id="bottleWorkCd" name="bottleWorkCd" class="form-control">
-                          <option value="">상태</option>				    
-					        <option th:each="row : ${codeList}"
-					                th:text="${row.cdNm}"
-					                th:value="${row.cdId}"
-					               >
-					        </option>					
-                        </select>
+	                      <select id="bottleWorkCd" name="bottleWorkCd" class="form-control">
+	                          <option value="">상태</option>				    
+						        <option th:each="row : ${codeList}"
+						                th:text="${row.cdNm}"
+						                th:value="${row.cdId}"
+						               >
+						        </option>					
+	                        </select>
+					  </th>   
+                    </tr>
+                    <tr id="view_custom" style="display: none;">
+                      <th class="card-footer">거래처</th>
+                      <th>
+	                      <select id="carCustomerId" name="carCustomerId" class="form-control">
+			                    <option value="">차량선택</option>				    
+						        <option th:each="row : ${carList}"
+						                th:text="${row.customerNm}"
+						                th:value="${row.customerId}">					             
+						        </option>												              				
+			                 </select>
 					  </th>   
                     </tr>
                     <tr>
@@ -585,7 +620,7 @@ $(document).ready(function(){
 										<div align="center">
 											<select id="customerId" name="customerId" class="form-control">
 							                    <option value="">차량선택</option>				    
-										        <option th:each="row : ${customerList}"
+										        <option th:each="row : ${carList}"
 										                th:text="${row.customerNm}"
 										                th:value="${row.customerId}">					             
 										        </option>												              				
@@ -714,7 +749,7 @@ $(document).ready(function(){
       
         <div class="row">        	
             <div class="col-1">
-               		충전기한
+            	<label>충전기한</label>                 		
             </div>               
             <div class="col-3">
               <form id="mainForm" name="mainForm"  method="post">
@@ -733,7 +768,7 @@ $(document).ready(function(){
         </div>
     	<div class="row">
            	<div class="col-1">
-               		용기코드
+           		<label>용기코드</label>               		
             </div>               
             <div class="col-3">              
                <input type="text" id="searchBottleId" name="searchBottleId" class="form-control"  th:value="${searchBottleId}">

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.web.utils.RequestUtils;
@@ -54,7 +55,7 @@ public class CustomerController {
 		Map<String, Object> map = customerService.getCustomerList(params);
 
 		model.addAttribute("customerList", map.get("list"));
-		model.addAttribute("searchUserNm", params.getSearchCustomerNm());
+		model.addAttribute("searchCustomerNm", params.getSearchCustomerNm());
 		model.addAttribute("currentPage", map.get("currentPage"));
 		model.addAttribute("lastPage", map.get("lastPage"));
 		model.addAttribute("startPageNum", map.get("startPageNum"));
@@ -117,10 +118,16 @@ public class CustomerController {
 	}
 
 	@RequestMapping(value = "/gms/customer/update.do")
-	public String openCustomerUpdate(@RequestParam(value = "customerId", required = false) Integer customerId, Model model) {
+	public String openCustomerUpdate(@RequestParam(value = "customerId", required = false) Integer customerId, 
+			HttpServletRequest request
+			, HttpServletResponse response
+			,Model model) {
 
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));		
+		model.addAttribute("searchCustomerNm", request.getParameter("searchCustomerNm"));
+		model.addAttribute("currentPage",request.getParameter("currentPage"));
 		
+		logger.debug("******params.getCurrentPage()()) *****===*"+request.getParameter("currentPage"));
 		if (customerId == null) {
 			return "redirect:/gms/customer/list.do";
 		} else {
@@ -146,19 +153,25 @@ public class CustomerController {
 	}
 	
 	@RequestMapping(value = "/gms/customer/modify.do", method = RequestMethod.POST)
-	public String modifyCustomer(HttpServletRequest request
+	public ModelAndView modifyCustomer(HttpServletRequest request
 			, HttpServletResponse response
-			, Model model
 			, CustomerVO params) {
+		
+		ModelAndView mav = new ModelAndView();	
+		
 		logger.info("CustomerContoller modifyCustomer");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
-		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.customer"));
 		
+		String searchCustomerNm = params.getSearchCustomerNm();
+		boolean result = false;
 		try {			
 			logger.debug("******params.getCustomerId()()) *****===*"+params.getCustomerId());
 			
-			boolean result = customerService.modifyCustomer(params);
+			logger.debug("******params.getSearchCustomerNm()) *****===*"+searchCustomerNm);
+			
+			result = customerService.modifyCustomer(params);
 			
 			if (result == false) {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -170,8 +183,13 @@ public class CustomerController {
 			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();
 		}
-	
-		return "redirect:/gms/customer/list.do";
+		
+		if(result){
+			String alertMessage = "수정되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/customer/list.do?currentPage="+params.getCurrentPage()+"&searchCustomerNm="+searchCustomerNm);
+		}
+		return null;
+		//return "/gms/customer/list.do?currentPage="+params.getCurrentPage()+"&searchCustomerNm="+searchCustomerNm;
 	}
 	
 	@RequestMapping(value = "/gms/customer/detail.do")

@@ -134,7 +134,7 @@ var goWrite = function(){
               
              <!-- general form elements -->                        
               <!-- /.card-header -->
-              <div class="col-8">
+             
               <form id="writeForm" class="form-horizontal" th:action="@{/gms/user/register.do}" th:object="${user}" method="post" >
                 
                 <table class="table table-hover">
@@ -180,16 +180,15 @@ var goWrite = function(){
                   </thead>
                               
                 </table>
-              </div>
+             
             </div>
             <!-- /.card -->
       		
       		<div class="card-footer">
-      			<div class="col-8" align=center>
                  <a href="/gms/user/list.do" class="btn btn-secondary float-left">취소</a>
 		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">
-                </div>		    
-            </div> 		
+            </div>		    
+          
             </form>   
           	
         </div>

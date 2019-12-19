@@ -5,18 +5,7 @@
 <th:block layout:fragment="content"> 
 <script type="text/javascript">
 
-	function validationOfForm(form) {
 	
-		var result = (
-				   isValid(form.gasNm, "가스명", null, null)
-				&& isValid(form.gasCd, "가스코드", null, null)
-		);
-		
-		if ( result === false ) {
-			return false;
-		}
-	}
-	// end of function
 	
 	var fn_deleteUser = function(userId){
 		var form = document.deleteform;	
@@ -69,7 +58,7 @@
         
     	<div class="row">
               <div class="col-1">
-               		사용자명
+               		<label>사용자명</label> 
               </div>               
               <div class="col-5">
 	              <form id="mainForm" name=""mainForm"" th:action="@{/gms/user/list.do}" method="post">

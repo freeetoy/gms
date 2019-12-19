@@ -210,12 +210,12 @@ $(document).ready(function(){
     <section class="content">   
         
         <div class="row">
-          <div class="col-12">
+          <div class="col-md-7">
             <div class="card">
               
              <!-- general form elements -->                        
               <!-- /.card-header -->
-              <div class="col-8">
+              
               <form id="writeForm" class="form-horizontal" th:action="@{/gms/bottle/register.do}" th:object="${bottle}" method="post" >
                 <input type="hidden" id="gasId" name="gasId" value="">
                 <table class="table table-hover">
@@ -275,17 +275,14 @@ $(document).ready(function(){
                   </thead>
                               
                 </table>               
-                
-              </div>
+              
             </div>
             
-          
-      		<div class="card-footer">
-      			<div class="col-8">
-                 <a href="/gms/bottle/list.do" class="btn btn-secondary float-left">취소</a>
-		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">
-                </div>		  
-                </div>   		
+     		<div class="card-footer">
+                <a href="/gms/bottle/list.do" class="btn btn-secondary float-left">취소</a>
+	          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">
+            </div>		  
+                 		
             </form>   
           	<!-- /.col-12 -->
           </div>
