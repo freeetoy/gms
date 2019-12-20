@@ -21,7 +21,7 @@
             locale: 'ko',
             //allDayDefault: true,
             businessHours: true, // display business hours
-            editable: true,
+            editable: false,
             weekNumbers: false,
             eventLimit: true, // allow "more" link when too many events
             events: eval(JSON.stringify(jsonConvertList.item))         

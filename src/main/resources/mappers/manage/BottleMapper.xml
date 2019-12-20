@@ -387,7 +387,7 @@
 			AND TB.Bottle_Work_CD = TC.CD_ID	
 			AND TB.Product_ID = TG.Product_Id
 		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID														
-		ORDER BY Create_Dt DESC 
+		ORDER BY Bottle_Work_DT DESC 
 		Limit #{startRow}, #{rowPerPage}
 	</select>
 	
@@ -415,7 +415,7 @@
 			AND TB.Bottle_Work_CD = TC.CD_ID	
 			AND TB.Product_ID = TG.Product_Id
 		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID														
-		ORDER BY Create_Dt DESC 
+		ORDER BY Bottle_Work_DT DESC 
 	</select>
 	
 	<select id="selectBottleCount" resultType="int" parameterType="java.util.Map">
