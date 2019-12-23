@@ -123,6 +123,10 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	/** searchChargeDt	*/
 	private String  searchChargeDt;
 	
+	/** searchCustomerNm	*/
+	private String  searchCustomerNm;
+	
+	
 	/** searchChargeDtFrom	*/
 	private String  searchChargeDtFrom;
 	

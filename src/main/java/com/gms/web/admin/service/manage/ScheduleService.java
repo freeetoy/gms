@@ -16,5 +16,7 @@ public interface ScheduleService {
 	
 	public int modifySchedule(ScheduleVO param);
 	
-	public int deletelSchedule(Integer scheduleSeq);	
+	public int deletelSchedule(ScheduleVO param);	
+	
+	public int checkScheduleDuplicate(ScheduleVO param);	
 }

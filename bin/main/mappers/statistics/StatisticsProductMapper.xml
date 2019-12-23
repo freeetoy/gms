@@ -23,12 +23,16 @@
 		INSERT INTO TB_Daily_Stat_Product(
 			<include refid="StatisticsProductColumns" />
 		) 
-		SELECT  Product_ID,DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d'), SUM(Order_Count),SUM(Order_Amount),'admin', NOW()
-		FROM 	TB_Order_Product A, TB_Order B
-		WHERE 	DATE_FORMAT(A.Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 2 day),'%Y/%m/%d')
-		AND 	B.Order_Process_CD !='0299'
-		AND 	B.Order_ID = A.Order_ID
-		GROUP BY DATE_FORMAT(A.Create_Dt,'%Y/%m/%d'),A.Product_Id
+		SELECT tb.Product_ID, DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') Stat_Dt,IFNULL(Order_Count,0), IFNULL(Order_Amount,0) ,'admin', NOW()
+		FROM  TB_Product tb left join 
+		(
+			SELECT  Product_ID,DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') Stat_Dt, SUM(Order_Count) Order_Count, SUM(Order_Amount) Order_Amount
+			FROM 	TB_Order_Product A, TB_Order B
+			WHERE 	DATE_FORMAT(A.Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')
+			AND 	B.Order_Process_CD !='0299'
+			AND 	B.Order_ID = A.Order_ID
+			GROUP BY DATE_FORMAT(A.Create_Dt,'%Y/%m/%d'),A.Product_Id
+		) tc on tb.Product_ID = tc.product_id
 	</insert>
 	
 	<insert id="inserMonthlyStatisticsProduct">

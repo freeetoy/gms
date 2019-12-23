@@ -10,6 +10,7 @@
 		<result property="scheduleTypeNm"	column="Schedule_TypeNm"	/>	
 		<result property="scheduleStartDt"	column="Schedule_Start_Dt"	/>
 		<result property="scheduleEndDt"	column="Schedule_End_Dt"	/>
+		<result property="scheduleEndDt2"	column="Schedule_End_Dt2"	/>
 		<result property="vacationGubun"	column="Vacation_Gubun"		/>
 		<result property="vacationGubunNm"	column="Vacation_GubunNm"	/>
 		<result property="deleteYn"			column="Delete_YN"			/>
@@ -102,7 +103,20 @@
 	
 	<select id="selectScheduleList"  resultType="com.gms.web.admin.domain.manage.ScheduleVO">
 		SELECT
-			<include refid="ScheduleColumns" />
+			Schedule_Seq
+			, TS.User_ID
+			, User_Nm
+			, Schedule_Title
+			, Schedule_Type
+			, Schedule_Start_Dt	
+			, Schedule_End_Dt
+			, date_add(Schedule_End_Dt, interval 1 day)  Schedule_End_Dt2
+			, Vacation_Gubun	
+			, TS.Delete_YN	
+			, TS.CREATE_ID
+			, TS.CREATE_DT
+			, TS.UPDATE_ID
+			, TS.UPDATE_DT
 		FROM
 			TB_Schedule TS, TB_User TU
 		WHERE
@@ -152,6 +166,20 @@
 			TU.Delete_YN	= 'N'
 		AND
 			TS.User_ID = TU.User_ID
+	</select>
+	
+	
+	<select id="selectScheduleCheck" resultType="int" parameterType="com.gms.web.admin.domain.manage.ScheduleVO">
+		SELECT
+			Count(Schedule_Seq)
+		FROM
+			TB_Schedule TB
+		WHERE
+			User_Id = #{userId}
+		AND
+			Schedule_Start_Dt = #{scheduleStartDt}	
+		AND
+			Delete_YN = 'N'		
 	</select>
 
 </mapper>

@@ -37,10 +37,13 @@ public class ScheduleVO extends AbstractVO implements Serializable {
 	private String scheduleTypeNm;
 	
 	/** Schedule_Start_Dt*/
-	private Date scheduleStartDt;
+	private String scheduleStartDt;
 	
 	/** Schedule_End_Dt  */
-	private Date scheduleEndDt;
+	private String scheduleEndDt;
+	
+	/** Schedule_End_Dt2  */
+	private String scheduleEndDt2;
 	
 	/** Vacation_Gubun   
 	 * 1:하루종일

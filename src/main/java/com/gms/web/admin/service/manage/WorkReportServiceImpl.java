@@ -3,6 +3,7 @@ package com.gms.web.admin.service.manage;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +64,14 @@ public class WorkReportServiceImpl implements WorkReportService {
 		logger.info("WorkReportServiceImpl registerWorkReport start ");
 		int result = 0;
 		try {
+			
+			
+			//TODO 
+			// orderProduct > bottle 많을 경우 예외처리
+			// bottle > orderProduct 많은 경우 예외처리
+			
+			
+			
 			
 			logger.debug("WorkReportServiceImpl registerWorkReport orderId =" + param.getOrderId());
 			logger.debug("WorkReportServiceImpl registerWorkReport bottleIds =" + param.getBottlesIds());
@@ -533,6 +542,88 @@ public class WorkReportServiceImpl implements WorkReportService {
 	@Override
 	public int getWorkReportSeq() {
 		return  workMapper.selectWorkReportSeq();
+	}
+
+	@Override
+	public Map<String,Object> getWorkBottleListTotal(BottleVO param) {
+							  
+		logger.info("****** getWorkBottleListToday *****start===*");		
+		
+				
+		int currentPage = param.getCurrentPage();
+		int ROW_PER_PAGE = param.getRowPerPage();
+		
+		int startPageNum =1;
+		
+		int lastPageNum = ROW_PER_PAGE;
+		
+		if(currentPage > (ROW_PER_PAGE/2)) {
+			lastPageNum += (startPageNum-1);
+		}
+		
+		int startRow = (currentPage-1) * ROW_PER_PAGE;
+		
+		Map<String, Object> map = new HashMap<String, Object>();		
+		
+		map.put("startRow", startRow);
+		map.put("rowPerPage", ROW_PER_PAGE);	
+		map.put("searchCustomerNm", param.getSearchCustomerNm());	
+		
+		String searchChargeDtFrom = null;
+		String searchChargeDtEnd = null;
+		String searchChargeDt = param.getSearchChargeDt();	
+		
+		if(searchChargeDt != null && searchChargeDt.length() > 20) {
+			map.put("searchChargeDt", searchChargeDt);
+			logger.info("****** getWorkBottleListToday *****getSearchChargeDt===*"+param.getSearchChargeDt());
+			
+			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;			
+			map.put("searchChargeDtFrom", searchChargeDtFrom);
+			
+			searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;			
+			map.put("searchChargeDtEnd", searchChargeDtEnd);
+		}		
+				
+		
+		logger.info("****** getWorkBottleListToday *****currentPage===*"+currentPage);		
+		
+		int bottleCount = workMapper.selectWorBottleCountTotal(map);
+		
+		logger.debug("****** getWorkBottleListToday.bottleCount *****===*"+bottleCount);
+		
+		//int lastPage = (int)(Math.ceil(bottleCount/ROW_PER_PAGE));
+		int lastPage = (int)((double)bottleCount/ROW_PER_PAGE+0.95);
+		
+		logger.debug("****** getBottleList.lastPage *****===*"+lastPage);
+		
+		if(currentPage >= (lastPage-4)) {
+			lastPageNum = lastPage;
+		}
+		
+		if(lastPageNum ==0) lastPageNum=1;
+		
+		Map<String, Object> resutlMap = new HashMap<String, Object>();
+		
+		List<BottleVO> bottleList = workMapper.selectWorBottleListTotal(map);
+		
+		logger.debug("****** getWorkBottleListToday.bottleList *****===*"+bottleList.size());
+		
+		resutlMap.put("list",  bottleList);
+		
+		
+		resutlMap.put("currentPage", currentPage);
+		resutlMap.put("lastPage", lastPage);
+		resutlMap.put("startPageNum", startPageNum);
+		resutlMap.put("lastPageNum", lastPageNum);
+		resutlMap.put("totalCount", bottleCount);		
+		
+		return  resutlMap;
+	}
+
+	@Override
+	public List<BottleVO> getWorkBottleListToday() {
+		// TODO Auto-generated method stub
+		return workMapper.selectWorBottleListToday();
 	}
 
 }

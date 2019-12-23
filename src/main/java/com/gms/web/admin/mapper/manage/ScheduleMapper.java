@@ -19,5 +19,7 @@ public interface ScheduleMapper {
 	
 	public int updateSchedule(ScheduleVO param) ;
 	
-	public int deleteSchedule(Integer scheduleSeq) ;
+	public int deleteSchedule(ScheduleVO param) ;
+	
+	public int selectScheduleCheck(ScheduleVO param);
 }

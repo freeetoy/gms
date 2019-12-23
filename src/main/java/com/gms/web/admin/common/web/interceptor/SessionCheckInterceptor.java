@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.common.web.utils.SessionUtil;
 import com.gms.web.admin.domain.common.LoginUserVO;
@@ -52,6 +53,8 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
             log.info("preHandle userNm ************ "+StringUtils.defaultString(sessionInfo.getUserNm()));
             log.info("preHandle userPartCd ************ "+StringUtils.defaultString(sessionInfo.getUserPartCd()));
             log.info("preHandle systemRole ************ "+systemRole);
+                      
+            session.setAttribute("compNm", PropertyFactory.getProperty("common.Member.Comp.Daehan.name"));		
             
             // Session에 있는 ID가 존재하는지 확인하여 없으면, 강제 로그아웃 처리
             if ("".equals(userId) || "".equals(systemRole)) {

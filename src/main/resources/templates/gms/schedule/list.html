@@ -129,12 +129,12 @@
                   	<tr th:if="${not #lists.isEmpty( scheduleList )}" th:each="row : ${scheduleList}"  style="font-size:14px;">
                       <td th:text="${scheduleList.indexOf(row)+1}"></td>
                       <td th:text="${row.scheduleTypeNm}"></td>
-                      <td th:if="${row.scheduleStartDt == row.scheduleEndDt}"  th:text="${#calendars.format(row.scheduleStartDt, 'yyyy-MM-dd' )}"></td> 
-                      <td th:unless="${row.scheduleStartDt == row.scheduleEndDt}"  th:text="|${#calendars.format(row.scheduleStartDt, 'yyyy-MM-dd' )} ~ ${#calendars.format(row.scheduleEndDt, 'yyyy-MM-dd')}|"></td>
+                      <td th:if="${row.scheduleStartDt == row.scheduleEndDt}"  th:text="${row.scheduleStartDt}"></td> 
+                      <td th:unless="${row.scheduleStartDt == row.scheduleEndDt}"  th:text="|${row.scheduleStartDt} ~ ${row.scheduleEndDt}|"></td>
                       <td th:text="${row.vacationGubunNm}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
                       <td th:if="${row.dateDiffs > 0 }" > 
-                      <a class="btn btn-danger btn-xs" href="#" th:onclick="scheduleSeq ${row.scheduleSeq} ]])">
+                      <a class="btn btn-danger btn-xs" href="#" th:onclick="deleteVacation([[ ${row.scheduleSeq} ]])">
                               <i class="fas fa-trash"></i>삭제 </a>      
                       <td th:unless="${row.dateDiffs > 0 }" >                     
                       </td>

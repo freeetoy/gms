@@ -8,7 +8,8 @@
 
 
 $(document).ready(function(){ 	
-	
+	$("#view_car").hide();
+	 $("#view_type").hide();
  	// 
     $(".btn_order_print").click(function()  
     {
@@ -249,6 +250,7 @@ $(document).ready(function(){
           case 'btn_process_1':
             msg = "'입고' 하시겠습니까?";
             bottleWorkCd ='0301';
+            
             break;
           case 'btn_process_2':
             msg = "'충전' 하시겠습니까?";
@@ -490,8 +492,27 @@ $(document).ready(function(){
 											</table>
 										</div>
 									</div>
+									<div class="form-group" id="view_car" >
+										<div align="center">
+											<select id="customerId" name="customerId" class="form-control">
+							                    <option value="">차량선택</option>				    
+										        <option th:each="row : ${carList}"
+										                th:text="${row.customerNm}"
+										                th:value="${row.customerId}">					             
+										        </option>												              				
+							                 </select>
+										</div>
+									</div>
+									<div class="form-group" id="view_type" >
+										<div align="center">
+											<select id="bottleType1" name="bottleType1" class="form-control">
+										        <option value="E">공병</option>	
+										        <option value="F">실병</option>							              				
+							                 </select>
+					                     </div>
+									</div>
 									<div class="form-group">
-										<label >주문정보</label>
+										<label >용기정보</label>
 										<div>
 											<table id="myTable" class="table mod-doc-list1">
 												<tr>
@@ -513,13 +534,17 @@ $(document).ready(function(){
 									<table id="myTable" class="table order-info">
 										<tr>
 											<div align="center">
+											<!-- 
 											<button type="button" id="btn_process_1" class="btn btn-info btn btn btn_process_check">입고</button>
 											<button type="button" id="btn_process_2" class="btn btn-info btn btn_process_check">충전</button>
 											<button type="button" id="btn_process_3" class="btn btn-info btn btn_process_check">상차</button>
 											<button type="button" id="btn_process_4" class="btn btn-info btn btn btn_process_check">출고</button>
-											<button type="button" id="btn_process_5" class="btn btn-info btn btn_process_check">판매</button>
+											 -->
+											<button type="button" id="btn_process_5" class="btn btn-info btn btn_process_check">판 매</button>
+											<!-- 
 											<button type="button" id="btn_process_6" class="btn btn-info btn btn_process_check">회수</button>
 											<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">기타</button>
+											 -->
 										</div>
 										</tr>										
 									</table>
@@ -570,7 +595,7 @@ $(document).ready(function(){
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover">                
                   <thead>
-                    <tr align="center">
+                    <tr>
                       <th>순번</th>
                       <th>거래처</th>
                       <th>품명</th>
@@ -597,7 +622,7 @@ $(document).ready(function(){
 		     		  <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>   
 		     		  <td>                      
 						<a class="btn_select_process btn btn-success btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal" href="#"><i class="fas fa-pencil-alt"></i>주문정보</a>
-						<a class="btn_select_process1 btn btn-info btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i>관리</a>
+						<a class="btn_select_process1 btn btn-info btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i>판매</a>
 					  </td>                     
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( orderList )}">

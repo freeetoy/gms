@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 
@@ -14,6 +15,12 @@ public interface WorkReportMapper {
 	public List<WorkReportVO> selectWorkReportList(WorkReportVO param);	
 	
 	public List<WorkBottleVO> selectWorkBottleList(Integer workReportSeq);	
+	
+	public List<BottleVO> selectWorBottleListTotal(Map<String, Object> map);	
+	
+	public List<BottleVO> selectWorBottleListToday();	
+	
+	public int selectWorBottleCountTotal(Map<String, Object> map);	
 	
 	public int selectWorkReportSeq() ;
 	

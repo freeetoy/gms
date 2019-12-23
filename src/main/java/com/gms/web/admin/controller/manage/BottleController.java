@@ -628,11 +628,12 @@ public class BottleController {
 	}
 	
 	@RequestMapping(value = "/gms/bottle/delete.do", method = RequestMethod.POST)
-	public String deleteBottle(HttpServletRequest request
+	public ModelAndView deleteBottle(HttpServletRequest request
 			, HttpServletResponse response
-			, Model model
 			, BottleVO params) {
-		logger.debug("BottleContoller modifyBottleWorkCd");
+		logger.debug("BottleContoller modifyBottleWorkCd");		
+		
+		ModelAndView mav = new ModelAndView();
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -645,7 +646,7 @@ public class BottleController {
 		String searchChargeDtFrom = null;
 		String searchChargeDtEnd = null;			
 		String searchProductId = "";	
-		
+		int  result = 0;
 		try {
 			
 			if(searchChargetDt != null && searchChargetDt.length() > 20) {
@@ -662,20 +663,28 @@ public class BottleController {
 			
 			if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
 				searchProductId = params.getSearchProductId();
-				model.addAttribute("searchProductId", Integer.parseInt(searchProductId));
+				//model.addAttribute("searchProductId", Integer.parseInt(searchProductId));
+				
+				mav.addObject("searchProductId", searchProductId);
 			}			
 						
 			logger.debug("******params.getBottleId()()) *****===*"+params.getBottleId());
 			
-			int  result = bottleService.deleteBottle(params);
-			
+			result = bottleService.deleteBottle(params);
+			/*
 			model.addAttribute("searchBottleId", params.getSearchBottleId());
 			model.addAttribute("searchChargeDt", params.getSearchChargeDt());			
 			model.addAttribute("currentPage", params.getCurrentPage());
+			*/
+			mav.addObject("searchBottleId", params.getSearchBottleId());
+			mav.addObject("searchChargeDt", params.getSearchChargeDt());
+			mav.addObject("currentPage", params.getCurrentPage());
 			
 			if (result < 0) {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 				logger.debug("BottleContoller registerBottle error");
+				String alertMessage = "용기중 오류가 발생하였습니다.";
+				RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId());
 			}
 		} catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -685,18 +694,23 @@ public class BottleController {
 			e.printStackTrace();
 		}
 	
-		return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId();
+		if(result > 0){
+			String alertMessage = "용기가 삭제 되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId());
+		}
+		return null;
+		//return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId();
 	}
 	
 	
 	@RequestMapping(value = "/gms/bottle/deleteChecked.do", method = RequestMethod.POST)
-	public String deleteBottles(HttpServletRequest request
+	public ModelAndView deleteBottles(HttpServletRequest request
 			, HttpServletResponse response
-			, Model model
 			, BottleVO params) {
 		logger.debug("BottleContoller modifyBottleWorkCd");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
+		ModelAndView mav = new ModelAndView();
 		
 		//검색조건 셋팅
 		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
@@ -710,7 +724,7 @@ public class BottleController {
 		String searchChargeDtFrom = null;
 		String searchChargeDtEnd = null;			
 		String searchProductId = "";	
-		
+		int  result = 0;
 		try {
 			
 			if(searchChargetDt != null && searchChargetDt.length() > 20) {
@@ -727,7 +741,8 @@ public class BottleController {
 			
 			if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
 				searchProductId = params.getSearchGasId();
-				model.addAttribute("searchProductId", Integer.parseInt(searchProductId));
+				//model.addAttribute("searchProductId", Integer.parseInt(searchProductId));
+				mav.addObject("searchProductId", searchProductId);
 			}			
 						
 			logger.debug("******params.getBottleId()()) *****===*"+params.getBottleId());
@@ -738,12 +753,15 @@ public class BottleController {
 				params.setBottList(list);
 			}					
 			
-			int  result = bottleService.deleteBottles(params);
-			
-			
+			result = bottleService.deleteBottles(params);
+			/*			
 			model.addAttribute("searchBottleId", params.getSearchBottleId());
 			model.addAttribute("searchChargeDt", params.getSearchChargeDt());			
 			model.addAttribute("currentPage", params.getCurrentPage());
+			*/
+			mav.addObject("searchBottleId", params.getSearchBottleId());
+			mav.addObject("searchChargeDt", params.getSearchChargeDt());
+			mav.addObject("currentPage", params.getCurrentPage());
 			
 			if (result < 0) {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -756,7 +774,11 @@ public class BottleController {
 			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();
 		}
-		
-		return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId();
+		if(result > 0){
+			String alertMessage = "용기가 삭제 되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId());
+		}
+		return null;
+		//return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId();
 	}
 }

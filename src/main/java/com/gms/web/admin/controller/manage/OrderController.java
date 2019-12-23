@@ -34,6 +34,7 @@ import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.service.common.CodeService;
 import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.manage.OrderService;
+import com.gms.web.admin.service.manage.WorkReportService;
 
 
 @Controller
@@ -52,6 +53,8 @@ public class OrderController {
 	@Autowired
 	private CustomerService customerService;
 	
+	@Autowired
+	private WorkReportService workService;
 	
 	@RequestMapping(value = "/gms/order/list.do")
 	public ModelAndView getOrderList(OrderVO params) {
@@ -96,6 +99,35 @@ public class OrderController {
 		return mav;
 	}
 	
+	
+	@RequestMapping(value = "/gms/order/monitor.do")
+	public ModelAndView getWorkBottleListToday(BottleVO params) {
+
+		logger.info("BottleContoller getWorkBottleListToday");
+
+		ModelAndView mav = new ModelAndView();
+		
+		
+		Map<String, Object> map =  workService.getWorkBottleListTotal(params);
+		
+		mav.addObject("bottleList", map.get("list"));	
+		
+		//검색어 셋팅
+		mav.addObject("searchChargeDt", params.getSearchChargeDt());	
+		mav.addObject("searchCustomerNm", params.getSearchCustomerNm());	
+		
+		mav.addObject("currentPage", map.get("currentPage"));
+		mav.addObject("lastPage", map.get("lastPage"));
+		mav.addObject("startPageNum", map.get("startPageNum"));
+		mav.addObject("lastPageNum", map.get("lastPageNum"));
+		mav.addObject("totalCount", map.get("totalCount"));
+		mav.addObject("rowPerPage", params.getRowPerPage());		
+				
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.trasnaction"));		
+		
+		mav.setViewName("/gms/order/monitor");
+		return mav;
+	}
 	
 	@RequestMapping(value = "/gms/order/write.do")
 	public ModelAndView openOrderWrite(Model model) {

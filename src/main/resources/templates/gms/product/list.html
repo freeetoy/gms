@@ -109,7 +109,7 @@
                   <tbody>
                   	<tr th:if="${not #lists.isEmpty( productList )}" th:each="row : ${productList}" style="font-size:14px;">
                       <td th:text="${productList.indexOf(row)+1}"></td>
-                      <th th:if="${row.productPriceSeq == 1}" th:rowspan="${row.productPriceCount}">
+                      <th th:if="${row.productPriceSeq == 1}" th:rowspan="${row.productPriceCount}" valign="top">
                       <a th:href="@{/gms/product/update.do( productId=${row.productId} )}" th:text="${row.ProductNm}"></a>
                       </th>
                       <th th:text="${row.productCapa}"></th>

@@ -49,8 +49,11 @@ public class ScheduleController {
 		
 		List<ScheduleVO> scheduleList = scheduleService.getScheduleListUser(param);
 		mav.addObject("scheduleList", scheduleList);			
-		
-		
+		/*
+		for(int i=0;i<scheduleList.size();i++) {
+			logger.info("ScheduleController getScheduleList createDt "+scheduleList.get(i).getCreateDt());
+		}
+		*/
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.vacation"));	 
 		
 		
@@ -96,15 +99,44 @@ public class ScheduleController {
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.vacation"));		
 		
 		logger.debug("ScheduleController registerSchedule params.getScheduleStartDt() " + params.getScheduleStartDt());
-		if(params.getScheduleEndDt()!=null) params.setScheduleEndDt(params.getScheduleStartDt());
+		
+		logger.debug("ScheduleController registerSchedule params.getScheduleEndDt() " + params.getScheduleEndDt());
+		
+		if(params.getScheduleEndDt()==null) params.setScheduleEndDt(params.getScheduleStartDt());
 		int result = 0;
 		
 		result = scheduleService.registerSchedule(params);
-		if(result > 0){
-			String alertMessage = "등록되었습니다.";
+		String alertMessage = "등록되었습니다.";
+		
+		if(result > 0){			
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/schedule/list.do");
+		}else if(result <= 0) {
+			alertMessage = "해당 일자에 휴가가 이미 등록되어있습니다.";
 			RequestUtils.responseWriteException(response, alertMessage, "/gms/schedule/list.do");
 		}
 		return null;
 	}
 
+	
+	@RequestMapping(value = "/gms/schedule/delete.do", method = RequestMethod.POST)
+	public ModelAndView deleteSchedule(HttpServletRequest request
+			, HttpServletResponse response
+			, ScheduleVO params) {
+		
+		logger.info("ScheduleController deleteSchedule");
+		
+		params.setUpdateId(params.getCreateId());
+		RequestUtils.initUserPrgmInfo(request, params);
+		
+			
+		int  result = scheduleService.deletelSchedule(params);
+		
+		if(result > 0){
+			String alertMessage = "삭제하였습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/schedule/list.do");
+		}
+		return null;
+		
+	}
 }

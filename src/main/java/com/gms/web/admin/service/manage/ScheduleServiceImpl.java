@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.domain.manage.ScheduleVO;
 import com.gms.web.admin.mapper.manage.ScheduleMapper;
 
@@ -41,9 +42,10 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 	@Override
 	public int registerSchedule(ScheduleVO param) {
 		// TODO Auto-generated method stub
-		String stringScheduleType="정기휴가";
 		
-		String strVacationGubun = "";
+		int result = 0;
+		String stringScheduleType="정기휴가";		
+		String strVacationGubun = "";		
 		
 		param.setUserId(param.getCreateId());
 		if(param.getScheduleType().equals(PropertyFactory.getProperty("Schedule.Type.Public"))) stringScheduleType = "공휴";
@@ -51,21 +53,26 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 		
 		if(param.getVacationGubun().equals(PropertyFactory.getProperty("Schedule.vacation.AM"))) {
 			strVacationGubun = "오전반차";
-			Date startDt = param.getScheduleStartDt();
-			
-			Date temp = new Date();
-			//startDt.get
-			startDt.setHours(9);
-		}
-		else if(param.getVacationGubun().equals(PropertyFactory.getProperty("Schedule.vacation.PM"))) {
-			strVacationGubun = "오후반차";
-			Date startDt = param.getScheduleStartDt();
-			startDt.setHours(13);
+		}else if(param.getVacationGubun().equals(PropertyFactory.getProperty("Schedule.vacation.PM"))) {
+			strVacationGubun = "오후반차";		
 		}
 		
-		param.setScheduleTitle(param.getUserNm()+" "+stringScheduleType+"("+strVacationGubun+")");
+		if(param.getVacationGubun().equals(PropertyFactory.getProperty("Schedule.vacation.All"))) {
+			param.setScheduleTitle(param.getUserNm()+" "+stringScheduleType);
+		}else {
+			param.setScheduleTitle(param.getUserNm()+" "+stringScheduleType+"("+strVacationGubun+")");
+		}
+		logger.debug("ScheduleServiceImpl registerSchedule params.getScheduleStartDt() " + param.getScheduleStartDt());
 		
-		return scheduleMapper.insertSchedule(param);
+		logger.debug("ScheduleServiceImpl registerSchedule params.getScheduleEndDt() " + param.getScheduleEndDt());
+		//중복확인
+		result = checkScheduleDuplicate(param);
+		
+		if(result > 0) result = -1;
+		else result =  scheduleMapper.insertSchedule(param);
+		
+		return result;
+		
 	}
 
 	@Override
@@ -75,9 +82,14 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 	}
 
 	@Override
-	public int deletelSchedule(Integer scheduleSeq) {
+	public int deletelSchedule(ScheduleVO param) {
 		// TODO Auto-generated method stub
-		return scheduleMapper.deleteSchedule(scheduleSeq);
+		return scheduleMapper.deleteSchedule(param);
+	}
+
+	@Override
+	public int checkScheduleDuplicate(ScheduleVO param) {
+		return scheduleMapper.selectScheduleCheck(param);
 	}
 
 }

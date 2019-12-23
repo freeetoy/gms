@@ -43,6 +43,7 @@ $(document).ready(function(){
 	initProduct(0);
 	initProductPriceList();
 	
+	/*
 	$("#addrow").on("click", function () {
 
 		//alert("addrow");
@@ -60,7 +61,7 @@ $(document).ready(function(){
 		var newRow = $("<tr>");
 		var cols = "";
 
-		cols += '<td style="padding-left:0px;">';
+		cols += '<td style="padding-left:5px;">';
 		cols += '<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:200px"></select>'; 
 		cols += '</td><td>';
 		cols += ' <select class="form-control" id="productPriceSeq_' + counter + '" name="productPriceSeq_' + counter + '" style="width:80px"><option value=0>옵션</option></select> ';
@@ -83,14 +84,14 @@ $(document).ready(function(){
 		addProductCapa(counter);
 
 	});
-
+*/
 	// 품명 선택 변경
 
     $('#productId_0').change( function(){
 
-		var select_pumname = $('#productId_0').val();
+		var selProductId = $('#productId_0').val();
 
-		getProductList(select_pumname,0,"ins");
+		getProductList(selProductId,0,"ins");
 	});
 
 
@@ -114,8 +115,8 @@ $(document).ready(function(){
         var newRow = $("<tr>");
         var cols = "";
 
-        cols += '<td style="padding-left:0px;">';
-        cols += '<select class="form-control" id="productId_' + mod_counter +  '" name="productId_' + mod_counter + '" style="width:150px"></select>';
+        cols += '<td style="padding-left:5px;">';
+        cols += '<select class="form-control" id="productId_' + mod_counter +  '" name="productId_' + mod_counter + '" style="width:200px"></select>';
         cols += '</td><td>';
         cols += ' <select class="form-control" id="productPriceSeq_' + mod_counter + '" name="productPriceSeq_' + mod_counter + '" style="width:80px"></select> ';
 		cols += '</td><td>';
@@ -269,14 +270,14 @@ $(document).ready(function(){
     	form.submit();
     });
     
-    function getProductList(pumname,sel_pid,type){
+    function getProductList(productId,sel_pid,type){
 	      
 		console.log(type);      
 		
 		$.ajax({
 			url: '/gms/product/priceList.do',
 			type: 'POST',
-			data: 'productId='+ pumname ,
+			data: 'productId='+ productId ,
 			dataType: 'json',
 
 		 })
@@ -391,7 +392,7 @@ $(document).ready(function(){
 		        
 		        var newRow = $("<tr>");
 				var cols = "";
-				cols += '<td style="padding-left:0px;">';
+				cols += '<td style="padding-left:5px;">';
 				cols += '<select class="form-control" id="productId_0" name="productId_0" style="width:200px"></select>'; 
 				cols += '</td><td>';
 				cols += ' <select class="form-control" id="productPriceSeq_0" name="productPriceSeq_0" style="width:80px"><option value=0>옵션</option></select> ';
@@ -437,7 +438,7 @@ $(document).ready(function(){
 			        
 		            cols = "";
 				
-					cols += '<td style="padding-left:0px;">';
+					cols += '<td style="padding-left:5px;">';
 					cols += '	<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:200px">'; 
 					cols += '	<option value="' + data[i].productId +'" selected>' + data[i].productNm + '</option>';
 					cols += '	</select>';
@@ -614,8 +615,8 @@ $(document).ready(function(){
 		                         <td></td>
 		                       </tr>
 		                       <tr >
-			                       <td  style="padding-left: 0px;">                                           
-			                         <select id="productId_0" name="productId_0" class="form-control" style="width:150px">
+			                       <td  style="padding-left: 5px;">                                           
+			                         <select id="productId_0" name="productId_0" class="form-control" style="width:200px">
 				                        
 								    </select>	   
 			                       </td>

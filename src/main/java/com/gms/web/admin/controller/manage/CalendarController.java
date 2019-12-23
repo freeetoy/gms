@@ -56,8 +56,7 @@ public class CalendarController {
         
 		try {
 			
-			ScheduleVO temp = new ScheduleVO();		
-			
+			ScheduleVO temp = new ScheduleVO();					
 			
 			for(int i=0;i<scheduleList.size();i++) {
 				temp = scheduleList.get(i);				
@@ -66,20 +65,24 @@ public class CalendarController {
 				
                 sObject.put("title", temp.getScheduleTitle());
                 if(temp.getVacationGubun().equals(PropertyFactory.getProperty("Schedule.vacation.All"))) {
-                	sObject.put("start", DateUtils.convertDateFormat(temp.getScheduleStartDt(),"yyyy-MM-dd"));
+                	
+                	sObject.put("start", temp.getScheduleStartDt());
                 	
                 }else {
-                	
-                	
-                	String startH = DateUtils.convertDateFormat(temp.getScheduleStartDt(),"HH:mm:ss");
-                	
-                	sObject.put("start", DateUtils.convertDateFormat(temp.getScheduleStartDt(),"yyyy-MM-dd")+"T"+startH);
-                	logger.info("CalendarContoller getCalendarList temp.getScheduleStartDt() " +DateUtils.convertDateFormat(temp.getScheduleStartDt(),"yyyy-MM-dd")+"T"+startH);
+                	String startH = "";
+                	if(temp.getVacationGubun().equals(PropertyFactory.getProperty("Schedule.vacation.AM"))) {
+                		startH = "09:00:00";
+                	}else {
+                		startH = "13:00:00";
+                	}    	                	                	
+                	//sObject.put("start", DateUtils.convertDateFormat(temp.getScheduleStartDt(),"yyyy-MM-dd")+"T"+startH);
+                	sObject.put("start", temp.getScheduleStartDt()+"T"+startH);
                 	
                 }
                 
                 if(!temp.getScheduleStartDt().equals(temp.getScheduleEndDt()))
-                	sObject.put("end", DateUtils.convertDateFormat(temp.getScheduleEndDt(),"yyyy-MM-dd"));
+                	sObject.put("end", temp.getScheduleEndDt2());
+                	
                 sObject.put("groupId", temp.getScheduleSeq());
                 //sObject.put("url", "/test/schedule?field="+temp.getScheduleSeq());
                 jArray.put(sObject);

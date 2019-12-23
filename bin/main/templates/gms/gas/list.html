@@ -139,20 +139,20 @@
           <div class="col-md-6">         
             <!-- /.card -->
 			<form role="form" id="regForm" th:action="@{/gms/gas/register.do}" th:object="${gas}" method="post" onsubmit="return validationOfForm(this)">
-            <div class="card card-success">
+            <div class="card card-secondary">
               <div class="card-header">
                 <h3 class="card-title">가스 등록</h3>
               </div>
               <div class="card-body">
                 <div class="row">
-                  <div class="col-4">
+                  <div class="col-5">
                     <input type="text" name="gasNm" id="gasNm" class="form-control" placeholder="가스명">
                   </div>
-                  <div class="col-4">
+                  <div class="col-5">
                     <input type="text" name="gasCd" id="gasCd" class="form-control" placeholder="가스코드">
                   </div>
-                  <div class="col-4">
-                  <button type="submit" class="btn btn-primary">추가</button>
+                  <div class="col-2">
+                  <button type="submit" class="btn btn-success">추가</button>
                 </div>
                 </div>
               </div>
@@ -173,7 +173,7 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>ID</th>
+                      <th>순번</th>
                       <th>가스명</th>
                       <th>가스코드</th>
                       <th>등록자</th>

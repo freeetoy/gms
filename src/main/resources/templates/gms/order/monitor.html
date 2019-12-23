@@ -1,0 +1,221 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="gms/layout/basic">
+
+<div class="wrapper">
+
+<th:block layout:fragment="content"> 
+<script type="text/javascript">	
+var goUpdate = function(bottleId){		
+	
+	//alert("goUpdate "+bottleId);
+	console.log("goUpdate bottleId ="+bottleId);
+	var form = $("#mainForm");	
+
+	$("#bottleId").val(bottleId);
+	
+	//document.getElementById("priceCount").value = totalCount;
+	mainForm.action="/gms/bottle/update.do";
+	form.submit();
+}
+	
+	// 입력된 내용을 작성한다.
+	function goSearch(){	
+		
+		var form = document.mainForm;	
+		$("#currentPage").val(1);  
+		mainForm.action="/gms/order/monitor.do";
+		form.submit();
+	};
+
+
+
+	function gotoPage(pageNo) {
+		
+		var form =  document.mainForm;			
+		
+		$("#currentPage").val(pageNo);  
+		 mainForm.action="/gms/order/monitor.do";
+        //validate checkt시 confirm 중복되는 부분 처리 
+       
+    	mainForm.submit();
+    }
+	
+
+	$(function() {
+	
+	  $('input[name="searchChargeDt"]').daterangepicker({
+	      autoUpdateInput: false,
+	      locale: {
+	          cancelLabel: 'Clear'
+	      }
+	  });
+	
+	  $('input[name="searchChargeDt"]').on('apply.daterangepicker', function(ev, picker) {
+	      $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+	  });
+	
+	  $('input[name="searchChargeDt"]').on('cancel.daterangepicker', function(ev, picker) {
+	      $(this).val('');
+	  });
+	
+	});	
+
+	
+	
+	
+	</script>
+   <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>거래 현황</h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+   
+    <section class="content">         
+   
+    	<div class="row">        	
+    		
+            <div class="col-1">
+            <form id="mainForm" name="mainForm"  method="post">
+              <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
+              <input type="hidden" id="bottleId" name="bottleId" value="">    
+              
+               	<label>작업 일자</label>
+            </div>               
+            <div class="col-4">              
+               <input type="text" class="form-control" name="searchChargeDt" th:value="${searchChargeDt}"/>			
+            </div>               
+            <div class="col-3">               
+            </div>
+         </div>
+         <div class="row">	
+	        <div class="col-12">
+	        <table class="table table-hover">
+	        <tr></tr>
+	         </table>
+	        </div>
+        </div>
+    	<div class="row">
+    		
+           	<div class="col-1">
+               		<label >거래처명</label>
+            </div>               
+            <div class="col-4">              
+               <input type="text" id="searchCustomerNm" name="searchCustomerNm" class="form-control" th:value="${searchCustomerNm}">
+            </div>  
+            
+              <div class="col-5">
+                <button class="btn btn-navbar" type="submit"><i class="fas fa-search"></i></button>           
+              </div>  
+                       
+              <!-- >div class="col-1">
+               		
+              </div-->
+              <div class="col-2">
+              	
+              </div>
+              </form>  
+         </div>
+        <div class="row">	
+	        <div class="col-12">
+	        <table class="table table-hover">
+	         </table>
+	        </div>
+        </div>
+        <div class="row">	
+          <div class="col-12">
+            <div class="card">
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover">                
+                  <thead>
+                    <tr>
+                      <th>순번</th>
+                      <th>용기코드</th>
+                      <th>바코드</th>
+                      <th>거래처</th>
+                      <th>가스</th>
+                      <th>용량</th>
+                      <th>작업</th>                      
+                      <th>작업일</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                 
+                  	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}" style="font-size:14px;">
+                      <td th:text="${totalCount-((currentPage-1)*10) - bottleList.indexOf(row)}"></td>
+                      <td>
+                      <a href="#" th:onclick="goUpdate([[ ${row.bottleId} ]])" th:text="${row.bottleId}"></a>                     
+                      </td>
+                      <td th:text="${row.bottleBarCd}"></td>
+                      <td th:text="${row.CustomerNm}"></td>
+                      <td th:text="${row.productNm}"></td>
+                      <td th:text="${row.bottleCapa}"></td>
+                      <th th:text="${row.bottleWorkCdNm}"></th>                      
+                      <td th:text="${#calendars.format( row.bottleWorkDt, 'yyyy-MM-dd' )}"></td> 
+                    </tr>
+                    <tr th:unless="${not #lists.isEmpty( bottleList )}">
+						<td colspan="8">조회된 결과가 없습니다.</td>
+					</tr>			</form>			
+                  </tbody>
+					
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>    
+        <!-- /.row -->
+        
+         <div class="row">								
+			<div class="col-12">
+				<div class="pagination justify-content-center m-0" id="example2_paginate">
+					<ul class="pagination">
+						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
+							<a th:href="@{/gms/order/monitor.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+						</li>
+						
+						<li th:if="${currentPage<=1}" class="paginate_button page-item previous disabled" id="example2_previous">
+							<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+						</li>
+						<th:block th:each="num:${#numbers.sequence(startPageNum, lastPageNum)}">
+						
+						<li th:if="${currentPage == num}" class="paginate_button page-item active">
+							<a href="#" th:onclick="gotoPage([[ ${num} ]])" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">[[${num}]]</a>
+						</li>
+					
+						<li th:unless="${currentPage == num}" class="paginate_button page-item">
+							<a href="#" th:onclick="gotoPage([[ ${num} ]])" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">[[${num}]]</a>
+						</li>
+						</th:block>
+					
+						<li th:if="${currentPage < lastPage}" class="paginate_button page-item next" id="example2_next">
+						<a th:href="@{/gms/order/monitor.do(currentPage=${currentPage +1})}" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+						</li>
+						<li th:if="${currentPage >= lastPage}" class="paginate_button page-item next disabled" id="example2_next">
+						<a href="#"  aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+						</li>
+        			</ul>
+				</div>
+			</div>
+			
+			<div class="col-md-2">
+			<!-- a id="select_del" class="btn btn-danger btn-sm" href="#" th:onclick="fn_deleteBottles()">
+                              <i class="fas fa-trash"></i>선택삭제</a-->   
+			</div>
+		</div>
+        
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  
+  </th:block>
+
+</body>
+</html>

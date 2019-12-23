@@ -13,6 +13,10 @@ public interface WorkReportService {
 	
 	public List<WorkBottleVO> getWorkBottleList(Integer workReportSeq);	
 	
+	public Map<String,Object> getWorkBottleListTotal(BottleVO param);	
+	
+	public List<BottleVO> getWorkBottleListToday();	
+	
 	public int getWorkReportSeq() ;
 	
 	public int registerWorkReportByBottle(WorkReportVO param, List<BottleVO> bottleList);

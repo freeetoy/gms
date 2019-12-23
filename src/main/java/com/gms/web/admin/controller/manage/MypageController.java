@@ -19,8 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.common.LoginUserVO;
+import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.domain.manage.UserVO;
+import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.manage.OrderService;
 import com.gms.web.admin.service.manage.UserService;
 
@@ -37,6 +39,9 @@ public class MypageController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private CustomerService customerService;
+	
 	@RequestMapping(value = "/gms/mypage/assign.do")
 	public ModelAndView getAssignList(
 			HttpServletRequest request
@@ -51,6 +56,9 @@ public class MypageController {
 		ModelAndView mav = new ModelAndView();		
 		
 		List<OrderVO> orderList = orderService.getSalseOrderList(params.getCreateId());
+		
+		List<CustomerVO> carList = customerService.searchCustomerListCar();
+		mav.addObject("carList", carList);	
 		
 		mav.addObject("orderList", orderList);	
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.assign"));	 	

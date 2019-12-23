@@ -50,14 +50,13 @@ function callAjax(ajaxInfo){
 
 // 입력된 내용을 작성한다.
 var goWrite = function(){
-	validation();
-	
+	validation();	
 
 	if(!isOkay){
 		return;
 	}
-	alert(scheduleStartDt.value);
-	alert(scheduleEndDt.value);
+	//alert(scheduleStartDt.value);
+	//alert(scheduleEndDt.value);
 	
 	if(scheduleEndDt.value=="") scheduleEndDt.value = scheduleStartDt.value;
 	var form = $("#writeForm");	
@@ -77,7 +76,7 @@ var goWrite = function(){
 	  });
 	
 	  $('input[name="scheduleStartDt"]').on('apply.daterangepicker', function(ev, picker) {
-	      $(this).val(picker.startDate.format('YYYY/MM/DD'));
+	      $(this).val(picker.startDate.format('YYYY-MM-DD'));
 	  });
 	
 	  $('input[name="scheduleStartDt"]').on('cancel.daterangepicker', function(ev, picker) {
@@ -94,7 +93,7 @@ var goWrite = function(){
 		  });
 		
 		  $('input[name="scheduleEndDt"]').on('apply.daterangepicker', function(ev, picker) {
-		      $(this).val(picker.startDate.format('YYYY/MM/DD'));
+		      $(this).val(picker.startDate.format('YYYY-MM-DD'));
 		  });
 		
 		  $('input[name="scheduleEndDt"]').on('cancel.daterangepicker', function(ev, picker) {
