@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.gms.web.admin.domain.manage.OrderBottleVO;
 import com.gms.web.admin.domain.manage.OrderExtVO;
 import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.OrderVO;
@@ -23,6 +24,8 @@ public interface OrderService {
 	
 	public OrderExtVO getOrder(Integer orderId) ;
 	
+	public OrderExtVO getOrderNotDelivery(Integer orderId) ;
+	
 	public List<OrderProductVO> getOrderProductList(Integer orderId);
 
 	public int getOrderCount(Map<String, Object> map);	
@@ -33,11 +36,17 @@ public interface OrderService {
 
 	public int registerOrderProduct(OrderProductVO orderProduct);	
 	
+	public int registerOrderBottle(OrderBottleVO param);	
+	
+	public int registerOrderBottles(List<OrderBottleVO>  param);	
+	
 	public int registerOrderProducts(List<OrderProductVO> orderProduct);	
 	
 	public int registerOrderAndProduct(OrderVO order, List<OrderProductVO> orderProduct);	
 
 	public int modifyOrder(HttpServletRequest request,OrderVO param);
+	
+	public int modifyOrderAdditionBottles(OrderVO param);
 	
 	public int modifyOrderDeposit(OrderVO param);
 
@@ -48,6 +57,8 @@ public interface OrderService {
 	public int modifyOrderComplete(OrderProductVO param);
 
 	public int modifyOrderProductBottle(OrderProductVO param);
+	
+	//public int modifyOrderProductDeliveryDt(OrderProductVO param);
 	
 	public int changeOrderProcessCd(OrderVO param);
 

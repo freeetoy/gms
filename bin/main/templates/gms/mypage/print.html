@@ -39,8 +39,8 @@
                       <td th:text="${row.orderProductNm}"></td>
                       <td th:text="${row.orderProductCapa}"></td>
                       <td th:text="|${row.createNm}(${row.createId})|"></td>
-                      <th th:if="${row.orderProcessCdNm=='0201'}" th:text="${row.orderProcessCdNm}">
-                      <th th:unless="${row.orderProcessCdNm=='0201'}" style="color: red" th:text="${row.orderProcessCdNm}">
+                      <th th:if="${row.orderProcessCdNm=='0210'}" th:text="${row.orderProcessCdNm}">
+                      <th th:unless="${row.orderProcessCdNm=='0210'}" style="color: red" th:text="${row.orderProcessCdNm}">
                       </th>
                       <td th:text="${#calendars.format( row.deliveryReqDt, 'yyyy-MM-dd' )}"></td>
 		     		  <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>   

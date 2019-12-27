@@ -61,10 +61,16 @@ public class UserServiceImpl implements UserService {
 		try {
 			AES256Util aescipher = new AES256Util(PropertyFactory.getProperty("common.crypto.key"));
 			
-			param.setUserPasswd(aescipher.aesEncode( param.getUserPasswd()) );
+			String strPassword = param.getUserPasswd();
+			
+			logger.info("****** modifyUser()()) *****===*"+strPassword);
+			logger.info("****** modifyUser()()) *****===*"+aescipher.aesEncode( strPassword));
+			
+			
+			param.setUserPasswd(aescipher.aesEncode( strPassword) );
 	
 		}catch(Exception e) {
-			logger.error("****** registerUser. Exception===*"+e.getMessage());
+			logger.error("****** modifyUser. Exception===*"+e.getMessage());
 		}
 		
 		result = userMapper.updateUser(param);
@@ -85,10 +91,12 @@ public class UserServiceImpl implements UserService {
 			//user.setUserPasswd(CryptoUtils.decryptAES256(user.getUserPasswd(),  PropertyFactory.getProperty("common.crypto.key")) );
 			logger.debug("****** getUserDetails. start user.getUserPasswd()===*"+user.getUserPasswd());
 			AES256Util aescipher = new AES256Util(PropertyFactory.getProperty("common.crypto.key"));
-			
+			String rsaEn = aescipher.aesEncode( user.getUserPasswd());
+			logger.debug("****** getUserInfo. param.rsaEn ()===*"+rsaEn);
+			user.setUserPasswd(rsaEn  );
 			logger.debug("****** getUserDetails. user.getUserPasswd()===*"+user.getUserPasswd());
-			user.setUserPasswd(aescipher.aesDecode( user.getUserPasswd()) );
-			logger.debug("****** getUserDetails. after decode user.getUserPasswd()===*"+user.getUserPasswd());
+			//user.setUserPasswd(aescipher.aesDecode( user.getUserPasswd()) );
+			//logger.debug("****** getUserDetails. after decode user.getUserPasswd()===*"+user.getUserPasswd());
 		}catch(Exception e) {
 			logger.error("****** getUserDetails. Exception===*"+e.getMessage());
 			return null;

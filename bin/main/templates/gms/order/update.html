@@ -126,6 +126,8 @@ $(document).ready(function(){
 		cols += '</td><td>';  
 		cols += ' <input type="checkbox" class="form-control" id="bottleChangeYn_' + counter + '" name="bottleChangeYn_' + counter + '" ">';
 		cols += '</td><td>'; 
+		cols += ' <input type="checkbox" class="form-control" id="bottleSaleYn_' + counter + '" name="bottleSaleYn_' + counter + '" ">';
+		cols += '</td><td>'; 
         cols += ' <input type="button" class="ibtnDelMod btn btn-md btn-danger" id="addrow" value="삭제" />';
         cols += '</td>';
         cols +='</tr>';
@@ -383,6 +385,7 @@ $(document).ready(function(){
 				cols += '<td>수량</td>';
 				cols += '<td>기타</td>';
 				cols += '<td>용기교환</td>';
+				cols += '<td>용기판매</td>';
 				cols += '<td></td></tr>';
 
 		        newRow.append(cols);
@@ -402,6 +405,8 @@ $(document).ready(function(){
 				cols += ' <input type="text" class="form-control" id="orderProductEtc_0" name="orderProductEtc_0 " >';
 				cols += '</td><td>';  
 				cols += ' <input type="checkbox" class="form-control" id="bottleChangeYn_0" name="bottleChangeYn_0">';
+				cols += '</td><td>'; 
+				cols += ' <input type="checkbox" class="form-control" id="bottleSaleYn_0" name="bottleSaleYn_0">';
 				cols += '</td><td>'; 
 				cols += ' <input type="button" class="ibtnAddMod btn btn-md btn-danger" id="mod_addrow" value="삭제" />';
 				cols += '</td>';
@@ -426,6 +431,7 @@ $(document).ready(function(){
 				cols += '<td>수량</td>';
 				cols += '<td>기타</td>';
 				cols += '<td>용기교환</td>';
+				cols += '<td>용기판매</td>';
 				cols += '<td></td></tr>';
 
 				newRow.append(cols);
@@ -452,10 +458,17 @@ $(document).ready(function(){
 					cols += '	<input type="text" class="form-control" id="orderProductEtc_' + counter + '" name="orderProductEtc_' + counter + '"  value="' + data[i].orderProductEtc + '">';
 					cols += '</td><td>';  
 					if(data[i].bottleChangeYn=='Y'){
-						cols += '	<input type="checkbox" class="form-control" id="bottleChangeYn" name="bottleChangeYn_' + counter + '" checked>';
+						cols += '	<input type="checkbox" class="form-control" id="bottleChangeYn_' + counter + '" name="bottleChangeYn_' + counter + '" checked>';
 					}else {
-						cols += '	<input type="checkbox" class="form-control" id="bottleChangeYn" name="bottleChangeYn_' + counter + '" ">';
+						cols += '	<input type="checkbox" class="form-control" id="bottleChangeYn_' + counter + '" name="bottleChangeYn_' + counter + '" ">';
 					}
+					cols += '</td><td>'; 
+					if(data[i].bottleSaleYn=='Y'){
+						cols += '	<input type="checkbox" class="form-control" id="bottleSaleYn_' + counter + '" name="bottleSaleYn_' + counter + '" checked>';
+					}else {
+						cols += '	<input type="checkbox" class="form-control" id="bottleSaleYn_' + counter + '" name="bottleSaleYn_' + counter + '" ">';
+					}
+					
 					cols += '</td><td>'; 
 	
 					if (counter < 1){	
@@ -465,8 +478,6 @@ $(document).ready(function(){
 					}
 					cols += '</td>';
 					cols +='</tr>';
-	
-			            
 	
 		            newRow.append(cols);
 		            $("table.doc-list").append(newRow);
@@ -514,13 +525,13 @@ $(document).ready(function(){
     <section class="content">   
         
          <div class="row">	
-	        <div class="col-md-9">
+	        <div class="col-12">
 	        <table class="table table-hover">
 	         </table>
 	        </div>
         </div>
         <div class="row">
-          <div class="col-md-9">
+          <div class="col-md-8">
             <div class="card">          
               
              <!-- general form elements -->
@@ -612,6 +623,7 @@ $(document).ready(function(){
 		                         <td>수량</td>
 		                         <td>기타</td>
 		                         <td>용기교환</td>
+								 <td>용기판매</td>
 		                         <td></td>
 		                       </tr>
 		                       <tr >
@@ -632,7 +644,10 @@ $(document).ready(function(){
 			                         <input type="text" class="form-control" id="orderProductEtc_0" name="orderProductEtc_0">
 			                       </td> 
 			                       <td> 
-			                         <input type="checkbox" class="form-control" id="bottleChangeYn" name="bottleChangeYn_0">
+			                         <input type="checkbox" class="form-control" id="bottleChangeYn_0" name="bottleChangeYn_0">
+				                   </td> 
+				                    <td> 
+			                         <input type="checkbox" class="form-control" id="bottleSaleYn_0" name="bottleSaleYn_0">
 				                   </td> 
 			                       <td>
 			                       <input type="button" class="btn btn-default btn-success" id="addrow" value="추가" />

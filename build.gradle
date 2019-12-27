@@ -46,6 +46,8 @@ dependencies {
 	
 }
 
+ apply plugin: 'io.spring.dependency-management'
+ 
 bootJar {
 
     archiveBaseName = 'gms'

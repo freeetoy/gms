@@ -52,7 +52,7 @@ public class BottleHistoryVO extends AbstractVO implements Serializable {
 	private String bottleChargePrss;
 
 	/** Bottle_Sales_YN	*/
-	private String bottleSalesYn;
+	private String bottleOwnYn;
 
 	/** Bottle_Work_CD	*/
 	/*

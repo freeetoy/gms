@@ -19,6 +19,7 @@ import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
+import com.gms.web.admin.domain.manage.OrderBottleVO;
 import com.gms.web.admin.domain.manage.OrderExtVO;
 import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.OrderVO;
@@ -220,7 +221,7 @@ public class OrderServiceImpl implements OrderService {
 			String orderProductCapa = "";
 			
 			String bottleChangeYn = null;
-			CustomerPriceExtVO tempCustomerPrice = null;
+			String bottleSaleYn = "N";
 			ProductTotalVO tempProduct = null;
 			
 			
@@ -250,12 +251,14 @@ public class OrderServiceImpl implements OrderService {
 					productPriceSeq = 0;
 					orderCount = 0;
 					bottleChangeYn = "N";
+					bottleSaleYn = "N";
 					
 					productId = Integer.parseInt(request.getParameter("productId_"+i));
 					productPriceSeq = Integer.parseInt(request.getParameter("productPriceSeq_"+i));
 					orderCount = Integer.parseInt(request.getParameter("orderCount_"+i));
 					
 					if(request.getParameter("bottleChangeYn_"+i) !=null)  bottleChangeYn = "Y";
+					if(request.getParameter("bottleSaleYn_"+i) !=null)  bottleSaleYn = "Y";
 									
 					
 					for(int k=0;k<productPriceList.size();k++) {
@@ -287,7 +290,9 @@ public class OrderServiceImpl implements OrderService {
 					productVo.setProductPriceSeq(productPriceSeq);				
 					productVo.setOrderCount(orderCount);
 					productVo.setOrderProductEtc(request.getParameter("orderProductEtc_"+i));
-					productVo.setBottleChangeYn(bottleChangeYn);								
+					productVo.setBottleChangeYn(bottleChangeYn);	
+					productVo.setBottleSaleYn(bottleSaleYn);		
+					//productVo.setProductDeliveryDt(null);
 					
 					orderProduct.add(productVo);
 				}
@@ -398,6 +403,7 @@ public class OrderServiceImpl implements OrderService {
 			String orderProductNm = "";
 			String orderProductCapa = "";			
 			String bottleChangeYn = "N";
+			String bottleSaleYn = "N";
 			
 			CustomerPriceExtVO tempCustomerPrice = null;
 			ProductTotalVO tempProduct = null;
@@ -428,6 +434,7 @@ public class OrderServiceImpl implements OrderService {
 					productPriceSeq = 0;
 					orderCount = 0;
 					bottleChangeYn = "N";
+					bottleSaleYn = "N";
 					
 					productId = Integer.parseInt(request.getParameter("productId_"+i));
 					productPriceSeq = Integer.parseInt(request.getParameter("productPriceSeq_"+i));
@@ -435,6 +442,9 @@ public class OrderServiceImpl implements OrderService {
 										
 					if(request.getParameter("bottleChangeYn_"+i) !=null)  {
 						bottleChangeYn = "Y";
+					}
+					if(request.getParameter("bottleSaleYn_"+i) !=null)  {
+						bottleSaleYn = "Y";
 					}
 					
 					//logger.debug("OrderContoller modifyOrder customerPriceList.size() = "+ customerPriceList.size());		
@@ -469,6 +479,8 @@ public class OrderServiceImpl implements OrderService {
 					productVo.setOrderCount(orderCount);
 					productVo.setOrderProductEtc(request.getParameter("orderProductEtc_"+i));
 					productVo.setBottleChangeYn(bottleChangeYn);								
+					productVo.setBottleSaleYn(bottleSaleYn);		
+					//productVo.setProductDeliveryDt(null);
 					
 					orderProduct.add(productVo);
 				}
@@ -681,7 +693,46 @@ public class OrderServiceImpl implements OrderService {
 		
 		return result;
 	}
+	
+	@Override
+	public OrderExtVO getOrderNotDelivery(Integer orderId) {
+		
+		OrderVO order = orderMapper.selectOrderDetail(orderId);	
+		
+		List<OrderProductVO> orderProduct = orderMapper.selectOrderProductListNotDelivery(orderId);
+		
+		OrderExtVO result = new OrderExtVO();
+		result.setOrder(order);
+		result.setOrderProduct(orderProduct);
+		
+		return result;
+	}
 
+	@Override
+	public int modifyOrderAdditionBottles(OrderVO param) {
+		return orderMapper.updateOrderAdditionBottles(param);
+	}
+/*
+	@Override
+	public int modifyOrderProductDeliveryDt(OrderProductVO param) {
+		return orderMapper.updateOrderProductDeliveryDt(param);
+	}
+*/
+
+	@Override
+	public int registerOrderBottle(OrderBottleVO param) {
+		// TODO Auto-generated method stub
+		return orderMapper.insertOrderBottle(param);	
+	}
+
+	@Override
+	public int registerOrderBottles(List<OrderBottleVO> param) {
+		logger.info("****** registerOrderProduct.registerOrderBottles *****===*");
+		int result = 0;
+		result =  orderMapper.insertOrderBottles(param);		
+		
+		return result;
+	}
 	
 	
 	

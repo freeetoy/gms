@@ -237,7 +237,7 @@
 					, TW.UPDATE_DT
 					, CD_NM Bottle_Work_CD_NM
 				FROM
-					TB_Work_Bottle TWB,tb_work_report TW, TB_Bottle TB, TB_CODE TC, TB_Product TG
+					TB_Work_Bottle TWB,TB_Work_Report TW, TB_Bottle TB, TB_CODE TC, TB_Product TG
 				WHERE
 					TB.Delete_YN = 'N'			
 				AND 
@@ -290,7 +290,7 @@
 					, TW.UPDATE_DT
 					, CD_NM Bottle_Work_CD_NM
 				FROM
-					TB_Work_Bottle TWB,tb_work_report TW, TB_Bottle TB, TB_CODE TC, TB_Product TG
+					TB_Work_Bottle TWB,TB_Work_Report TW, TB_Bottle TB, TB_CODE TC, TB_Product TG
 				WHERE
 					TB.Delete_YN = 'N'			
 				AND 
@@ -338,7 +338,7 @@
 				, TW.UPDATE_DT
 				, CD_NM Bottle_Work_CD_NM
 			FROM
-				TB_Work_Bottle TWB,tb_work_report TW, TB_Bottle TB, TB_CODE TC, TB_Product TG
+				TB_Work_Bottle TWB,TB_Work_Report TW, TB_Bottle TB, TB_CODE TC, TB_Product TG
 			WHERE
 				TB.Delete_YN = 'N'		
 			AND 

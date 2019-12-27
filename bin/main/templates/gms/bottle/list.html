@@ -284,24 +284,17 @@ $(document).ready(function(){
 				console.log(data);
 
 				$("#chBottleId").val(data.bottleId);
-				$("#bottleBarCd").val(data.bottleBarCd);
-				
+				$("#bottleBarCd").val(data.bottleBarCd);				
 				$('select[id="bottleWorkCd"]').find('option:contains(data.bottleWorkCd)').attr("selected",true);
-
-				$("#bottleWorkCd").val(data.bottleWorkCd);		
-				
+				$("#bottleWorkCd").val(data.bottleWorkCd);						
 				$('select[id="bottleType"]').find('option:contains(data.bottleType)').attr("selected",true);
-
 				$("#bottleType").val(data.bottleType);		
 					
 				if(data.result == "fail"){
 					alert("용기가 존재하지 않습니다");			
 					return;
-				}
-				
-			});
-			
-	
+				}				
+			});				
    });
 	 
 	$('#bottleWorkCd').change( function(){
@@ -416,12 +409,16 @@ $(document).ready(function(){
              break;
            case 'btn_process_6':
              msg = "'회수' 하시겠습니까?";
-             bottleWorkCd ='0309';
+             bottleWorkCd ='0310';
              break;  
            case 'btn_process_7':
               msg = "'기타' 하시겠습니까?";
-              bottleWorkCd ='0310';
+              bottleWorkCd ='0311';
               break;  
+           case 'btn_process_8':
+               msg = "'대여' 하시겠습니까?";
+               bottleWorkCd ='0309';
+               break;  
           default:
             break;
 

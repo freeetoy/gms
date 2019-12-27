@@ -55,10 +55,11 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	private String bottleChargePrss;
 
 	/** Bottle_Sales_YN	*/
-	private String bottleSalesYn;
+	private String bottleOwnYn;
 
 	/** Bottle_Work_CD	*/
 	/*
+	 * 0300	용기작업코드
 	 * 0301	입고
 	 * 0302	진공배기
 	 * 0303	누출확인
@@ -67,8 +68,9 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	 * 0306	출고
 	 * 0307	상차
 	 * 0308	판매
-	 * 0309	회수
-	 * 0310	기타
+	 * 0309	대여
+	 * 0310	회수
+	 * 0311	기타
 	 * 0388	신규
 	 * 0399	폐기
 	*/
@@ -140,6 +142,7 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	 * 1:list
 	 * 2:charge
 	 * 3:sales
+	 * 4.:rental
 	 * 	*/
 	private int  menuType;
 	

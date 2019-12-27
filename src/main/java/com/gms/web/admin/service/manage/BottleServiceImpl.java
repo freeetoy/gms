@@ -94,6 +94,7 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchSalesYn() != null) {
 			map.put("searchSalesYn", param.getSearchSalesYn());
+			map.put("bottleWorkCd", param.getBottleWorkCd());
 			logger.debug("****** getBottleList *****getSearchSalesYn===*"+param.getSearchSalesYn());
 		}
 		
@@ -159,7 +160,7 @@ public class BottleServiceImpl implements BottleService {
 			map.put("searchChargeDt", param.getSearchChargeDt());
 			logger.debug("****** getBottleList *****getSearchChargeDt===*"+param.getSearchChargeDt());
 		}else {
-			if(param.getMenuType()==2) {
+			if(param.getMenuType()==2) {		// 용기충전
 				// Date 로 구하기
 			    SimpleDateFormat fm1 = new SimpleDateFormat("yyyy/MM/dd");
 			    String fromDate = fm1.format(new Date());
@@ -194,12 +195,14 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchSalesYn() != null) {
 			map.put("searchSalesYn", param.getSearchSalesYn());
+			map.put("bottleWorkCd", param.getBottleWorkCd());
 			logger.debug("****** getBottleListToExcel *****getSearchSalesYn===*"+param.getSearchSalesYn());
 		}
 		
-		if(param.getMenuType()==3) {
+		if(param.getMenuType()==3 || param.getMenuType()==3) {			//용기 판매/대여 메뉴
 			param.setSearchSalesYn("Y");
 			map.put("searchSalesYn", param.getSearchSalesYn());
+			map.put("bottleWorkCd", param.getBottleWorkCd());
 		}
 		List<BottleVO> bottleList = bottleMapper.selectBottleListToExcel(map);
 		
@@ -458,10 +461,11 @@ public class BottleServiceImpl implements BottleService {
 	
 	private int insertBottleHistory(String bottleId) {
 		// 정보 등록
-		logger.debug("****** registerBottle.getBottleId()()) *****===*" +bottleId);
+		logger.debug("****** registerBottle.insertBottleHistory()()) *****===*" +bottleId);
 		
 		BottleVO bottle = bottleMapper.selectBottleDetail(bottleId);
 		
+		//TODO bottleId만 넘겨줘도 될듯..
 		return bottleMapper.insertBottleHistory(bottle);		
 	}
 

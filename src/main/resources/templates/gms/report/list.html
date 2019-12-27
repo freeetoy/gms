@@ -137,6 +137,7 @@ $(document).ready(function(){
 		colslist1 += '<td>용기코드</td>';
 		colslist1 += '<td>용기바코드</td>';
 		colslist1 += '<td>가스</td>';
+		colslist1 += '<td>용량</td>';
 		colslist1 += '<td>충전기한</td>';
 		colslist1 += '</tr>';
 		
@@ -179,6 +180,7 @@ $(document).ready(function(){
 		colslist1 += '<td>용기코드</td>';
 		colslist1 += '<td>용기바코드</td>';
 		colslist1 += '<td>가스</td>';
+		colslist1 += '<td>용량</td>';
 		colslist1 += '<td>충전기한</td>';
 		colslist1 += '</tr>';
 		
@@ -234,6 +236,7 @@ $(document).ready(function(){
 				    cols1 += '<th>'+data.bottleId+'</th>';
 				    cols1 += '<th>'+data.bottleBarCd+'</th>';
 				    cols1 += '<th>'+data.productNm+'</th>>';
+				    cols1 += '<th>'+data.bottleCapa+'</th>>';
 				    cols1 += '<th>'+data.bottleChargeDt.substring(0,10)+'</th>';
 				    cols1 += '</tr>'     ;    
 				    newRow1.append(cols1);
@@ -300,12 +303,16 @@ $(document).ready(function(){
 	             break;
 	           case 'btn_process_6':
 	             msg = "'회수' 하시겠습니까?";
-	             bottleWorkCd ='0309';
+	             bottleWorkCd ='0310';
 	             break;  
 	           case 'btn_process_7':
 	              msg = "'기타' 하시겠습니까?";
-	              bottleWorkCd ='0310';
+	              bottleWorkCd ='0311';
 	              break;  
+	           case 'btn_process_8':
+		              msg = "'대여' 하시겠습니까?";
+		              bottleWorkCd ='0309';
+		              break;  
 	          default:
 	            break;
 
@@ -421,10 +428,12 @@ $(document).ready(function(){
 												<td>용기코드</td>
 												<td>용기바코드</td>
 												<td>가스</td>
+												<td>용량</td>
 												<td>충전기한</td>
 												</tr>
 												<tr>
 													<td  style="padding-left: 0px;"></td>
+													<td></td>
 													<td></td>
 													<td></td>
 													<td></td>
@@ -441,6 +450,8 @@ $(document).ready(function(){
 											<button type="button" id="btn_process_3" class="btn btn-info btn btn_process_check">상차</button>
 											<button type="button" id="btn_process_4" class="btn btn-info btn btn btn_process_check">출고</button> -->
 											<button type="button" id="btn_process_5" class="btn btn-info btn btn_process_check">판매</button>
+											
+											<button type="button" id="btn_process_8" class="btn btn-info btn btn_process_check">대여</button>
 											<!--<button type="button" id="btn_process_6" class="btn btn-info btn btn_process_check">회수</button>
 											<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">기타</button>-->
 										</div>
@@ -480,9 +491,18 @@ $(document).ready(function(){
                <input type="text" class="form-control" name="searchDt" th:value="${searchDt}"/>			
             </div>               
             <div class="col-5">         
-            <button class="btn btn-navbar" type="submit"><i class="fas fa-search"></i></button>        
+            	<button class="btn btn-navbar" type="submit"><i class="fas fa-search"></i></button>        
             </div>
-            
+            <!-- >div class="col-4">         
+            	<select id="customerId" name="customerId" class="form-control">  
+            	<option th:each="row : ${carList}"
+					                th:text="${row.customerNm}"
+					                th:value="${row.customerId}"
+					               >
+					     </option>		
+            	</select>   
+            </div>
+             -->
             <div class="col-2" align=right>
          	<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 판매&납품</a>
          	</div>	

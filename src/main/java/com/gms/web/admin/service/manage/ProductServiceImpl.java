@@ -339,6 +339,11 @@ public class ProductServiceImpl implements ProductService {
 		return productMapper.selectGasProductList();
 	}
 
+	@Override
+	public ProductTotalVO getPrice(BottleVO param) {
+		return productMapper.selectPrice(param);
+	}
+
 	
 	
 }

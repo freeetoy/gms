@@ -83,16 +83,15 @@ public class WorkReportVO extends AbstractVO implements Serializable {
 	
 	/** Order_Process_CD   	
 	 * 
-	 * 0201 주문접수
-	 * 0202 주문완료
-	 * 0203 생산완료
-	 * 0204 납품
-	 * 0205 판매완료
-	 * 0206 영업완료 -- 삭제 
-	 * 0207 거래명세서완료
-	 * 0208 세금계산서완료
-	 * 0209 입금완료
-	 * 0210 거래완료
+	  * 0210 주문접수
+	 * 0220 주문완료
+	 * 0230 생산완료
+	 * 0240 납품
+	 * 0250  판매완료
+	 * 0260 거래명세서완료
+	 * 0270 세금계산서완료
+	 * 0280 입금완료
+	 * 0290 거래완료
 	 * 0299 삭제			*/
 	private String orderProcessCd;
 	

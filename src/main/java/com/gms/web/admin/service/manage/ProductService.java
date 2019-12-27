@@ -40,6 +40,8 @@ public interface ProductService {
 	
 	public ProductTotalVO getBottleGasCapa(BottleVO param);
 	
+	public ProductTotalVO getPrice(BottleVO param);
+	
 	public List<ProductPriceVO> getProductPriceList(Integer productId);
 	
 	public int getProductProductSeq(Integer productId) ;

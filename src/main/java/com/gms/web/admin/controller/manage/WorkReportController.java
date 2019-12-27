@@ -15,9 +15,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.web.utils.RequestUtils;
-import com.gms.web.admin.domain.manage.OrderBottleVO;
+import com.gms.web.admin.common.web.utils.SessionUtil;
+import com.gms.web.admin.domain.common.LoginUserVO;
+import com.gms.web.admin.domain.manage.CustomerVO;
+import com.gms.web.admin.domain.manage.OrderBottlesVO;
 import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
+import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.manage.WorkReportService;
 
 import groovyjarjarpicocli.CommandLine.Model;
@@ -32,6 +36,9 @@ public class WorkReportController {
 	 */
 	@Autowired
 	private WorkReportService workService;
+	
+	@Autowired
+	private CustomerService customerService;
 	
 	
 	@RequestMapping(value = "/gms/report/list.do")
@@ -53,6 +60,13 @@ public class WorkReportController {
 		logger.info("WorkReportController getWorkReportList User_id= "+ params.getUserId());
 		
 		
+		LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);
+		
+		if(sessionInfo.getUserAuthority().equals(PropertyFactory.getProperty("common.user.Authority.manager"))) {
+			List<CustomerVO> carList = customerService.searchCustomerListCar();
+			mav.addObject("carList",carList);
+		}
+		
 		List<WorkReportVO> workList = workService.getWorkReportList(params);
 		
 		mav.addObject("workList", workList);	
@@ -68,7 +82,7 @@ public class WorkReportController {
 	public String registerWorkReportForOrder(HttpServletRequest request
 			, HttpServletResponse response
 			, Model model
-			, OrderBottleVO params) {
+			, OrderBottlesVO params) {
 		
 		logger.info("WorkReportController registerWorkReportForOrder");
 		

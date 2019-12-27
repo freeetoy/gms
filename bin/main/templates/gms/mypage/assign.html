@@ -24,76 +24,136 @@ $(document).ready(function(){
           });
     });
  	
+    var customerId ="";
     $(".btn_select_process").click(function()  
-		{
+	{
 		console.log("start btn_selelct_pr}");
-		
+		var customerId ="";
 		var orderId = $(this).attr('orderId'); 
 
-					    
-			var ajaxInfo ={
-					type:"POST",
-					url:"/gms/order/detail.do",
-					data:{
-						orderId : orderId
-					},
-					dataType: "json",
-				};
-				
-				ajax = callAjax(ajaxInfo);
-				
-				ajax.done(function(data){
-					console.log(data);
-					var Ampm = "오전";
-					if(data.order.deliveryReqAmpm=='P' ) Ampm = "오후" ;
-					
-					$("#chOrderId").val(data.order.orderId);
-					
-					$("#mcustomerNm").val(data.order.customerNm);			
-					$("#deliveryReqDt").val(moment(data.order.deliveryReqDt).format('YYYY/MM/DD') + ' ' +Ampm);			
-					$("#orderEtc").val(data.order.orderEtc);			
-					$("#orderTotalAmount").val(numberWithCommas(data.order.orderTotalAmount));	
-					console.log(data.order.orderTotalAmount);				
-					
-					
-					if(data.orderProduct.length > 0) {
-						$("table.mod-doc-list").find('tr').remove();
+				    
+		var ajaxInfo ={
+				type:"POST",
+				url:"/gms/order/detail.do",
+				data:{
+					orderId : orderId
+				},
+				dataType: "json",
+			};
 			
-						var newRow = $("<tr>");	
-						var cols = "";
-						cols += '<td>품명</td>';
-						cols += '<td>용량</td>';
-						cols += '<td>수량</td>';
-						cols += '<td>기타</td>';
-						cols += '<td>용기교환</td></tr>';
-
-						newRow.append(cols);
-						$("table.mod-doc-list").append(newRow);
-
-						for(var i=0;i<data.orderProduct.length;i++){
-					        	var newRow1 = $("<tr>");
-					        	var cols1 = "";	
-					        	cols1 += '<th>'+data.orderProduct[i].productNm+'</th>';
-					        	cols1 += '<th>'+data.orderProduct[i].productCapa+'</th>';
-					        	cols1 += '<th>'+data.orderProduct[i].orderCount+'</th>';
-					        	cols1 += '<th>'+data.orderProduct[i].orderProductEtc+'</th>';
-					        	cols1 += '<th>'+data.orderProduct[i].bottleChangeYn+'</th>';
-					        	cols1 += '</tr>'     ;    
-					        	newRow1.append(cols1);
-						        $("table.mod-doc-list").append(newRow1);
-						        
-						        newRow1 = "";
-					        }     
-					}
-			})
-			       .fail(function(){
-				  console.log("fail");
-			});
+			ajax = callAjax(ajaxInfo);
+			
+			ajax.done(function(data){
+				console.log(data);
+				var Ampm = "오전";
+				if(data.order.deliveryReqAmpm=='P' ) Ampm = "오후" ;
 				
+				$("#chOrderId").val(data.order.orderId);
+				customerId  = data.order.customerId;
+				console.log("customerId====="+customerId);
+				$("#mcustomerNm").val(data.order.customerNm);			
+				$("#deliveryReqDt").val(moment(data.order.deliveryReqDt).format('YYYY/MM/DD') + ' ' +Ampm);			
+				$("#orderEtc").val(data.order.orderEtc);			
+				$("#orderTotalAmount").val(numberWithCommas(data.order.orderTotalAmount));	
+				console.log(data.order.orderTotalAmount);		
+				
+				//고객이 보유한 Bottle 정보
+				getBottls(customerId);
+				
+				if(data.orderProduct.length > 0) {
+					$("table.mod-doc-list").find('tr').remove();
+		
+					var newRow = $("<tr>");	
+					var cols = "";
+					cols += '<td>품명</td>';
+					cols += '<td>용량</td>';
+					cols += '<td>수량</td>';
+					cols += '<td>기타</td>';
+					cols += '<td>용기교환</td>';
+					cols += '<td>용기판매</td></tr>';
 
-				//$("#orderAmountView").show();
-				//$("#view_button").hide();
+					newRow.append(cols);
+					$("table.mod-doc-list").append(newRow);
+
+					for(var i=0;i<data.orderProduct.length;i++){
+						
+				        	var newRow1 = $("<tr>");
+				        	var cols1 = "";	
+				        	cols1 += '<th>'+data.orderProduct[i].productNm+'</th>';
+				        	cols1 += '<th>'+data.orderProduct[i].productCapa+'</th>';
+				        	cols1 += '<th>'+data.orderProduct[i].orderCount+'</th>';
+				        	cols1 += '<th>'+data.orderProduct[i].orderProductEtc+'</th>';
+				        	cols1 += '<th>'+data.orderProduct[i].bottleChangeYn+'</th>';
+				        	cols1 += '<th>'+data.orderProduct[i].bottleSaleYn+'</th>';
+				        	cols1 += '</tr>'     ;    
+				        	newRow1.append(cols1);
+					        $("table.mod-doc-list").append(newRow1);
+					        
+					        newRow1 = "";
+				        }     
+				}
+		})
+		       .fail(function(){
+			  console.log("fail");
 		});
+			console.log("customerId=="+customerId);
+			
+		//$("#orderAmountView").show();
+		//$("#view_button").hide();
+	});
+    
+    function getBottls(customerId){
+
+        $.ajax({
+  	  	url: '/gms/bottle/customerBottles.do',
+  	  	data:{
+			customerId : customerId
+		},
+  	  	type: 'POST',  	  	
+  	  	dataType: 'json',
+
+       })
+  	 .done(function(data){
+  		console.log(data);       
+  		var i=0;
+  		var btype = "실병";
+  		
+	  		if(data.length > 0){
+		  		$("table.bottle-list").find('tr').remove();
+		  		
+		  		var newRow = $("<tr>");	
+				var cols = "";
+				cols += '<td>용기코드</td>';
+				cols += '<td>용기바코드</td>';
+				cols += '<td>가스</td>';
+				cols += '<td>용량</td>';
+				cols += '<td>구분</td></tr>';
+
+				newRow.append(cols);
+				$("table.bottle-list").append(newRow);
+		  		
+		  		for(var i=0;i<data.length;i++){
+		        	var newRow1 = $("<tr>");
+		        	var cols1 = "";	
+		        	if(data[i].bottleType=='E' ) btype = "공병" ;
+		        	cols1 += '<th>'+data[i].bottleId+'</th>';
+		        	cols1 += '<th>'+data[i].bottleBarCd+'</th>'
+		        	cols1 += '<th>'+data[i].productNm+'</th>'
+		        	cols1 += '<th>'+data[i].bottleCapa+'</th>'
+		        	cols1 += '<th>'+btype+'</th>'
+		        	cols1 += '</tr>'     ;    
+		        	newRow1.append(cols1);
+			        $("table.bottle-list").append(newRow1);
+			        
+			        newRow1 = "";
+		        }     
+	  		}
+       })
+       .fail(function(){
+  			console.log("fail");
+       });
+
+    } 
     
     var bottleIds = "";
     $(".btn_select_process1").click(function()  
@@ -109,6 +169,7 @@ $(document).ready(function(){
 		colslist1 += '<td>용기코드</td>';
 		colslist1 += '<td>용기바코드</td>';
 		colslist1 += '<td>가스</td>';
+		colslist1 += '<td>용량</td>';
 		colslist1 += '<td>충전기한</td>';
 		colslist1 += '</tr>';
 		
@@ -150,7 +211,8 @@ $(document).ready(function(){
     						cols += '<td>용량</td>';
     						cols += '<td>수량</td>';
     						cols += '<td>기타</td>';
-    						cols += '<td>용기교환</td></tr>';
+    						cols += '<td>용기교환</td>';
+    						cols += '<td>용기판매</td></tr>';
 
     						newRow.append(cols);
     						$("table.mod-doc-list0").append(newRow);
@@ -163,6 +225,7 @@ $(document).ready(function(){
     					        	cols1 += '<th>'+data.orderProduct[i].orderCount+'</th>';
     					        	cols1 += '<th>'+data.orderProduct[i].orderProductEtc+'</th>';
     					        	cols1 += '<th>'+data.orderProduct[i].bottleChangeYn+'</th>';
+    					        	cols1 += '<th>'+data.orderProduct[i].bottleSaleYn+'</th>';
     					        	cols1 += '</tr>'     ;    
     					        	newRow1.append(cols1);
     						        $("table.mod-doc-list0").append(newRow1);
@@ -207,6 +270,7 @@ $(document).ready(function(){
 				    cols1 += '<th>'+data.bottleId+'</th>';
 				    cols1 += '<th>'+data.bottleBarCd+'</th>';
 				    cols1 += '<th>'+data.productNm+'</th>>';
+				    cols1 += '<th>'+data.bottleCapa+'</th>>';
 				    cols1 += '<th>'+data.bottleChargeDt.substring(0,10)+'</th>';
 				    cols1 += '</tr>'     ;    
 				    newRow1.append(cols1);
@@ -270,14 +334,19 @@ $(document).ready(function(){
              break;
            case 'btn_process_6':
              msg = "'회수' 하시겠습니까?";
-             bottleWorkCd ='0309';
+             bottleWorkCd ='0310';
              break;  
            case 'btn_process_7':
               msg = "'기타' 하시겠습니까?";
-              bottleWorkCd ='0310';
+              bottleWorkCd ='0311';
               break;  
+          
+           case 'btn_process_8':
+               msg = "'대여' 하시겠습니까?";
+               bottleWorkCd ='0309';
+               break;  
           default:
-            break;
+            break;8
 
        }           
        console.log("bottleWorkCd ="+bottleWorkCd);
@@ -391,9 +460,11 @@ $(document).ready(function(){
 												<td>수량</td>
 												<td>기타</td>
 												<td>용기교환</td>
+												<td>용기판매</td>
 												</tr>
 												<tr>
 													<td  style="padding-left: 0px;"></td>
+													<td></td>
 													<td></td>
 													<td></td>
 													<td></td>
@@ -411,6 +482,20 @@ $(document).ready(function(){
 											<td class="card-footer" id="orderAmountView">주문액</td>
 											<td colspan=5><input type="text" class="form-control" id="orderTotalAmount"  name="orderTotalAmount"  placeholder="" value="" disabled> </td>
 										</tr>										
+									</table>
+									<table id="myBottle" class="table bottle-list">
+								     		<thead>
+								            <tr>
+								              <th>용기코드</th>
+								              <th>용기바코드</th>
+								              <th>가스</th>
+								              <th>용량</th>
+								              <th>구분</th>
+								            </tr>
+							          </thead>
+							          <tbody>
+							          </tbody>
+																		
 									</table>
 											
 									
@@ -481,9 +566,11 @@ $(document).ready(function(){
 												<td>수량</td>
 												<td>기타</td>
 												<td>용기교환</td>
+												<td>용기판매</td>
 												</tr>
 												<tr>
 													<td  style="padding-left: 0px;"></td>
+													<td></td>
 													<td></td>
 													<td></td>
 													<td></td>
@@ -519,10 +606,12 @@ $(document).ready(function(){
 												<td>용기코드</td>
 												<td>용기바코드</td>
 												<td>가스</td>
+												<td>용량</td>
 												<td>충전기한</td>
 												</tr>
 												<tr>
 													<td  style="padding-left: 0px;"></td>
+													<td></td>
 													<td></td>
 													<td></td>
 													<td></td>
@@ -541,6 +630,7 @@ $(document).ready(function(){
 											<button type="button" id="btn_process_4" class="btn btn-info btn btn btn_process_check">출고</button>
 											 -->
 											<button type="button" id="btn_process_5" class="btn btn-info btn btn_process_check">판 매</button>
+											<button type="button" id="btn_process_8" class="btn btn-info btn btn_process_check">대 여</button>
 											<!-- 
 											<button type="button" id="btn_process_6" class="btn btn-info btn btn_process_check">회수</button>
 											<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">기타</button>
@@ -615,14 +705,14 @@ $(document).ready(function(){
                       <td th:text="${row.orderProductNm}"></td>
                       <td th:text="${row.orderProductCapa}"></td>
                       <td th:text="|${row.createNm}(${row.createId})|"></td>
-                      <th th:if="${row.orderProcessCdNm=='0201'}" th:text="${row.orderProcessCdNm}">
-                      <th th:unless="${row.orderProcessCdNm=='0201'}" style="color: red" th:text="${row.orderProcessCdNm}">
+                      <th th:if="${row.orderProcessCdNm=='0210'}" th:text="${row.orderProcessCdNm}">
+                      <th th:unless="${row.orderProcessCdNm=='0210'}" style="color: red" th:text="${row.orderProcessCdNm}">
                       </th>
                       <td th:text="${#calendars.format( row.deliveryReqDt, 'yyyy-MM-dd' )}"></td>
 		     		  <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>   
 		     		  <td>                      
 						<a class="btn_select_process btn btn-success btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal" href="#"><i class="fas fa-pencil-alt"></i>주문정보</a>
-						<a class="btn_select_process1 btn btn-info btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i>판매</a>
+						<a class="btn_select_process1 btn btn-info btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i>판매 & 대여</a>
 					  </td>                     
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( orderList )}">

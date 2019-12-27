@@ -11,12 +11,18 @@
 	<entry key="common.crypto.key">daehangaskey1234</entry>
 	<entry key="common.ROW.PER.PAGE">15</entry>
 	
+	<entry key="common.user.Authority.user">01</entry>
+	<entry key="common.user.Authority.manager">99</entry>
+	
+	
+	
 	<!-- Menu ID 정의 -->
 	<entry key="common.menu.order">order</entry>
 	<entry key="common.menu.trasnaction">transact</entry>
 	<entry key="common.menu.bottle">bottle</entry>
 	<entry key="common.menu.boottle.test">bottlet</entry>
 	<entry key="common.menu.boottle.sales">bottles</entry>
+	<entry key="common.menu.boottle.rental">rental</entry>
 	<entry key="common.menu.customer">customer</entry>
 	<entry key="common.menu.customer.price">price</entry>
 	<entry key="common.menu.gas">gas</entry>
@@ -53,18 +59,18 @@
 	
 	<!-- 코드  정의 -->	
 	<entry key="common.bottle.status">0300</entry>
-	<entry key="common.bottle.status.0301">0301</entry>
-	<entry key="common.bottle.status.0302">0302</entry>
-	<entry key="common.bottle.status.0303">0303</entry>
-	<entry key="common.bottle.status.0304">0304</entry>
-	<entry key="common.bottle.status.0305">0305</entry>
-	<entry key="common.bottle.status.0306">0306</entry>
-	<entry key="common.bottle.status.0307">0307</entry>
-	<entry key="common.bottle.status.0308">0308</entry>
-	<entry key="common.bottle.status.0309">0309</entry>
-	<entry key="common.bottle.status.0310">0310</entry>
-	<entry key="common.bottle.status.0399">0399</entry>
-	<entry key="common.bottle.status.0388">0388</entry>
+	<entry key="common.bottle.status.0301">0301</entry>		<!-- 입고 -->
+	<entry key="common.bottle.status.0302">0302</entry>		<!-- 진공배기 -->
+	<entry key="common.bottle.status.0303">0303</entry> 	<!-- 누출확인 -->
+	<entry key="common.bottle.status.0304">0304</entry>	 	<!-- 충전기한 확인 -->
+	<entry key="common.bottle.status.0305">0305</entry>		<!-- 충전 -->
+	<entry key="common.bottle.status.0306">0306</entry>		<!-- 출고 -->
+	<entry key="common.bottle.status.0307">0307</entry>		<!-- 상차-  -->
+	<entry key="common.bottle.status.0308">0308</entry>		<!-- 판매 -->
+	<entry key="common.bottle.status.0309">0309</entry>		<!-- 대여 -->
+	<entry key="common.bottle.status.0310">0310</entry> 	<!-- 회수 -->
+	<entry key="common.bottle.status.0399">0399</entry>		<!-- 폐기 -->
+	<entry key="common.bottle.status.0388">0388</entry> 	<!-- 신규 -->
 	
 	
 	<entry key="common.code.order.type">0100</entry>
@@ -76,17 +82,16 @@
 	<entry key="common.code.order.type.06">0106</entry>
 	
 	<entry key="common.code.order.process">0200</entry>
-	<entry key="common.code.order.process.01">0201</entry>
-	<entry key="common.code.order.process.02">0202</entry>
-	<entry key="common.code.order.process.03">0203</entry>
-	<entry key="common.code.order.process.04">0204</entry>
-	<entry key="common.code.order.process.05">0205</entry>
-	<entry key="common.code.order.process.06">0206</entry>
-	<entry key="common.code.order.process.07">0207</entry>
-	<entry key="common.code.order.process.08">0208</entry>
-	<entry key="common.code.order.process.07">0209</entry>
-	<entry key="common.code.order.process.08">0210</entry>
-	<entry key="common.code.order.process.08">0299</entry>
+	<entry key="common.code.order.process.01">0210</entry>
+	<entry key="common.code.order.process.02">0220</entry>
+	<entry key="common.code.order.process.03">0230</entry>
+	<entry key="common.code.order.process.04">0240</entry>
+	<entry key="common.code.order.process.05">0250</entry>
+	<entry key="common.code.order.process.06">0260</entry>
+	<entry key="common.code.order.process.07">0270</entry>
+	<entry key="common.code.order.process.08">0280</entry>
+	<entry key="common.code.order.process.09">0290</entry>
+	<entry key="common.code.order.process.99">0299</entry>
 	
 	
 	<entry key="excel.bottle.title">용기,바코드/RFID,가스,용기체적,충전용량,충전기한,충전압력	,제조일,거래처,작업,소유</entry>

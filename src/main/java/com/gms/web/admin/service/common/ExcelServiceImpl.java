@@ -152,8 +152,8 @@ public class ExcelServiceImpl implements ExcelService {
                 	}
                 	else if(j == 10) bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0388"));
                 	else if(j == 11) { 
-                		if(colValue.equals("자사")) bottle.setBottleSalesYn("N");
-                		else bottle.setBottleSalesYn("Y");
+                		if(colValue.equals("자사")) bottle.setBottleOwnYn("N");
+                		else bottle.setBottleOwnYn("Y");
                 	}
                 }
                 

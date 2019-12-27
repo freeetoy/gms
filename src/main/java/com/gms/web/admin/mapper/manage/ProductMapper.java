@@ -44,6 +44,8 @@ public interface ProductMapper {
 	
 	public ProductTotalVO selectBottleGasCapa(BottleVO param);
 	
+	public ProductTotalVO selectPrice(BottleVO param);
+	
 	public int selectProductPriceSeq(Integer productId);
 	
 	public List<ProductVO> selectProductList();

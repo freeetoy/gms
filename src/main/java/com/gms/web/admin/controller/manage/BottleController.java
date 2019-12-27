@@ -250,6 +250,7 @@ public class BottleController {
 		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
 		
 		params.setSearchSalesYn("Y");
+		params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
 		logger.debug("BottleContoller searchSalesYn "+ params.getSearchSalesYn());
 		
 		Map<String, Object> map = bottleService.getBottleList(params);
@@ -288,6 +289,59 @@ public class BottleController {
 		return "gms/bottle/sales";
 	}
 	
+	@RequestMapping(value = "/gms/bottle/rental.do")
+	public String getBottleRentalList(BottleVO params, Model model) {
+
+		String searchChargeDt = params.getSearchChargeDt();	
+		
+		String searchChargeDtFrom = null;
+		String searchChargeDtEnd = null;
+				
+		if(searchChargeDt != null && searchChargeDt.length() > 20) {
+			
+			logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
+			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;			
+			searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;
+			
+			params.setSearchChargeDtFrom(searchChargeDtFrom);
+			params.setSearchChargeDtEnd(searchChargeDtEnd);
+			
+		}
+		params.setSearchSalesYn("Y");
+		params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
+		logger.debug("BottleContoller searchSalesYn "+ params.getSearchSalesYn());
+		
+		Map<String, Object> map = bottleService.getBottleList(params);
+		
+		model.addAttribute("bottleList", map.get("list"));
+		
+		if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
+			//searchProductId = params.getSearchGasId();
+			model.addAttribute("searchProductId", Integer.parseInt(params.getSearchProductId()));
+		}		
+		
+		// 상품 정보 불러오기
+		List<ProductVO> productList = productService.getGasProductList();
+		model.addAttribute("productList", productList);		
+		
+		//BOTTLE_WORK_CD 코드정보 불러오기 
+		List<CodeVO> codeList = codeService.getCodeList(PropertyFactory.getProperty("common.bottle.status"));
+		model.addAttribute("codeList", codeList);		
+		//검색어 셋팅
+		model.addAttribute("searchBottleId", params.getSearchBottleId());	
+		model.addAttribute("searchChargeDt", searchChargeDt);	
+		
+		model.addAttribute("currentPage", map.get("currentPage"));
+		model.addAttribute("lastPage", map.get("lastPage"));
+		model.addAttribute("startPageNum", map.get("startPageNum"));
+		model.addAttribute("lastPageNum", map.get("lastPageNum"));
+		model.addAttribute("totalCount", map.get("totalCount"));
+		
+		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.boottle.rental"));	 
+		
+		return "gms/bottle/rental";
+	}
+	
 	@RequestMapping(value = "/gms/bottle/write.do")
 	public String openBottleWrite(Model model) {
 		
@@ -312,6 +366,8 @@ public class BottleController {
 		  
 		return result;
 	}
+	
+	
 	
 	
 	@RequestMapping(value = "/gms/bottle/register.do", method = RequestMethod.POST)
@@ -780,5 +836,18 @@ public class BottleController {
 		}
 		return null;
 		//return "redirect:/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId();
+	}
+	
+	
+	@RequestMapping(value = "/gms/bottle/customerBottles.do")
+	@ResponseBody
+	public List<BottleVO> getCustomerBottleList(@RequestParam(value = "customerId", required = false) Integer customerId, Model model)	{
+		
+		
+		List<BottleVO> bottleList =  bottleService.getCustomerBottleList(customerId);
+		
+		model.addAttribute("bottleList", bottleList);		
+		return bottleList;
+		//return null;
 	}
 }

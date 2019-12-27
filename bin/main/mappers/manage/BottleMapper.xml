@@ -14,7 +14,7 @@
 		<result property="bottleChargeDt"	column="Bottle_Charge_Dt"	/>
 		<result property="bottleVolumn"		column="Bottle_Volumn"		/>
 		<result property="bottleChargePrss"	column="Bottle_Charge_Prss"	/>
-		<result property="bottleSalesYn"	column="Bottle_Sales_YN"	/>	
+		<result property="bottleOwnYn"		column="Bottle_Own_YN"	/>	
 		<result property="bottleWorkCd"		column="Bottle_Work_CD"		/>
 		<result property="bottleWorkCdNM"	column="Bottle_Work_CD_NM"	/>
 		<result property="bottleWorkId"		column="Bottle_Work_ID"		/>	
@@ -44,7 +44,7 @@
 		<result property="bottleChargeDt"		column="Bottle_Charge_Dt"	/>
 		<result property="bottleVolumn"			column="Bottle_Volumn"		/>
 		<result property="bottleChargePrss"		column="Bottle_Charge_Prss"	/>
-		<result property="bottleSalesYn"		column="Bottle_Sales_YN"	/>	
+		<result property="bottleOwnYn"		column="Bottle_Own_YN"	/>	
 		<result property="bottleWorkCd"			column="Bottle_Work_CD"		/>
 		<result property="bottleWorkCdNm"		column="Bottle_Work_CD_NM"	/>
 		<result property="bottleWorkId"			column="Bottle_Work_ID"		/>	
@@ -73,7 +73,7 @@
 		, Bottle_Charge_Dt	
 		, Bottle_Volumn
 		, Bottle_Charge_Prss	
-		, Bottle_Sales_YN	
+		, Bottle_Own_YN	
 		, Bottle_Work_CD
 		, Bottle_Work_ID
 		, Customer_ID
@@ -101,7 +101,7 @@
 		, Bottle_Charge_Dt	
 		, Bottle_Volumn
 		, Bottle_Charge_Prss	
-		, Bottle_Sales_YN	
+		, Bottle_Own_YN	
 		, Bottle_Work_CD
 		, Bottle_Work_ID
 		, TB.Customer_ID
@@ -130,7 +130,7 @@
 		, Bottle_Charge_Dt	
 		, Bottle_Volumn
 		, Bottle_Charge_Prss	
-		, Bottle_Sales_YN	
+		, Bottle_Own_YN	
 		, Bottle_Work_CD
 		, Bottle_Work_ID
 		, TB.Customer_ID
@@ -160,7 +160,7 @@
 			, #{bottleChargeDt}
 			, #{bottleVolumn}
 			, #{bottleChargePrss}
-			, #{bottleSalesYn}
+			, #{bottleOwnYn}
 			, #{bottleWorkCd}
 			, #{bottleWorkId}
 			, #{customerId}
@@ -193,7 +193,7 @@
 			, #{item.bottleChargeDt}
 			, #{item.bottleVolumn}
 			, #{item.bottleChargePrss}
-			, #{item.bottleSalesYn}
+			, #{item.bottleOwnYn}
 			, #{item.bottleWorkCd}
 			, #{item.bottleWorkId}
 			, #{item.customerId}
@@ -252,7 +252,7 @@
 			, Bottle_Charge_Dt	= #{bottleChargeDt}
 			, Bottle_Volumn		= #{bottleVolumn}
 			, Bottle_Charge_Prss= #{bottleChargePrss}
-			, Bottle_Sales_YN	= #{bottleSalesYn}
+			, Bottle_Own_YN	= #{bottleOwnYn}
 		WHERE
 			Bottle_ID = #{bottleId}
 	</update>	
@@ -382,7 +382,7 @@
 			AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
 			</if>		
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchSalesYn)">
-			AND Bottle_Sales_Yn =  #{searchSalesYn}
+			AND Bottle_Work_CD =  #{bottleWorkCd}
 			</if>			
 			AND TB.Bottle_Work_CD = TC.CD_ID	
 			AND TB.Product_ID = TG.Product_Id
@@ -410,7 +410,7 @@
 			AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
 			</if>		
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchSalesYn)">
-			AND Bottle_Sales_Yn =  #{searchSalesYn}
+			AND Bottle_Work_CD =  #{bottleWorkCd}
 			</if>			
 			AND TB.Bottle_Work_CD = TC.CD_ID	
 			AND TB.Product_ID = TG.Product_Id
@@ -435,7 +435,7 @@
 		AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
 		</if>		
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchSalesYn)">
-		AND Bottle_Sales_Yn =  #{searchSalesYn}
+		AND Bottle_Work_CD =  #{bottleWorkCd}
 		</if>	
 	</select>
 	
@@ -482,7 +482,7 @@
 		FROM
 			TB_Bottle TB, TB_CODE TC, TB_Product TG
 		WHERE
-			Bottle_Work_CD='0308'
+			Bottle_Work_CD in ('0308' , '0309')
 		AND
 			TB.Delete_YN = 'N'			
 		AND Customer_id = #{customerId}

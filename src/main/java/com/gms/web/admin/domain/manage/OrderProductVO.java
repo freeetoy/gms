@@ -1,6 +1,7 @@
 package com.gms.web.admin.domain.manage;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.gms.web.admin.common.domain.AbstractVO;
 
@@ -35,6 +36,9 @@ public class OrderProductVO extends AbstractVO implements Serializable {
 	/** Bottle_Change_YN 	*/
 	private String bottleChangeYn;	
 	
+	/** Bottle_Sale_YN 	*/
+	private String bottleSaleYn;	
+	
 	/** Order_Amount     	*/
 	private int orderAmount;
 	
@@ -56,5 +60,6 @@ public class OrderProductVO extends AbstractVO implements Serializable {
 	/** 삭제여부  Bottle_Type */
 	/** E 공병, F 실병 */
 	private String bottleType;
+	
 
 }

@@ -87,7 +87,7 @@
             </ul>
           </li>     
           <!--  용기관리 strar -->   
-          <li th:if="${menuId=='bottle'|| menuId=='bottlet' || menuId=='bottles'}" class="nav-item has-treeview menu-open">
+          <li th:if="${menuId=='bottle'|| menuId=='bottlet' || menuId=='bottles'|| menuId=='rental'}" class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-prescription-bottle-alt"></i>
               <p>
@@ -131,10 +131,22 @@
                   <i class="far fa-circle nav-icon"></i>
                   <p>용기 판매</p>
                 </a>
-              </li>                
+              </li>      
+              <li th:if="${menuId=='rental'}" class="nav-item">
+                <a href="/gms/bottle/rental.do" class="nav-link active">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>용기 대여</p>
+                </a>
+              </li>           
+              <li th:unless="${menuId=='rental'}" class="nav-item">
+                <a href="/gms/bottle/rental.do" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>용기 대여</p>
+                </a>
+              </li>                       
             </ul>
           </li>
-          <li th:unless="${menuId=='bottle'|| menuId=='bottlet' || menuId=='bottles'}" class="nav-item has-treeview">
+          <li th:unless="${menuId=='bottle'|| menuId=='bottlet' || menuId=='bottles' || menuId=='rental'}" class="nav-item has-treeview">
           <a href="#" class="nav-link">
               <i class="nav-icon fas fa-prescription-bottle-alt"></i>
               <p>
@@ -160,7 +172,13 @@
                   <i class="far fa-circle nav-icon"></i>
                   <p>용기 판매</p>
                 </a>
-              </li>              
+              </li>         
+              <li th:unless="${menuId=='rental'}" class="nav-item">
+                <a href="/gms/bottle/rental.do" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>용기 대여</p>
+                </a>
+              </li>             
             </ul>
           </li>
           <!--  용기관리 end -->  

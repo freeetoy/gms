@@ -59,7 +59,9 @@ $(document).ready(function(){
 		cols += '</td><td>';  
 		cols += ' <input type="text" class="form-control" id="orderProductEtc_' + counter + '" name="orderProductEtc_' + counter + '" " >';
 		cols += '</td><td>';  
-		cols += ' <input type="checkbox" class="form-control" id="bottleChangeYn" name="bottleChangeYn_' + counter + '" ">';
+		cols += ' <input type="checkbox" class="form-control" id="bottleChangeYn_' + counter + '"  name="bottleChangeYn_' + counter + '" ">';
+		cols += '</td><td>'; 
+		cols += ' <input type="checkbox" class="form-control" id="bottleSaleYn_' + counter + '"  name="bottleSaleYn_' + counter + '" ">';
 		cols += '</td><td>'; 
 		cols += ' <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" value="삭제" />';
 		cols += '</td>';
@@ -452,6 +454,7 @@ $(document).ready(function(){
 		                         <td>수량</td>
 		                         <td>기타</td>
 		                         <td>용기교환</td>
+		                         <td>용기판매</td>
 		                         <td></td>
 		                       </tr>
 		                       <tr>
@@ -473,7 +476,10 @@ $(document).ready(function(){
 		                         <input type="text" class="form-control" id="orderProductEtc_0" name="orderProductEtc_0">
 		                       </td> 
 		                       <td> 
-		                         <input type="checkbox" class="form-control" id="bottleChangeYn" name="bottleChangeYn_0">
+		                         <input type="checkbox" class="form-control" id="bottleChangeYn_0" name="bottleChangeYn_0">
+			                   </td> 
+			                   <td> 
+		                         <input type="checkbox" class="form-control" id="bottleSaleYn_0" name="bottleSaleYn_0">
 			                   </td> 
 		                       <td>
 		                       <input type="button" class="btn btn-default btn-success" id="addrow" value="추가" />

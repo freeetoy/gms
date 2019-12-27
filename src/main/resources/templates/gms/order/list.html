@@ -148,20 +148,20 @@ $(document).ready(function(){
 					$("#orderTotalAmount").val(numberWithCommas(data.order.orderTotalAmount));	
 					console.log(data.order.OrderTotalAmount);
 					
-					if(data.order.orderProcessCd =='0201'){			
+					if(data.order.orderProcessCd =='0210'){			
 						$("#view_button").show();
 						$("#view_button1").hide();
 						
 						$("#btn_process_2").prop('disabled', true);
 						$("#btn_process_3").prop('disabled', true);
-					}if(data.order.orderProcessCd =='0202'){
+					}if(data.order.orderProcessCd =='0220'){
 						$("#view_button").show();
 						$("#view_button1").hide();
 						
 						$("#btn_process_1").html("접수완료");
 						$("#btn_process_1").prop('disabled', true);
 						$("#btn_process_3").prop('disabled', true);
-					}else if(data.order.orderProcessCd =='0203'){
+					}else if(data.order.orderProcessCd =='0230'){
 						$("#view_button").show();
 						$("#view_button1").hide();
 						
@@ -169,7 +169,7 @@ $(document).ready(function(){
 						$("#btn_process_2").html("생산완료");						
 						$("#btn_process_1").prop('disabled', true);
 						$("#btn_process_2").prop('disabled', true);
-					}else if(data.order.orderProcessCd =='0204'){
+					}else if(data.order.orderProcessCd =='0240'){
 						$("#view_button").show();
 						$("#view_button1").hide();
 						
@@ -177,20 +177,20 @@ $(document).ready(function(){
 						$("#btn_process_2").html("생산완료");						
 						$("#btn_process_1").prop('disabled', true);
 						$("#btn_process_2").prop('disabled', true);
-					}else if(data.order.orderProcessCd =='0205'){
+					}else if(data.order.orderProcessCd =='0250'){
 						$("#view_button1").show();
 						$("#view_button").hide();
 						
 						$("#btn_process_6").prop('disabled', true);
 						$("#btn_process_7").prop('disabled', true);
-					}else if(data.order.orderProcessCd =='0207'){
+					}else if(data.order.orderProcessCd =='0260'){
 						$("#view_button1").show();
 						$("#view_button").hide();
 						
 						$("#btn_process_5").html("거래명세서완료");
 						$("#btn_process_5").prop('disabled', true);
 						$("#btn_process_7").prop('disabled', true);
-					}else if(data.order.orderProcessCd =='0208'){
+					}else if(data.order.orderProcessCd =='0270'){
 						$("#view_button1").show();
 						$("#view_button").hide();
 						
@@ -198,7 +198,7 @@ $(document).ready(function(){
 						$("#btn_process_6").html("세금계산서완료");	
 						$("#btn_process_5").prop('disabled', true);
 						$("#btn_process_6").prop('disabled', true);	
-					}else if(data.order.orderProcessCd =='0209'){
+					}else if(data.order.orderProcessCd =='0280'){
 						$("#view_button1").show();
 						$("#view_button").hide();
 						
@@ -219,7 +219,8 @@ $(document).ready(function(){
 						cols += '<td>용량</td>';
 						cols += '<td>수량</td>';
 						cols += '<td>기타</td>';
-						cols += '<td>용기교환</td></tr>';
+						cols += '<td>용기교환</td>';
+						cols += '<td>용기판매</td></tr>';
 
 						newRow.append(cols);
 						$("table.mod-doc-list").append(newRow);
@@ -232,6 +233,7 @@ $(document).ready(function(){
 					        	cols1 += '<th>'+data.orderProduct[i].orderCount+'</th>';
 					        	cols1 += '<th>'+data.orderProduct[i].orderProductEtc+'</th>';
 					        	cols1 += '<th>'+data.orderProduct[i].bottleChangeYn+'</th>';
+					        	cols1 += '<th>'+data.orderProduct[i].bottleSaleYn+'</th>';
 					        	cols1 += '</tr>'     ;    
 					        	newRow1.append(cols1);
 						        $("table.mod-doc-list").append(newRow1);
@@ -264,19 +266,34 @@ $(document).ready(function(){
 
           case 'btn_process_1':
             msg = "'주문확인' 하시겠습니까?";
-            $("#orderProcessCd").val("0202");
-            orderProcessCd ='0202';
+            $("#orderProcessCd").val("0220");
+            orderProcessCd ='0220';
             break;
           case 'btn_process_2':
             msg = "'생산 확인' 하시겠습니까?";
-            $("#orderProcessCd").val("0203");
-            orderProcessCd ='0203';
+            $("#orderProcessCd").val("0230");
+            orderProcessCd ='0230';
             break;
           case 'btn_process_3':
             msg = "'판매 확인' 하시겠습니까?";
-            $("#orderProcessCd").val("0205");
-            orderProcessCd ='0205';
+            $("#orderProcessCd").val("0250");
+            orderProcessCd ='0250';
             break;  
+          case 'btn_process_5':
+              msg = "'거래명세서 확인' 하시겠습니까?";
+              $("#orderProcessCd").val("0260");
+              orderProcessCd ='0260';
+              break;
+            case 'btn_process_6':
+              msg = "'세금계산서 확인' 하시겠습니까?";
+              $("#orderProcessCd").val("0270");
+              orderProcessCd ='0270';
+              break;
+            case 'btn_process_7':
+              msg = "'입금 확인' 하시겠습니까?";
+              $("#orderProcessCd").val("0280");
+              orderProcessCd ='0280';
+              break;  
           default:
             break;
 
@@ -425,9 +442,11 @@ $(document).ready(function(){
 												<td>수량</td>
 												<td>기타</td>
 												<td>용기교환</td>
+												<td>용기판매</td>
 												</tr>
 												<tr>
 													<td  style="padding-left: 0px;"></td>
+													<td></td>
 													<td></td>
 													<td></td>
 													<td></td>
@@ -565,18 +584,18 @@ $(document).ready(function(){
                       <th th:text="${row.orderProductNm}"></th>
                       <td th:text="${row.orderProductCapa}"></td>
                       <td th:text="|${row.createNm}(${row.createId})|"></td>
-                      <th th:if="${row.orderProcessCd=='0201'}" ><h6><span class="badge badge-danger">주문접수</span></h6>
-                      <th th:if="${row.orderProcessCd=='0202'}" ><h6><span class="badge badge-danger">주문완료</span></h6>
-                      <th th:if="${row.orderProcessCd=='0203'}" ><h6><span class="badge badge-secondary">생산완료</span></h6>
-                      <th th:if="${row.orderProcessCd=='0204'}" ><h6><span class="badge badge-primary">납품완료</span></h6>
-                      <th th:if="${row.orderProcessCd=='0205'}" ><h6><span class="badge badge-success">판매완료</span></h6>
-                      <th th:if="${row.orderProcessCd=='0207'}" ><h6><span class="badge badge-warning">거래명세서완료</span></h6>
-                      <th th:if="${row.orderProcessCd=='0208'}" ><h6><span class="badge badge-warning">세금계산완료</span></h6>
-                      <th th:if="${row.orderProcessCd=='0209'}" ><h6><span class="badge badge-warning">입금완료</span></h6>
-                      <th th:if="${row.orderProcessCd=='020'}" ><h6><span class="badge badge-info">거래완료</span> </h6>
+                      <th th:if="${row.orderProcessCd=='0210'}" ><h6><span class="badge badge-danger">주문접수</span></h6>
+                      <th th:if="${row.orderProcessCd=='0220'}" ><h6><span class="badge badge-danger">주문접수완료</span></h6>
+                      <th th:if="${row.orderProcessCd=='0230'}" ><h6><span class="badge badge-secondary">생산완료</span></h6>
+                      <th th:if="${row.orderProcessCd=='0240'}" ><h6><span class="badge badge-primary">납품완료</span></h6>
+                      <th th:if="${row.orderProcessCd=='0250'}" ><h6><span class="badge badge-success">판매완료</span></h6>
+                      <th th:if="${row.orderProcessCd=='0260'}" ><h6><span class="badge badge-warning">거래명세서완료</span></h6>
+                      <th th:if="${row.orderProcessCd=='0270'}" ><h6><span class="badge badge-warning">세금계산완료</span></h6>
+                      <th th:if="${row.orderProcessCd=='0280'}" ><h6><span class="badge badge-warning">입금완료</span></h6>
+                      <th th:if="${row.orderProcessCd=='0290'}" ><h6><span class="badge badge-info">거래완료</span> </h6>
                       <!-- 
-                      <th th:if="${row.orderProcessCd=='0201'|| row.orderProcessCd=='0202'}" style="color: red"  th:text="${row.orderProcessCdNm}"><
-                      <th th:unless="${row.orderProcessCd=='0201' || row.orderProcessCd=='0202'}" th:text="${row.orderProcessCdNm}">
+                      <th th:if="${row.orderProcessCd=='0210'|| row.orderProcessCd=='0220'}" style="color: red"  th:text="${row.orderProcessCdNm}"><
+                      <th th:unless="${row.orderProcessCd=='0210' || row.orderProcessCd=='0220'}" th:text="${row.orderProcessCdNm}">
                       </th>
                        -->
                       <td th:text="${#calendars.format( row.deliveryReqDt, 'yyyy-MM-dd' )}"></td>

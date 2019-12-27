@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.gms.web.admin.domain.manage.OrderBottleVO;
 import com.gms.web.admin.domain.manage.OrderExtVO;
 import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.OrderVO;
@@ -18,6 +19,8 @@ public interface OrderMapper {
 	public List<OrderVO> selectOrderListToExcel(Map<String, Object> map);	
 
 	public List<OrderProductVO> selectOrderProductList(Integer orderId);	
+	
+	public List<OrderProductVO> selectOrderProductListNotDelivery(Integer orderId);	
 
 	public int selectOrderCount(Map<String, Object> map);	
 
@@ -33,13 +36,21 @@ public interface OrderMapper {
 
 	public int insertOrderProduct(OrderProductVO param);
 	
+	public int insertOrderBottle(OrderBottleVO param);
+	
+	public int insertOrderBottles(List<OrderBottleVO> param);
+	
 	public int insertOrderProducts(List<OrderProductVO>  param);
 	
 	public int updateOrder(OrderVO param);
 	
+	public int updateOrderAdditionBottles(OrderVO param);
+	
 	public int updateOrderDeposit(OrderVO param);
 
-	public int updateOrderProduct(OrderProductVO param);
+	//public int updateOrderProduct(OrderProductVO param);
+	
+	//public int updateOrderProductDeliveryDt(OrderProductVO param);
 	
 	public int updateOrderBottleId(OrderProductVO param);
 	

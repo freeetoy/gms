@@ -146,7 +146,7 @@ public class ExcelDownloadController {
 		        
 		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getBottleSalesYn());
+		        cell.setCellValue(vo.getBottleOwnYn());
 	
 		    }	
 	
