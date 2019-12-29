@@ -54,6 +54,10 @@ public interface OrderService {
 	
 	public int modifyOrderBottleId(OrderProductVO param);
 	
+	public int modifyOrderBottle(OrderBottleVO  param);
+	
+	public int modifyOrderBottles(List<OrderBottleVO>  param);
+	
 	public int modifyOrderComplete(OrderProductVO param);
 
 	public int modifyOrderProductBottle(OrderProductVO param);

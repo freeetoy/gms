@@ -18,5 +18,8 @@ public class TempProductVO {
 	
 	/** Order_Product_Seq	*/
 	private Integer orderProductSeq;
+	
+	/* Order_Bottle_Seq*/
+	private Integer orderBottleSeq;
 
 }

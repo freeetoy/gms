@@ -61,5 +61,7 @@ public class OrderProductVO extends AbstractVO implements Serializable {
 	/** E 공병, F 실병 */
 	private String bottleType;
 	
+	/* Order_Bottle_Seq*/
+	private Integer orderBottleSeq;
 
 }

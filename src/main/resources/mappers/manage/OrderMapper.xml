@@ -40,6 +40,7 @@
 		<result property="orderAmount"			column="Order_Amount"		/>
 		<result property="bottleId"				column="Bottle_ID"			/>
 		<result property="gasID"				column="GAS_ID"				/>
+		<result property="orderBottleSeq"		column="Order_Bottle_Seq"	/>
 		<result property="createId"				column="CREATE_ID"			/>
 		<result property="createDt"				column="CREATE_DT"			/>
 		<result property="updateId"				column="UPDATE_ID"			/>		
@@ -49,7 +50,9 @@
 	<resultMap id="OrderBottleMap" type="com.gms.web.admin.domain.manage.OrderBottleVO" >
 		<result property="orderBottleSeq"		column="Order_Bottle_Seq"	/>
 		<result property="orderId"				column="Order_ID"			/>
-		<result property="orderProductSeq"		column="Order_Product_Seq"	/>		
+		<result property="orderProductSeq"		column="Order_Product_Seq"	/>
+		<result property="productId"			column="Product_ID"			/>		
+		<result property="productPriceSeq"		column="Product_Price_Seq"	/>
 		<result property="bottleId"				column="Bottle_ID"			/>		
 		<result property="createId"				column="CREATE_ID"			/>
 		<result property="createDt"				column="CREATE_DT"			/>
@@ -143,6 +146,8 @@
 	<sql id="OrderBottleInsertColumns">
 		Order_ID         
 		 , Order_Product_Seq
+		 , Product_ID       
+		 , Product_Price_Seq
 		 , Bottle_ID  
 		 , Create_ID        
 		 , Create_Dt        
@@ -154,6 +159,8 @@
 		Order_Bottle_Seq
 		 , Order_ID         
 		 , Order_Product_Seq
+		 , Product_ID       
+		 , Product_Price_Seq
 		 , Bottle_ID  
 		 , Create_ID        
 		 , Create_Dt        
@@ -237,6 +244,8 @@
 		) VALUES (
 			#{orderId}
 			, #{orderProductSeq}	
+			, #{productId}	
+			, #{productPriceSeq}		
 			, #{bottleId}
 			, #{createId}			
 			, NOW()
@@ -253,6 +262,8 @@
 		(
 			#{item.orderId}
 			, #{item.orderProductSeq}	
+			, #{item.productId}	
+			, #{item.productPriceSeq}		
 			, #{item.bottleId}
 			, #{item.createId}			
 			, NOW()
@@ -325,6 +336,23 @@
 			Order_Product_Seq = #{orderProductSeq}	
 	</update>	
 	
+	<update id="updateOrderBottle" parameterType="com.gms.web.admin.domain.manage.OrderBottleVO">		
+		UPDATE TB_Order_Bottle
+		SET
+			  Bottle_ID 	= #{bottleId}
+		WHERE
+			Order_Bottle_Seq = #{orderBottleSeq}
+	</update>	
+	
+	<update id="updateOrderBottles" parameterType="java.util.List">
+		<foreach collection="list" item="item" separator=" , ">
+		UPDATE TB_Order_Bottle
+		SET
+			  Bottle_ID 	= #{item.bottleId}
+		WHERE
+			Order_Bottle_Seq = #{item.orderBottleSeq}
+		</foreach>
+	</update>	
 	
 	<update id="deleteOrder" parameterType="com.gms.web.admin.domain.manage.OrderVO">
 		UPDATE TB_Order
@@ -417,13 +445,34 @@
 	
 	<select id="selectOrderProductListNotDelivery" resultType="com.gms.web.admin.domain.manage.OrderProductVO" parameterType="Integer">		
 		SELECT
-			<include refid="OrderProductSelectColumns" />
+			D.Order_ID         
+		 , D.Order_Product_Seq
+		 , D.Product_ID       
+		 , Product_Nm       
+		 , D.Product_Price_Seq
+		 , Product_Capa     
+		 , Order_Count   
+		 , Order_Product_ETC
+		 , Bottle_Change_YN 
+		 , Bottle_Sale_YN 
+		 , Order_Amount 
+		 , a.Bottle_ID    
+		 , GAS_ID 
+		 , Order_Bottle_Seq
+		 , A.Create_ID        
+		 , A.Create_Dt        
+		 , A.Update_ID        
+		 , A.Update_Dt   
 		FROM
-			TB_Order_Product A , TB_Product b ,TB_Product_Price C
+			TB_Order_Product A , TB_Product b ,TB_Product_Price C, TB_Order_Bottle D
 		WHERE
-			Order_ID = #{orderId}	
+			A.Order_ID = #{orderId}	
+		AND
+			A.Order_ID = D.Order_ID
+		AND
+			A.Order_Product_Seq = D.Order_Product_Seq
 		AND 
-			Order_Product_Seq Not In (SELECT Order_Product_Seq FROM TB_Order_Bottle WHERE Order_ID = #{orderId})
+			D.Bottle_ID is null
 		AND A.Product_ID = B.Product_ID
 		AND A.Product_ID = C.Product_ID
 		AND A.Product_Price_Seq = C.Product_Price_Seq								

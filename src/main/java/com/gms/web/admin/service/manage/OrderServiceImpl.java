@@ -202,6 +202,7 @@ public class OrderServiceImpl implements OrderService {
 		
 			
 			List<OrderProductVO> orderProduct = new ArrayList<OrderProductVO>();
+			List<OrderBottleVO> orderBottleList = new ArrayList<OrderBottleVO>();
 					
 			int orderId = getOrderId();
 			params.setOrderId(Integer.valueOf(orderId));
@@ -280,7 +281,8 @@ public class OrderServiceImpl implements OrderService {
 							orderTotalAmount += orderAmount;								
 						}
 					}						
-													
+									
+					
 						
 					logger.debug("OrderContoller registerOrder orderTotalAmount== "+ orderTotalAmount);
 					
@@ -295,6 +297,20 @@ public class OrderServiceImpl implements OrderService {
 					//productVo.setProductDeliveryDt(null);
 					
 					orderProduct.add(productVo);
+					
+					for(int k=0; k< orderCount ; k++) {
+						
+						OrderBottleVO orderBottle = new OrderBottleVO();
+						
+						orderBottle.setOrderId(orderId);
+						orderBottle.setOrderProductSeq(i+1);
+						orderBottle.setProductId(productId);
+						orderBottle.setProductPriceSeq(productPriceSeq);
+						orderBottle.setCreateId(params.getCreateId());
+						orderBottle.setUpdateId(params.getCreateId());
+						
+						orderBottleList.add(orderBottle);						
+					}
 				}
 				
 				logger.debug("OrderContoller registerOrder orderProductNm== "+ orderProductNm);
@@ -305,7 +321,9 @@ public class OrderServiceImpl implements OrderService {
 					orderProductCapa = orderProductCapa +"외 "+ (productCount-1);
 				}
 							
-				result1 = orderMapper.insertOrderProducts(orderProduct);
+				result1 = orderMapper.insertOrderProducts(orderProduct);				
+				
+				result1 = orderMapper.insertOrderBottles(orderBottleList);
 				
 				params.setOrderProductNm(orderProductNm);
 				params.setOrderProductCapa(orderProductCapa);
@@ -385,6 +403,7 @@ public class OrderServiceImpl implements OrderService {
 			logger.debug("OrderContoller modifyOrder productCount== "+ params.getProductCount());	
 			
 			List<OrderProductVO> orderProduct = new ArrayList<OrderProductVO>();
+			List<OrderBottleVO> orderBottleList = new ArrayList<OrderBottleVO>();
 					
 			Integer orderId = params.getOrderId();
 			//params.setOrderId(Integer.valueOf(orderId));
@@ -483,6 +502,20 @@ public class OrderServiceImpl implements OrderService {
 					//productVo.setProductDeliveryDt(null);
 					
 					orderProduct.add(productVo);
+					
+					for(int k=0; k< orderCount ; k++) {
+						
+						OrderBottleVO orderBottle = new OrderBottleVO();
+						
+						orderBottle.setOrderId(orderId);
+						orderBottle.setOrderProductSeq(i+1);
+						orderBottle.setProductId(productId);
+						orderBottle.setProductPriceSeq(productPriceSeq);
+						orderBottle.setCreateId(params.getCreateId());
+						orderBottle.setUpdateId(params.getCreateId());
+						
+						orderBottleList.add(orderBottle);						
+					}
 				}
 				
 				logger.debug("OrderContoller modifyOrder orderProductNm== "+ orderProductNm);
@@ -495,6 +528,8 @@ public class OrderServiceImpl implements OrderService {
 							
 				if(orderMapper.deleteOrderProducts(orderId) > 0 ) {
 					result1 = orderMapper.insertOrderProducts(orderProduct);
+					
+					result1 = orderMapper.insertOrderBottles(orderBottleList);
 				}
 				params.setOrderProductNm(orderProductNm);
 				params.setOrderProductCapa(orderProductCapa);
@@ -732,6 +767,16 @@ public class OrderServiceImpl implements OrderService {
 		result =  orderMapper.insertOrderBottles(param);		
 		
 		return result;
+	}
+
+	@Override
+	public int modifyOrderBottles(List<OrderBottleVO> param) {
+		return orderMapper.updateOrderBottles(param);	
+	}
+
+	@Override
+	public int modifyOrderBottle(OrderBottleVO param) {
+		return orderMapper.updateOrderBottle(param);	
 	}
 	
 	

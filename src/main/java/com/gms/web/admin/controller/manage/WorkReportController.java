@@ -79,14 +79,14 @@ public class WorkReportController {
 	}
 	
 	@RequestMapping(value = "/gms/report/register.do", method = RequestMethod.POST)
-	public String registerWorkReportForOrder(HttpServletRequest request
+	public ModelAndView registerWorkReportForOrder(HttpServletRequest request
 			, HttpServletResponse response
-			, Model model
 			, OrderBottlesVO params) {
 		
 		logger.info("WorkReportController registerWorkReportForOrder");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
+		ModelAndView mav = new ModelAndView();	
 		
 		//ModelAndView mav = new ModelAndView();	
 		//검색조건 셋팅
@@ -113,7 +113,13 @@ public class WorkReportController {
 			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();
 		}
-		return "redirect:/gms/mypage/assign.do";
+		if(result > 0){
+			String alertMessage = "처리되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/mypage/assign.do");
+		}
+		return null;
+		//return "redirect:/gms/mypage/assign.do";
 		
 	}
 	

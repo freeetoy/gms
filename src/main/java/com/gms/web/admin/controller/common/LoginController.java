@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
@@ -78,6 +79,25 @@ public class LoginController {
 		}
 		
 		return null;
+		
+	}
+	
+	@RequestMapping(value="/api/loginAction.do")
+	@ResponseBody
+	public String apiLoginAction(
+			HttpServletRequest request
+			, HttpServletResponse response
+			, String id, String pw) {
+		
+		logger.info("LoginContoller /api/loginAction Start");
+		
+		
+			
+		logger.info("LoginContoller loginAction id "+id);
+		logger.info("LoginContoller loginAction pw "+pw);
+			
+		
+		return "success";
 		
 	}
 	
