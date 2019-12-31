@@ -91,6 +91,8 @@ public class CalendarController {
 		
 			obj.put("item", jArray);			
 			model.addAttribute("list", obj);
+			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.calendar"));
+			
 			 
 		}catch(Exception e) {
 			

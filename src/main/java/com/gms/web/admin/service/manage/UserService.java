@@ -25,4 +25,7 @@ public interface UserService {
 	//public List<UserVO> getUserList(Criteria cri);
 	public Map<String,Object> getUserList(UserVO param);
 	//public List<UserVO> getUserList(Criteria cri, String searchUserNm);
+	
+	
+	public List<UserVO> getUserListPart(UserVO param);
 }

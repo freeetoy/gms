@@ -13,8 +13,10 @@
 	
 	<entry key="common.user.Authority.user">01</entry>
 	<entry key="common.user.Authority.manager">99</entry>
-	
-	
+
+	<entry key="common.user.part.sales">01</entry>
+	<entry key="common.user.part.account">02</entry>
+	<entry key="common.user.part.manage">03</entry>
 	
 	<!-- Menu ID 정의 -->
 	<entry key="common.menu.order">order</entry>

@@ -138,6 +138,15 @@ public class BottleServiceImpl implements BottleService {
 		return resutlMap;
 	}
 	
+	
+
+	@Override
+	public List<BottleVO> getBottleListAll() {
+		return bottleMapper.selectBottleListAll();
+	}
+
+	
+	
 	@Override
 	public List<BottleVO> getBottleListToExcel(BottleVO param) {
 		logger.info("****** getBottleListToExcel *****start===*");
@@ -376,6 +385,8 @@ public class BottleServiceImpl implements BottleService {
 			
 			List<BottleVO> bottleList = getBottleDetails(param);
 			
+			if(bottleList.size() > 0 ) param.setCustomerId(bottleList.get(0).getCustomerId());
+			
 			// TB_Work_Report & TB_Work_Bottle 등록
 			WorkReportVO workReport = new WorkReportVO();
 			
@@ -490,5 +501,56 @@ public class BottleServiceImpl implements BottleService {
 				
 	}
 
-	
+
+
+	@Override
+	public int changeBottlesWorkCdOnly(BottleVO param) {
+
+		int result = 0;
+		
+		logger.debug("BottleServiceImpl changeBottlesWorkCdOnly getBottlesId "+ param.getBottleIds());
+		logger.debug("BottleServiceImpl changeBottlesWorkCdOnly bottleWorkdId "+ param.getBottleWorkId());
+		logger.debug("BottleServiceImpl changeBottlesWorkCdOnly bottleWorkCd "+ param.getBottleWorkCd());
+		logger.debug("BottleServiceImpl changeBottlesWorkCdOnly customerId "+ param.getCustomerId());
+		logger.debug("BottleServiceImpl changeBottlesWorkCdOnly bottleType "+ param.getBottleType());
+		
+		try {		
+			List<String> list = null;
+			
+			if(param.getBottleIds()!=null && param.getBottleIds().length() > 0) {
+				//bottleIds= request.getParameter("bottleIds");
+				list = StringUtils.makeForeach(param.getBottleIds(), ","); 		
+				param.setBottList(list);
+			}				
+			
+			if(param.getBottleType() == null) {
+				if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0305")) 
+						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0306"))
+						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0307")) 
+						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0308")) )
+					param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Full"));
+				else
+					param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
+			}
+			
+			List<BottleVO> bottleList = getBottleDetails(param);
+			
+			if(bottleList.size() > 0 ) param.setCustomerId(bottleList.get(0).getCustomerId());
+			
+			
+			result =  bottleMapper.updateBottlesWorkCd(param);
+			
+			if(result > 0 ) result = bottleMapper.insertBottleHistorys(bottleList);
+		
+		} catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
 }

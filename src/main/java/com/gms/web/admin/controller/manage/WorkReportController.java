@@ -20,8 +20,11 @@ import com.gms.web.admin.domain.common.LoginUserVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.OrderBottlesVO;
 import com.gms.web.admin.domain.manage.OrderVO;
+import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
+import com.gms.web.admin.domain.manage.WorkReportViewVO;
 import com.gms.web.admin.service.manage.CustomerService;
+import com.gms.web.admin.service.manage.UserService;
 import com.gms.web.admin.service.manage.WorkReportService;
 
 import groovyjarjarpicocli.CommandLine.Model;
@@ -38,7 +41,7 @@ public class WorkReportController {
 	private WorkReportService workService;
 	
 	@Autowired
-	private CustomerService customerService;
+	private UserService userService;
 	
 	
 	@RequestMapping(value = "/gms/report/list.do")
@@ -60,12 +63,44 @@ public class WorkReportController {
 		logger.info("WorkReportController getWorkReportList User_id= "+ params.getUserId());
 		
 		
-		LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);
+		LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);	
 		
-		if(sessionInfo.getUserAuthority().equals(PropertyFactory.getProperty("common.user.Authority.manager"))) {
-			List<CustomerVO> carList = customerService.searchCustomerListCar();
-			mav.addObject("carList",carList);
-		}
+		
+		
+		List<WorkReportViewVO> workList = workService.getWorkReportList1(params);
+		
+		mav.addObject("workList", workList);	
+		mav.addObject("searchDt", params.getSearchDt());	
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.diary"));	 	
+		
+		mav.setViewName("gms/report/list");
+		
+		return mav;
+	}
+	
+	/*
+	@RequestMapping(value = "/gms/report/list.do")
+	public ModelAndView getWorkReportList(
+			HttpServletRequest request
+			, HttpServletResponse response
+			, WorkReportVO params) {
+
+		logger.info("WorkReportController getWorkReportList");
+		
+		RequestUtils.initUserPrgmInfo(request, params);		
+		
+		
+		ModelAndView mav = new ModelAndView();		
+		
+		params.setUserId(params.getCreateId());
+		
+		
+		logger.info("WorkReportController getWorkReportList User_id= "+ params.getUserId());
+		
+		
+		LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);	
+		
+		
 		
 		List<WorkReportVO> workList = workService.getWorkReportList(params);
 		
@@ -74,6 +109,55 @@ public class WorkReportController {
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.diary"));	 	
 		
 		mav.setViewName("gms/report/list");
+		
+		return mav;
+	}
+	*/
+	
+	@RequestMapping(value = "/gms/report/listAll.do")
+	public ModelAndView getWorkReportListAll(
+			HttpServletRequest request
+			, HttpServletResponse response
+			, WorkReportVO params) {
+
+		logger.info("WorkReportController getWorkReportList");
+		
+		RequestUtils.initUserPrgmInfo(request, params);		
+		
+		
+		ModelAndView mav = new ModelAndView();		
+		
+		params.setUserId(params.getCreateId());
+		
+		
+		logger.info("WorkReportController getWorkReportList User_id= "+ params.getUserId());
+		
+		/*
+		LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);
+		
+		if(sessionInfo.getUserAuthority().equals(PropertyFactory.getProperty("common.user.Authority.manager"))) {
+			List<CustomerVO> carList = customerService.searchCustomerListCar();
+			mav.addObject("carList",carList);
+		}
+		*/
+		
+		UserVO tempUser = new UserVO();		
+		List<UserVO> userList = userService.getUserListPart(tempUser);
+		
+		mav.addObject("userList",userList);
+		
+		if(params.getSearchUserId() == null && userList.size() > 0) params.setSearchUserId(userList.get(0).getUserId());
+		
+		List<WorkReportViewVO> workList = workService.getWorkReportListAll(params);
+		
+		mav.addObject("workList", workList);	
+		mav.addObject("searchDt", params.getSearchDt());	
+		mav.addObject("searchUserId", params.getSearchUserId());	
+		
+				
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.diary"));	 	
+		
+		mav.setViewName("gms/report/listAll");
 		
 		return mav;
 	}
@@ -163,6 +247,51 @@ public class WorkReportController {
 			RequestUtils.responseWriteException(response, alertMessage, "/gms/report/list.do");
 		}
 		return null;
+		
+	}
+	
+	@RequestMapping(value = "/gms/report/register0310.do", method = RequestMethod.POST)
+	public ModelAndView registerWorkReport0310(HttpServletRequest request
+			, HttpServletResponse response
+			, OrderBottlesVO params) {
+		
+		logger.info("WorkReportController registerWorkReportForOrder");
+		
+		RequestUtils.initUserPrgmInfo(request, params);
+		ModelAndView mav = new ModelAndView();	
+		
+		//ModelAndView mav = new ModelAndView();	
+		//검색조건 셋팅
+		logger.info("WorkReportController OrderBottleVO "+ params.getOrderId());
+		logger.info("WorkReportController bottleWorkCd "+ params.getBottleWorkCd());
+		logger.info("WorkReportController searchBottleIds "+ params.getBottleIds());
+		
+		int result =0;
+		try {	
+			
+			WorkReportVO work = new WorkReportVO();
+			
+			work.setOrderId(params.getOrderId());
+			work.setBottlesIds(params.getBottleIds());
+			work.setBottleWorkCd(params.getBottleWorkCd());
+			work.setUserId(params.getCreateId());
+			work.setCreateId(params.getCreateId());
+			
+			result = workService.registerWorkReport0310(work);					
+
+			//mav.setViewName("/gms/mypage/assign");			
+		
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		if(result > 0){
+			String alertMessage = "처리되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/mypage/assign.do");
+		}
+		return null;
+		//return "redirect:/gms/mypage/assign.do";
 		
 	}
 	

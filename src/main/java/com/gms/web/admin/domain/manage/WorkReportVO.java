@@ -99,4 +99,7 @@ public class WorkReportVO extends AbstractVO implements Serializable {
 	private String orderProcessCdNm;
 
 	private List<String> bottList;
+	
+	/** searchUserId   	*/
+	private String searchUserId;
 }

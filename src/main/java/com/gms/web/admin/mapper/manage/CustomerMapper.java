@@ -36,6 +36,8 @@ public interface CustomerMapper {
 	
 	public int updateCustomer(CustomerVO param);
 	
+	public int updateCustomerExcel(CustomerVO param);
+	
 	public int updateCustomerStatus(CustomerVO param);
 
 	public int deleteCustomer(Integer customerId);	

@@ -45,4 +45,6 @@ public class UserVO  extends  AbstractSearchVO implements Serializable {
 	
 	/** 사용자명 검색	 */
 	private String searchUserNm;
+	
+	
 }

@@ -29,6 +29,8 @@ public interface CustomerService {
 	
 	public boolean modifyCustomer(CustomerVO param);
 	
+	public boolean modifyCustomerExcel(CustomerVO param);
+	
 	public boolean modifyCustomerStatus(CustomerVO param);
 	
 	public boolean deleteCustomer(Integer customerId);

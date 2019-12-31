@@ -169,6 +169,13 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.selectOrderDetail(orderId);	
 	}
 
+
+	@Override
+	public OrderVO getLastOrderForCustomer(Integer customerId) {
+		return orderMapper.selectOrderDetail(customerId);	
+	}
+	
+	
 	@Override
 	public List<OrderProductVO> getOrderProductList(Integer orderId) {
 		return orderMapper.selectOrderProductList(orderId);	
@@ -778,7 +785,7 @@ public class OrderServiceImpl implements OrderService {
 	public int modifyOrderBottle(OrderBottleVO param) {
 		return orderMapper.updateOrderBottle(param);	
 	}
-	
+
 	
 	
 }

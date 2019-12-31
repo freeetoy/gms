@@ -391,6 +391,8 @@ $(document).ready(function(){
           case 'btn_process_2':
             msg = "'충전' 하시겠습니까?";
             bottleWorkCd ='0305';
+            $("#view_car").hide();
+            $("#view_type").hide();
             break;
           case 'btn_process_3':
             msg = "'상차' 하시겠습니까?";
@@ -402,6 +404,8 @@ $(document).ready(function(){
           case 'btn_process_4':
              msg = "'출고' 하시겠습니까?";;
              bottleWorkCd ='0306';
+             $("#view_car").show();
+             $("#view_type").show();
              break;
            case 'btn_process_5':
              msg = "'판매' 하시겠습니까?";
@@ -409,6 +413,7 @@ $(document).ready(function(){
              break;
            case 'btn_process_6':
              msg = "'회수' 하시겠습니까?";
+             $("#view_type").show();
              bottleWorkCd ='0310';
              break;  
            case 'btn_process_7':
@@ -428,7 +433,7 @@ $(document).ready(function(){
     	  // $("#view_car").show();
     	   console.log("bottleWorkCd11 ="+bottleWorkCd);
        }
-      
+      	setTimeout(500);
 		if(confirm(msg)){
 			
 			var form = document.createElement("form");
@@ -459,7 +464,7 @@ $(document).ready(function(){
 	        
 	        form.appendChild(hiddenField2);    
 			
-	        if(bottleWorkCd=='0301' || bottleWorkCd=='0307'){	   	 
+	        if(bottleWorkCd=='0301' || bottleWorkCd=='0307'|| bottleWorkCd=='0306'){	   	 
 		    	  
 				if(customerId ==''){
 					alert("차량은 선택해주세요");

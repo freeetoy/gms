@@ -147,6 +147,27 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
+	public boolean modifyCustomerExcel(CustomerVO param) {
+		boolean successFlag = false;
+
+		// 거래처 정보 수정
+		int result = 0;
+		logger.info("****** modifyCustomer()()) *****===*"+param.getCustomerId());	
+		
+		result = customerMapper.updateCustomerExcel(param);
+		if (result > 0) {
+			successFlag = true;
+			
+			//미지정된 해당 거래처
+		}	
+		
+		return successFlag;
+	}
+
+	
+	
+	
+	@Override
 	@Transactional
 	public boolean modifyCustomerStatus(CustomerVO param) {
 		boolean successFlag = false;
@@ -288,7 +309,6 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerMapper.deleteCustomerPrices(param);
 	}
 
-	
 	
 
 }

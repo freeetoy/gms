@@ -13,6 +13,8 @@ public interface BottleMapper {
 
 	public List<BottleVO> selectBottleList(Map<String, Object> map);	
 	
+	public List<BottleVO> selectBottleListAll();	
+	
 	public List<BottleVO> selectBottleListToExcel(Map<String, Object> map);
 	
 	public List<BottleVO> selectCustomerBottleList(Integer customerId);	
@@ -30,6 +32,8 @@ public interface BottleMapper {
 	public int updateBottleWorkCd(BottleVO param);
 	
 	public int updateBottlesWorkCd(BottleVO param);
+	
+	public int updateBottlesWorkCdOnly(BottleVO param);
 	
 	public int updateBottleOrderId(BottleVO param);
 

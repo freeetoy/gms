@@ -59,6 +59,8 @@ public class ExcelServiceImpl implements ExcelService {
 		
         List<BottleVO> list = new ArrayList<BottleVO>();
         
+        List<BottleVO> bottlelist = bottleService.getBottleListAll();
+        
         int result = 0;
         try {
         	
@@ -67,8 +69,11 @@ public class ExcelServiceImpl implements ExcelService {
             
             // 첫번째 시트 불러오기
             XSSFSheet sheet = workbook.getSheetAt(0);
+            boolean isRegisteFlag = false;
             
             for(int i=1; i<sheet.getLastRowNum() + 1; i++) {
+            	
+            	isRegisteFlag = true;
             	
                 BottleVO bottle = new BottleVO();
                 XSSFRow row = sheet.getRow(i);
@@ -76,8 +81,7 @@ public class ExcelServiceImpl implements ExcelService {
                 // 행이 존재하기 않으면 패스
                 if(null == row) {
                     continue;
-                }
-                
+                }                
                 
                 //용기	바코드/RFID	가스	품명	용기체적	충전용량	충전기한	충전압력	제조일	거래처	작업	소유	
                 //0		1			2	3	4		5		6		7		8		9		10	11	
@@ -175,9 +179,16 @@ public class ExcelServiceImpl implements ExcelService {
                 bottle.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
                 bottle.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
               
-                list.add(bottle);
+                for(int k=0 ; k < bottlelist.size() ; k++) {
+                	if(bottle.getBottleId().equals(bottlelist.get(k).getBottleId())) {
+                		isRegisteFlag = false;
+                		result = bottleService.modifyBottle(bottle);
+                	}
+                		
+                }
+                if(isRegisteFlag) list.add(bottle);
             }
-            
+                        
             result = bottleService.registerBottles(list);
             
             logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result);
@@ -197,7 +208,8 @@ public class ExcelServiceImpl implements ExcelService {
 	public int uploadCustomerExcelFile(MultipartHttpServletRequest request,
 			MultipartFile excelFile) {
 		List<CustomerVO> list = new ArrayList<CustomerVO>();
-        
+		List<CustomerVO> customerList = customerService.searchCustomerListExcel("");
+		
         int result = 0;
         try {
         	
@@ -208,7 +220,11 @@ public class ExcelServiceImpl implements ExcelService {
             XSSFSheet sheet = workbook.getSheetAt(0);
             
             int COLUMN_COUNT = 8;
+            boolean isRegisteFlag = false;
+            
             for(int i=1; i<sheet.getLastRowNum() + 1; i++) {
+            	
+            	isRegisteFlag = true;
             	
             	CustomerVO customer = new CustomerVO();
                 XSSFRow row = sheet.getRow(i);
@@ -274,7 +290,15 @@ public class ExcelServiceImpl implements ExcelService {
                 
                 customer.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
               
-                list.add(customer);
+                for(int k=0;k<customerList.size();k++) {
+                	if(customer.getCustomerNm().equals(customerList.get(k).getCustomerNm())) {
+                		customer.setCustomerId(customerList.get(k).getCustomerId());
+                		boolean result1 = customerService.modifyCustomer(customer);
+                		isRegisteFlag = false;
+                	}                 		
+                }
+                
+                if(isRegisteFlag) list.add(customer);
             }
             
             result = customerService.registerCustomers(list);

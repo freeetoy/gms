@@ -33,10 +33,16 @@
 		<result property="customerId"			column="Customer_ID"			/>
 		<result property="customerNm"			column="Customer_NM"			/>
 		<result property="bottleWorkCd"			column="Bottle_Work_CD"			/>
+		<result property="bottleWorkCdNm"		column="Bottle_Work_CD_Nm"		/>
 		<result property="gasID"				column="Gas_ID"					/>
 		<result property="productId"			column="Product_ID"				/>
 		<result property="productPriceSeq"		column="Product_Price_Seq"		/>
+		<result property="productNm"			column="Product_Nm"				/>	
+		<result property="productCapa"			column="product_Capa"			/>	
 		<result property="bottleType"			column="Bottle_Type"			/>
+		<result property="productCount"			column="Product_Count"			/>
+		<result property="orderId"				column="Order_ID"				/>
+		<result property="orderTotalAmount"		column="Order_Total_Amount"		/>
 		<result property="createId"				column="CREATE_ID"				/>
 		<result property="createDt"				column="CREATE_DT"				/>
 		<result property="updateId"				column="UPDATE_ID"				/>		
@@ -200,6 +206,81 @@
 		ORDER BY Work_Report_Seq DESC 
 	</select>
 	
+	
+	<select id="selectWorkReportOnlyList" resultType="com.gms.web.admin.domain.manage.WorkReportVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
+		SELECT
+			<include refid="WorkReportColumns" />
+		FROM
+			TB_Work_Report TW
+		WHERE
+			User_id = #{userId}
+		AND 
+			WorK_CD in ('0308','0309', '0310')
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
+		AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
+		ORDER BY Work_Report_Seq DESC 
+		</if>
+	</select>
+	
+	<select id="selectWorkReportOnlyListAll" resultType="com.gms.web.admin.domain.manage.WorkReportVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
+		SELECT
+			<include refid="WorkReportColumns" />
+		FROM
+			TB_Work_Report TW
+		WHERE
+			User_id = #{searchUserId}
+		AND 
+			WorK_CD in ('0308','0309', '0310')
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
+		AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
+		ORDER BY Work_Report_Seq DESC 
+		</if>
+	</select>
+	<select id="selectWorkReportList1" resultType="com.gms.web.admin.domain.manage.WorkBottleVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
+		
+		SELECT Product_Count,Work_Report_Seq, AA.Customer_ID,Customer_nm  , AA.Product_ID  ,Product_NM , AA.Product_Price_Seq ,Product_Capa    
+		,Bottle_work_Cd, CD_NM Bottle_work_Cd_NM, AA.Order_Id, Order_Total_Amount
+		FROM TB_CODE TC, TB_Customer TS, tb_product TP, tb_product_price TPP, (
+			SELECT Count(TB.Product_Price_Seq) Product_Count, TB.Work_Report_Seq, TB.Customer_ID  , TB.Product_ID   , TB.Product_Price_Seq    ,Bottle_work_Cd,Order_Id
+			FROM tb_work_bottle TB, tb_work_report TW
+			WHERE tb.Work_Report_Seq  = tw.Work_Report_Seq
+			AND User_id = #{userId}
+			AND Bottle_WorK_CD in ('0308','0309', '0310')
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
+			AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
+			</if>
+			group by TB.Work_Report_Seq, TB.Customer_ID  , TB.Product_ID   , TB.Product_Price_Seq   ,Bottle_work_Cd
+		) AA left join TB_Order TR on AA.Order_Id = TR.Order_Id
+		WHERE AA.Bottle_Work_Cd = TC.CD_ID
+		AND AA.Customer_ID 		= TS.Customer_ID
+		AND AA.Product_ID 		= TP.Product_ID
+		AND AA.Product_ID 		= TPP.Product_ID
+		AND AA.Product_Price_Seq = Tpp.Product_Price_Seq		
+		ORDER BY Work_Report_Seq DESC 
+	</select>
+	
+	<select id="selectWorkReportListAll" resultType="com.gms.web.admin.domain.manage.WorkBottleVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
+		SELECT Product_Count,Work_Report_Seq, AA.Customer_ID,Customer_nm  , AA.Product_ID  ,Product_NM , AA.Product_Price_Seq ,Product_Capa    
+		,Bottle_work_Cd, CD_NM Bottle_work_Cd_NM, AA.Order_Id, Order_Total_Amount
+		FROM TB_CODE TC, TB_Customer TS, tb_product TP, tb_product_price TPP, (
+			SELECT Count(TB.Product_Price_Seq) Product_Count, TB.Work_Report_Seq, TB.Customer_ID  , TB.Product_ID   , TB.Product_Price_Seq    ,Bottle_work_Cd,Order_Id
+			FROM tb_work_bottle TB, tb_work_report TW
+			WHERE tb.Work_Report_Seq  = tw.Work_Report_Seq
+			AND User_id = #{searchUserId}
+			AND Bottle_WorK_CD in ('0308','0309', '0310')
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
+			AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
+			</if>
+			group by TB.Work_Report_Seq, TB.Customer_ID  , TB.Product_ID   , TB.Product_Price_Seq   ,Bottle_work_Cd
+		) AA left join TB_Order TR on AA.Order_Id = TR.Order_Id
+		WHERE AA.Bottle_Work_Cd = TC.CD_ID
+		AND AA.Customer_ID 		= TS.Customer_ID
+		AND AA.Product_ID 		= TP.Product_ID
+		AND AA.Product_ID 		= TPP.Product_ID
+		AND AA.Product_Price_Seq = Tpp.Product_Price_Seq		
+		ORDER BY Work_Report_Seq DESC 
+	</select>
+	
 	<select id="selectWorkReportSeq" resultType="int">
 		SELECT IFNULL(A.Work_Report_Seq, 0)+1
 		FROM 
@@ -207,6 +288,17 @@
 			SELECT max(Work_Report_Seq) Work_Report_Seq
 			FROM TB_Work_Report   ) A
 	</select>
+	
+	<select id="selectWorkReportSeqForCustomerToday" parameterType="com.gms.web.admin.domain.manage.WorkReportVO" resultType="int">
+		SELECT IFNULL(max(Work_Report_Seq), 0) Work_Report_Seq
+		FROM 
+			TB_Work_Report
+		WHERE 
+			Customer_Id = #{customerId}	
+		AND 
+			DATE_FORMAT(Work_Dt,'%Y/%m/%d') = DATE_FORMAT(curdate(),'%Y/%m/%d')		
+	</select>
+	
 	
 	
 	<select id="selectWorBottleListTotal" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="java.util.Map">

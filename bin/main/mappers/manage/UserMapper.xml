@@ -123,6 +123,17 @@
 		Limit #{startRow}, #{rowPerPage}
 	</select>
 	
+	<select id="selectUserListPart" resultType="com.gms.web.admin.domain.manage.UserVO" parameterType="com.gms.web.admin.domain.manage.UserVO">
+		SELECT
+			<include refid="UserColumns" />
+		FROM
+			TB_USER
+		WHERE
+			delete_yn = 'N'		
+		AND User_Part_CD	= #{userPartCd}
+		Order By User_Nm desc 
+	</select>
+	
 	<select id="selectUserCount" resultType="int" parameterType="java.util.Map">
 		SELECT
 			Count(User_id)

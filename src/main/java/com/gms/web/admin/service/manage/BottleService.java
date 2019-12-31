@@ -11,6 +11,8 @@ public interface BottleService {
 
 	public Map<String,Object> getBottleList(BottleVO params);	
 	
+	public List<BottleVO> getBottleListAll();
+	
 	public List<BottleVO> getBottleListToExcel(BottleVO params);
 	
 	public List<BottleVO> getCustomerBottleList(Integer customerId);
@@ -36,6 +38,8 @@ public interface BottleService {
 	public int changeBottleWorkCd(BottleVO param);
 	
 	public int changeBottlesWorkCd(BottleVO param);
+	
+	public int changeBottlesWorkCdOnly(BottleVO param);
 
 	public int deleteBottle(BottleVO param);
 	

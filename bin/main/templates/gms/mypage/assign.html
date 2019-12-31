@@ -335,6 +335,7 @@ $(document).ready(function(){
            case 'btn_process_6':
              msg = "'회수' 하시겠습니까?";
              bottleWorkCd ='0310';
+             $("#view_type").show();
              break;  
            case 'btn_process_7':
               msg = "'기타' 하시겠습니까?";
@@ -354,10 +355,16 @@ $(document).ready(function(){
       
 		if(confirm(msg)){
 			
+			var bottleType = $("#bottleType1").val(); 			
+			console.log("bottleType " + bottleType);			
+			
 			var form = document.createElement("form");
 			form.setAttribute("charset","UTF-8");
 			form.setAttribute("method","post");
-			form.setAttribute("action","/gms/report/register.do");
+			if(bottleWorkCd=='0310')
+				form.setAttribute("action","/gms/report/register0310.do");
+			else 
+				form.setAttribute("action","/gms/report/register.do");
 			
 			var hiddenField = document.createElement("input");
 	        hiddenField.setAttribute("type", "hidden");
@@ -379,6 +386,17 @@ $(document).ready(function(){
 	        hiddenField2.setAttribute("value", bottleIds);
 
 	        form.appendChild(hiddenField2);    
+	        
+	        if(bottleWorkCd=='0310'){	  
+			        
+		        var hiddenField4 = document.createElement("input");
+		        hiddenField4.setAttribute("type", "hidden");
+		        hiddenField4.setAttribute("name", "bottleType");
+		        hiddenField4.setAttribute("value", bottleType);
+
+		        form.appendChild(hiddenField4);    
+				
+		     }
 	        
 	        document.body.appendChild(form);
 	        
@@ -631,9 +649,9 @@ $(document).ready(function(){
 											 -->
 											<button type="button" id="btn_process_5" class="btn btn-info btn btn_process_check">판 매</button>
 											<button type="button" id="btn_process_8" class="btn btn-info btn btn_process_check">대 여</button>
-											<!-- 
+											 
 											<button type="button" id="btn_process_6" class="btn btn-info btn btn_process_check">회수</button>
-											<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">기타</button>
+											<!--<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">기타</button>
 											 -->
 										</div>
 										</tr>										
@@ -661,6 +679,9 @@ $(document).ready(function(){
 		</div>
 		</div>
 		<!-- /.modal -->
+    	      
+     
+    	
     	
     	
     	<div class="row">
@@ -728,9 +749,19 @@ $(document).ready(function(){
           </div>
         </div>    
         <!-- /.row -->
-        
-         
-        
+        <div class="row">
+        	<div class="col-12" align='right'>
+				<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-check-circle"></i>용기회수</a>
+            	
+			</div>
+        </div>
+         <div class="row">	
+	        <div class="col-12">
+	        <table>
+	       </br>
+	         </table>
+	        </div>
+        </div>
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->

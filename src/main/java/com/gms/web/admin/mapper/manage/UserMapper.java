@@ -15,6 +15,8 @@ public interface UserMapper {
 	
 	public List<UserVO> selectUserListOfPart(Map<String, Object> map);	
 	
+	public List<UserVO> selectUserListPart(UserVO param);	
+	
 	public int insertUser(UserVO param);
 
 	public UserVO selectUserDetail(String userId) ;

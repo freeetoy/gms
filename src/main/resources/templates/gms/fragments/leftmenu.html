@@ -302,135 +302,26 @@
             </ul>
           </li>
            <!--  상품관리 메뉴  끝 -->
-           
-          <li th:if="${menuId=='sorder'|| menuId=='sproduct' || menuId=='scustomer' || menuId=='sbottle'}" class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                	통계 관리
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li th:if="${menuId=='sorder'}" class="nav-item">
-                <a href="/gms/statistics/order/daily.do" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>주문 현황</p>
-                </a>
-              </li>
-              <li th:unless="${menuId=='sorder'}" class="nav-item">
-                <a href="/gms/statistics/order/daily.do" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>주문 현황</p>
-                </a>
-              </li>
-              <li th:if="${menuId=='sproduct'}" class="nav-item">
-                <a href="/gms/statistics/product/daily.do" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>상품 판매 현황</p>
-                </a>
-              </li>
-              <li th:unless="${menuId=='sproduct'}" class="nav-item">
-                <a href="/gms/statistics/product/daily.do" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>상품 판매 현황</p>
-                </a>
-              </li>
-              
-              <li th:if="${menuId=='scustomer'}" class="nav-item">
-                <a href="/gms/statistics/customer/daily.do" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>거래처 판매 현황</p>
-                </a>
-              </li>
-              <li th:unless="${menuId=='scustomer'}" class="nav-item">
-                <a href="/gms/statistics/customer/daily.do" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>거래처 판매 현황</p>
-                </a>
-              </li>
-              
-              <li th:if="${menuId=='sbottle'}" class="nav-item">
-                <a href="/gms/statistics/bottle/daily.do" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>용기 현황</p>
-                </a>
-              </li>
-              <li th:unless="${menuId=='sbottle'}" class="nav-item">
-                <a href="/gms/statistics/bottle/daily.do" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>용기 현황</p>
-                </a>
-              </li>
-              
-            </ul>
-          </li>
-          <li th:unless="${menuId=='sorder'|| menuId=='sproduct' || menuId=='scustomer' || menuId=='sbottle'}" class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                	통계 관리
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/gms/statistics/order/daily.do" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>주문 현황</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/gms/statistics/product/daily.do" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>상품 판매 현황</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/gms/statistics/customer/daily.do" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>거래처 판매 현황</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/gms/statistics/bottle/daily.do" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>용기 현황</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+
           <!--  사용자관리 메뉴  시작 -->
           
-          <li th:if="${menuId=='user' || menuId=='calendar' }" class="nav-item has-treeview menu-open">
+          <li th:if="${menuId=='calendar' }" class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-users"></i>
-              <p>
+              <p th:text="${menuId}">
                 	사용자 관리
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li th:if="${menuId=='user'}" class="nav-item">
-                <a href="/gms/user/list.do" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>사용자 목록</p>
-                </a>
-              </li>
-              <li th:unless="${menuId=='user'}" class="nav-item">
-                <a href="/gms/user/list.do" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>사용자 목록</p>
-                </a>
-              </li>
+              
               <li th:if="${menuId=='calendar'}" class="nav-item">
                 <a href="/gms/calendar/calendar.do" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>일정 관리</p>
                 </a>
               </li> 
-              <li th:unless="${menuId=='calendar'}" class="nav-item">  
-              
+              <li th:unless="${menuId=='calendar'}" class="nav-item">                
                 <a href="/gms/calendar/calendar.do" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>일정 관리</p>
@@ -438,7 +329,7 @@
               </li>                          
             </ul>
           </li>    
-          <li th:unless="${menuId=='user' || menuId=='calendar' }" class="nav-item has-treeview">
+          <li th:unless="${menuId=='calendar' }" class="nav-item has-treeview">
           <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
@@ -447,12 +338,7 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="/gms/user/list.do" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>사용자 목록</p>
-                </a>
-              </li>
+              
               <li class="nav-item">
                 <a href="/gms/calendar/calendar.do" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -483,14 +369,14 @@
                   <p>배정 주문</p>
                 </a>
               </li>
-              <li th:if="${menuId=='diary'}" class="nav-item">
-                <a href="/gms/report/list.do" class="nav-link active">
+              <li th:if="${menuId=='diary'}" class="nav-item">               
+                <a th:href="@{/gms/report/list.do}" class="nav-link active">
                   <i class="far fa-circle nav-icon"></i>
                   <p>업무 일지</p>
                 </a>
               </li>
-              <li th:unless="${menuId=='diary'}" class="nav-item">
-                <a href="/gms/report/list.do" class="nav-link">
+              <li th:unless="${menuId=='diary'}" class="nav-item">               
+                <a th:href="@{/gms/report/list.do}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>업무 일지</p>
                 </a>

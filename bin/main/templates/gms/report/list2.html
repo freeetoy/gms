@@ -526,8 +526,10 @@ $(document).ready(function(){
                     <tr>
                       <th>순번</th>
                       <th>거래처</th>
-                      <th>납품</th>
-                      <th>회수</th>                      
+                      <th>품명</th>
+                      <th>용량</th>
+                      <th>용기타입</th>
+                      <th>상태</th>
                       <th>금액</th>
                       <th>수금액</th>
                     </tr>
@@ -537,24 +539,16 @@ $(document).ready(function(){
                   	<tr th:if="${not #lists.isEmpty( workList )}" th:each="row : ${workList}" style="font-size:13px;">
                       <td th:text="${workList.indexOf(row)+1}"></td>
                       <td th:text="${row.CustomerNm}"></td>
-                      <td >
-                      	<table>     
-                      	<tr>
-                      		<td th:if="${not #lists.isEmpty(row.salesBottles )}" th:each="row1 : ${row.salesBottles}"  th:text="${row1.productNm} + ' ' + ${row1.productCapa}+ ' ' + ${row1.productCount}">
-                      	</tr>
-                      	</table>
+                      <td th:text="${row.workProductNm}"></td>
+                      <td th:text="${row.workProductCapa}"></td>
+                      <td th:if="${row.bottleType =='E' }" >공병
+                      <td th:unless="${row.bottleType =='E' }">실병
                       </td>
-                      <td>
-                    	<table>     
-                      	<tr  >
-                      		<td th:if="${not #lists.isEmpty(row.backBottles )}" th:each="row2 : ${row.backBottles}" th:text="${row2.productNm} + ' ' + ${row2.productCapa}+ ' ' + ${row2.productCount}">
-                      	</tr>
-                      	</table>
-                      </td>
+                      <th th:text="${row.workCdNm}"></th>
                       <td th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
                       <td th:unless="${row.orderAmount> 0 }" th:text="${row.orderAmount}">
-                     
-		     		  <td></td>
+                     </td>
+		     		  <td th:text="${row.receivedAmount}"></td>
 		     		                  
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( workList )}">

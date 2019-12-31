@@ -231,4 +231,11 @@ public class UserServiceImpl implements UserService {
 		return resutlMap;
 		//return userMapper.selectUserList(currentPage);
 	}
+
+	@Override
+	public List<UserVO> getUserListPart(UserVO param) {
+		// TODO Auto-generated method stub
+		param.setUserPartCd(PropertyFactory.getProperty("common.user.part.sales"));
+		return userMapper.selectUserListPart(param);
+	}
 }

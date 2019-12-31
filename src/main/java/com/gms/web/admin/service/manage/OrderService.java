@@ -22,6 +22,8 @@ public interface OrderService {
 	
 	public OrderVO getOrderDetail(Integer orderId) ;
 	
+	public OrderVO getLastOrderForCustomer(Integer customerId) ;
+	
 	public OrderExtVO getOrder(Integer orderId) ;
 	
 	public OrderExtVO getOrderNotDelivery(Integer orderId) ;

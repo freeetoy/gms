@@ -490,19 +490,22 @@ $(document).ready(function(){
             <div class="col-4">              
                <input type="text" class="form-control" name="searchDt" th:value="${searchDt}"/>			
             </div>               
-            <div class="col-5">         
+            <div class="col-3">         
+            	<select id="searchUserId" name="searchUserId" class="form-control">  
+            	<option th:each="row : ${userList}"
+					                th:text="${row.userNm}"
+					                th:value="${row.userId}"
+					                th:if="${searchUserId ==row.userId}" selected>
+				<option th:each="row : ${userList}"
+					                th:text="${row.userNm}"
+					                th:value="${row.userId}"
+					                th:unless="${searchUserId ==row.userId}" >	             
+				</option>		
+            	</select>   
+            </div>         
+            <div class="col-2">         
             	<button class="btn btn-navbar" type="submit"><i class="fas fa-search"></i></button>        
             </div>
-            <!-- >div class="col-4">         
-            	<select id="customerId" name="customerId" class="form-control">  
-            	<option th:each="row : ${carList}"
-					                th:text="${row.customerNm}"
-					                th:value="${row.customerId}"
-					               >
-					     </option>		
-            	</select>   
-            </div>
-             -->
             <div class="col-2" align=right>
          	<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 판매&납품</a>
          	</div>	
@@ -526,10 +529,8 @@ $(document).ready(function(){
                     <tr>
                       <th>순번</th>
                       <th>거래처</th>
-                      <th>품명</th>
-                      <th>용량</th>
-                      <th>용기타입</th>
-                      <th>상태</th>
+                      <th>납품</th>
+                      <th>회수</th>                      
                       <th>금액</th>
                       <th>수금액</th>
                     </tr>
@@ -539,16 +540,24 @@ $(document).ready(function(){
                   	<tr th:if="${not #lists.isEmpty( workList )}" th:each="row : ${workList}" style="font-size:13px;">
                       <td th:text="${workList.indexOf(row)+1}"></td>
                       <td th:text="${row.CustomerNm}"></td>
-                      <td th:text="${row.workProductNm}"></td>
-                      <td th:text="${row.workProductCapa}"></td>
-                      <td th:if="${row.bottleType =='E' }" >공병
-                      <td th:unless="${row.bottleType =='E' }">실병
+                      <td >
+                      	<table>     
+                      	<tr>
+                      		<td th:if="${not #lists.isEmpty(row.salesBottles )}" th:each="row1 : ${row.salesBottles}"  th:text="${row1.productNm} + ' ' + ${row1.productCapa}+ ' ' + ${row1.productCount}">
+                      	</tr>
+                      	</table>
                       </td>
-                      <th th:text="${row.workCdNm}"></th>
+                      <td>
+                    	<table>     
+                      	<tr  >
+                      		<td th:if="${not #lists.isEmpty(row.backBottles )}" th:each="row2 : ${row.backBottles}" th:text="${row2.productNm} + ' ' + ${row2.productCapa}+ ' ' + ${row2.productCount}">
+                      	</tr>
+                      	</table>
+                      </td>
                       <td th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
                       <td th:unless="${row.orderAmount> 0 }" th:text="${row.orderAmount}">
-                     </td>
-		     		  <td th:text="${row.receivedAmount}"></td>
+                     
+		     		  <td></td>
 		     		                  
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( workList )}">
