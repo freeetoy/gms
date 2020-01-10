@@ -210,6 +210,18 @@ $(document).ready(function(){
 	
 	  });
 	    
+// 거래명세서 출력
+   $(".btn_print").click(function()  
+   {
+	   var searchDt = $('#searchDt').val();
+	   console.log("searchDt=="+searchDt);
+      $.popupWindow('/gms/report/print.do?searchDt='+searchDt, {
+             width: 980,
+             height: 700,
+             center: 'screen',          
+             scrollbars: 'true'
+         });
+   });
 		    
 	$(".btn_bottle_search").click(function()  
 	{
@@ -488,9 +500,9 @@ $(document).ready(function(){
                		<label>접수 기간</label>
             </div>               
             <div class="col-4">              
-               <input type="text" class="form-control" name="searchDt" th:value="${searchDt}"/>			
+               <input type="text" class="form-control" id="searchDt" name="searchDt" th:value="${searchDt}"/>			
             </div>               
-            <div class="col-5">         
+            <div class="col-4">         
             	<button class="btn btn-navbar" type="submit"><i class="fas fa-search"></i></button>        
             </div>
             <!-- >div class="col-4">         
@@ -503,8 +515,10 @@ $(document).ready(function(){
             	</select>   
             </div>
              -->
-            <div class="col-2" align=right>
+            <div class="col-3" align=right>
          	<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 판매&납품</a>
+         	<a class="btn_print btn btn-secondary btn-sm"   th:userId="${session.userId}"  href="#" >
+                              <i class="fas fa-print"></i>프린트</a>
          	</div>	
              </form> 
          </div>

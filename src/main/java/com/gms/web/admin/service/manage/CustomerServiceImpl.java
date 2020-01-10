@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
+import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.mapper.manage.CustomerMapper;
 
@@ -216,7 +217,7 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		List<CustomerVO> customerList = customerMapper.searchCustomerList(param);
 		
-		logger.info("****** getCustomerList.customerList *****===*"+customerList.size());
+		logger.debug("****** getCustomerList.customerList *****===*"+customerList.size());
 		
 		resutlMap.put("list",  customerList);
 		resutlMap.put("searchCustomerNm", param);
@@ -307,6 +308,28 @@ public class CustomerServiceImpl implements CustomerService {
 	public int deleteCustomerPrices(List<CustomerPriceVO> param) {
 		// TODO Auto-generated method stub
 		return customerMapper.deleteCustomerPrices(param);
+	}
+
+	@Override
+	public List<CustomerPriceVO> getCustomerPriceListAll() {
+		// TODO Auto-generated method stub
+		return customerMapper.selectCustomerPriceListAll();
+	}
+
+	@Override
+	public int modifyCustomerPrice(CustomerPriceVO param) {
+		// TODO Auto-generated method stub
+		return customerMapper.updateCustomerPrice(param);
+	}
+
+	@Override
+	public List<CustomerSimpleVO> searchCustomerSimpleList(String customerNm) {
+		return customerMapper.searchCustomerSimpleList(customerNm);
+	}
+
+	@Override
+	public List<CustomerSimpleVO> getCarSimpleList() {
+		return customerMapper.selectCarSimpleList();
 	}
 
 	

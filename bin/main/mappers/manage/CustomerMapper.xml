@@ -34,6 +34,11 @@
 		<result property="updateDt"				column="UPDATE_DT"			/>
 	</resultMap>
 	
+	<resultMap id="CustomerSimpleMap" type="com.gms.web.admin.domain.manage.CustomerSimpleVO" >
+		<result property="customerId"			column="Customer_ID"		/>
+		<result property="customerNm"			column="Customer_Nm"		/>
+	</resultMap>
+	
 	<sql id="InsertCustomerColumns">
 		 Member_Comp_Seq	        
 		, Customer_Nm	
@@ -336,6 +341,51 @@
 		AND b.Product_Status != 0
 		AND c.Product_Status != 0
 	</select>
+	
+	<select id="searchCustomerSimpleList" resultType="com.gms.web.admin.domain.manage.CustomerSimpleVO" parameterType="String">
+		SELECT
+			CUSTOMER_ID, Customer_NM
+		FROM
+			TB_CUSTOMER A
+		WHERE
+			Customer_Status != '0'
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
+		AND Customer_NM	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
+		</if>
+		AND 
+			Car_YN = 'N'
+		ORDER BY Customer_Nm Asc 
+	</select>
+	
+	<select id="selectCarSimpleList" resultType="com.gms.web.admin.domain.manage.CustomerSimpleVO">
+		SELECT
+			CUSTOMER_ID, Customer_NM
+		FROM
+			TB_CUSTOMER A
+		WHERE
+			Customer_Status != '0'
+		AND 
+			Car_YN = 'Y'
+		ORDER BY Customer_Nm Asc 
+	</select>
+	
+	<select id="selectCustomerPriceListAll" resultType="com.gms.web.admin.domain.manage.CustomerPriceVO" >
+		SELECT
+			<include refid="InsertCustomerPriceColumns" />
+		FROM
+			TB_CUSTOMER_PRODUCT_PRICE a		
+	</select>
+	
+	<update id="updateCustomerPrice" parameterType="com.gms.web.admin.domain.manage.CustomerPriceVO">
+		UPDATE TB_CUSTOMER_PRODUCT_PRICE	
+		SET Product_Price = #{productPrice}
+		WHERE
+			CUSTOMER_ID = #{customerId}
+		AND
+			Product_ID =  #{productId}
+		AND
+			 Product_Price_Seq = #{productPriceSeq}
+	</update>
 	
 	<update id="deleteCustomerPrice" parameterType="Integer">
 		DELETE

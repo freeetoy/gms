@@ -21,7 +21,11 @@ public interface BottleMapper {
 	
 	public BottleVO selectBottleDetail(String bottleId) ;
 	
+	public BottleVO selectBottleDetailForBarCd(String bottleBarCd) ;
+	
 	public List<BottleVO> selectBottleDetails(BottleVO param) ;
+	
+	public List<BottleVO> selectBottleListByBarCds(BottleVO param) ;
 	
 	public int insertBottle(BottleVO param);	
 	

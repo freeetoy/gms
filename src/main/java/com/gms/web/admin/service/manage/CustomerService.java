@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
+import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 
 public interface CustomerService {
@@ -16,7 +17,11 @@ public interface CustomerService {
 	public List<CustomerVO> searchCustomerListExcel(String param);
 	
 	public List<CustomerVO> searchCustomerListCar();
+	
+	public List<CustomerSimpleVO> searchCustomerSimpleList(String customerNm);
 
+	public List<CustomerSimpleVO> getCarSimpleList();
+	
 	public CustomerVO getCustomerDetails(Integer customerId);
 	
 	public CustomerVO getCustomerDetailsByNm(String customerNm);
@@ -46,4 +51,8 @@ public interface CustomerService {
 	public boolean deleteCustomerPrice(Integer customerId);
 	
 	public int deleteCustomerPrices(List<CustomerPriceVO> param);
+	
+	public List<CustomerPriceVO>  getCustomerPriceListAll();
+	
+	public int modifyCustomerPrice(CustomerPriceVO param);
 }

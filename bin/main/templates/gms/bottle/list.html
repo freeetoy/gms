@@ -370,7 +370,7 @@ $(document).ready(function(){
 	// 진행 확인 버튼 클릭
     $(".btn_process_check").click(function()  
     {
-   
+   	   var customerFlag= false;
        var select_pid = $(this).attr('id'); 
        var msg = '';
        var bottleWorkCd = '';
@@ -428,6 +428,15 @@ $(document).ready(function(){
             break;
 
        }           
+       
+       if(bottleWorkCd=='0301' || bottleWorkCd=='0307'|| bottleWorkCd=='0306'){	   	 
+    	   var customerId = $("#customerId").val();   
+			if(customerId ==''){
+				alert("차량은 선택해주세요");
+				return;
+				
+			}
+       }
        console.log("bottleWorkCd ="+bottleWorkCd);
        if(bottleWorkCd=='0301'){
     	  // $("#view_car").show();

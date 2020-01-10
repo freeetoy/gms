@@ -326,6 +326,9 @@ public class ExcelServiceImpl implements ExcelService {
         int result = 0;
         try {
         	
+        	List<CustomerPriceVO> cPriceList = customerService.getCustomerPriceListAll();
+        	boolean isRegisteFlag = false;
+        	
             OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream());
             XSSFWorkbook workbook = new XSSFWorkbook(opcPackage);
             
@@ -347,6 +350,7 @@ public class ExcelServiceImpl implements ExcelService {
         	  
         	for(int j=3; j< COLUMN_COUNT; j++) {
         		
+        		isRegisteFlag = true;
         		XSSFCell cell = row1.getCell(j);
         		
         		switch (cell.getCellType()) {
@@ -578,8 +582,26 @@ public class ExcelServiceImpl implements ExcelService {
 					
 						if(customer != null) {
 							customerPrice.setCustomerId(customer.getCustomerId());
+							 for(int k=0;k<cPriceList.size();k++) {
+			                	if(customerPrice.getCustomerId() == cPriceList.get(k).getCustomerId() 
+			                			&& customerPrice.getProductId() == cPriceList.get(k).getProductId()
+			                			&& customerPrice.getProductPriceSeq() == cPriceList.get(k).getProductPriceSeq()) {
+			                		
+			                		result = customerService.modifyCustomerPrice(customerPrice);
+			                		isRegisteFlag = false;
+			                	}                 		
+			                }
+							
 							logger.debug("&& ExcelSerive uploadExcelFile customerId j =="+j+"=="+ customerPrice.getCustomerId());
-					        list.add(customerPrice);
+							if(isRegisteFlag) {
+								list.add(customerPrice);
+								
+								if(list.size()%500==0) {
+									result = customerService.registerCustomerPrices(list);
+									list.clear();
+								}
+								
+							}
 						}
 						
 					}                	
@@ -587,7 +609,7 @@ public class ExcelServiceImpl implements ExcelService {
             }
             
            //result = customerService.registerCustomerPrices(list);
-            
+            /*
             for(int i=0 ; i< list.size();i++) {
             	CustomerPriceVO temp = list.get(i);
             	logger.debug("---- ExcelSerive uploadExcelFile customerId="+ temp.getCustomerId());
@@ -595,8 +617,8 @@ public class ExcelServiceImpl implements ExcelService {
             	logger.debug("ExcelSerive uploadExcelFile productPriceId="+ temp.getProductPrice());
             	logger.debug("---ExcelSerive uploadExcelFile price="+ temp.getProductPrice());
             }
-            
-            result = customerService.registerCustomerPrices(list);
+            */
+            if(list.size() > 0) result = customerService.registerCustomerPrices(list);
             logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result);
             
     } catch (DataAccessException e) {

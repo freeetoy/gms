@@ -45,7 +45,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
         
         LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);
         
-        if(sessionInfo != null) {
+        if(sessionInfo != null) {  
             
             userId 		= StringUtils.defaultString(sessionInfo.getUserId());
             systemRole 	= StringUtils.defaultString(sessionInfo.getUserAuthority());

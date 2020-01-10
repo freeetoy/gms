@@ -44,4 +44,6 @@ public class LoginUserVO implements Serializable {
     
     /**현재 메뉴  */
 	private String currentMenu;
+	
+	private boolean success;
 }

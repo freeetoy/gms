@@ -850,4 +850,18 @@ public class BottleController {
 		return bottleList;
 		//return null;
 	}
+	
+	@RequestMapping(value = "/api/bottleDetail.do")
+	@ResponseBody
+	public BottleVO getBottleDetail(String bottleBarCd)	{		
+		
+		BottleVO bottle =  bottleService.getBottleDetailForBarCd(bottleBarCd);	
+		
+		if(bottle!=null) bottle.setSuccess(true);
+		else {
+			bottle = new BottleVO();
+			bottle.setSuccess(false);
+		}
+		return bottle;
+	}
 }

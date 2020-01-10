@@ -19,6 +19,8 @@
 		 Stat_Dt  
 		 , Order_Total_Count    
 		 , Order_Total_Amount 	 
+		 , Order_Completed_Count
+		 , Order_Completed_Amount
 		 , Order_Product_Count    
 		 , Order_Cancel_Count 	 
 		 , Order_Auto_Count 	
@@ -33,11 +35,13 @@
 		INSERT INTO TB_Daily_Stat_Order(
 			<include refid="StatisticsOrderColumns" />
 		) 
-		SELECT 	DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d'), order_total_count,IFNULL(order_total_amount,0), order_product_count, 
+		SELECT 	DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d'), order_total_count,IFNULL(order_total_amount,0), order_completed_count, IFNULL(order_completed_amount,0),order_product_count, 
 				order_cancel_count, order_auto_count, order_retrieved_count, order_check_count,order_etc_count, 'admin',now()
 		FROM 
 		(SELECT count(order_id) order_total_count FROM tb_order WHERE order_process_cd !='0299' AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')) aa,
 		(SELECT sum(`Order_Total_Amount`) order_total_amount FROM tb_order WHERE order_process_cd !='0299' AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')) ab,
+		(SELECT count(order_id) order_completed_count FROM tb_order WHERE order_process_cd ='0250' AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')) bb,
+		(SELECT sum(`Order_Total_Amount`) order_completed_amount FROM tb_order WHERE order_process_cd ='0250' AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')) bc,
 		(SELECT count(order_id) order_product_count FROM tb_order WHERE order_type_cd='0101' AND order_process_cd !='0299' AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) a,
 		(SELECT count(order_id) order_cancel_count  FROM tb_order WHERE order_type_cd='0102' AND order_process_cd !='0299' AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) b ,
 		(SELECT count(order_id) order_auto_count  FROM tb_order WHERE order_type_cd='0103' AND order_process_cd !='0299' AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) c,
@@ -53,7 +57,9 @@
 		SELECT LEFT(Stat_Dt,7), 
 			SUM(Order_Total_Count)    
 			 , SUM(Order_Total_Amount) 	 
-			 , SUM(Order_Product_Count)    
+			 , SUM(Order_Completed_Count)    
+			 , SUM(Order_Completed_Amount) 	 
+			 , SUM(Order_Product_Count)   
 			 , SUM(Order_Cancel_Count) 	 
 			 , SUM(Order_Auto_Count) 	
 			 , SUM(Order_Retrieved_Count)        

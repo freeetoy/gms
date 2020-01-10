@@ -239,10 +239,9 @@ public class WorkReportServiceImpl implements WorkReportService {
 			logger.debug("WorkReportServiceImpl registerWorkReportForOrder bottleIds =" + param.getBottlesIds());
 			
 			//Order 정보가져오기
-			OrderExtVO  orderInfo = orderService.getOrderNotDelivery(param.getOrderId());
+			OrderExtVO  orderInfo = orderService.getOrderNotDelivery(param.getOrderId());			
 			
-			
-			//Bottle 정보 가져오기
+			/*
 			BottleVO bottle = new BottleVO();
 			
 			if(param.getBottlesIds()!=null && param.getBottlesIds().length() > 0) {
@@ -252,6 +251,9 @@ public class WorkReportServiceImpl implements WorkReportService {
 			}	
 			
 			List<BottleVO> bottleList = bottleService.getBottleDetails(bottle);		
+			*/
+			//Bottle 정보 가져오기
+			List<BottleVO> bottleList = getBottleList(param);
 			
 			logger.debug("*****************  WorkReportServiceImpl registerWorkReport bottleList.size()=="+ bottleList.size());
 			//Work_Report_Seq 가져오기
@@ -760,6 +762,8 @@ public class WorkReportServiceImpl implements WorkReportService {
 				result = registerWorkReportForOrder(param);
 			}else {
 				//Bottle 정보 가져오기
+				List<BottleVO> bottleList = getBottleList(param);
+				/*
 				BottleVO bottle = new BottleVO();
 				
 				List<String> list = null;
@@ -771,7 +775,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 				}	
 				
 				List<BottleVO> bottleList = bottleService.getBottleDetails(bottle);			
-			
+			*/
 				//Work_Report_Seq 가져오기
 				boolean registerFlag = false;
 				int workReportSeq = getWorkReportSeqForCustomerToday(param);
@@ -1006,17 +1010,22 @@ public class WorkReportServiceImpl implements WorkReportService {
 	public int registerWorkReportByBottle(WorkReportVO param, List<BottleVO> bottleList) {
 		logger.info("WorkReportServiceImpl registerWorkReport start ");
 		int result = 0;
+		boolean insertFlag = false;
 		try {			
 			
-			logger.debug("WorkReportServiceImpl registerWorkReportNoOrder bottleIds =" + param.getBottlesIds());
+			logger.debug("WorkReportServiceImpl registerWorkReportNoOrder bottleIds =" + param.getBottlesIds());			
 			
-			
+			int workReportSeq = 0;
+			if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0310"))) {
+				workReportSeq = getWorkReportSeqForCustomerToday(param);
+			}
 			//Work_Report_Seq 가져오기
-			int workReportSeq = getWorkReportSeqForCustomerToday(param);
+			//int workReportSeq = getWorkReportSeqForCustomerToday(param);
 			
-			if(workReportSeq <= 0)
+			if(workReportSeq <= 0) {
 				workReportSeq = getWorkReportSeq();
-			
+				insertFlag = true;
+			}
 			logger.debug("WorkReportServiceImpl registerWorkReportNoOrder workReportSeq =" + workReportSeq);
 			//TB_Work_Reprot 등록
 			param.setWorkReportSeq(workReportSeq);
@@ -1075,8 +1084,9 @@ public class WorkReportServiceImpl implements WorkReportService {
 			param.setWorkProductNm(orderProductNm);
 			param.setWorkProductCapa(orderProductCapa);
 			
-			result = workMapper.insertWorkReport(param);
-			
+			if(insertFlag) {
+				result = workMapper.insertWorkReport(param);
+			}
 			result = workMapper.insertWorkBottles(workBottleList);			
 			
 			
@@ -1328,5 +1338,18 @@ public class WorkReportServiceImpl implements WorkReportService {
 		return workMapper.selectWorkReportSeqForCustomerToday(param);
 	}
 
+	
+	private List<BottleVO> getBottleList(WorkReportVO param){
+		BottleVO bottle = new BottleVO();
+		
+		if(param.getBottlesIds()!=null && param.getBottlesIds().length() > 0) {
+			//bottleIds= request.getParameter("bottleIds");
+			List<String> list = StringUtils.makeForeach(param.getBottlesIds(), ","); 		
+			bottle.setBottList(list);
+		}	
+	
+		
+		return  bottleService.getBottleDetails(bottle);		
+	}
 
 }

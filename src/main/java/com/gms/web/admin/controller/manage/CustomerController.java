@@ -22,6 +22,7 @@ import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
+import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.service.manage.BottleService;
@@ -309,5 +310,33 @@ public class CustomerController {
 		return customerPriceList;
 		//return null;
 	}
+	
+	@RequestMapping(value = "/api/customerList.do")
+	@ResponseBody
+	public List<CustomerSimpleVO> getCustomerList(@RequestParam(value = "searchCustomerNm", required = false) String searchCustomerNm)	{	
+				
+		List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList(searchCustomerNm);
+		return customerList;
+		//return null;
+	}
+	
+	@RequestMapping(value = "/api/carList.do")
+	@ResponseBody
+	public List<CustomerSimpleVO> getCarList()	{	
+				
+		List<CustomerSimpleVO> customerList = customerService.getCarSimpleList();
+		return customerList;
+		//return null;
+	}
+	
+	@RequestMapping(value = "/api/customerAllList.do")
+	@ResponseBody
+	public List<CustomerSimpleVO> getCustomerAllList()	{	
+				
+		List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList("");
+		return customerList;
+		//return null;
+	}
+	
 	
 }

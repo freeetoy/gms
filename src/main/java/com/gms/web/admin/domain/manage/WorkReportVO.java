@@ -102,4 +102,6 @@ public class WorkReportVO extends AbstractVO implements Serializable {
 	
 	/** searchUserId   	*/
 	private String searchUserId;
+	
+	private boolean phoneFlag = false;
 }

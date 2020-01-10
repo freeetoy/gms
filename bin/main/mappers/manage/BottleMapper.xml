@@ -361,6 +361,21 @@
 			TB.Product_ID = TG.Product_Id
 	</select>
 	
+	<select id="selectBottleDetailForBarCd" parameterType="String" resultType="com.gms.web.admin.domain.manage.BottleVO">
+		SELECT
+			<include refid="BottleSelectColumns" />
+		FROM
+			TB_Bottle TB, TB_CODE TC, TB_Product TG
+		WHERE
+			Bottle_BarCd = #{bottleBarCd}
+		AND
+			TB.Delete_YN = 'N'
+		AND 
+			TB.Bottle_Work_CD = TC.CD_ID	
+		AND 
+			TB.Product_ID = TG.Product_Id
+	</select>
+	
 	<select id="selectBottleDetails" parameterType="String" resultType="com.gms.web.admin.domain.manage.BottleVO">
 		SELECT
 			<include refid="BottleSelectColumns" />
@@ -368,6 +383,26 @@
 			TB_Bottle TB, TB_CODE TC, TB_Product TG
 		WHERE
 			Bottle_ID in  
+			<foreach collection="bottList" item="item" index="index" open="(" separator="," close=")">
+				#{item} 
+			</foreach>
+		AND
+			TB.Delete_YN = 'N'
+		AND 
+			TB.Bottle_Work_CD = TC.CD_ID	
+		AND 
+			TB.Product_ID = TG.Product_Id
+		ORDER BY Product_Id, Bottle_Capa
+	</select>
+	
+	
+	<select id="selectBottleListByBarCds" parameterType="String" resultType="com.gms.web.admin.domain.manage.BottleVO">
+		SELECT
+			<include refid="BottleSelectColumns" />
+		FROM
+			TB_Bottle TB, TB_CODE TC, TB_Product TG
+		WHERE
+			Bottle_BarCd in  
 			<foreach collection="bottList" item="item" index="index" open="(" separator="," close=")">
 				#{item} 
 			</foreach>

@@ -231,6 +231,11 @@ public class BottleServiceImpl implements BottleService {
 	}
 	
 	@Override
+	public BottleVO getBottleDetailForBarCd(String bottleBarCd) {
+		return bottleMapper.selectBottleDetailForBarCd(bottleBarCd);	
+	}
+	
+	@Override
 	public int getBottleCount(Map<String, Object> map) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -552,5 +557,39 @@ public class BottleServiceImpl implements BottleService {
 		
 		return result;
 	}
+
+
+
+	@Override
+	public List<BottleVO> getBottleListByBarCds(BottleVO param) {
+		List<BottleVO> list = (List<BottleVO>) bottleMapper.selectBottleListByBarCds(param);	
+		
+		return list;
+	}
+
+
+
+	@Override	
+	public int changeWorkCdsAndHistory(BottleVO param, List<BottleVO> params) {
+		int result = 0;
+		
+		if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0305"))) {
+		
+			for(int i = 0 ; i < params.size() ; i++) {
+				params.get(i).setChBottleId(params.get(i).getBottleId());
+				result =  bottleMapper.updateBottleWorkCd(params.get(i));
+			}
+		}else {
+			result =  bottleMapper.updateBottlesWorkCd(param);
+		}
+		
+		if(result > 0 ) result = bottleMapper.insertBottleHistorys(params);
+		
+		return result;
+	}
+
+
+
+	
 
 }

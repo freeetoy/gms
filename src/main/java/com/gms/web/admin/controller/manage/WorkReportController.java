@@ -63,7 +63,7 @@ public class WorkReportController {
 		logger.info("WorkReportController getWorkReportList User_id= "+ params.getUserId());
 		
 		
-		LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);	
+		//LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);	
 		
 		
 		
@@ -293,6 +293,38 @@ public class WorkReportController {
 		return null;
 		//return "redirect:/gms/mypage/assign.do";
 		
+	}
+	
+	
+	
+	@RequestMapping(value = "/gms/report/print.do")
+	public ModelAndView getWorkReportListPrint(
+			HttpServletRequest request
+			, HttpServletResponse response
+			, WorkReportVO params) {
+
+		logger.info("WorkReportController getWorkReportList");
+		
+		RequestUtils.initUserPrgmInfo(request, params);		
+		
+		
+		ModelAndView mav = new ModelAndView();		
+		
+		params.setUserId(params.getCreateId());
+		
+		
+		logger.info("WorkReportController getWorkReportList User_id= "+ params.getUserId());
+		
+		
+		List<WorkReportViewVO> workList = workService.getWorkReportList1(params);
+		
+		mav.addObject("workList", workList);	
+		mav.addObject("searchDt", params.getSearchDt());	
+		
+		
+		mav.setViewName("gms/report/print");
+		
+		return mav;
 	}
 	
 }

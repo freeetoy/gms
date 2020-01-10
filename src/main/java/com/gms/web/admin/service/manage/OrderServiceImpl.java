@@ -172,7 +172,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public OrderVO getLastOrderForCustomer(Integer customerId) {
-		return orderMapper.selectOrderDetail(customerId);	
+		return orderMapper.selectLastOrderForCustomer(customerId);	
 	}
 	
 	

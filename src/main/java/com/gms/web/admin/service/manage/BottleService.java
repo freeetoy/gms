@@ -19,7 +19,11 @@ public interface BottleService {
 	
 	public BottleVO getBottleDetail(String bottleId) ;
 	
+	public BottleVO getBottleDetailForBarCd(String bottleBarCd) ;
+	
 	public List<BottleVO> getBottleDetails(BottleVO param) ;
+	
+	public List<BottleVO> getBottleListByBarCds(BottleVO param) ;
 	
 	public int getBottleCount(Map<String, Object> map);	
 	
@@ -38,6 +42,8 @@ public interface BottleService {
 	public int changeBottleWorkCd(BottleVO param);
 	
 	public int changeBottlesWorkCd(BottleVO param);
+	
+	public int changeWorkCdsAndHistory(BottleVO param,List<BottleVO> params);
 	
 	public int changeBottlesWorkCdOnly(BottleVO param);
 

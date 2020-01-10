@@ -1,5 +1,7 @@
 package com.gms.web.admin.controller.common;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -60,18 +62,18 @@ public class LoginController {
 		HttpSession session = request.getSession();
 		
 		if(user!= null) {
-			logger.info("LoginContoller loginAction userNm "+user.getUserNm());
-			
+			logger.info("LoginContoller loginAction userNm "+user.getUserNm());			
 			logger.info("LoginContoller loginAction userAuthoriy "+user.getUserAuthority());
 			logger.info("LoginContoller loginAction userPart "+user.getUserPartCd());
-			
+			user.setUserId(param.getUserId());
 			session.setAttribute(LoginUserVO.ATTRIBUTE_NAME, user);		
-			
 		}
 			
 		
 		if(user != null && user.getUserId() != null){
 			String alertMessage = "로그인 되었습니다.";
+			session.setAttribute(LoginUserVO.ATTRIBUTE_NAME, user);		
+			
 			RequestUtils.responseWriteException(response, alertMessage, "/gms/order/list.do");
 		}else {
 			String alertMessage = user.getErrorMessage();
@@ -82,22 +84,38 @@ public class LoginController {
 		
 	}
 	
+	
+	
 	@RequestMapping(value="/api/loginAction.do")
 	@ResponseBody
-	public String apiLoginAction(
+	public LoginUserVO apiLoginAction(
 			HttpServletRequest request
 			, HttpServletResponse response
-			, String id, String pw) {
-		
-		logger.info("LoginContoller /api/loginAction Start");
-		
-		
+			, String id, String pw) throws UnsupportedEncodingException {
+		String result = "";
+		boolean res=false;
+		ModelAndView mav = new ModelAndView();		
+		logger.info("LoginContoller /api/loginAction Start");			
 			
 		logger.info("LoginContoller loginAction id "+id);
 		logger.info("LoginContoller loginAction pw "+pw);
-			
 		
-		return "success";
+		LoginUserVO param = new LoginUserVO();
+		param.setUserId(id);
+		param.setUserPasswd(pw);
+			
+		LoginUserVO user = loginService.getUserInfo(param);					
+		
+		user.setUserNm(URLEncoder.encode(user.getUserNm(), "UTF-8"));
+		if(user != null && user.getUserId() != null){
+			result = "success";
+			res = true;
+			user.setSuccess(res);
+			
+		}else {
+			result = "fail";
+		}
+		return user;
 		
 	}
 	

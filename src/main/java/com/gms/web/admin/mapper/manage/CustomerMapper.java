@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
+import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 
 @Mapper
@@ -51,5 +52,14 @@ public interface CustomerMapper {
 	public int deleteCustomerPrices(List<CustomerPriceVO> param);	
 	
 	public List<CustomerPriceExtVO> selectCustomerPriceList(Integer customerId);
+	
+	public List<CustomerPriceVO> selectCustomerPriceListAll();
+	
+	public List<CustomerSimpleVO> searchCustomerSimpleList(String searchCustomerNm);
+	
+	public List<CustomerSimpleVO> selectCarSimpleList();
+	
+	public int updateCustomerPrice(CustomerPriceVO param);
+	
 
 }
