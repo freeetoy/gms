@@ -46,7 +46,7 @@ public class BottleServiceImpl implements BottleService {
 		
 		
 		logger.debug("****** getBottleList *****param.getSearchBottleId===*" + param.getSearchBottleId());
-		logger.debug("****** getBottleList *****param.getRowPerPage===*" + param.getRowPerPage());
+		logger.debug("****** getBottleList *****param.getSearchWorkCd===*" + param.getSearchWorkCd());
 		
 		int currentPage = param.getCurrentPage();
 		int ROW_PER_PAGE = param.getRowPerPage();
@@ -75,6 +75,9 @@ public class BottleServiceImpl implements BottleService {
 
 		if(param.getSearchProductId() != null  ) {			
 			map.put("searchProductId", param.getSearchProductId());
+		}
+		if(param.getSearchWorkCd() != null  ) {			
+			map.put("searchWorkCd", param.getSearchWorkCd());
 		}
 		
 		if(param.getSearchChargeDt() != null) {
@@ -208,10 +211,14 @@ public class BottleServiceImpl implements BottleService {
 			logger.debug("****** getBottleListToExcel *****getSearchSalesYn===*"+param.getSearchSalesYn());
 		}
 		
-		if(param.getMenuType()==3 || param.getMenuType()==3) {			//용기 판매/대여 메뉴
-			param.setSearchSalesYn("Y");
-			map.put("searchSalesYn", param.getSearchSalesYn());
-			map.put("bottleWorkCd", param.getBottleWorkCd());
+		if(param.getMenuType()==3 || param.getMenuType()==4) {			//용기 판매/대여 메뉴
+			//param.setSearchSalesYn("Y");
+			//map.put("searchSalesYn", param.getSearchSalesYn());
+			//map.put("bottleWorkCd", param.getBottleWorkCd());
+			if(param.getMenuType()==3 )
+				map.put("searchWorkCd", PropertyFactory.getProperty("common.bottle.status.0308"));
+			else
+				map.put("searchWorkCd", PropertyFactory.getProperty("common.bottle.status.0309"));
 		}
 		List<BottleVO> bottleList = bottleMapper.selectBottleListToExcel(map);
 		
@@ -573,10 +580,14 @@ public class BottleServiceImpl implements BottleService {
 	public int changeWorkCdsAndHistory(BottleVO param, List<BottleVO> params) {
 		int result = 0;
 		
-		if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0305"))) {
+		if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0302")) 
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0303")) 
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0304")) 
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0305")) ) {
 		
 			for(int i = 0 ; i < params.size() ; i++) {
 				params.get(i).setChBottleId(params.get(i).getBottleId());
+				params.get(i).setBottleWorkCd(param.getBottleWorkCd());
 				result =  bottleMapper.updateBottleWorkCd(params.get(i));
 			}
 		}else {

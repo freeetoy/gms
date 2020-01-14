@@ -87,7 +87,10 @@ public class ApiServiceImpl implements ApiService {
 		
 		List<BottleVO> bottleList = bottleService.getBottleDetails(bottle);
 		
-		if(!param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0305") ) ){
+		if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0301") ) 
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0306"))
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0307") ) 
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0310")) ){
 		
 			//Customer 정보가져
 			CustomerVO customer = getCustomer(param.getCustomerNm());				

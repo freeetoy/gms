@@ -316,9 +316,13 @@ public class CustomerController {
 	public List<CustomerSimpleVO> getCustomerList(@RequestParam(value = "searchCustomerNm", required = false) String searchCustomerNm)	{	
 				
 		List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList(searchCustomerNm);
+		//String customerList = customerService.searchCustomerSimpleListString(searchCustomerNm);
+		
 		return customerList;
 		//return null;
 	}
+	
+	
 	
 	@RequestMapping(value = "/api/carList.do")
 	@ResponseBody
@@ -337,6 +341,15 @@ public class CustomerController {
 		return customerList;
 		//return null;
 	}
-	
+	@RequestMapping(value = "/api/customerAllList1.do")
+	@ResponseBody
+	public String getCustomerListString(@RequestParam(value = "searchCustomerNm", required = false) String searchCustomerNm)	{	
+				
+		
+		String customerList = customerService.searchCustomerSimpleListString(searchCustomerNm);
+		
+		return customerList;
+		//return null;
+	}
 	
 }

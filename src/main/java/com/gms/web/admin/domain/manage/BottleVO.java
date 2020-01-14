@@ -150,6 +150,9 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	/** Car Customer_ID		*/
 	private String carCustomerId;
 	
+	/** Search BottleWorkCd		*/
+	private String searchWorkCd;
+	
 	private boolean success;
 	
 }

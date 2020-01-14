@@ -46,7 +46,7 @@ public class LoginController {
 		//req.getSession().invalidate();
 		return "gms/login";
 	}
-	
+	/*
 	@RequestMapping(value="/loginAction.do")
 	public ModelAndView loginAction(
 			HttpServletRequest request
@@ -67,6 +67,8 @@ public class LoginController {
 			logger.info("LoginContoller loginAction userPart "+user.getUserPartCd());
 			user.setUserId(param.getUserId());
 			session.setAttribute(LoginUserVO.ATTRIBUTE_NAME, user);		
+			
+			session.setAttribute("userId", user.getUserId());		
 		}
 			
 		
@@ -83,9 +85,46 @@ public class LoginController {
 		return null;
 		
 	}
+	*/
 	
-	
-	
+	@RequestMapping(value="/loginAction.do")
+	public String loginAction(Model model,
+			HttpServletRequest request
+			, HttpServletResponse response
+			, LoginUserVO param) {
+		
+		logger.info("LoginContoller loginAction Start");
+		
+		//ModelAndView mav = new ModelAndView();				
+		
+		LoginUserVO user = loginService.getUserInfo(param);
+		
+		HttpSession session = request.getSession();
+		
+		if(user!= null) {
+			logger.info("LoginContoller loginAction userNm "+user.getUserNm());			
+			logger.info("LoginContoller loginAction userAuthoriy "+user.getUserAuthority());
+			logger.info("LoginContoller loginAction userPart "+user.getUserPartCd());
+			user.setUserId(param.getUserId());
+			session.setAttribute(LoginUserVO.ATTRIBUTE_NAME, user);		
+			
+			session.setAttribute("userId", user.getUserId());		
+		}
+			/*
+		
+		if(user != null && user.getUserId() != null){
+			String alertMessage = "로그인 되었습니다.";
+			session.setAttribute(LoginUserVO.ATTRIBUTE_NAME, user);		
+			
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/order/list.do");
+		}else {
+			String alertMessage = user.getErrorMessage();
+			RequestUtils.responseWriteException(response, alertMessage, RETURN_LOGINPAGE);
+		}
+		*/
+		return "redirect:/gms/order/list.do";
+		
+	}
 	@RequestMapping(value="/api/loginAction.do")
 	@ResponseBody
 	public LoginUserVO apiLoginAction(

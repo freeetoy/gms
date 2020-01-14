@@ -357,6 +357,21 @@
 		ORDER BY Customer_Nm Asc 
 	</select>
 	
+	<select id="searchCustomerSimpleListString" resultType="String" parameterType="String">
+		SELECT
+			GROUP_CONCAT(Customer_NM)
+		FROM
+			TB_CUSTOMER A
+		WHERE
+			Customer_Status != '0'
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
+		AND Customer_NM	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
+		</if>
+		AND 
+			Car_YN = 'N'
+		ORDER BY Customer_Nm Asc 
+	</select>
+	
 	<select id="selectCarSimpleList" resultType="com.gms.web.admin.domain.manage.CustomerSimpleVO">
 		SELECT
 			CUSTOMER_ID, Customer_NM

@@ -19,6 +19,8 @@ public interface CustomerService {
 	public List<CustomerVO> searchCustomerListCar();
 	
 	public List<CustomerSimpleVO> searchCustomerSimpleList(String customerNm);
+	
+	public String searchCustomerSimpleListString(String customerNm);
 
 	public List<CustomerSimpleVO> getCarSimpleList();
 	

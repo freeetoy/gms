@@ -38,7 +38,7 @@ function fn_modifyBottleWorkCd(){
 		console.log("carCustomerId = "+carCustomerId);
 		//chForm.carCustomer.val(carCustomerId);
 		
-		if(bottleWorkCd=='0301' || bottleWorkCd == '0307'){
+		if(bottleWorkCd=='0301' || bottleWorkCd == '0306' || bottleWorkCd == '0307'){
 			$("#carCustomerId").val(carCustomerId);
 		}
 				
@@ -158,9 +158,10 @@ var fn_deleteBottle = function(bottleId){
 	  $('input[name="searchChargeDt"]').daterangepicker({
 	      autoUpdateInput: false,
 	      startDate: new Date(),
+	      language: "kr",
 	      locale: {
 	          cancelLabel: 'Clear'
-	      }
+	      }	  	
 	  });
 	
 	  $('input[name="searchChargeDt"]').on('apply.daterangepicker', function(ev, picker) {
@@ -301,8 +302,10 @@ $(document).ready(function(){
 
 		var bottleWorkCd = $('#bottleWorkCd').val();	
 		
-		if(bottleWorkCd=='0301' || bottleWorkCd=='0307')			
+		if(bottleWorkCd=='0301' || bottleWorkCd=='0306' || bottleWorkCd=='0307')			
 			$("#view_custom").show();
+		else
+			$("#view_custom").hide();
 			
 	});
 
@@ -785,21 +788,38 @@ $(document).ready(function(){
                <input type="text" id="searchBottleId" name="searchBottleId" class="form-control"  th:value="${searchBottleId}">
             </div>  
             <div class="col-2">
+            
                	<select id="searchProductId" name="searchProductId" class="form-control">
-                    <option value="">가스선택</option>				    
-			        <option th:each="row : ${proudctList}"
-			                th:text="${row.productNm}"
-			                th:value="${row.productId}"
-			                th:if="${searchProductId ==row.productId}" selected>					             
+               		<option value="">거래처 목록</option>
+                   	<option th:each="row : ${productList}"
+		                th:text="${row.productNm}"
+		                th:value="${row.productId}"
+		              	th:if="${searchProductId ==row.productId}" selected>	
+			     	</option>	
+			     	<option th:each="row : ${productList}"
+		                th:text="${row.productNm}"
+		                th:value="${row.productId}"
+		              	th:unless="${searchProductId ==row.productId}">	
+			     	</option>   				
+                 </select>
+              </div>      
+              			
+              <div class="col-2">
+               	<select id="searchWorkCd" name="searchWorkCd" class="form-control">
+                    <option value="">작업</option>				    
+			        <option th:each="row : ${codeList}"
+			                th:text="${row.cdNm}"
+			                th:value="${row.cdId}"
+			                th:if="${searchWorkCd ==row.cdId}" selected>					             
 			        </option>	
-			        <option th:each="row : ${productList}"
-			                th:text="${row.productNm}"
-			                th:value="${row.productId}"
-			                th:unless="${searchProductId ==row.productId}">					             
+			        <option th:each="row : ${codeList}"
+			                th:text="${row.cdNm}"
+			                th:value="${row.cdId}"
+			                th:unless="${searchWorkCd ==row.cdId}">					             
 			        </option>					        				
                  </select>
               </div>                   
-              <div class="col-4">
+              <div class="col-2">
                 <button class="btn btn-navbar" type="submit">
 		            <i class="fas fa-search"></i>
 		          </button>
@@ -810,7 +830,7 @@ $(document).ready(function(){
               </div-->
               <div class="col-2">
               		<a class="btn btn-outline-primary btn-sm" href="/gms/bottle/write.do"><i class="far fa-edit"></i>용기등록</a>
-              		<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchProductId= ${searchProductId} ,searchChargeDt=${searchChargeDt},menuType=1 )}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>               
+              		<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchProductId= ${searchProductId} ,searchChargeDt=${searchChargeDt},searchWorkCd=${ser},menuType=1 )}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>               
               </div>
          </div>
         <div class="row">	

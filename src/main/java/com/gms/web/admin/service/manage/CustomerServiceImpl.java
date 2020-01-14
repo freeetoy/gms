@@ -332,6 +332,11 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerMapper.selectCarSimpleList();
 	}
 
+	@Override
+	public String searchCustomerSimpleListString(String customerNm) {
+		return customerMapper.searchCustomerSimpleListString(customerNm);
+	}
+
 	
 
 }

@@ -57,6 +57,8 @@ public interface CustomerMapper {
 	
 	public List<CustomerSimpleVO> searchCustomerSimpleList(String searchCustomerNm);
 	
+	public String searchCustomerSimpleListString(String searchCustomerNm);
+	
 	public List<CustomerSimpleVO> selectCarSimpleList();
 	
 	public int updateCustomerPrice(CustomerPriceVO param);

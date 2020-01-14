@@ -22,19 +22,20 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		log.info("preHandle!!");
+		
+		log.debug("preHandle!!");
 		String requestURI = request.getRequestURI().trim();
 		
-		
+		/*
 		String[] menu = requestURI.split("/");
 		String currentMenu ="";
 		
 		if(menu.length > 1) {
-			log.info("#### requestURI menu : " + menu[2]);
+			log.debug("#### requestURI menu : " + menu[2]);
 			currentMenu = menu[2];
 		}
-        
-		log.info("requestURI : " + requestURI);
+        */
+		log.debug("requestURI : " + requestURI);
         
 		HttpSession session = request.getSession(false);
         
@@ -44,15 +45,17 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
         String forwardUrl = "gms/login";
         
         LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);
+        //String userTempId= session.getAttribute("userId").toString();
+        //log.info("preHandle userTempId ************ "+userTempId);
         
         if(sessionInfo != null) {  
             
             userId 		= StringUtils.defaultString(sessionInfo.getUserId());
             systemRole 	= StringUtils.defaultString(sessionInfo.getUserAuthority());
             log.info("preHandle userId ************ "+userId);
-            log.info("preHandle userNm ************ "+StringUtils.defaultString(sessionInfo.getUserNm()));
-            log.info("preHandle userPartCd ************ "+StringUtils.defaultString(sessionInfo.getUserPartCd()));
-            log.info("preHandle systemRole ************ "+systemRole);
+            log.debug("preHandle userNm ************ "+StringUtils.defaultString(sessionInfo.getUserNm()));
+            log.debug("preHandle userPartCd ************ "+StringUtils.defaultString(sessionInfo.getUserPartCd()));
+            log.debug("preHandle systemRole ************ "+systemRole);
                       
             session.setAttribute("compNm", PropertyFactory.getProperty("common.Member.Comp.Daehan.name"));		
             
@@ -64,23 +67,12 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
             }
         }
         else {   
-        	log.info("preHandle userId ************null ");
-        	/*
-        	LoginUserVO userInfo = new LoginUserVO();
-        	// 임시
-        	userInfo.setUserId("freetoy");
-        	userInfo.setUserNm("임의테스터");
-        	userInfo.setUserPartCd("03");
-        	userInfo.setUserAuthority("99");
-        	userInfo.setCurrentMenu(currentMenu);
+        	log.debug("preHandle userId ************null ");
         	
-        	SessionUtil sessionUtil = new SessionUtil();
-        	boolean isSuccess = sessionUtil.saveSessionInfo(request, userInfo);
-        	*/
         	//request.getSession().invalidate();
         	response.sendRedirect(request.getContextPath() + "/login");
 			return false;   	
-			//response.sendRedirect("/login");
+			
         }
         
         //return super.preHandle(request, response, handler);
@@ -90,13 +82,13 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		log.info("postHandle!!");
+		log.debug("postHandle!!");
 	}
 
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		log.info("afterCompletion!!");
+		log.debug("afterCompletion!!");
 	}
 
 }

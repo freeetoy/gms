@@ -142,6 +142,8 @@ var fn_deleteBottle = function(bottleId){
 	
 	  $('input[name="searchChargeDt"]').daterangepicker({
 	      autoUpdateInput: false,
+	      startDate: new Date(),
+	      language: "kr",
 	      locale: {
 	          cancelLabel: 'Clear'
 	      }
@@ -309,7 +311,7 @@ var fn_deleteBottle = function(bottleId){
             <div class="col-2">
                	<select id="searchProductId" name="searchProductId" class="form-control">
                     <option value="">가스선택</option>				    
-			        <option th:each="row : ${proudctList}"
+			        <option th:each="row : ${productList}"
 			                th:text="${row.productNm}"
 			                th:value="${row.productId}"
 			                th:if="${searchProductId ==row.productId}" selected>					             
@@ -357,7 +359,7 @@ var fn_deleteBottle = function(bottleId){
                       <th>용량</th>
                       <th>작업</th>
                       <th>거래처</th>
-                      <th>충전일</th>
+                      <th>충전기한</th>
                     </tr>
                   </thead>
                   <tbody>

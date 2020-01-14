@@ -68,6 +68,7 @@ public class BottleController {
 		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
 		logger.debug("BottleContoller searchProductId "+ params.getSearchProductId());
 		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
+		logger.debug("BottleContoller searchWorkCd "+ params.getSearchWorkCd());
 		
 		String searchChargeDt = params.getSearchChargeDt();	
 		
@@ -96,6 +97,7 @@ public class BottleController {
 		if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
 			searchProductId = params.getSearchProductId();
 			model.addAttribute("searchProductId", Integer.parseInt(searchProductId));
+			model.addAttribute("searchProductId1", Integer.parseInt(searchProductId));
 			
 			logger.debug("BottleContoller **** searchProductId "+ searchProductId);
 		}
@@ -116,9 +118,12 @@ public class BottleController {
 		model.addAttribute("carList", carList);		
 		
 		//검색어 셋팅
-		model.addAttribute("searchBottleId", params.getSearchBottleId());		
-		//model.addAttribute("searchProductId", Integer.parseInt(params.getSearchProductId()) );
+		model.addAttribute("searchBottleId", params.getSearchBottleId());				
 		model.addAttribute("searchChargeDt", params.getSearchChargeDt());	
+		model.addAttribute("searchWorkCd", params.getSearchWorkCd() );
+		//if(params.getSearchProductId()!=null && params.getSearchProductId().length()) {
+			//model.addAttribute("searchProductId", params.getSearchProductId() );
+		//}
 		
 		model.addAttribute("currentPage", map.get("currentPage"));
 		model.addAttribute("lastPage", map.get("lastPage"));
@@ -249,9 +254,10 @@ public class BottleController {
 		logger.debug("BottleContoller searchChargeDt "+ searchChargeDt);
 		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
 		
-		params.setSearchSalesYn("Y");
-		params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
-		logger.debug("BottleContoller searchSalesYn "+ params.getSearchSalesYn());
+		//params.setSearchSalesYn("Y");
+		params.setSearchWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
+		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
+		//logger.debug("BottleContoller searchSalesYn "+ params.getSearchSalesYn());
 		
 		Map<String, Object> map = bottleService.getBottleList(params);
 		
@@ -307,8 +313,9 @@ public class BottleController {
 			params.setSearchChargeDtEnd(searchChargeDtEnd);
 			
 		}
-		params.setSearchSalesYn("Y");
-		params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
+		//params.setSearchSalesYn("Y");
+		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
+		params.setSearchWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
 		logger.debug("BottleContoller searchSalesYn "+ params.getSearchSalesYn());
 		
 		Map<String, Object> map = bottleService.getBottleList(params);

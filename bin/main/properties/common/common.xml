@@ -75,6 +75,20 @@
 	<entry key="common.bottle.status.0388">0388</entry> 	<!-- 신규 -->
 	
 	
+	<entry key="common.bottle.status.come">입고</entry>		<!-- 입고 -->
+	<entry key="common.bottle.status.vacuum">진공배기</entry>		<!-- 진공배기 -->
+	<entry key="common.bottle.status.hole">누공확인</entry> 	<!-- 누공확인 -->
+	<entry key="common.bottle.status.chargeDt">충전기한확인</entry>	 	<!-- 충전기한 확인 -->
+	<entry key="common.bottle.status.charge">충전</entry>		<!-- 충전 -->
+	<entry key="common.bottle.status.out">출고</entry>		<!-- 출고 -->
+	<entry key="common.bottle.status.incar">상차</entry>		<!-- 상차-  -->
+	<entry key="common.bottle.status.sales">판매</entry>		<!-- 판매 -->
+	<entry key="common.bottle.status.rental">대여</entry>		<!-- 대여 -->
+	<entry key="common.bottle.status.back">회수</entry> 	<!-- 회수 -->
+	<entry key="common.bottle.status.discard">폐기</entry>		<!-- 폐기 -->
+	<entry key="common.bottle.status.new">신규</entry> 	<!-- 신규 -->
+	
+	
 	<entry key="common.code.order.type">0100</entry>
 	<entry key="common.code.order.type.01">0101</entry>
 	<entry key="common.code.order.type.02">0102</entry>

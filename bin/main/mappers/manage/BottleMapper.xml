@@ -433,8 +433,8 @@
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
 			AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
 			</if>		
-			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchSalesYn)">
-			AND Bottle_Work_CD =  #{bottleWorkCd}
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchWorkCd)">
+			AND Bottle_Work_CD =  #{searchWorkCd}
 			</if>			
 			AND TB.Bottle_Work_CD = TC.CD_ID	
 			AND TB.Product_ID = TG.Product_Id
@@ -476,8 +476,8 @@
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
 			AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
 			</if>		
-			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchSalesYn)">
-			AND Bottle_Work_CD =  #{bottleWorkCd}
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchWorkCd)">
+			AND Bottle_Work_CD =  #{searchWorkCd}
 			</if>			
 			AND TB.Bottle_Work_CD = TC.CD_ID	
 			AND TB.Product_ID = TG.Product_Id
@@ -501,8 +501,8 @@
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
 		AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
 		</if>		
-		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchSalesYn)">
-		AND Bottle_Work_CD =  #{bottleWorkCd}
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchWorkCd)">
+		AND Bottle_Work_CD =  #{searchWorkCd}
 		</if>	
 	</select>
 	

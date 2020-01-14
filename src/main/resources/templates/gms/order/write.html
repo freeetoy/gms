@@ -291,6 +291,7 @@ $(document).ready(function(){
 
 			if(type == "ins"){
 		    	var i=0;
+		    	$('#productPriceSeq_' + sel_pid).find('option').remove(); 
 				//$('#productCapa_' + sel_pid).find('option').remove(); 
 				for(i=0; i< data.length;i++) {
 					console.log(data[i]);      
