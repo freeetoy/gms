@@ -352,7 +352,7 @@
 		FROM
 			TB_Bottle TB, TB_CODE TC, TB_Product TG
 		WHERE
-			Bottle_ID = #{bottleId}
+			(Bottle_ID = #{bottleId} OR Bottle_BarCd = #{bottleId})
 		AND
 			TB.Delete_YN = 'N'
 		AND 

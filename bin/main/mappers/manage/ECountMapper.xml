@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gms.web.admin.mapper.manage.ECountMapper">
+<resultMap id="ECountMap" type="com.gms.web.admin.domain.manage.ECountVO" >
+		<result property="customerId"		column="Customer_ID"		/>	
+		<result property="customerNm"		column="Customer_Nm"		/>		
+		<result property="salesNm"			column="Sales_Nm"			/>	
+		<result property="productId"		column="Product_ID"			/>
+		<result property="productNm"		column="Product_Nm"			/>	
+		<result property="productCapa"		column="product_Capa"		/>
+		<result property="orderCount"		column="Order_Count"		/>		
+		<result property="productPrice"		column="Product_Price"		/>
+		<result property="supplyPrice"		column="Supply_Price"		/>
+		<result property="vat"				column="VAT"				/>
+	</resultMap>	
+
+
+	<select id="selectECount" resultType="com.gms.web.admin.domain.manage.ECountVO">		
+		SELECT
+			TD.Customer_Id, Customer_Nm, User_Nm Sales_Nm ,TP.Product_Id , TT.Product_Nm, TPP.Product_Capa,
+			TP.Order_Count  ,TP.Order_Amount/TP.Order_Count Product_Price ,TP.Order_Amount Supply_Price,TP.Order_Amount*0.1 VAT
+		FROM
+			TB_Order TD ,TB_Order_Product TP,TB_Customer TC, TB_Product TT, TB_Product_Price TPP, TB_User TU
+		WHERE 
+			TD.order_id = tp.`Order_ID`
+		AND 
+			Order_Process_CD = '0250' 
+		AND 
+			DATE_FORMAT(TD.Update_dt,'%Y/%m/%d')=  DATE_FORMAT(curdate(),'%Y/%m/%d')
+		AND 
+			TD.Customer_ID = TC.Customer_ID
+		AND 
+			TT.Product_ID = TP.Product_ID
+		AND 
+			TP.Product_ID = TPP.Product_ID
+		AND 
+			TP.Product_Price_Seq = TPP.Product_Price_Seq
+		AND 
+			TD.Sales_ID= TU.User_ID
+	</select>
+</mapper>

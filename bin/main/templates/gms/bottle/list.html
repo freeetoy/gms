@@ -126,7 +126,7 @@ var fn_deleteBottle = function(bottleId){
     	
     	//document.getElementById("priceCount").value = totalCount;
     	mainForm.action="/gms/bottle/update.do";
-    	form.submit();
+    	form.submit();view_type
 	}
 	
 	// 입력된 내용을 작성한다.
@@ -312,6 +312,7 @@ $(document).ready(function(){
 	 
    $(".btn_select_process1").click(function()  
 	{
+	   $("table.mod-doc-list1").find('tr').remove();
 		console.log("start btn_select_process1}");
 		
 	
@@ -382,7 +383,8 @@ $(document).ready(function(){
        if(bottleIds ==''){
     	   alert("용기를 선택하세요");
     	   return ;
-       }
+       }      
+       
        
        switch (select_pid){
           case 'btn_process_1':
@@ -395,7 +397,7 @@ $(document).ready(function(){
             msg = "'충전' 하시겠습니까?";
             bottleWorkCd ='0305';
             $("#view_car").hide();
-            $("#view_type").hide();
+            $("#view_type").show();
             break;
           case 'btn_process_3':
             msg = "'상차' 하시겠습니까?";
@@ -422,6 +424,7 @@ $(document).ready(function(){
            case 'btn_process_7':
               msg = "'기타' 하시겠습니까?";
               bottleWorkCd ='0311';
+              $("#view_type").show();
               break;  
            case 'btn_process_8':
                msg = "'대여' 하시겠습니까?";
@@ -432,6 +435,14 @@ $(document).ready(function(){
 
        }           
        
+       var bottleType = $("#bottleType1").val(); 
+      
+		if(bottleType ==''){
+			alert("용기타입을 선택해주세요");
+			return;
+			
+		}
+      
        if(bottleWorkCd=='0301' || bottleWorkCd=='0307'|| bottleWorkCd=='0306'){	   	 
     	   var customerId = $("#customerId").val();   
 			if(customerId ==''){
@@ -501,7 +512,7 @@ $(document).ready(function(){
 			
 			document.body.appendChild(form);
 	        
-	        form.submit();			
+	        //form.submit();			
 		}
       
 	});
@@ -644,6 +655,7 @@ $(document).ready(function(){
 									<div class="form-group" id="view_type" >
 										<div align="center">
 											<select id="bottleType1" name="bottleType1" class="form-control">
+												<option value="">용기타입</option>	
 										        <option value="E">공병</option>	
 										        <option value="F">실병</option>							              				
 							                 </select>
@@ -651,7 +663,7 @@ $(document).ready(function(){
 									</div>
 									
 									<div class="form-group">
-										<label >주문정보</label>
+										<label >용기정보</label>
 										<div>
 											<table id="myTable" class="table mod-doc-list1">
 												<tr>
@@ -790,7 +802,7 @@ $(document).ready(function(){
             <div class="col-2">
             
                	<select id="searchProductId" name="searchProductId" class="form-control">
-               		<option value="">거래처 목록</option>
+               		<option value="">가스 선택</option>
                    	<option th:each="row : ${productList}"
 		                th:text="${row.productNm}"
 		                th:value="${row.productId}"

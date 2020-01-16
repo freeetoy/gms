@@ -396,8 +396,8 @@ $(document).ready(function(){
 					              
 									<table id="myTable" class="table customer-info">									
 										<tr>
-											<td class="card-footer">거래처</td>
-											<td  colspan=3>
+											<td width="80" class="card-footer">거래처</td>
+											<td  colspan=3  width="350">
 											<select id="customerId" name="customerId" class="form-control">
 						                        <option value="0">거래처 선택</option>			                      	
 										    </select>	
@@ -508,6 +508,7 @@ $(document).ready(function(){
             </div>
             <div class="col-2" align=right>
          	<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 판매&납품</a>
+         	
          	</div>	
              </form> 
          </div>
@@ -563,7 +564,7 @@ $(document).ready(function(){
                     <tr th:unless="${not #lists.isEmpty( workList )}">
 						<td colspan="8">조회된 결과가 없습니다.</td>
 					</tr>		
-										
+										  
                   </tbody>					
                 </table>                
               </div>
@@ -573,9 +574,12 @@ $(document).ready(function(){
           </div>
         </div>    
         <!-- /.row -->
-        
-         
-        
+        <div class="row">	
+        	<div class="col-12">
+         <a th:href="@{/gms/excelDownloadEcount.do}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> ECount엑셀받기</button></a> 
+        	
+        	</div>
+        </div>
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->

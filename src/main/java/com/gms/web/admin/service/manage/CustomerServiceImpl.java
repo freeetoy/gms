@@ -7,6 +7,8 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +18,8 @@ import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.mapper.manage.CustomerMapper;
 
+import net.sf.ehcache.CacheManager;
+
 @Service
 public class CustomerServiceImpl implements CustomerService {
 	
@@ -23,8 +27,11 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	@Autowired
 	private CustomerMapper customerMapper;
+	
+	@Autowired
+	CacheManager cacheManager;
 
-	@Override
+	@Override	
 	public Map<String, Object> getCustomerList(CustomerVO param) {
 		
 		logger.info("****** getCustomerList *****start===*");		
@@ -102,6 +109,7 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	@Override
 	@Transactional
+	@CacheEvict(value = "userCache")
 	public boolean registerCustomer(CustomerVO param) {
 		boolean successFlag = false;
 
@@ -113,23 +121,25 @@ public class CustomerServiceImpl implements CustomerService {
 		if (result > 0) {
 			successFlag = true;
 		}
-		
+		cacheManager.getCache("userCache").removeAll();
 		return successFlag;
 	}
 	
 	@Override
+	@CacheEvict(value = "userCache")
 	public int registerCustomers(List<CustomerVO> param) {
 		
 		// 정보 등록
 		int result = 0;		
 		result = customerMapper.insertCustomers(param);
-				
+		cacheManager.getCache("userCache").removeAll();
 		return result;
 	}
 
 
 	@Override
 	@Transactional
+	@CacheEvict(value = "userCache")
 	public boolean modifyCustomer(CustomerVO param) {
 		boolean successFlag = false;
 
@@ -143,11 +153,12 @@ public class CustomerServiceImpl implements CustomerService {
 			
 			//미지정된 해당 거래처
 		}	
-		
+		 cacheManager.getCache("userCache").removeAll();
 		return successFlag;
 	}
 
 	@Override
+	@CacheEvict(value = "userCache")
 	public boolean modifyCustomerExcel(CustomerVO param) {
 		boolean successFlag = false;
 
@@ -161,11 +172,10 @@ public class CustomerServiceImpl implements CustomerService {
 			
 			//미지정된 해당 거래처
 		}	
-		
+		cacheManager.getCache("userCache").removeAll();
 		return successFlag;
 	}
 
-	
 	
 	
 	@Override
@@ -181,7 +191,7 @@ public class CustomerServiceImpl implements CustomerService {
 		if (result > 0) {
 			successFlag = true;
 		}
-		
+		cacheManager.getCache("userCache").removeAll();
 		return successFlag;
 	}
 
@@ -211,6 +221,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
+	@Cacheable(value = "userCache")
 	public Map<String, Object> searchCustomerList(String param) {
 		
 		Map<String, Object> resutlMap = new HashMap<String, Object>();
