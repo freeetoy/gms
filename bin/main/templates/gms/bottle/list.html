@@ -260,7 +260,7 @@ var fn_deleteBottle = function(bottleId){
 $(document).ready(function(){	
 	 var bottleIds = "";
 	 $("#view_car").hide();
-	 $("#view_type").hide();
+	 $("#view_type").show();
 	 
 	 $(".btn_select_process").click(function()  
 	{
@@ -269,6 +269,7 @@ $(document).ready(function(){
 		$("#view_custom").hide();
 		var bottleId = $(this).attr('bottleId'); 
 		
+		$("#searchCustomerNm").val("");
 		console.log("start btn_select_process bottleId "+bottleId);
 		var ajaxInfo ={
 				type:"POST",
@@ -287,7 +288,7 @@ $(document).ready(function(){
 				$("#chBottleId").val(data.bottleId);
 				$("#bottleBarCd").val(data.bottleBarCd);				
 				$('select[id="bottleWorkCd"]').find('option:contains(data.bottleWorkCd)').attr("selected",true);
-				$("#bottleWorkCd").val(data.bottleWorkCd);						
+				//$("#bottleWorkCd").val(data.bottleWorkCd);						
 				$('select[id="bottleType"]').find('option:contains(data.bottleType)').attr("selected",true);
 				$("#bottleType").val(data.bottleType);		
 					
@@ -302,7 +303,7 @@ $(document).ready(function(){
 
 		var bottleWorkCd = $('#bottleWorkCd').val();	
 		
-		if(bottleWorkCd=='0301' || bottleWorkCd=='0306' || bottleWorkCd=='0307')			
+		if(bottleWorkCd=='0301' || bottleWorkCd=='0306' || bottleWorkCd=='0307' || bottleWorkCd=='0308' || bottleWorkCd=='0309' || bottleWorkCd=='0310')			
 			$("#view_custom").show();
 		else
 			$("#view_custom").hide();
@@ -313,8 +314,18 @@ $(document).ready(function(){
    $(".btn_select_process1").click(function()  
 	{
 	   $("table.mod-doc-list1").find('tr').remove();
-		console.log("start btn_select_process1}");
-		
+	   
+	   var newRow1 = $("<tr>");
+	    var cols1 = "";	
+	    cols1 += '<td>용기코드</td>';
+	    cols1 += '<td>용기바코드</td>';
+	    cols1 += '<td>가스</td>';
+	    cols1 += '<td>충전기한</td>';
+	    cols1 += '</tr>'     ;    
+	    newRow1.append(cols1);
+		$("table.mod-doc-list1").append(newRow1);		
+	  
+		console.log("start btn_select_process1}");	
 	
    });
    
@@ -322,8 +333,7 @@ $(document).ready(function(){
 	{
 		console.log("start btn_select_process2}");
 
-  	});
-		   
+  	});		   
 	    
 	    
 	$(".btn_bottle_search").click(function()  
@@ -332,43 +342,43 @@ $(document).ready(function(){
   		//$("#mcustomerNm").val
   		var bottleId = $("#selbottleId").val(); 
   		console.log("start bottleId " +bottleId);
- 			var ajaxInfo ={
- 					type:"POST",
- 					url:"/gms/bottle/detail.do",
- 					data:{
- 						bottleId : bottleId
- 					},
- 					dataType: "json",
- 				};
- 				
- 				ajax = callAjax(ajaxInfo);
- 				
- 				ajax.done(function(data){
- 					console.log(data);
- 						
-			    var newRow1 = $("<tr>");
-			    var cols1 = "";	
-			    cols1 += '<th>'+data.bottleId+'</th>';
-			    cols1 += '<th>'+data.bottleBarCd+'</th>';
-			    cols1 += '<th>'+data.productNm+'</th>>';
-			    cols1 += '<th>'+data.bottleChargeDt.substring(0,10)+'</th>';
-			    cols1 += '</tr>'     ;    
-			    newRow1.append(cols1);
-				$("table.mod-doc-list1").append(newRow1);
-						 
-				bottleIds +=bottleId+",";
-				//$("#bottlIds").val(data.order.orderId);
-				console.log("bottleIds " +bottleIds);
-				$("#bottleIds").val(bottleIds);
- 				})
- 			       .fail(function(){
- 				  console.log("fail");
- 			});
- 				$("#selbottleId").val(""); 
+		var ajaxInfo ={
+				type:"POST",
+				url:"/gms/bottle/detail.do",
+				data:{
+					bottleId : bottleId
+				},
+				dataType: "json",
+			};
+			
+			ajax = callAjax(ajaxInfo);
+			
+			ajax.done(function(data){
+				console.log(data);
+					
+	    var newRow1 = $("<tr>");
+	    var cols1 = "";	
+	    cols1 += '<th>'+data.bottleId+'</th>';
+	    cols1 += '<th>'+data.bottleBarCd+'</th>';
+	    cols1 += '<th>'+data.productNm+'</th>';
+	    cols1 += '<th>'+data.bottleChargeDt.substring(0,10)+'</th>';
+	    cols1 += '</tr>'     ;    
+	    newRow1.append(cols1);
+		$("table.mod-doc-list1").append(newRow1);
+				 
+		bottleIds +=bottleId+",";
+		//$("#bottlIds").val(data.order.orderId);
+		console.log("bottleIds " +bottleIds);
+		$("#bottleIds").val(bottleIds);
+			})
+		       .fail(function(){
+			  console.log("fail");
+		});
+			$("#selbottleId").val(""); 
 
-  				//$("#orderAmountView").show();
-  				//$("#view_button").hide();
-  		});
+				//$("#orderAmountView").show();
+				//$("#view_button").hide();
+ 	});
 	    	
 		
 	// 진행 확인 버튼 클릭
@@ -464,9 +474,7 @@ $(document).ready(function(){
 			var customerId = $("#customerId").val(); 
 			var bottleType = $("#bottleType1").val(); 
 			
-			console.log("customerId " + customerId);
-			console.log("bottleType " + bottleType);
-			
+			console.log("customerId " + customerId+" bottleType " + bottleType);			
 			
 			form.setAttribute("charset","UTF-8");
 			form.setAttribute("method","post");
@@ -487,6 +495,13 @@ $(document).ready(function(){
 	        
 	        form.appendChild(hiddenField2);    
 			
+	        var hiddenField4 = document.createElement("input");
+	        hiddenField4.setAttribute("type", "hidden");
+	        hiddenField4.setAttribute("name", "bottleType");
+	        hiddenField4.setAttribute("value", bottleType);
+
+	        form.appendChild(hiddenField4);   
+	        
 	        if(bottleWorkCd=='0301' || bottleWorkCd=='0307'|| bottleWorkCd=='0306'){	   	 
 		    	  
 				if(customerId ==''){
@@ -501,21 +516,42 @@ $(document).ready(function(){
 
 			        form.appendChild(hiddenField3);    
 			        
-			        var hiddenField4 = document.createElement("input");
-			        hiddenField4.setAttribute("type", "hidden");
-			        hiddenField4.setAttribute("name", "bottleType");
-			        hiddenField4.setAttribute("value", bottleType);
-
-			        form.appendChild(hiddenField4);    
+			         
 				}
 		     }
 			
 			document.body.appendChild(form);
 	        
-	        //form.submit();			
+	        form.submit();			
 		}
       
 	});
+	
+	
+    $("#btn_com_search").click(function()  
+   {    	
+	  var searchCustomerNm = $("#searchCustomerNm").val();
+
+	   $.ajax({
+	           url: '/gms/common/customerList.do',
+	           type: 'POST',
+	           data: 'searchCustomerNm='+ searchCustomerNm,
+	           dataType: 'json',
+
+	      })
+	      .done(function(data){
+	    	$('#carCustomerId').find('option').remove();        
+	    	  for(i=0; i< data.length;i++) {
+	  			//console.log(data[i]);      
+	  			$('#carCustomerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')
+	  			
+	  		}
+	      })
+	      .fail(function(){
+	         console.log("fail");
+	      });
+	 });
+
 });
 	
 	
@@ -536,7 +572,7 @@ $(document).ready(function(){
     <section class="content">        
      <!-- modal start-->   
         <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">용기 상태 변경</h4>
@@ -550,16 +586,16 @@ $(document).ready(function(){
             	<table class="table table-hover">
                   <thead>
                   <tr>
-                      <th class="card-footer">용기 코드</th>
-                      <th><input type="text" class="form-control" id="chBottleId" name="chBottleId" placeholder="용기 코드" ></th>
+                      <th class="card-footer" width="100">용기 코드</th>
+                      <th colspan=3><input type="text" class="form-control" id="chBottleId" name="chBottleId" placeholder="용기 코드" ></th>
                     </tr>
                      <tr>                                   
-                      <th class="card-footer">용기 바코드</th>
-                      <th><input type="text" class="form-control" id="bottleBarCd" name="bottleBarCd" placeholder="용기 바코드" ></th>
+                      <th class="card-footer" width="100">용기 바코드</th>
+                      <th colspan=3><input type="text" class="form-control" id="bottleBarCd" name="bottleBarCd" placeholder="용기 바코드" ></th>
                     </tr>
                     <tr>
                       <th class="card-footer">상태</th>
-                      <th>
+                      <th colspan=3>
 	                      <select id="bottleWorkCd" name="bottleWorkCd" class="form-control">
 	                          <option value="">상태</option>				    
 						        <option th:each="row : ${codeList}"
@@ -572,19 +608,24 @@ $(document).ready(function(){
                     </tr>
                     <tr id="view_custom" style="display: none;">
                       <th class="card-footer">거래처</th>
-                      <th>
+                      <th width="350">
 	                      <select id="carCustomerId" name="carCustomerId" class="form-control">
-			                    <option value="">차량선택</option>				    
+			                    <option value="">거래처(차량)선택</option>				    
 						        <option th:each="row : ${carList}"
 						                th:text="${row.customerNm}"
 						                th:value="${row.customerId}">					             
 						        </option>												              				
 			                 </select>
 					  </th>   
+					  <td ><input type="text" class="form-control" id="searchCustomerNm" name="searchCustomerNm" >
+				  </td>
+           		  <td >
+               		 <input type="button" class="btn btn-default btn-success" id="btn_com_search" value="검색" />
+               		</td>
                     </tr>
                     <tr>
-                      <th class="card-footer">용기타입</th>
-                      <th>
+                      <th class="card-footer" width="100">용기타입</th>
+                      <th colspan=3>
                       <select id="bottleType" name="bottleType" class="form-control">
                           <option value="E">공병</option>
                           <option value="F">실병</option>	
@@ -636,7 +677,7 @@ $(document).ready(function(){
 										<tr>
 											<td class="card-footer">용기검색</td>
 											<td  colspan=4><input type="text" class="form-control" id="selbottleId"  name="selbottleId"> </td>
-											<td><a class="btn_bottle_search btn btn-success btn-xs" href="#"><i class="fas fa-search"></i>검색</a></td>
+											<td><a class="btn_bottle_search btn btn-success btn-sm" href="#"><i class="fas fa-search"></i>검색</a></td>
 										</tr>
 										
 									</thead>

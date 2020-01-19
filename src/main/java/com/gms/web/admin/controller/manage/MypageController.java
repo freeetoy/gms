@@ -81,7 +81,14 @@ public class MypageController {
 		
 		ModelAndView mav = new ModelAndView();		
 		
-		List<OrderVO> orderList = orderService.getSalseOrderList(params.getCreateId());
+		List<OrderVO> orderList = null;
+		
+		if(params.getSalesId() != null) {
+			orderList = orderService.getSalseOrderList(params.getSalesId());
+			mav.addObject("salesId", params.getSalesId());	
+		}else {
+			orderList = orderService.getSalseOrderList(params.getCreateId());
+		}
 		
 		mav.addObject("orderList", orderList);	
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.assign"));	 	
@@ -142,5 +149,47 @@ public class MypageController {
 		}
 		return null;
 		
+	}
+	
+	
+	@RequestMapping(value = "/gms/mypage/assignAll.do")
+	public ModelAndView getAssignListAll(
+			HttpServletRequest request
+			, HttpServletResponse response
+			, OrderVO params) {
+
+		logger.info("MypageContoller getAssignList");
+		
+		RequestUtils.initUserPrgmInfo(request, params);		
+		
+		
+		ModelAndView mav = new ModelAndView();		
+		
+		UserVO tempUser = new UserVO();		
+		List<UserVO> userList = userService.getUserListPart(tempUser);
+		mav.addObject("userList",userList);
+				
+		List<OrderVO> orderList = null;
+		
+		if(params.getSalesId() == null && userList.size() > 0) params.setSalesId(userList.get(0).getUserId());
+		if(params.getSalesId() != null) {
+			orderList = orderService.getSalseOrderList(params.getSalesId());
+			mav.addObject("salesId", params.getSalesId());	
+		}else {
+			orderList = orderService.getSalseOrderList(params.getCreateId());
+		}
+		
+		
+		List<CustomerVO> carList = customerService.searchCustomerListCar();
+		mav.addObject("carList", carList);	
+		
+		
+		
+		mav.addObject("orderList", orderList);	
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.assign"));	 	
+		
+		mav.setViewName("gms/mypage/assignAll");
+		
+		return mav;
 	}
 }

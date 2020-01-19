@@ -60,12 +60,9 @@ public class WorkReportController {
 		params.setUserId(params.getCreateId());
 		
 		
-		logger.info("WorkReportController getWorkReportList User_id= "+ params.getUserId());
+		logger.info("WorkReportController getWorkReportList User_id= "+ params.getUserId());		
 		
-		
-		//LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);	
-		
-		
+		//LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);			
 		
 		List<WorkReportViewVO> workList = workService.getWorkReportList1(params);
 		
@@ -310,8 +307,11 @@ public class WorkReportController {
 		
 		ModelAndView mav = new ModelAndView();		
 		
-		params.setUserId(params.getCreateId());
-		
+		if(params.getSearchUserId()!=null && params.getSearchUserId().length() > 1) {
+			params.setUserId(params.getSearchUserId());
+		}else {
+			params.setUserId(params.getCreateId());
+		}
 		
 		logger.info("WorkReportController getWorkReportList User_id= "+ params.getUserId());
 		

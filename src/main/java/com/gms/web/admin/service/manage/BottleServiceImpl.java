@@ -396,6 +396,16 @@ public class BottleServiceImpl implements BottleService {
 			}
 			
 			List<BottleVO> bottleList = getBottleDetails(param);
+			String tempBottleIds = "";
+			param.getBottList().clear();
+			for(int i = 0; i< bottleList.size() ; i++) {
+				logger.debug("BottleServiceImpl changeBottlesWorkCdOnly  for in getBottlesId "+ bottleList.get(i).getBottleId());
+				tempBottleIds += bottleList.get(i).getBottleId()+",";
+				param.setBottList(list);
+			}
+			
+			param.setBottleIds(tempBottleIds);
+			logger.debug("BottleServiceImpl changeBottlesWorkCdOnly after **** getBottlesId "+ param.getBottleIds());
 			
 			if(bottleList.size() > 0 ) param.setCustomerId(bottleList.get(0).getCustomerId());
 			
@@ -546,6 +556,18 @@ public class BottleServiceImpl implements BottleService {
 			}
 			
 			List<BottleVO> bottleList = getBottleDetails(param);
+			
+			String tempBottleIds = "";
+			param.getBottList().clear();
+			
+			for(int i = 0; i< bottleList.size() ; i++) {
+				logger.debug("BottleServiceImpl changeBottlesWorkCdOnly  for in getBottlesId "+ bottleList.get(i).getBottleId());
+				tempBottleIds += bottleList.get(i).getBottleId()+",";
+				param.setBottList(list);
+			}
+			
+			param.setBottleIds(tempBottleIds);
+			logger.debug("BottleServiceImpl changeBottlesWorkCdOnly after **** getBottlesId "+ param.getBottleIds());
 			
 			if(bottleList.size() > 0 ) param.setCustomerId(bottleList.get(0).getCustomerId());
 			

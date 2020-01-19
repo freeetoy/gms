@@ -353,6 +353,20 @@ $(document).ready(function(){
 			}
 	      
 		});
+		
+	 // 근무일지 출력
+	    $(".btn_print").click(function()  
+	    {
+	 	   var searchDt = $('#searchDt').val();
+	 	   var searchUserId = $('#searchUserId').val();
+	 	   console.log("searchDt=="+searchDt);
+	       $.popupWindow('/gms/report/print.do?searchDt='+searchDt+"&searchUserId="+searchUserId, {
+	              width: 980,
+	              height: 700,
+	              center: 'screen',          
+	              scrollbars: 'true'
+	          });
+	    });
 });
 	
 </script>
@@ -414,8 +428,8 @@ $(document).ready(function(){
 										</tr>				
 										<tr>
 											<td class="card-footer">용기검색</td>
-											<td  colspan=4><input type="text" class="form-control" id="bottleId"  name="bottleId"> </td>
-											<td><a class="btn_bottle_search btn btn-success btn-sm" href="#"><i class="fas fa-search"></i>검색</a></td>
+											<td  colspan=3><input type="text" class="form-control" id="bottleId"  name="bottleId"> </td>
+											<td colspan=2><a class="btn_bottle_search btn btn-success btn-sm" href="#"><i class="fas fa-search"></i>검색</a></td>
 										</tr>					
 									</table>
 									
@@ -488,7 +502,7 @@ $(document).ready(function(){
                		<label>접수 기간</label>
             </div>               
             <div class="col-4">              
-               <input type="text" class="form-control" name="searchDt" th:value="${searchDt}"/>			
+               <input type="text" class="form-control" name="searchDt" id="searchDt" th:value="${searchDt}"/>			
             </div>               
             <div class="col-3">         
             	<select id="searchUserId" name="searchUserId" class="form-control">  
@@ -508,7 +522,8 @@ $(document).ready(function(){
             </div>
             <div class="col-2" align=right>
          	<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 판매&납품</a>
-         	
+         	<a class="btn_print btn btn-secondary btn-sm"   th:userId="${session.userId}"  href="#" >
+                              <i class="fas fa-print"></i>프린트</a>
          	</div>	
              </form> 
          </div>

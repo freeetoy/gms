@@ -77,7 +77,7 @@
 	
 	<entry key="common.bottle.status.come">입고</entry>		<!-- 입고 -->
 	<entry key="common.bottle.status.vacuum">진공배기</entry>		<!-- 진공배기 -->
-	<entry key="common.bottle.status.hole">누공확인</entry> 	<!-- 누공확인 -->
+	<entry key="common.bottle.status.hole">누출확인</entry> 	<!-- 누출확인 -->
 	<entry key="common.bottle.status.chargeDt">충전기한확인</entry>	 	<!-- 충전기한 확인 -->
 	<entry key="common.bottle.status.charge">충전</entry>		<!-- 충전 -->
 	<entry key="common.bottle.status.out">출고</entry>		<!-- 출고 -->

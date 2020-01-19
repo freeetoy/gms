@@ -5981,10 +5981,10 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 892px) {
   .modal-lg,
   .modal-xl {
-    max-width: 800px;
+    max-width: 700px;
   }
 }
 

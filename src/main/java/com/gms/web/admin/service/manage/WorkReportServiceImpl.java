@@ -81,6 +81,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 		}		
 		logger.debug("WorkReportServiceImpl getWorkReportList1 Work_Dt= "+ param.getSearchDt());
 		
+		
 		List<WorkBottleVO> workBottleList = workMapper.selectWorkReportList1(param);
 		
 		List<WorkReportVO> reportList = workMapper.selectWorkReportOnlyList(param);

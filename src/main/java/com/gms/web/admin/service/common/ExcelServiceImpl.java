@@ -335,7 +335,7 @@ public class ExcelServiceImpl implements ExcelService {
             // 첫번째 시트 불러오기
             XSSFSheet sheet = workbook.getSheetAt(0);
             
-            int COLUMN_COUNT = 147;
+            int COLUMN_COUNT = 143;
             
             String strProductPrice="";
 
@@ -439,7 +439,7 @@ public class ExcelServiceImpl implements ExcelService {
             	49	50
             	Air(H.P)_10	Air(H.P)_47	
             	51	52	53	54	55
-            	Ar_5	Ar_10	Ar_20	Ar_46	Ar_47	
+            	Ar_5	Ar_10	Ar_20	Ar_46(삭제)	Ar_47	
             	56	57	58
             	Ar(N50)_5	Ar(N50)_10	Ar(N50)_47	
             	59	60
@@ -463,15 +463,15 @@ public class ExcelServiceImpl implements ExcelService {
             	91	92	93	94	95	96
             	N2O_3kg	N2O_5Kg	N2O_15kg	N2O_18kg	N2O_20kg	N2O_25kg	
             	97	98	99	100	101
-            	고순도믹스가스_2.8	고순도믹스가스_4.6	고순도믹스가스_10	고순도믹스가스_20	고순도믹스가스_47	
+            	고순도믹스가스_2.8	고순도믹스가스_4.6	고순도믹스가스_10	고순도믹스가스_20(삭제)	고순도믹스가스_47	
             	102	103	104	105
             	대한E.O가스_10	대한E.O가스_25	대한E.O가스(HF)_25	대한E.O가스(HF)_50	
             	106	107	108	109
             	믹스가스_10	믹스가스_20	믹스가스_40	믹스가스_47	
             	110	111
-            	AC(DMF)_5	AC(DMF)_41	
+            	AC(DMF)_3(수정)	AC(DMF)_5(수정)	
             	112	113	114
-            	AC(일반)_3	AC(일반)_5	AC(일반)_41	
+            	AC(일반)_3	AC(일반)_5	AC(일반)_41(삭제)	
             	115
             	냉매가스	
             	116
@@ -497,7 +497,7 @@ public class ExcelServiceImpl implements ExcelService {
             	139
             	플로우메타	
             	140	141	142	143
-            	헤리스게이지_2.5	헤리스게이지_5	헤리스게이지_10	헤리스게이지_16	
+            	헤리스게이지_2.5	헤리스게이지_5	헤리스게이지_10(삭제)	헤리스게이지_16	
             	144	145
             	호스_고압	호스_트윈	
             	146

@@ -191,7 +191,7 @@
 	<update id="statusChangeProduct" parameterType="com.gms.web.admin.domain.manage.ProductVO">
 		UPDATE TB_Product
 		SET
-			  Prodcut_Status = #{productStatus}
+			  Product_Status = #{productStatus}
 			, UPDATE_ID = #{updateId}
 			, UPDATE_DT = NOW()
 		WHERE
@@ -211,6 +211,8 @@
 			TB_Product_Price
 		WHERE			
 			Product_ID =  #{productId}
+		AND
+			Product_Status > 0
 	</select>
 	
 	<select id="selectProductTotalList" resultType="com.gms.web.admin.domain.manage.ProductTotalVO">

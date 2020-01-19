@@ -111,7 +111,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 	  </tr>
 
 	  <tr th:if="${not #lists.isEmpty( workList )}" th:each="row : ${workList}" height="40">     
-		<td class="tl_dot" style="border-top-style:none" align="center">상차</td>
+		<td class="tl_dot" style="border-top-style:none" align="center" th:text="${workList.indexOf(row)+1}" >상차</td>
 		<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.CustomerNm}"></td>
 		<td class="tl_dot" style="border-top-style:none" align="center" >
 			<table>     
@@ -127,7 +127,8 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 	           	</tr>
            	</table>
 		</td>
-		<td class="tl_dot" style="border-top-style:none" align="center" th:unless="${row.orderAmount> 0 }" th:text="${row.orderAmount}">		
+		<td class="tl_dot" style="border-top-style:none" align="center" th:if="${row.orderAmount> 999 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">	
+		<td class="tl_dot" style="border-top-style:none" align="center" th:unless="${row.orderAmount> 999 }" th:text="${row.orderAmount}">		
 		</td>
 		<td class="tl_dot" style="border-top-style:none" align="center"></td>
 		<td class="tl_dot" style="border-top-style:none" align="center"></td>
