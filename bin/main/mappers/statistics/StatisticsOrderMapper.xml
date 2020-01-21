@@ -6,7 +6,7 @@
 		<result property="orderTotalCount"			column="Order_Total_Count"			/>
 		<result property="orderTotalAmount"			column="Order_Total_Amount"			/>
 		<result property="orderProductCount"		column="Order_Product_Count"		/>
-		<result property="orderAutoCount"		column="Order_Auto_Count"		/>
+		<result property="orderAutoCount"			column="Order_Auto_Count"		/>
 		<result property="orderCancelCount"			column="Order_Cancel_Count"			/>
 		<result property="orderRetrievedCount"		column="Order_Retrieved_Count"		/>
 		<result property="orderCheckCount"			column="Order_Check_Count"			/>

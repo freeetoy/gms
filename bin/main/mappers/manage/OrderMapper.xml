@@ -380,7 +380,7 @@
 		SELECT
 			<include refid="OrderSelectColumns" />
 		FROM
-			TB_Order A, TB_Customer B, TB_CODE C, TB_User D
+			TB_Order A, TB_Customer B, TB_Code C, TB_User D
 		WHERE
 			Order_ID = #{orderId}
 		AND Order_Process_CD !='0299'
@@ -393,7 +393,7 @@
 		SELECT
 			<include refid="OrderSelectColumns" />
 		FROM
-			TB_Order A, TB_Customer B, TB_CODE C, TB_User D
+			TB_Order A, TB_Customer B, TB_Code C, TB_User D
 		WHERE
 			A.Customer_Id = #{customerId}
 		AND Order_Process_CD ='0230'
@@ -408,7 +408,7 @@
 		SELECT
 			<include refid="OrderSelectColumns" />
 		FROM
-			TB_Order A, TB_Customer B, TB_CODE C, TB_User D
+			TB_Order A, TB_Customer B, TB_Code C, TB_User D
 		WHERE
 			A.Customer_Id = B.Customer_ID		
 		AND Order_Process_CD !='0299'
@@ -428,7 +428,7 @@
 		SELECT
 			<include refid="OrderSelectColumns" />
 		FROM
-			TB_Order A, TB_Customer B, TB_CODE C, TB_User D
+			TB_Order A, TB_Customer B, TB_Code C, TB_User D
 		WHERE
 			A.Customer_Id = B.Customer_ID		
 		AND Order_Process_CD !='0299'
@@ -497,7 +497,7 @@
 		SELECT
 			Count(Order_id)
 		FROM
-			TB_Order A, TB_Customer B, TB_CODE C
+			TB_Order A, TB_Customer B, TB_Code C
 		WHERE
 			A.Customer_Id = B.Customer_ID
 		AND 
@@ -516,7 +516,7 @@
 		SELECT
 			<include refid="OrderSelectColumns" />
 		FROM
-			TB_Order A, TB_Customer B, TB_CODE C, TB_User D
+			TB_Order A, TB_Customer B, TB_Code C, TB_User D
 		WHERE
 			A.Customer_Id = B.Customer_ID	
 		AND 
@@ -534,7 +534,7 @@
 		SELECT
 			<include refid="OrderSelectColumns" />
 		FROM
-			TB_Order A, TB_Customer B, TB_CODE C, TB_User D
+			TB_Order A, TB_Customer B, TB_Code C, TB_User D
 		WHERE
 			A.Customer_Id = B.Customer_ID	
 		AND 
