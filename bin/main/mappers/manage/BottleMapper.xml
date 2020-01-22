@@ -470,7 +470,7 @@
 			SELECT
 				<include refid="BottleSelectColumns" />
 			FROM
-				TB_Bottle TB, TB_CODE TC, TB_ProductTG
+				TB_Bottle TB, TB_CODE TC, TB_Product TG
 			WHERE
 				TB.Delete_YN = 'N'
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchBottleId)">

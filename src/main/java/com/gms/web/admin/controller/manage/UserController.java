@@ -58,7 +58,7 @@ public class UserController {
 	public String openUserWrite(@RequestParam(value = "userId", required = false) String userId, Model model) {
 
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.user"));	
-		return "/gms/user/write";
+		return "gms/user/write";
 	}
 	
 	@RequestMapping(value = "/gms/user/register.do", method = RequestMethod.POST)
@@ -111,7 +111,7 @@ public class UserController {
 			model.addAttribute("user", user);
 		}
 		
-		return "/gms/user/update";
+		return "gms/user/update";
 	}
 	
 	@RequestMapping(value = "/gms/user/modify.do", method = RequestMethod.POST)

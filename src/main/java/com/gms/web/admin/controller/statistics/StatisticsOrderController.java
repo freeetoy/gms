@@ -89,7 +89,7 @@ public class StatisticsOrderController {
 		
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_order"));	 		
 		
-		mav.setViewName("/gms/statistics/order/daily");
+		mav.setViewName("gms/statistics/order/daily");
 		
 		return mav;
 	}
@@ -140,7 +140,7 @@ public class StatisticsOrderController {
 		
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_order"));	 		
 		
-		mav.setViewName("/gms/statistics/order/monthly");
+		mav.setViewName("gms/statistics/order/monthly");
 		
 		return mav;
 	}

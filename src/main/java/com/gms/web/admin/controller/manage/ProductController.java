@@ -73,7 +73,7 @@ public class ProductController {
 		// 가스 정보 불러오기
 		List<GasVO> gasList = gasService.getGasList();
 		model.addAttribute("gasList", gasList);
-		return "/gms/product/write";
+		return "gms/product/write";
 	}
 	
 	@RequestMapping(value = "/gms/product/register.do", method = RequestMethod.POST)
@@ -167,7 +167,7 @@ public class ProductController {
 			e.printStackTrace();
 		}
 	
-		return "/gms/product/update";
+		return "gms/product/update";
 	}
 	
 	@RequestMapping(value = "/gms/product/modify.do", method = RequestMethod.POST)

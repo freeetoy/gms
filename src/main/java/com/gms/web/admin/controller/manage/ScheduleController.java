@@ -57,7 +57,7 @@ public class ScheduleController {
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.vacation"));	 
 		
 		
-		mav.setViewName("/gms/schedule/list");
+		mav.setViewName("gms/schedule/list");
 		return mav;
 	}
 	
@@ -71,7 +71,7 @@ public class ScheduleController {
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.vacation"));	 
 		
 		
-		mav.setViewName("/gms/schedule/write");
+		mav.setViewName("gms/schedule/write");
 		return mav;
 	}
 	

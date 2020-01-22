@@ -84,7 +84,7 @@ public class CustomerController {
 		model.addAttribute("productList", productService.getProductList());
 		
 					
-		return "/gms/customer/write";
+		return "gms/customer/write";
 	}
 	
 	@RequestMapping(value = "/gms/customer/register.do", method = RequestMethod.POST)
@@ -150,7 +150,7 @@ public class CustomerController {
 			model.addAttribute("bottleList", bottleService.getCustomerBottleList(customerId));			
 		}
 		
-		return "/gms/customer/update";
+		return "gms/customer/update";
 	}
 	
 	@RequestMapping(value = "/gms/customer/modify.do", method = RequestMethod.POST)
@@ -217,18 +217,21 @@ public class CustomerController {
 	
 	
 	@RequestMapping(value = "/gms/price/write.do")
-	public String openCustomerPriceWrite(@RequestParam(value = "searchCustomerNm", required = false) String searchCustomerNm, Model model) {
+	public ModelAndView openCustomerPriceWrite(@RequestParam(value = "searchCustomerNm", required = false) String searchCustomerNm, Model model) {
 		
-		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer.price"));
-		
+		ModelAndView mav = new ModelAndView();
+		//model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer.price"));
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.customer.price"));	
 		
 		Map<String, Object> map = customerService.searchCustomerList(searchCustomerNm);
-		model.addAttribute("customerList", map.get("list"));
-		
+		//model.addAttribute("customerList", map.get("list"));
+		mav.addObject("customerList", map.get("list"));	
 		//model.addAttribute("productList", productService.getProductList());
 		
 					
-		return "/gms/price/write";
+		//return "/gms/price/write";
+		mav.setViewName("gms/price/write");
+		return mav;
 	}
 	
 	@RequestMapping(value = "/gms/price/register.do", method = RequestMethod.POST)

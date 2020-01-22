@@ -11,10 +11,7 @@ $(document).ready(function(){
 		if($(this).val() != ""){
 			checkName();
 		}
-	});
-	
-	
-	
+	});	
 });
 // 리스트 페이지 이동
 var goList = function(){
@@ -100,14 +97,31 @@ function containsCharsOnly(input,chars) {
 
 // 입력된 내용을 작성한다.
 var goWrite = function(){
-	validation();
-	if(!isOkay){
+	//validation();
+	var userNm = $("#userNm").val();
+	if(userNm=="" || userNm == null){
+		alert("사죵자명을 입력해 주세요.");
+		$("#userNm").focus();
+		isOkay = false;
 		return;
 	}
 	
+	var result = (
+			   isValid(userPhone, "연락처", null, "phone")
+			&& isValid(userPasswd, "비밀번호", null, "password")
+			&& isValid(userPasswdCfd, "비밀번호확인", null, "password")
+	);
+	
+	if ( result === false ) {
+		return;	
+	}
+	/*
+	if(!isOkay){
+		return;
+	}
+	*/
 	var form = $("#writeForm");
-	
-	
+		
 	form.submit();
 }
 	

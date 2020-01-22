@@ -95,7 +95,7 @@ public class OrderController {
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));	 
 		
 		
-		mav.setViewName("/gms/order/list");
+		mav.setViewName("gms/order/list");
 		return mav;
 	}
 	
@@ -125,7 +125,7 @@ public class OrderController {
 				
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.trasnaction"));		
 		
-		mav.setViewName("/gms/order/monitor");
+		mav.setViewName("gms/order/monitor");
 		return mav;
 	}
 	
@@ -143,7 +143,7 @@ public class OrderController {
 		Map<String, Object> map = customerService.searchCustomerList("");
 		mav.addObject("customerList", map.get("list"));
 		
-		mav.setViewName("/gms/order/write");
+		mav.setViewName("gms/order/write");
 		
 		return mav;
 					
@@ -180,9 +180,7 @@ public class OrderController {
 		logger.info("OrderContoller openOrderUpate "+ params.getOrderId());
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));
-	
-		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));	
 		
 			
 		if (params.getOrderId() == null) {
@@ -210,7 +208,7 @@ public class OrderController {
 			mav.addObject("searchOrderDt", params.getSearchOrderDt());
 			
 		}
-		mav.setViewName("/gms/order/update");
+		mav.setViewName("gms/order/update");
 		
 		return mav;
 					

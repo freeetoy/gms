@@ -95,7 +95,7 @@ public class StatisticsProductController {
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_product"));	 
 		
 		
-		mav.setViewName("/gms/statistics/product/daily");
+		mav.setViewName("gms/statistics/product/daily");
 		
 		return mav;
 	}
@@ -153,7 +153,7 @@ public class StatisticsProductController {
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_product"));	 
 		
 		
-		mav.setViewName("/gms/statistics/product/monthly");
+		mav.setViewName("gms/statistics/product/monthly");
 		
 		return mav;
 	}

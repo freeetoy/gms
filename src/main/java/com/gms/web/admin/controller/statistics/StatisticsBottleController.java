@@ -87,7 +87,7 @@ public class StatisticsBottleController {
 		
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_order"));	 		
 		
-		mav.setViewName("/gms/statistics/bottle/daily");
+		mav.setViewName("gms/statistics/bottle/daily");
 		
 		return mav;
 	}
@@ -137,7 +137,7 @@ public class StatisticsBottleController {
 		
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_order"));	 		
 		
-		mav.setViewName("/gms/statistics/bottle/monthly");
+		mav.setViewName("gms/statistics/bottle/monthly");
 		
 		return mav;
 	}

@@ -1,45 +1,33 @@
 package com.gms.web.admin.controller.manage;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+//import org.springframework.boot.configurationprocessor.json.JSONArray;
+//import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gms.web.admin.common.config.PropertyFactory;
-import com.gms.web.admin.common.utils.DateUtils;
-import com.gms.web.admin.common.utils.utilClass;
-import com.gms.web.admin.common.web.utils.RequestUtils;
-import com.gms.web.admin.domain.manage.CalendarParam;
-import com.gms.web.admin.domain.manage.CalendarVO;
-import com.gms.web.admin.domain.manage.EventVO;
+import com.gms.web.admin.domain.manage.BottleVO;
+import com.gms.web.admin.domain.manage.ScheduleSimpleVO;
 import com.gms.web.admin.domain.manage.ScheduleVO;
-import com.gms.web.admin.service.manage.CalendarService;
-import com.gms.web.admin.service.manage.OrderService;
 import com.gms.web.admin.service.manage.ScheduleService;
-
 
 
 @Controller
 public class CalendarController {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
-	@Autowired
-	private CalendarService calendarService;
 	
 	@Autowired
 	private ScheduleService scheduleService;
@@ -53,10 +41,11 @@ public class CalendarController {
 		JSONObject obj =  new JSONObject();
         JSONArray jArray = new JSONArray();
         
-        
+        List<ScheduleSimpleVO> simpleList = new ArrayList<ScheduleSimpleVO>();
 		try {
 			
 			ScheduleVO temp = new ScheduleVO();					
+			ScheduleSimpleVO tempSimple = new ScheduleSimpleVO();		
 			
 			for(int i=0;i<scheduleList.size();i++) {
 				temp = scheduleList.get(i);				
@@ -64,9 +53,11 @@ public class CalendarController {
 				JSONObject sObject = new JSONObject();
 				
                 sObject.put("title", temp.getScheduleTitle());
+                tempSimple.setTitle(temp.getScheduleTitle());
                 if(temp.getVacationGubun().equals(PropertyFactory.getProperty("Schedule.vacation.All"))) {
                 	
                 	sObject.put("start", temp.getScheduleStartDt());
+                	tempSimple.setStart(temp.getScheduleStartDt());
                 	
                 }else {
                 	String startH = "";
@@ -80,12 +71,15 @@ public class CalendarController {
                 	
                 }
                 
-                if(!temp.getScheduleStartDt().equals(temp.getScheduleEndDt()))
+                if(!temp.getScheduleStartDt().equals(temp.getScheduleEndDt())) {
                 	sObject.put("end", temp.getScheduleEndDt2());
-                	
+                	tempSimple.setEnd(temp.getScheduleEndDt2());
+                }
                 sObject.put("groupId", temp.getScheduleSeq());
+                tempSimple.setGroupId(temp.getScheduleSeq());
                 //sObject.put("url", "/test/schedule?field="+temp.getScheduleSeq());
                 jArray.put(sObject);
+                simpleList.add(tempSimple);
 				
 			}
 		

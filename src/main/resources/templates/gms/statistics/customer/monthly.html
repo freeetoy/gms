@@ -8,6 +8,29 @@ $(document).ready(function(){
 	 $("#searchStatDt").val('[[${searchStatDt}]]' );
 
 	 
+	 $("#btn_com_search").click(function()  
+   	{    	
+	  var searchCustomerNm = $("#searchCustomerNm").val();
+
+	   $.ajax({
+	           url: '/gms/common/customerList.do',
+	           type: 'POST',
+	           data: 'searchCustomerNm='+ searchCustomerNm,
+	           dataType: 'json',
+
+	      })
+	      .done(function(data){
+	    	$('#searchCustomerId').find('option').remove();        
+	    	  for(i=0; i< data.length;i++) {
+	  			//console.log(data[i]);      
+	  			$('#searchCustomerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')
+	  			
+	  		}
+	      })
+	      .fail(function(){
+	         console.log("fail");
+	      });
+	 });
 	 
 
 });
@@ -74,7 +97,12 @@ $(function() {
 				     </option>		
 			    </select>	                    
             </div>  
-          
+          	<div class="col-2">    
+            	<input type="text" class="form-control" id="searchCustomerNm" name="searchCustomerNm" >
+			</div>	            		  
+			<div class="col-1">
+	        	<input type="button" class="btn btn-default btn-success" id="btn_com_search" value="검색" />
+	        </div> 
          </div>
          <div class="row">	
 	        <div class="col-12">

@@ -118,7 +118,7 @@ public class MypageController {
 			
 		mav.addObject("user", user);		 	
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.self"));	 
-		mav.setViewName("/gms/mypage/update");
+		mav.setViewName("gms/mypage/update");
 		
 		return mav;
 	}

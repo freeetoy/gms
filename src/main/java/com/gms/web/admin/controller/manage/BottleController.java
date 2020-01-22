@@ -362,7 +362,7 @@ public class BottleController {
 		List<ProductVO> productList = productService.getGasProductList();
 		model.addAttribute("productList", productList);		
 					
-		return "/gms/bottle/write";
+		return "gms/bottle/write";
 	}
 	
 	@RequestMapping(value = "/gms/bottle/CheckBottleId.do")
@@ -456,7 +456,7 @@ public class BottleController {
 			model.addAttribute("searchChargeDt", params.getSearchChargeDt());
 		}
 		
-		return "/gms/bottle/update";
+		return "gms/bottle/update";
 	}
 	
 	@RequestMapping(value = "/gms/bottle/modify.do", method = RequestMethod.POST)

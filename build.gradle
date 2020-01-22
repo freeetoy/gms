@@ -37,6 +37,7 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'	
 	compile ('org.apache.poi:poi:3.17')
     compile ('org.apache.poi:poi-ooxml:3.17')
+    compile group: 'org.json', name: 'json', version: '20190722'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -53,7 +54,7 @@ dependencies {
 bootJar {
 
     archiveBaseName = 'gms'
-    archiveFileName = '-.jar'
+    archiveFileName = 'gmsBoot.jar'
     archiveVersion = "0.0.0"
 }
 

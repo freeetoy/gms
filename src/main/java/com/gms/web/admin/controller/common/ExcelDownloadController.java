@@ -94,7 +94,8 @@ public class ExcelDownloadController {
 		    
 			    cell = row.createCell(i);
 			    cell.setCellStyle(headStyle);
-			    cell.setCellValue(list.get(i));		    
+			    cell.setCellValue(list.get(i));		   
+			    sheet.autoSizeColumn(i);
 		    }
 		   
 		    //용기	바코드/RFID	가스	용기체적	충전용량	충전기한	충전압력	제조일	거래처	작업		소유	
@@ -149,6 +150,20 @@ public class ExcelDownloadController {
 		        cell.setCellValue(vo.getBottleOwnYn());
 	
 		    }	
+		    // width 자동조절
+			for (int x = 0; x < sheet.getRow(1).getPhysicalNumberOfCells(); x++) {
+				sheet.autoSizeColumn(x);
+				int width = sheet.getColumnWidth(x);
+				int minWidth = list.get(x).getBytes().length * 450;
+				int maxWidth = 18000;
+				if (minWidth > width) {
+					sheet.setColumnWidth(x, minWidth);
+				} else if (width > maxWidth) {
+					sheet.setColumnWidth(x, maxWidth);
+				} else {
+					sheet.setColumnWidth(x, width + 2000);
+				}
+			}
 	
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel");
@@ -236,6 +251,21 @@ public class ExcelDownloadController {
 	
 		    }	
 	
+		 // width 자동조절
+ 			for (int x = 0; x < sheet.getRow(1).getPhysicalNumberOfCells(); x++) {
+ 				sheet.autoSizeColumn(x);
+ 				int width = sheet.getColumnWidth(x);
+ 				int minWidth = list.get(x).getBytes().length * 450;
+ 				int maxWidth = 18000;
+ 				if (minWidth > width) {
+ 					sheet.setColumnWidth(x, minWidth);
+ 				} else if (width > maxWidth) {
+ 					sheet.setColumnWidth(x, maxWidth);
+ 				} else {
+ 					sheet.setColumnWidth(x, width + 2000);
+ 				}
+ 			}
+		 			
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel");
 		    response.setHeader("Content-Disposition", "attachment;filename=order_"+DateUtils.getDate()+".xls");	
@@ -337,6 +367,21 @@ public class ExcelDownloadController {
 	
 		    }	
 	
+		 // width 자동조절
+ 			for (int x = 0; x < sheet.getRow(1).getPhysicalNumberOfCells(); x++) {
+ 				sheet.autoSizeColumn(x);
+ 				int width = sheet.getColumnWidth(x);
+ 				int minWidth = list.get(x).getBytes().length * 450;
+ 				int maxWidth = 18000;
+ 				if (minWidth > width) {
+ 					sheet.setColumnWidth(x, minWidth);
+ 				} else if (width > maxWidth) {
+ 					sheet.setColumnWidth(x, maxWidth);
+ 				} else {
+ 					sheet.setColumnWidth(x, width + 2000);
+ 				}
+ 			}
+		 			
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel");
 		    response.setHeader("Content-Disposition", "attachment;filename=customer_"+DateUtils.getDate()+".xls");	
