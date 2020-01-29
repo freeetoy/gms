@@ -25,6 +25,9 @@ public class StatisticsBottleVO extends AbstractVO implements Serializable {
 	/**Bottle_Sales_Count   */
 	private int bottleSalesCount;
 	
+	/**Bottle_Rental_Count   */
+	private int bottleRentalCount;
+	
 	/**Bottle_Back_Count    */
 	private int bottleBackCount;
 	

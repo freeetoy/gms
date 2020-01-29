@@ -99,6 +99,7 @@ $(function() {
 		                      <th>입고</th>
 		                      <th>충전</th>
 		                      <th>판매</th>
+		                      <th>대여</th>
 		                      <th>회수</th>
 		                    </tr>
 		                  </thead>
@@ -108,10 +109,11 @@ $(function() {
 		                      <td th:text="${row.bottleInputCount}"></td>                      
 		                      <td th:text="${row.bottleChargeCount}"></td>
 		                      <td th:text="${row.bottleSalesCount}"></td>
+		                      <td th:text="${row.bottleRentalCount}"></td>
 		                      <td th:text="${row.bottleBackCount}"></td>
 		                    </tr>
 		                    <tr th:unless="${not #lists.isEmpty( statList )}">
-								<td colspan="5">조회된 결과가 없습니다.</td>
+								<td colspan="6">조회된 결과가 없습니다.</td>
 							</tr>
 							
 		                  </tbody>

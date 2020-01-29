@@ -8,9 +8,12 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <th:block th:if="${session.LoginUser.userAuthority=='99'}" th:include="gms/fragments/leftmenuManager"></th:block>
-  <th:block th:unless="${session.LoginUser.userAuthority=='99'}" th:include="gms/fragments/leftmenu"></th:block>
 
+  
+  <th:block th:if="${session.LoginUser.userPartCd =='01' && session.LoginUser.userAuthority=='01' }" th:include="gms/fragments/leftmenu"></th:block>
+  <th:block th:unless="${session.LoginUser.userPartCd =='01' && session.LoginUser.userAuthority=='01'}" th:include="gms/fragments/leftmenu_other"></th:block>
+  <th:block th:if="${session.LoginUser.userAuthority=='99'}" th:include="gms/fragments/leftmenuManager"></th:block>  
+  
   <!-- Content Wrapper. Contains page content -->
   <th:block layout:fragment="content"></th:block>
   <!-- /.content-wrapper -->

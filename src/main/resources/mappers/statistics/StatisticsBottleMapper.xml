@@ -6,6 +6,7 @@
 		<result property="bottleInputCount"			column="Bottle_Input_Count"			/>
 		<result property="bottleChargeCount"		column="Bottle_Charge_Count"		/>
 		<result property="bottleSalesCount"			column="Bottle_Sales_Count"			/>
+		<result property="bottleRentalCount"		column="Bottle_Rental_Count"		/>
 		<result property="bottleBackCount"			column="Bottle_Back_Count"			/>
 		<result property="bottleDiscardCount"		column="Bottle_Discard_Count"		/>
 		<result property="createId"					column="CREATE_ID"					/>
@@ -17,6 +18,7 @@
 		 , Bottle_Input_Count    
 		 , Bottle_Charge_Count 	 
 		 , Bottle_Sales_Count    
+		 , Bottle_Rental_Count    
 		 , Bottle_Back_Count 	 
 		 , Bottle_Discard_Count  
 		 , Create_ID        
@@ -27,7 +29,7 @@
 		INSERT INTO TB_Daily_Stat_Bottle(
 			<include refid="StatisticsBottleColumns" />
 		) 
-		SELECT 	DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d'), IFNULL(input_count,0),IFNULL(charge_count,0),IFNULL(sales_count,0),IFNULL(back_count,0),IFNULL(discard_count,0),'admin',now()
+		SELECT 	DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d'), IFNULL(input_count,0),IFNULL(charge_count,0),IFNULL(sales_count,0),IFNULL(rental_count,0),IFNULL(back_count,0),IFNULL(discard_count,0),'admin',now()
 		from 
 		(	SELECT count(bottle_id) input_count 
 			FROM TB_Bottle 
@@ -38,12 +40,15 @@
 		(	SELECT count(bottle_id) sales_count 
 			FROM TB_Bottle 
 			WHERE delete_yn='N' AND bottle_work_cd ='0308' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')) c,
-		(	SELECT count(bottle_id) back_count 
+		(	SELECT count(bottle_id) rental_count 
 			FROM TB_Bottle 
 			WHERE delete_yn='N' AND bottle_work_cd ='0309' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) d,
+		(	SELECT count(bottle_id) back_count 
+			FROM TB_Bottle 
+			WHERE delete_yn='N' AND bottle_work_cd ='0310' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) e,
 		(	SELECT count(bottle_id) discard_count 
 			FROM TB_Bottle 
-			WHERE delete_yn='N' AND bottle_work_cd ='0399' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')= DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) e
+			WHERE delete_yn='N' AND bottle_work_cd ='0399' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')= DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) f
 	</insert>
 	
 	<insert id="inserMonthlyStatisticsBottle">
@@ -54,6 +59,7 @@
 			SUM(Bottle_Input_Count)    
 			 , SUM(Bottle_Charge_Count) 	 
 			 , SUM(Bottle_Sales_Count)    
+			 , SUM(Bottle_Rental_Count)  
 			 , SUM(Bottle_Back_Count) 	 
 			 , SUM(Bottle_Discard_Count) 
 			 , 'admin'
