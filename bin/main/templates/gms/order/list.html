@@ -22,7 +22,7 @@ var goUpdate = function(orderId){
 	var form = document.createElement("form");
 	form.setAttribute("charset","UTF-8");
 	form.setAttribute("method","post");
-	form.setAttribute("action","/gms/order/update.do?currentPage=[[ ${currentPage} ]]&searchCustomerNm=[[ ${searchCustomerNm} ]]&searchOrderDt=[[ ${searchOrderDt} ]]");
+	form.setAttribute("action","/gms/order/update.do?currentPage=[[ ${currentPage} ]]&searchCustomerNm=[[ ${searchCustomerNm} ]]&searchOrderDt=[[ ${searchOrderDt} ]]&searchOrderProcessCd=[[ ${searchOrderProcessCd} ]]");
 	//form.setAttribute("action","/gms/order/update.do");
 		
 	var hiddenField = document.createElement("input");
@@ -62,7 +62,7 @@ var goDelete = function(orderId){
 		var form = document.createElement("form");
 		form.setAttribute("charset","UTF-8");
 		form.setAttribute("method","post");
-		form.setAttribute("action","/gms/order/delete.do?currentPage=[[ ${currentPage} ]]&searchCustomerNm=[[ ${searchCustomerNm} ]]&searchOrderDt=[[ ${searchOrderDt} ]]");
+		form.setAttribute("action","/gms/order/delete.do?currentPage=[[ ${currentPage} ]]&searchCustomerNm=[[ ${searchCustomerNm} ]]&searchOrderDt=[[ ${searchOrderDt} ]]&searchOrderProcessCd=[[ ${searchOrderProcessCd} ]]");
 		
 		var hiddenField = document.createElement("input");
         hiddenField.setAttribute("type", "hidden");
@@ -353,6 +353,14 @@ $(document).ready(function(){
 		return dfd.promise();
 	}
 	
+	$(".btn-navbar").click(function()  
+    {
+		var form = document.mainForm;	
+		$("#currentPage").val(1);  
+		mainForm.action="/gms/order/list.do";
+		form.submit();
+      
+    });
 
 	// 입력된 내용을 작성한다.
 	function goSearch(){	
@@ -533,9 +541,23 @@ $(document).ready(function(){
             <div class="col-4">              
                <input type="text" id="searchCustomerNm" name="searchCustomerNm" class="form-control" th:value="${searchCustomerNm}">
             </div>  
-            
-              <div class="col-5">
-                <button class="btn btn-navbar" type="submit"><i class="fas fa-search"></i></button>           
+            <div class="col-2">
+               	<select id="searchOrderProcessCd" name="searchOrderProcessCd" class="form-control">
+                    <option value="">작업</option>				    
+			        <option th:each="row : ${codeList}"
+			                th:text="${row.cdNm}"
+			                th:value="${row.cdId}"
+			                th:if="${searchOrderProcessCd ==row.cdId}" selected>					             
+			        </option>	
+			        <option th:each="row : ${codeList}"
+			                th:text="${row.cdNm}"
+			                th:value="${row.cdId}"
+			                th:unless="${searchOrderProcessCd ==row.cdId}">					             
+			        </option>					        				
+                 </select>
+              </div>    
+              <div class="col-3">
+                <button class="btn btn-navbar" type="button"><i class="fas fa-search"></i></button>           
               </div>  
                        
               <!-- >div class="col-1">

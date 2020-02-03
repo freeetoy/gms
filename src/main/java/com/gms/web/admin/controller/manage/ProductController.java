@@ -199,19 +199,31 @@ public class ProductController {
 			
 			ProductPriceVO[] priceVo = new ProductPriceVO[priceCount] ;
 						
+			int lastPriceSeq=0;
 			for(int i =0 ; i < priceCount ; i++ ) {
 				ProductPriceVO priceVo1 = new ProductPriceVO();
 				result = false;
 			
 				RequestUtils.initUserPrgmInfo(req, priceVo1);
-				
+				if(req.getParameter("productPriceSeq_"+i)!=null) {
 				//priceVo1.setProductId(Integer.valueOf(productId));
-				priceVo1.setProductId(Integer.parseInt(req.getParameter("productId")));	
-				priceVo1.setProductPriceSeq(Integer.parseInt(req.getParameter("productPriceSeq_"+i)));
-				priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));
-				priceVo1.setProductCapa(req.getParameter("productCapa_"+i));
-				
-				priceVo[i] = priceVo1;			
+					priceVo1.setProductId(Integer.parseInt(req.getParameter("productId")));					
+					priceVo1.setProductPriceSeq(Integer.parseInt(req.getParameter("productPriceSeq_"+i)));				
+					priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));
+					priceVo1.setProductCapa(req.getParameter("productCapa_"+i));
+					
+					priceVo[i] = priceVo1;		
+					
+					lastPriceSeq = Integer.parseInt(req.getParameter("productPriceSeq_"+i));
+				}else {
+					priceVo1.setProductId(Integer.parseInt(req.getParameter("productId")));			
+					priceVo1.setProductPriceSeq(++lastPriceSeq);	
+					priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));
+					priceVo1.setProductCapa(req.getParameter("productCapa_"+i));
+					priceVo1.setCreateId(params.getCreateId());
+					
+					priceVo[i] = priceVo1;
+				}
 			}
 			
 			result = productService.modifyProduct(params, priceVo);

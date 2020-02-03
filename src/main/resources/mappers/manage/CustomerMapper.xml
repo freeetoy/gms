@@ -197,15 +197,14 @@
 		SELECT
 			<include refid="CustomerColumns" />
 		FROM
-			TB_CUSTOMER A, TB_USER B
+			TB_CUSTOMER A Left Join TB_USER B on A.Sales_ID = B.User_ID
 		WHERE
 			Customer_Status != '0'		
 		AND
 			CUSTOMER_NM = #{customerNm}
 		AND 
 			Business_Reg_ID = #{businessRegId}
-		AND
-			A.Sales_ID = B.User_ID
+		
 	</select>
 
 	<update id="updateCustomer" parameterType="com.gms.web.admin.domain.manage.CustomerVO">

@@ -276,10 +276,8 @@ public class ProductServiceImpl implements ProductService {
 				if(delProductPrice > 0) {
 					ProductPriceVO priceVo = null;
 					
-					//int productPriceSeq = getProductProductSeq(Integer.valueOf(productId));
-					
-					//logger.info("****** modify Productparam.getProductPriceSeq()()) *****===*"+productPriceSeq);
-					
+					//int productPriceSeq = getProductProductSeq(Integer.valueOf(productId));					
+					//logger.info("****** modify Productparam.getProductPriceSeq()()) *****===*"+productPriceSeq);					
 					logger.info("****** modify Product param1.length) *****===*"+param1.length);
 					
 					boolean pResult = false;

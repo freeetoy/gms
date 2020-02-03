@@ -420,6 +420,9 @@
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchOrderDt)">
 		AND date_format(A.Create_Dt,'%Y/%m/%d')  between  #{searchOrderDtFrom} AND  #{searchOrderDtEnd} 
 		</if>
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchOrderProcessCd)">
+		AND Order_Process_CD  =  #{searchOrderProcessCd}
+		</if>
 		ORDER BY A.Create_Dt DESC 
 		Limit #{startRow}, #{rowPerPage}
 	</select>
@@ -509,6 +512,9 @@
 		</if>
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
 		AND date_format(Create_Dt,'%Y/%m/%d')  between  #{searchOrderDtFrom} AND  #{searchOrderDtEnd}
+		</if>
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchOrderProcessCd)">
+		AND Order_Process_CD  =  #{searchOrderProcessCd}
 		</if>
 	</select>	
 	

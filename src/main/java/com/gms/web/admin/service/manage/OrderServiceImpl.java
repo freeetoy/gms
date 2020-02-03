@@ -72,29 +72,32 @@ public class OrderServiceImpl implements OrderService {
 		
 		if(param.getSearchOrderDt() != null) {
 			map.put("searchOrderDt", param.getSearchOrderDt());
-			logger.info("****** getOrderList *****getSearchOrderDt===*"+param.getSearchOrderDt());
+			logger.debug("****** getOrderList *****getSearchOrderDt===*"+param.getSearchOrderDt());
 		}		
 		
 		if(param.getSearchOrderDtFrom() != null) {
 			map.put("searchOrderDtFrom", param.getSearchOrderDtFrom());
-			logger.info("****** getOrderList *****getSearchOrderDtFrom===*"+param.getSearchOrderDtFrom());
+			logger.debug("****** getOrderList *****getSearchOrderDtFrom===*"+param.getSearchOrderDtFrom());
 		}
 		
 		if(param.getSearchOrderDtEnd() != null) {
 			map.put("searchOrderDtEnd", param.getSearchOrderDtEnd());
-			logger.info("****** getOrderList *****getSearchOrderDtEnd===*"+param.getSearchOrderDtEnd());
+			logger.debug("****** getOrderList *****getSearchOrderDtEnd===*"+param.getSearchOrderDtEnd());
 		}	
-		
-		logger.info("****** getOrderList *****currentPage===*"+currentPage);		
+		if(param.getSearchOrderProcessCd() != null) {
+			map.put("searchOrderProcessCd", param.getSearchOrderProcessCd());
+			logger.debug("****** getOrderList *****getSearchOrderProcessCd===*"+param.getSearchOrderProcessCd());
+		}	
+		logger.debug("****** getOrderList *****currentPage===*"+currentPage);		
 		
 		int orderCount = orderMapper.selectOrderCount(map);
 		
-		logger.info("****** getOrderList.orderCount *****===*"+orderCount);
+		logger.debug("****** getOrderList.orderCount *****===*"+orderCount);
 		
 		//int lastPage = (int)(Math.ceil(orderCount/ROW_PER_PAGE));
 		int lastPage = (int)((double)orderCount/ROW_PER_PAGE+0.95);
 		
-		logger.info("****** getOrderList.lastPage *****===*"+lastPage);
+		logger.debug("****** getOrderList.lastPage *****===*"+lastPage);
 		
 		if(currentPage >= (lastPage-4)) {
 			lastPageNum = lastPage;
@@ -104,9 +107,9 @@ public class OrderServiceImpl implements OrderService {
 		
 		List<OrderVO> orderList = orderMapper.selectOrderList(map);
 		
-		logger.info("****** getOrderList.orderList *****===*"+orderList.size());
-		logger.info("****** getOrderList.lastPageNum *****===*"+lastPageNum);
-		logger.info("****** getOrderList.startPageNum *****===*"+startPageNum);
+		logger.debug("****** getOrderList.orderList *****===*"+orderList.size());
+		logger.debug("****** getOrderList.lastPageNum *****===*"+lastPageNum);
+		logger.debug("****** getOrderList.startPageNum *****===*"+startPageNum);
 		resutlMap.put("list",  orderList);
 		
 		resutlMap.put("currentPage", currentPage);

@@ -75,15 +75,18 @@ public class OrderController {
 			params.setSearchOrderDtFrom(searchOrderDtFrom);
 			params.setSearchOrderDtEnd(searchOrderDtEnd);			
 		}
-		
-		
+				
 		Map<String, Object> map = orderService.getOrderList(params);
 		
-		mav.addObject("orderList", map.get("list"));	
+		mav.addObject("orderList", map.get("list"));			
 		
+		//Order_Process_CD 코드정보 불러오기 
+		List<CodeVO> codeList = codeService.getCodeList(PropertyFactory.getProperty("common.code.order.process"));
+		mav.addObject("codeList", codeList);
 		//검색어 셋팅
 		mav.addObject("searchOrderDt", params.getSearchOrderDt());	
 		mav.addObject("searchCustomerNm", params.getSearchCustomerNm());	
+		mav.addObject("searchOrderProcessCd", params.getSearchOrderProcessCd());	
 		
 		mav.addObject("currentPage", map.get("currentPage"));
 		mav.addObject("lastPage", map.get("lastPage"));
@@ -112,6 +115,8 @@ public class OrderController {
 		
 		mav.addObject("bottleList", map.get("list"));	
 		
+		
+				
 		//검색어 셋팅
 		mav.addObject("searchChargeDt", params.getSearchChargeDt());	
 		mav.addObject("searchCustomerNm", params.getSearchCustomerNm());	

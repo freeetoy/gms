@@ -350,7 +350,7 @@ public class ExcelServiceImpl implements ExcelService {
             // 첫번째 시트 불러오기
             XSSFSheet sheet = workbook.getSheetAt(0);
             
-            int COLUMN_COUNT = 143;
+            int COLUMN_COUNT = 144;
             
             String strProductPrice="";
 
