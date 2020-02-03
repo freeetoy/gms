@@ -29,7 +29,7 @@ var validation = function(){
 	}
 	
 	var result = (
-			   isValid(userPhone, "연락처", null, "phone")
+			   isValid(userPhone, "연락처", null, null)
 			&& isValid(userPasswd, "비밀번호", null, "password")
 			&& isValid(userPasswdCfd, "비밀번호확인", null, "password")
 	);
@@ -107,7 +107,7 @@ var goWrite = function(){
 	}
 	
 	var result = (
-			   isValid(userPhone, "연락처", null, "phone")
+			   isValid(userPhone, "연락처", null, null)
 			&& isValid(userPasswd, "비밀번호", null, "password")
 			&& isValid(userPasswdCfd, "비밀번호확인", null, "password")
 	);

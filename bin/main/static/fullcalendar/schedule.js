@@ -1,9 +1,9 @@
 (function () {
     var jsonData = jsonList.replace(/&quot;/g,'"');
     var jsonConvertList = JSON.parse(jsonData);
-    var defaultDate = String.prototype.yyyy_mm_dd();
-    console.log("jsonData "+jsonData);
-    console.log("defaultDate "+defaultDate);
+    //var defaultDate = String.prototype.yyyy_mm_dd();
+    //console.log("jsonData "+jsonData);
+    //console.log("defaultDate "+defaultDate);
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -14,7 +14,7 @@
                 center: 'title',
                 right: 'dayGridMonth,listMonth'
             },
-            defaultDate: defaultDate,
+            defaultDate: new Date(),
             weekNumbers: true,
             weekNumbersWithinDays: true,
             weekNumberCalculation: 0,

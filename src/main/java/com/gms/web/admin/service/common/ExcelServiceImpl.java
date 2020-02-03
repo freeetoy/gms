@@ -2,7 +2,9 @@ package com.gms.web.admin.service.common;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,18 +95,21 @@ public class ExcelServiceImpl implements ExcelService {
                 String productNm = "";
             	String productCapa = "";
             	
-                for(int j=0; j< 12; j++) {
+                for(int j=0; j< 13; j++) {
                 	XSSFCell cell = row.getCell(j);
                 //if(null != cell) fruit.setGasNm(cell.getNumericCellValue());
                 	//logger.debug("ExcelSerive uploadExcelFile i=="+i+ "== "+ cell.getNumericCellValue());                	
                 	
+                	
                 	switch (cell.getCellType()) {
 	                    case Cell.CELL_TYPE_STRING:
 	                        colValue = cell.getRichStringCellValue().getString();
+	                        logger.debug("ExcelSerive uploadExcelFile j ==="+ j);
 	                        break;
 	                    case Cell.CELL_TYPE_NUMERIC:
 	                        if (DateUtil.isCellDateFormatted(cell)) {
 	                            colValue = cell.getDateCellValue().toString();
+	                            
 	                            if(j==6) bottle.setBottleChargeDt(cell.getDateCellValue());
 	                            else if(j==8) bottle.setBottleCreateDt(cell.getDateCellValue());
 	                        } else {
@@ -130,32 +135,42 @@ public class ExcelServiceImpl implements ExcelService {
                 	
                 	logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ colValue);
                 	
-                	//용기	바코드/RFID	가스	품명	용기체적	충전용량	충전기한	충전압력	제조일	거래처	작업	소유	
-                    //0		1			2	3	4		5		6		7		8		9		10	11	
+                	//용기	바코드/RFID	가스	품명	용기체적	가스용량	충전용량	충전기한	충전압력	제조일	거래처	작업	소유	
+                    //0		1			2	3	4		5		6		7		8		9		10		11	12
 
                     //N:자사소유
-                    //Y:타사소유
-                	
+                    //Y:타사소유                	
                 	
                 	if(j == 0) bottle.setBottleId(colValue);
                 	else if(j == 1) bottle.setBottleBarCd(colValue);
-                	//else if(j == 2) bottle.setGasId(gasService.getGasDetailsByNm(colValue).getGasId());
+                	else if(j == 2) bottle.setGasCd(colValue);
                 	else if(j == 3) productNm = colValue;
                 	else if(j == 4) bottle.setBottleVolumn(colValue);
                 	else if(j == 5) {
                 		bottle.setBottleCapa(colValue);
                 		productCapa = colValue;
                 	}
-                	//else if(j == 6) bottle.setBottleChargeDt(DateUtils.);
-                	else if(j == 7) bottle.setBottleChargePrss(colValue);
-                	//else if(j == 8) bottle.setBottleId(colValue);
+                	else if(j == 6) bottle.setChargeCapa(colValue);
+                	else if(j == 7) {
+                		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+                		Date date = sdf.parse(colValue);
+                		
+                		bottle.setBottleChargeDt(date);
+                	}
+                	else if(j == 8) bottle.setBottleChargePrss(colValue);
                 	else if(j == 9) {
+                		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+                		Date date = sdf.parse(colValue);
+                		
+                		bottle.setBottleCreateDt(date);
+                	}
+                	else if(j == 10) {
                 		CustomerVO customer = customerService.getCustomerDetailsByNm(colValue) ;
                 		if(customer != null &&  customer.getCustomerId()!=null)
                 			bottle.setCustomerId(customerService.getCustomerDetailsByNm(colValue).getCustomerId());
                 	}
-                	else if(j == 10) bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0388"));
-                	else if(j == 11) { 
+                	else if(j == 11) bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0388"));
+                	else if(j == 12) { 
                 		if(colValue.equals("자사")) bottle.setBottleOwnYn("N");
                 		else bottle.setBottleOwnYn("Y");
                 	}

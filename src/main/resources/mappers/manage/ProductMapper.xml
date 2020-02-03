@@ -200,7 +200,7 @@
 
 	<select id="selectProductCount" resultType="int">
 		SELECT
-			COUNT(product_Id)
+			IFNULL(MAX(product_Id),0)
 		FROM
 			TB_Product		
 	</select>

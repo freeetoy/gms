@@ -38,6 +38,9 @@ public class BottleHistoryVO extends AbstractVO implements Serializable {
 	
 	/** Bottle_Capa	*/
 	private String bottleCapa;
+	
+	/** Charge_Capa	*/
+	private String chargeCapa;
 
 	/** Bottle_Create_Dt	*/
 	private Date bottleCreateDt;

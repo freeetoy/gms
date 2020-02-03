@@ -39,8 +39,14 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	/** Gas Nm */
 	private String gasNm ;
 	
+	/** Gas_CD */
+	private String gasCd ;
+	
 	/** Bottle_Capa	*/
 	private String bottleCapa;
+	
+	/** Charge_Capa	*/
+	private String chargeCapa;
 
 	/** Bottle_Create_Dt	*/
 	private Date bottleCreateDt;

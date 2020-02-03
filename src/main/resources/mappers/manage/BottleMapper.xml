@@ -9,7 +9,9 @@
 		<result property="productPriceSeq"	column="product_Price_Seq"	/>	
 		<result property="gasId"			column="Gas_ID"				/>
 		<result property="gasNm"			column="Gas_NM"				/>
+		<result property="gasCd"			column="Gas_CD"				/>
 		<result property="bottleCapa"		column="Bottle_Capa"		/>
+		<result property="chargeCapa"		column="Charge_Capa"		/>
 		<result property="bottleCreateDt"	column="Bottle_Create_Dt"	/>
 		<result property="bottleChargeDt"	column="Bottle_Charge_Dt"	/>
 		<result property="bottleVolumn"		column="Bottle_Volumn"		/>
@@ -35,16 +37,18 @@
 		<result property="bottleHistSeq"		column="Bottle_HIST_SEQ"	/>
 		<result property="bottleId"				column="Bottle_ID"			/>
 		<result property="bottleBarCd"			column="Bottle_BarCd"		/>	
-		<result property="productId"		column="Product_ID"			/>
-		<result property="productPriceSeq"	column="product_Price_Seq"	/>		
+		<result property="productId"			column="Product_ID"			/>
+		<result property="productPriceSeq"		column="product_Price_Seq"	/>		
 		<result property="gasId"				column="Gas_ID"				/>
 		<result property="gasNm"				column="Gas_NM"				/>
+		<result property="gasCd"				column="Gas_CD"				/>
 		<result property="bottleCapa"			column="Bottle_Capa"		/>
+		<result property="chargeCapa"			column="Charge_Capa"		/>
 		<result property="bottleCreateDt"		column="Bottle_Create_Dt"	/>
 		<result property="bottleChargeDt"		column="Bottle_Charge_Dt"	/>
 		<result property="bottleVolumn"			column="Bottle_Volumn"		/>
 		<result property="bottleChargePrss"		column="Bottle_Charge_Prss"	/>
-		<result property="bottleOwnYn"		column="Bottle_Own_YN"	/>	
+		<result property="bottleOwnYn"			column="Bottle_Own_YN"		/>	
 		<result property="bottleWorkCd"			column="Bottle_Work_CD"		/>
 		<result property="bottleWorkCdNm"		column="Bottle_Work_CD_NM"	/>
 		<result property="bottleWorkId"			column="Bottle_Work_ID"		/>	
@@ -68,7 +72,9 @@
 		, Product_ID
 		, Product_Price_Seq
 		, Gas_ID	
+		, Gas_CD	
 		, Bottle_Capa
+		, Charge_Capa
 		, Bottle_Create_Dt	
 		, Bottle_Charge_Dt	
 		, Bottle_Volumn
@@ -95,8 +101,10 @@
 		, TB.Product_ID
 		, TB.Product_Price_Seq
 		, TB.Gas_ID	
+		, Gas_CD
 		, Product_Nm
 		, Bottle_Capa
+		, Charge_Capa
 		, Bottle_Create_Dt	
 		, Bottle_Charge_Dt	
 		, Bottle_Volumn
@@ -124,8 +132,10 @@
 		, TB.Product_ID
 		, TB.Product_Price_Seq
 		, TB.Gas_ID	
+		, Gas_CD
 		, Product_Nm
 		, Bottle_Capa
+		, Charge_Capa
 		, Bottle_Create_Dt	
 		, Bottle_Charge_Dt	
 		, Bottle_Volumn
@@ -155,7 +165,9 @@
 			, #{productId}
 			, #{productPriceSeq}
 			, #{gasId}
+			, #{gasCd}
 			, #{bottleCapa}
+			, #{chargeCapa}
 			, #{bottleCreateDt}
 			, #{bottleChargeDt}
 			, #{bottleVolumn}
@@ -188,7 +200,9 @@
 			, #{item.productId}
 			, #{item.productPriceSeq}
 			, #{item.gasId}
+			, #{item.gasCd}
 			, #{item.bottleCapa}
+			, #{item.chargeCapa}
 			, #{item.bottleCreateDt}
 			, #{item.bottleChargeDt}
 			, #{item.bottleVolumn}
@@ -247,7 +261,9 @@
 			, Product_ID		= #{productId}
 			, Product_Price_Seq	= #{productPriceSeq}
 			, Gas_ID			= #{gasId}
+			, Gas_CD			= #{gasCd}
 			, Bottle_Capa		= #{bottleCapa}
+			, Charge_Capa		= #{chargeCapa}
 			, Bottle_Create_Dt	= #{bottleCreateDt}
 			, Bottle_Charge_Dt	= #{bottleChargeDt}
 			, Bottle_Volumn		= #{bottleVolumn}

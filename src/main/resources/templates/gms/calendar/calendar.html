@@ -48,8 +48,6 @@ $(document).ready(function() {
 		return dfd.promise();
 	}
 
- 
-
 </script>
 <style>
 
@@ -92,18 +90,14 @@ $(document).ready(function() {
           <!-- /.col -->
         </div>    
         <!-- /.row -->
-         
-
-        
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
 <script type="text/javascript" >
-        var jsonList = '[[${list}]]'
-  
-    </script>
-    <script type="text/javascript" th:src="@{/fullcalendar/common.js}"></script>
+    var jsonList = '[[${list}]]'
+</script>
+
 <script type="text/javascript" th:src="@{/fullcalendar/schedule.js}"></script>
 </html>
 </th:block>

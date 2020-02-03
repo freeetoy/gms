@@ -229,10 +229,14 @@ $(document).ready(function(){
                       <th><input type="text" class="form-control" id="bottleBarCd" name="bottleBarCd" placeholder="용기 바코드"></th>
                     </tr>
                     <tr>
-                      <th class="card-footer">가스</th>
+                      <th class="card-footer">가스코드</th>
+                      <th><input type="text" class="form-control" id="gasCd" name="gasCd" placeholder="가스CD "></th>
+                    </tr>
+                    <tr>
+                      <th class="card-footer">상품</th>
                       <th>
                       <select id="productId" name="productId" class="form-control">
-                          <option value="0">가스선택</option>				    
+                          <option value="0">상품선택</option>				    
 					        <option th:each="row : ${productList}"
 					                th:text="${row.productNm}"
 					                th:value="${row.productId}"
@@ -247,6 +251,11 @@ $(document).ready(function(){
                       <select id="productPriceSeq" name="productPriceSeq" class="form-control" >
 	                        <option value="0">옵션</option>			                      	
 					   </select>	                       
+                    </tr>
+                    
+                    <tr>
+                      <th class="card-footer">충전용량</th>
+                      <th><input type="text" class="form-control" id="chargeCapa" name="chargeCapa" placeholder="충전용량 "></th>
                     </tr>
                      <tr>                                   
                       <th class="card-footer">제조일</th>

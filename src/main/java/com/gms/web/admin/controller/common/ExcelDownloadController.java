@@ -98,8 +98,8 @@ public class ExcelDownloadController {
 			    sheet.autoSizeColumn(i);
 		    }
 		   
-		    //용기	바코드/RFID	가스	용기체적	충전용량	충전기한	충전압력	제조일	거래처	작업		소유	
-            //0		1			2	3		4		5		6		7		8		9		10	11	
+		    //용기	바코드/RFID	가스	가스용량	용기체적	충전용량	충전기한	충전압력	제조일	거래처	작업		소유	
+            //0		1			2	3		4		5		6		7		8		9		10		11	
 	
 		    // 데이터 부분 생성
 		    for(BottleVO vo : bottleList) {
@@ -117,13 +117,17 @@ public class ExcelDownloadController {
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getProductNm());
 		        
+		        cell = row.createCell(k++);;
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getBottleCapa());
+		        
 		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleVolumn());
 		        
 		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getBottleCapa());
+		        cell.setCellValue(vo.getChargeCapa());
 		        
 		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);

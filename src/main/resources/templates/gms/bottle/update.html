@@ -242,6 +242,10 @@ var goList = function(){
                       <th><input type="text" class="form-control" id="bottleBarCd" name="bottleBarCd" th:value="${bottle.bottleBarCd}"></th>
                     </tr>
                     <tr>
+                      <th class="card-footer">가스코드</th>
+                      <th><input type="text" class="form-control" id="gasCd" name="gasCd" th:value="${bottle.gasCd}"></th>
+                    </tr>
+                    <tr>
                       <th class="card-footer">가스</th>
                       <th>
                       <select id="productId" name="productId" class="form-control">
@@ -274,6 +278,10 @@ var goList = function(){
 					        </option>			                      	
 					   </select>	                      
                       </th>
+                    </tr>
+                    <tr>
+                      <th class="card-footer">충전용량</th>
+                      <th><input type="text" class="form-control" id="chargeCapa" name="chargeCapa" th:value="${bottle.chargeCapa}"></th>
                     </tr>
                      <tr>                                   
                       <th class="card-footer">제조일</th>
