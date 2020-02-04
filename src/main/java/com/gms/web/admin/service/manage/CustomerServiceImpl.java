@@ -34,25 +34,21 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override	
 	public Map<String, Object> getCustomerList(CustomerVO param) {
 		
-		logger.info("****** getCustomerList *****start===*");		
-		logger.info("****** getCustomerList *****param.getSearchCustomerNm===*" + param.getSearchCustomerNm());
-		logger.info("****** getCustomerList *****param.getRowPerPage===*" + param.getRowPerPage());
+		logger.info("****** getCustomerList *****start===*");				
 		
 		int currentPage = param.getCurrentPage();
 		int ROW_PER_PAGE = param.getRowPerPage();
 		
-		int starPageNum =1;
-		
+		int startPageNum =1;		
 		int lastPageNum = ROW_PER_PAGE;
 		
 		if(currentPage > (ROW_PER_PAGE/2)) {
-			lastPageNum += (starPageNum-1);
+			lastPageNum += (startPageNum-1);
 		}
-		
+
 		int startRow = (currentPage-1) * ROW_PER_PAGE;
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
+		Map<String, Object> map = new HashMap<String, Object>();		
 		
 		map.put("startRow", startRow);
 		map.put("rowPerPage", ROW_PER_PAGE);	
@@ -62,14 +58,28 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		int lastPage = (int)((double)customerCount/ROW_PER_PAGE+0.95);
 		if(lastPage == 0) lastPage = 1;
-
-		logger.info("****** getCustomerList *****currentPage===*"+currentPage);	
-		logger.info("****** getCustomerList.customerCount *****===*"+customerCount);		
-		logger.info("****** getCustomerList.lastPage *****===*"+lastPage);
 		
 		if(currentPage >= (lastPage-4)) {
 			lastPageNum = lastPage;
 		}
+		
+		int pages = (customerCount == 0) ? 1 : (int) ((customerCount - 1) / ROW_PER_PAGE) + 1; // * 정수형이기때문에 소숫점은 표시안됨
+		
+        int blocks;
+        int block;
+        blocks = (int) Math.ceil(1.0 * pages / ROW_PER_PAGE); // *소숫점 반올림
+        block = (int) Math.ceil(1.0 * currentPage / ROW_PER_PAGE); // *소숫점 반올림
+        startPageNum = (block - 1) * ROW_PER_PAGE + 1;
+        lastPageNum = block * ROW_PER_PAGE;
+                
+        if (lastPageNum > pages){
+        	lastPageNum = pages;
+        }		
+		
+		logger.info("****** getCustomerList *****currentPage===*"+currentPage);	
+		logger.info("****** getCustomerList.lastPage *****===*"+lastPage);		
+		logger.info("****** getCustomerList.starPageNum *****===*"+startPageNum);
+		logger.info("****** getCustomerList.lastPageNum *****===*"+lastPageNum);
 		
 		Map<String, Object> resutlMap = new HashMap<String, Object>();
 		
@@ -81,7 +91,7 @@ public class CustomerServiceImpl implements CustomerService {
 		resutlMap.put("searchCustomerNm", param.getSearchCustomerNm());
 		resutlMap.put("currentPage", currentPage);
 		resutlMap.put("lastPage", lastPage);
-		resutlMap.put("startPageNum", starPageNum);
+		resutlMap.put("startPageNum", startPageNum);
 		resutlMap.put("lastPageNum", lastPageNum);
 		resutlMap.put("totalCount", customerCount);
 		

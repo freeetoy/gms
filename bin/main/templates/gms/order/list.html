@@ -543,7 +543,7 @@ $(document).ready(function(){
             </div>  
             <div class="col-2">
                	<select id="searchOrderProcessCd" name="searchOrderProcessCd" class="form-control">
-                    <option value="">작업</option>				    
+                    <option value="">상태</option>				    
 			        <option th:each="row : ${codeList}"
 			                th:text="${row.cdNm}"
 			                th:value="${row.cdId}"

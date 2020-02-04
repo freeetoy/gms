@@ -64,6 +64,8 @@ public class ExcelServiceImpl implements ExcelService {
         List<BottleVO> bottlelist = bottleService.getBottleListAll();
         
         int result = 0;
+        int updateCount = 0;
+        int insertCount = 0;
         try {
         	
             OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream());
@@ -72,6 +74,7 @@ public class ExcelServiceImpl implements ExcelService {
             // 첫번째 시트 불러오기
             XSSFSheet sheet = workbook.getSheetAt(0);
             boolean isRegisteFlag = false;
+            StringBuffer sb = new StringBuffer();
             
             for(int i=1; i<sheet.getLastRowNum() + 1; i++) {
             	
@@ -85,11 +88,11 @@ public class ExcelServiceImpl implements ExcelService {
                     continue;
                 }                
                 
-                //용기	바코드/RFID	가스	품명	용기체적	충전용량	충전기한	충전압력	제조일	거래처	작업	소유	
-                //0		1			2	3	4		5		6		7		8		9		10	11	
+              //용기	바코드/RFID	가스	품명	용기체적	가스용량	충전용량	충전기한	충전압력	제조일	거래처	작업	소유	
+                //0		1			2	3	4		5		6		7		8		9		10		11	12
 
-                //N:자사소유
-                //Y:타사소유
+                //N:자사소유                //Y:타사소유                
+                
                 String colValue="";
                
                 String productNm = "";
@@ -104,7 +107,7 @@ public class ExcelServiceImpl implements ExcelService {
                 	switch (cell.getCellType()) {
 	                    case Cell.CELL_TYPE_STRING:
 	                        colValue = cell.getRichStringCellValue().getString();
-	                        logger.debug("ExcelSerive uploadExcelFile j ==="+ j);
+	                        //logger.debug("ExcelSerive uploadExcelFile j ==="+ j);
 	                        break;
 	                    case Cell.CELL_TYPE_NUMERIC:
 	                        if (DateUtil.isCellDateFormatted(cell)) {
@@ -133,7 +136,7 @@ public class ExcelServiceImpl implements ExcelService {
 	                        colValue = "";
                     }
                 	
-                	logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ colValue);
+                	//logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ colValue);
                 	
                 	//용기	바코드/RFID	가스	품명	용기체적	가스용량	충전용량	충전기한	충전압력	제조일	거래처	작업	소유	
                     //0		1			2	3	4		5		6		7		8		9		10		11	12
@@ -152,17 +155,21 @@ public class ExcelServiceImpl implements ExcelService {
                 	}
                 	else if(j == 6) bottle.setChargeCapa(colValue);
                 	else if(j == 7) {
-                		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
-                		Date date = sdf.parse(colValue);
-                		
-                		bottle.setBottleChargeDt(date);
+                		if(colValue!=null && colValue.length() > 9) {
+	                		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+	                		Date date = sdf.parse(colValue);
+	                		
+	                		bottle.setBottleChargeDt(date);
+                		}
                 	}
                 	else if(j == 8) bottle.setBottleChargePrss(colValue);
                 	else if(j == 9) {
-                		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
-                		Date date = sdf.parse(colValue);
-                		
-                		bottle.setBottleCreateDt(date);
+                		if(colValue!=null && colValue.length() > 9) {
+	                		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+	                		Date date = sdf.parse(colValue);
+	                		
+	                		bottle.setBottleCreateDt(date);
+                		}
                 	}
                 	else if(j == 10) {
                 		CustomerVO customer = customerService.getCustomerDetailsByNm(colValue) ;
@@ -180,33 +187,45 @@ public class ExcelServiceImpl implements ExcelService {
                 productTotal.setProductNm(productNm);
                 productTotal.setProductCapa(productCapa);
                 
-                logger.debug("&&&  ExcelService productNm "+ productNm);
-                logger.debug("$$$$$$$$$$$$$$ ExcelService productCapa "+ productCapa);
+                //logger.debug("&&&  ExcelService productNm "+ productNm);
+                //logger.debug("$$$$$$$$$$$$$$ ExcelService productCapa "+ productCapa);
                 
                 productTotal = productService.getProductTotalDetails(productTotal);
                 
-                bottle.setProductId(productTotal.getProductId());
-                bottle.setProductPriceSeq(productTotal.getProductPriceSeq());
-                bottle.setGasId(productTotal.getGasId());
-                RequestUtils.initUserPrgmInfo(request, bottle);
-                bottle.setBottleWorkId(bottle.getCreateId());
-                
-                bottle.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
-                bottle.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
-              
-                for(int k=0 ; k < bottlelist.size() ; k++) {
-                	if(bottle.getBottleId().equals(bottlelist.get(k).getBottleId())) {
-                		isRegisteFlag = false;
-                		result = bottleService.modifyBottle(bottle);
-                	}
-                		
+                if(productTotal != null) {
+	                
+	                bottle.setProductId(productTotal.getProductId());
+	                bottle.setProductPriceSeq(productTotal.getProductPriceSeq());
+	                bottle.setGasId(productTotal.getGasId());
+	                RequestUtils.initUserPrgmInfo(request, bottle);
+	                bottle.setBottleWorkId(bottle.getCreateId());
+	                
+	                bottle.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
+	                bottle.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
+	              
+	                for(int k=0 ; k < bottlelist.size() ; k++) {
+	                	if(bottle.getBottleId().equals(bottlelist.get(k).getBottleId())) {
+	                		isRegisteFlag = false;
+	                		result = bottleService.modifyBottle(bottle);
+	                		updateCount++;
+	                	}
+	                		
+	                }
+	                if(isRegisteFlag) {
+	                	list.add(bottle);
+	                	//result = bottleService.registerBottle(bottle);
+	                	insertCount++;
+	                }
+                }else {
+                	sb.append(bottle.getBottleId());
+                	sb.append(";");
+                	
                 }
-                if(isRegisteFlag) list.add(bottle);
             }
-                        
+            logger.info("$$$$$$$$$$$$$$ ExcelService sb "+ sb.toString());
             result = bottleService.registerBottles(list);
             
-            logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result);
+            logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
             
         } catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달

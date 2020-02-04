@@ -103,6 +103,22 @@ public class OrderServiceImpl implements OrderService {
 			lastPageNum = lastPage;
 		}
 		
+		
+		//수정 Start
+		int pages = (orderCount == 0) ? 1 : (int) ((orderCount - 1) / ROW_PER_PAGE) + 1; // * 정수형이기때문에 소숫점은 표시안됨		
+        int blocks;
+        int block;
+        blocks = (int) Math.ceil(1.0 * pages / ROW_PER_PAGE); // *소숫점 반올림
+        block = (int) Math.ceil(1.0 * currentPage / ROW_PER_PAGE); // *소숫점 반올림
+        startPageNum = (block - 1) * ROW_PER_PAGE + 1;
+        lastPageNum = block * ROW_PER_PAGE;
+        
+        
+        if (lastPageNum > pages){
+        	lastPageNum = pages;
+        }
+		//수정 end
+		
 		Map<String, Object> resutlMap = new HashMap<String, Object>();
 		
 		List<OrderVO> orderList = orderMapper.selectOrderList(map);

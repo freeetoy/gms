@@ -461,7 +461,7 @@
 			AND TB.Bottle_Work_CD = TC.CD_ID	
 			AND TB.Product_ID = TG.Product_Id
 		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID														
-		ORDER BY Bottle_Work_DT DESC 
+		ORDER BY Bottle_Work_DT DESC,Bottle_BarCd DESC 
 		Limit #{startRow}, #{rowPerPage}
 	</select>
 	
@@ -473,8 +473,7 @@
 			FROM
 				TB_Bottle TB, TB_CODE TC, TB_Product TG
 			WHERE
-				TB.Delete_YN = 'N'					
-			AND TB.Bottle_Work_CD = TC.CD_ID	
+				TB.Bottle_Work_CD = TC.CD_ID	
 			AND TB.Product_ID = TG.Product_Id
 		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID														
 		ORDER BY Bottle_Work_DT DESC 		

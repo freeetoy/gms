@@ -51,12 +51,12 @@ public class BottleServiceImpl implements BottleService {
 		int currentPage = param.getCurrentPage();
 		int ROW_PER_PAGE = param.getRowPerPage();
 		
-		int starPageNum =1;
+		int startPageNum =1;
 		
 		int lastPageNum = ROW_PER_PAGE;
 		
 		if(currentPage > (ROW_PER_PAGE/2)) {
-			lastPageNum += (starPageNum-1);
+			lastPageNum += (startPageNum-1);
 		}
 		
 		int startRow = (currentPage-1) * ROW_PER_PAGE;
@@ -99,19 +99,13 @@ public class BottleServiceImpl implements BottleService {
 			map.put("searchSalesYn", param.getSearchSalesYn());
 			map.put("bottleWorkCd", param.getBottleWorkCd());
 			logger.debug("****** getBottleList *****getSearchSalesYn===*"+param.getSearchSalesYn());
-		}
-		
-		logger.debug("****** getBottleList *****currentPage===*"+currentPage);
-		
-		
+		}		
+	
 		int bottleCount = bottleMapper.selectBottleCount(map);
-		
-		logger.debug("****** getBottleList.bottleCount *****===*"+bottleCount);
 		
 		//int lastPage = (int)(Math.ceil(bottleCount/ROW_PER_PAGE));
 		int lastPage = (int)((double)bottleCount/ROW_PER_PAGE+0.95);
 		
-		logger.debug("****** getBottleList.lastPage *****===*"+lastPage);
 		
 		if(currentPage >= (lastPage-4)) {
 			lastPageNum = lastPage;
@@ -119,21 +113,35 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(lastPageNum ==0) lastPageNum=1;
 		
+		
+		//수정 Start
+		int pages = (bottleCount == 0) ? 1 : (int) ((bottleCount - 1) / ROW_PER_PAGE) + 1; // * 정수형이기때문에 소숫점은 표시안됨		
+        int blocks;
+        int block;
+        blocks = (int) Math.ceil(1.0 * pages / ROW_PER_PAGE); // *소숫점 반올림
+        block = (int) Math.ceil(1.0 * currentPage / ROW_PER_PAGE); // *소숫점 반올림
+        startPageNum = (block - 1) * ROW_PER_PAGE + 1;
+        lastPageNum = block * ROW_PER_PAGE;        
+        
+        if (lastPageNum > pages){
+        	lastPageNum = pages;
+        }
+		//수정 end
+		
 		Map<String, Object> resutlMap = new HashMap<String, Object>();
 		
 		List<BottleVO> bottleList = bottleMapper.selectBottleList(map);
-		
-		logger.debug("****** getBottleList.bottleList *****===*"+bottleList.size());
+
 		
 		resutlMap.put("list",  bottleList);
 		
 		resutlMap.put("currentPage", currentPage);
 		resutlMap.put("lastPage", lastPage);
-		resutlMap.put("startPageNum", starPageNum);
+		resutlMap.put("startPageNum", startPageNum);
 		resutlMap.put("lastPageNum", lastPageNum);
 		resutlMap.put("totalCount", bottleCount);
 		
-		logger.debug("BottleService startPageNum "+ starPageNum);
+		logger.debug("BottleService startPageNum "+ startPageNum);
 		logger.debug("BottleService lastPageNum "+ lastPageNum);
 		logger.debug("BottleService lastPage "+ lastPage);
 		
