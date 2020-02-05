@@ -50,7 +50,9 @@ public class ExcelUploadController {
 	        logger.info("ExcelUploadContoller result "+ result);
 		} catch (Exception e) {
             e.printStackTrace();
-            
+            String alertMessage = "엑셀 등록하는데 오류가 발생하였습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/bottle/list.do");
             return null;
         }
 		if(result > 0){

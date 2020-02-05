@@ -35,6 +35,8 @@ public class LoginController {
 	
 	private static final String RETURN_LOGINPAGE = "/login";
 	
+	private static final String AFTER_LOGIN_PAGE = "start";
+	
 	@Autowired
 	private LoginService loginService;
 	
@@ -122,7 +124,7 @@ public class LoginController {
 			RequestUtils.responseWriteException(response, alertMessage, RETURN_LOGINPAGE);
 		}
 		*/
-		return "redirect:/gms/order/list.do";
+		return "redirect:/gms/start"; //gms/order/list.do";
 		
 	}
 	@RequestMapping(value="/api/loginAction.do")

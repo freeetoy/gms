@@ -23,7 +23,7 @@ public class startController {
 	private WorkReportService workService;
 	
 	
-	@RequestMapping(value = "/start")
+	@RequestMapping(value = "/gms/start")
 	public ModelAndView getStartWorkBottleList(BottleVO params) {
 
 		logger.info("BottleContoller getWorkBottleListToday");

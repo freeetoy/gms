@@ -131,15 +131,21 @@ public class ExcelDownloadController {
 		        
 		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleChargeDt(),"yyyy-MM-dd"));
-		        
+		        if(vo.getBottleChargeDt() !=null) 
+		        	cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleChargeDt(),"yyyy-MM-dd"));
+		        else
+		        	cell.setCellValue("");
+		       
 		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleChargePrss());
 		        
 		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleCreateDt(),"yyyy-MM-dd"));
+		        if(vo.getBottleCreateDt()!=null)
+		        	cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleCreateDt(),"yyyy-MM-dd"));
+		        else
+		        	cell.setCellValue("");
 		        
 		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);

@@ -370,7 +370,8 @@ public class ExcelServiceImpl implements ExcelService {
             XSSFSheet sheet = workbook.getSheetAt(0);
             
             int COLUMN_COUNT = 144;
-            
+            int insertCount = 0;
+            StringBuffer sb = new StringBuffer();
             String strProductPrice="";
 
 
@@ -597,9 +598,12 @@ public class ExcelServiceImpl implements ExcelService {
 	                	tempcustomer.setBusinessRegId(businessRegId);
 	                	
                 		customer = customerService.getCustomerDetailsByNmBusi(tempcustomer);
-                		if(customer!=null)
+                		if(customer!=null) {
                 			RequestUtils.initUserPrgmInfo(request, customer);
-                			logger.debug("ExcelSerive uploadExcelFile customerId ** =="+ customer.getCustomerId());
+                			//logger.debug("ExcelSerive uploadExcelFile customerId ** =="+ customer.getCustomerId());
+                		}else {
+                			sb.append(customerNm).append(";");
+                		}
                 	
                 	}
                 	
@@ -614,7 +618,7 @@ public class ExcelServiceImpl implements ExcelService {
 						customerPrice.setProductPriceSeq(productTotal.getProductPriceSeq());
 						customerPrice.setProductPrice(productPrice);        
 					
-						if(customer != null) {
+						if(customer != null &&  customer.getCustomerId() > 0 ) {
 							customerPrice.setCustomerId(customer.getCustomerId());
 							 for(int k=0;k<cPriceList.size();k++) {
 			                	if(customerPrice.getCustomerId() == cPriceList.get(k).getCustomerId() 
@@ -629,7 +633,7 @@ public class ExcelServiceImpl implements ExcelService {
 							logger.debug("&& ExcelSerive uploadExcelFile customerId j =="+j+"=="+ customerPrice.getCustomerId());
 							if(isRegisteFlag) {
 								list.add(customerPrice);
-								
+								insertCount++;
 								if(list.size()%500==0) {
 									result = customerService.registerCustomerPrices(list);
 									list.clear();
@@ -653,7 +657,7 @@ public class ExcelServiceImpl implements ExcelService {
             }
             */
             if(list.size() > 0) result = customerService.registerCustomerPrices(list);
-            logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result);
+            logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+" insertCount="+insertCount);
             
     } catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
