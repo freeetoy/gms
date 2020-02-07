@@ -138,14 +138,16 @@ public class LoginController {
 		ModelAndView mav = new ModelAndView();		
 		logger.info("LoginContoller /api/loginAction Start");			
 			
-		logger.info("LoginContoller loginAction id "+id);
-		logger.info("LoginContoller loginAction pw "+pw);
+		logger.debug("LoginContoller loginAction id "+id);
+		logger.debug("LoginContoller loginAction pw "+pw);
 		
 		LoginUserVO param = new LoginUserVO();
 		param.setUserId(id);
 		param.setUserPasswd(pw);
 			
-		LoginUserVO user = loginService.getUserInfo(param);					
+		LoginUserVO user = loginService.getUserInfo(param);			
+		
+		logger.debug("LoginContoller loginAction user.getMessage "+user.getErrorMessage());
 		
 		user.setUserNm(URLEncoder.encode(user.getUserNm(), "UTF-8"));
 		if(user != null && user.getUserId() != null){
@@ -155,6 +157,8 @@ public class LoginController {
 			
 		}else {
 			result = "fail";
+			res = false;
+			user.setSuccess(res);
 		}
 		return user;
 		
