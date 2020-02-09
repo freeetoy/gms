@@ -395,7 +395,7 @@ var fn_deleteBottle = function(bottleId){
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
 					<ul class="pagination">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
-							<a th:href="@{/gms/bottle/charge.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+							<a href="#" th:onclick="gotoPage([[ ${currentPage -1} ]])"  aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
 						</li>
 						
 						<li th:if="${currentPage<=1}" class="paginate_button page-item previous disabled" id="example2_previous">
@@ -413,7 +413,7 @@ var fn_deleteBottle = function(bottleId){
 						</th:block>
 					
 						<li th:if="${currentPage < lastPage}" class="paginate_button page-item next" id="example2_next">
-						<a th:href="@{/gms/bottle/charge.do(currentPage=${currentPage +1})}" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+						<a href="#" th:onclick="gotoPage([[ ${currentPage +1} ]])"  aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
 						</li>
 						<li th:if="${currentPage >= lastPage}" class="paginate_button page-item next disabled" id="example2_next">
 						<a href="#"  aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>

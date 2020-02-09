@@ -409,6 +409,17 @@ public class BottleServiceImpl implements BottleService {
 			for(int i = 0; i< bottleList.size() ; i++) {
 				logger.debug("BottleServiceImpl changeBottlesWorkCdOnly  for in getBottlesId "+ bottleList.get(i).getBottleId());
 				tempBottleIds += bottleList.get(i).getBottleId()+",";
+				
+				bottleList.get(i).setBottleWorkCd(param.getBottleWorkCd());
+				bottleList.get(i).setBottleWorkId(param.getBottleWorkId());
+				bottleList.get(i).setCustomerId(param.getCustomerId());
+				bottleList.get(i).setBottleType(param.getBottleType());
+				bottleList.get(i).setUpdateId(param.getCreateId());
+				bottleList.get(i).setChBottleId(bottleList.get(i).getBottleId());
+				
+				//20200208 하나씩 업데이트로 변경
+				result =  bottleMapper.updateBottleWorkCd(bottleList.get(i));
+				
 				param.setBottList(list);
 			}
 			
@@ -437,7 +448,8 @@ public class BottleServiceImpl implements BottleService {
 			result = workService.registerWorkReportByBottle(workReport, bottleList);
 			if(result <= 0) return result;
 			
-			result =  bottleMapper.updateBottlesWorkCd(param);
+			//20200208 하나씩 업데이트로 변경
+			//result =  bottleMapper.updateBottlesWorkCd(param);
 			
 			if(result > 0 ) result = bottleMapper.insertBottleHistorys(bottleList);
 		
