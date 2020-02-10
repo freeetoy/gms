@@ -190,13 +190,18 @@ public class WorkReportServiceImpl implements WorkReportService {
 			
 			for(int j=0; j < viewList.size() ; j++) {
 				WorkReportViewVO temp = viewList.get(j);
+				//logger.debug("WorkReportServiceImpl getWorkReportList1 workBottle1.getWorkReportSeq()= "+ workBottle.getWorkReportSeq());
+				//logger.debug("WorkReportServiceImpl getWorkReportList1 temp1.getWorkReportSeq()= "+ temp.getWorkReportSeq());
+				
 				// Work_Report_Seq 동일
-				if(temp.getWorkReportSeq() == workBottle.getWorkReportSeq()) {
+				if((temp.getWorkReportSeq() - workBottle.getWorkReportSeq())==0) {
+					//logger.debug("@@@@@@@@@WorkReportServiceImpl getWorkReportList1 workBottle.getWorkReportSeq()= "+ workBottle.getWorkReportSeq());
+					//logger.debug("@@@@@@@@@@@@@WorkReportServiceImpl getWorkReportList1 temp.getWorkReportSeq()= "+ temp.getWorkReportSeq());
+					
 					temp.setCustomerId(workBottle.getCustomerId());
 					temp.setCustomerNm(workBottle.getCustomerNm());
-					temp.setOrderAmount(workBottle.getOrderTotalAmount());
+					temp.setOrderAmount(workBottle.getOrderTotalAmount());					
 					
-					logger.debug("WorkReportServiceImpl getWorkReportList1 temp.getWorkReportSeq()= "+ temp.getWorkReportSeq());
 					logger.debug("WorkReportServiceImpl getWorkReportList1 workBottle.getBottleWorkCd()= "+ workBottle.getBottleWorkCd());
 					
 					// 회수
@@ -209,6 +214,10 @@ public class WorkReportServiceImpl implements WorkReportService {
 						temp.getSalesBottles().add(workBottle);
 					}
 					
+				}else {
+					logger.debug("###########WorkReportServiceImpl getWorkReportList1 workBottle.getWorkReportSeq()= "+ workBottle.getWorkReportSeq());
+					logger.debug("############WorkReportServiceImpl getWorkReportList1 temp.getWorkReportSeq()= "+ temp.getWorkReportSeq());
+					//logger.debug("############WorkReportServiceImpl getWorkReportList1 temp.getWorkReportSeq(-workBottle.getWorkReportSeq())= "+ (temp.getWorkReportSeq()- workBottle.getWorkReportSeq()));
 				}
 			}
 		}
@@ -509,6 +518,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 				}			
 				
 			}
+			logger.debug("---------------- WorkReportServiceImpl registerWorkReport tempProductList.size()== "+tempProductList.size());
 			
 			// 주문 상품과 용기정보가 매칭
 			if(tempProductList.size() == 0 ) {

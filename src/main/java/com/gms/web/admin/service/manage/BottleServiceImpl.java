@@ -416,6 +416,7 @@ public class BottleServiceImpl implements BottleService {
 				bottleList.get(i).setBottleType(param.getBottleType());
 				bottleList.get(i).setUpdateId(param.getCreateId());
 				bottleList.get(i).setChBottleId(bottleList.get(i).getBottleId());
+				if(param.getCustomerId()!=null) bottleList.get(i).setCarCustomerId(param.getCustomerId().toString());
 				
 				//20200208 하나씩 업데이트로 변경
 				result =  bottleMapper.updateBottleWorkCd(bottleList.get(i));

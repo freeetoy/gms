@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -241,7 +242,12 @@ public class WorkReportController {
 		
 		if(result > 0){
 			String alertMessage = "처리되었습니다.";
-			RequestUtils.responseWriteException(response, alertMessage, "/gms/report/list.do");
+			LoginUserVO adminLoginUserVO = (LoginUserVO)request.getSession().getAttribute(LoginUserVO.ATTRIBUTE_NAME); 
+			if(adminLoginUserVO.getUserAuthority().equals(PropertyFactory.getProperty("common.user.Authority.manager")))
+				RequestUtils.responseWriteException(response, alertMessage, "/gms/report/listAll.do");
+			else 
+				RequestUtils.responseWriteException(response, alertMessage, "/gms/report/list.do");
+			
 		}
 		return null;
 		
