@@ -109,7 +109,7 @@ public class GasController {
 	@RequestMapping(value = "/gms/gas/delete.do")
 	public String deleteGas(@RequestParam(value = "gasId", required = false) Integer gasId, Model model) {
 
-		logger.info("******deleteGas params.getGasId()()) *****===*"+gasId);
+		logger.debug("******deleteGas params.getGasId()()) *****===*"+gasId);
 		try { 
 			//임시
 			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.gas"));	
@@ -162,8 +162,8 @@ public class GasController {
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.gas"));	
 		
-		if(result != null) logger.info("******result *****===*"+result.getGasId());
-		else logger.info("******result is null  *****===*"); 
+		if(result != null) logger.debug("******result *****===*"+result.getGasId());
+		else logger.debug("******result is null  *****===*"); 
 		
 		return result;
 	}

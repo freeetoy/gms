@@ -104,9 +104,9 @@ public class LoginController {
 		HttpSession session = request.getSession();
 		
 		if(user!= null) {
-			logger.info("LoginContoller loginAction userNm "+user.getUserNm());			
-			logger.info("LoginContoller loginAction userAuthoriy "+user.getUserAuthority());
-			logger.info("LoginContoller loginAction userPart "+user.getUserPartCd());
+			logger.debug("LoginContoller loginAction userNm "+user.getUserNm());			
+			logger.debug("LoginContoller loginAction userAuthoriy "+user.getUserAuthority());
+			logger.debug("LoginContoller loginAction userPart "+user.getUserPartCd());
 			user.setUserId(param.getUserId());
 			session.setAttribute(LoginUserVO.ATTRIBUTE_NAME, user);		
 			

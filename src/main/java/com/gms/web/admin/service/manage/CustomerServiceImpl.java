@@ -76,16 +76,16 @@ public class CustomerServiceImpl implements CustomerService {
         	lastPageNum = pages;
         }		
 		
-		logger.info("****** getCustomerList *****currentPage===*"+currentPage);	
-		logger.info("****** getCustomerList.lastPage *****===*"+lastPage);		
-		logger.info("****** getCustomerList.starPageNum *****===*"+startPageNum);
-		logger.info("****** getCustomerList.lastPageNum *****===*"+lastPageNum);
+		logger.debug("****** getCustomerList *****currentPage===*"+currentPage);	
+		logger.debug("****** getCustomerList.lastPage *****===*"+lastPage);		
+		logger.debug("****** getCustomerList.starPageNum *****===*"+startPageNum);
+		logger.debug("****** getCustomerList.lastPageNum *****===*"+lastPageNum);
 		
 		Map<String, Object> resutlMap = new HashMap<String, Object>();
 		
 		List<CustomerVO> customerList = customerMapper.selectCustomerList(map);
 		
-		logger.info("****** getCustomerList.customerList *****===*"+customerList.size());
+		logger.debug("****** getCustomerList.customerList *****===*"+customerList.size());
 		
 		resutlMap.put("list",  customerList);
 		resutlMap.put("searchCustomerNm", param.getSearchCustomerNm());
@@ -310,7 +310,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 		// 정보 등록
 		int result = 0;
-		logger.info("****** registerCustomer.getCustomerId()()) *****===*"+customerId);
+		logger.info("****** deleteCustomerPrice.getCustomerId()()) *****===*"+customerId);
 		
 		result = customerMapper.deleteCustomerPrice(customerId);
 		if (result > 0) {
@@ -358,6 +358,5 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerMapper.searchCustomerSimpleListString(customerNm);
 	}
 
-	
 
 }

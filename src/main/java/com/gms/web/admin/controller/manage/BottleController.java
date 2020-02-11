@@ -381,7 +381,7 @@ public class BottleController {
 	public ModelAndView registerBottle(HttpServletRequest request
 			, HttpServletResponse response
 			, BottleVO params) {
-		logger.debug("BottleContoller registerBottle");
+		logger.info("BottleContoller registerBottle");
 		
 		ModelAndView mav = new ModelAndView();
 		RequestUtils.initUserPrgmInfo(request, params);
@@ -464,7 +464,7 @@ public class BottleController {
 			, HttpServletResponse response
 			, Model model
 			, BottleVO params) {
-		logger.debug("BottleContoller modifyBottle");
+		logger.info("BottleContoller modifyBottle");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -624,7 +624,7 @@ public class BottleController {
 	public ModelAndView modifyBottlesWorkCd(HttpServletRequest request
 			, HttpServletResponse response
 			, BottleVO params) {
-		logger.debug("BottleContoller modifyBottleWorkCd");
+		logger.info("BottleContoller modifyBottleWorkCd");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -694,7 +694,7 @@ public class BottleController {
 	public ModelAndView deleteBottle(HttpServletRequest request
 			, HttpServletResponse response
 			, BottleVO params) {
-		logger.debug("BottleContoller modifyBottleWorkCd");		
+		logger.info("BottleContoller modifyBottleWorkCd");		
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -770,7 +770,7 @@ public class BottleController {
 	public ModelAndView deleteBottles(HttpServletRequest request
 			, HttpServletResponse response
 			, BottleVO params) {
-		logger.debug("BottleContoller modifyBottleWorkCd");
+		logger.info("BottleContoller deleteBottles");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		ModelAndView mav = new ModelAndView();
@@ -849,8 +849,7 @@ public class BottleController {
 	@RequestMapping(value = "/gms/bottle/customerBottles.do")
 	@ResponseBody
 	public List<BottleVO> getCustomerBottleList(@RequestParam(value = "customerId", required = false) Integer customerId, Model model)	{
-		
-		
+				
 		List<BottleVO> bottleList =  bottleService.getCustomerBottleList(customerId);
 		
 		model.addAttribute("bottleList", bottleList);		

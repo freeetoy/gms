@@ -84,10 +84,10 @@ public class ProductController {
 		try {
 			//임시
 			
-			logger.info("ProductContoller registerProductgetGasId ==="+req.getParameter("gasId"));
-			logger.info("ProductContoller registerProduct getPrductNm ==="+req.getParameter("productNm"));
-			logger.info("ProductContoller registerProduct productPrice_0 ==="+req.getParameter("productPrice_0"));
-			logger.info("ProductContoller registerProduct priceCount ==="+req.getParameter("priceCount"));
+			logger.debug("ProductContoller registerProductgetGasId ==="+req.getParameter("gasId"));
+			logger.debug("ProductContoller registerProduct getPrductNm ==="+req.getParameter("productNm"));
+			logger.debug("ProductContoller registerProduct productPrice_0 ==="+req.getParameter("productPrice_0"));
+			logger.debug("ProductContoller registerProduct priceCount ==="+req.getParameter("priceCount"));
 			
 			int priceCount  = Integer.parseInt(req.getParameter("priceCount"));
 			ProductVO params = new ProductVO();			
@@ -101,7 +101,8 @@ public class ProductController {
 			else params.setGasId(Integer.parseInt(req.getParameter("gasId")));
 			params.setMemberCompSeq(1);
 			//int productId = productService.registerProduct(params);
-			logger.info("ProductContoller registerProduct params.getGasId()d ==="+params.getGasId());
+			logger.debug("ProductContoller registerProduct params.getGasId()d ==="+params.getGasId());
+			
 			ProductPriceVO[] priceVo = new ProductPriceVO[priceCount] ;			
 			
 			for(int i =0 ; i <priceCount ; i++ ) {
@@ -153,11 +154,10 @@ public class ProductController {
 			
 			//ProductPrice 정보
 			List<ProductPriceVO> productPriceList = productService.getProductPriceList(params.getProductId());
-			logger.debug("******getProductPriceList*****= size==*"+productPriceList.size());
-			
+			logger.debug("******getProductPriceList*****= size==*"+productPriceList.size());			
 			logger.debug("******getProductPriceList*****= getProductCapa==*"+productPriceList.get(0).getProductCapa());
-			model.addAttribute("productPriceList", productPriceList);
 			
+			model.addAttribute("productPriceList", productPriceList);			
 			
 		} catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -172,14 +172,14 @@ public class ProductController {
 	
 	@RequestMapping(value = "/gms/product/modify.do", method = RequestMethod.POST)
 	public String modifyProduct(HttpServletRequest req) {
-		logger.info("ProductContoller registerProduct");
+		logger.info("ProductContoller modifyProduct");
 		try {
 			//임시
 			
-			logger.info("ProductContoller registerProductgetGasId ==="+req.getParameter("gasId"));
-			logger.info("ProductContoller registerProduct getPrductNm ==="+req.getParameter("productNm"));
-			logger.info("ProductContoller registerProduct productPrice_0 ==="+req.getParameter("productPrice_0"));
-			logger.info("ProductContoller registerProduct priceCount ==="+req.getParameter("priceCount"));
+			logger.debug("ProductContoller modifyProduct getGasId ==="+req.getParameter("gasId"));
+			logger.debug("ProductContoller modifyProduct getPrductNm ==="+req.getParameter("productNm"));
+			logger.debug("ProductContoller modifyProduct productPrice_0 ==="+req.getParameter("productPrice_0"));
+			logger.debug("ProductContoller modifyProduct priceCount ==="+req.getParameter("priceCount"));
 			
 			int priceCount  = Integer.parseInt(req.getParameter("priceCount"));
 			ProductVO params = new ProductVO();		
@@ -195,7 +195,7 @@ public class ProductController {
 			params.setMemberCompSeq(1);
 			//int productId = productService.registerProduct(params);
 			
-			logger.info("ProductContoller registerProduct params.getGasId()d ==="+params.getGasId());
+			logger.debug("ProductContoller registerProduct params.getGasId()d ==="+params.getGasId());
 			
 			ProductPriceVO[] priceVo = new ProductPriceVO[priceCount] ;
 						
@@ -205,6 +205,7 @@ public class ProductController {
 				result = false;
 			
 				RequestUtils.initUserPrgmInfo(req, priceVo1);
+				
 				if(req.getParameter("productPriceSeq_"+i)!=null) {
 				//priceVo1.setProductId(Integer.valueOf(productId));
 					priceVo1.setProductId(Integer.parseInt(req.getParameter("productId")));					
@@ -282,7 +283,7 @@ public class ProductController {
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.product"));
 
 		logger.info("******modifyProductPriceStatus params.getProductId()()) *****===*"+productId);
-		logger.info("******modifyProductPriceStatus params.productPriceSeq()()) *****===*"+productPriceSeq);
+		logger.debug("******modifyProductPriceStatus params.productPriceSeq()()) *****===*"+productPriceSeq);
 		
 		try { 
 			//임시6
@@ -339,8 +340,8 @@ public class ProductController {
 		ProductVO result = productService.getProductDetails(productId);
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.product"));
 				
-		if(result != null) logger.info("******result *****===*"+result.getProductId());
-		else logger.info("******result is null  *****===*"); 
+		if(result != null) logger.debug("******result *****===*"+result.getProductId());
+		else logger.debug("******result is null  *****===*"); 
 		
 		return result;
 	}

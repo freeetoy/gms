@@ -27,7 +27,7 @@ public interface WorkReportMapper {
 	
 	public List<BottleVO> selectWorBottleListTotal(Map<String, Object> map);	
 	
-	public List<BottleVO> selectWorBottleListToday();	
+	public List<BottleVO> selectWorBottleListToday(BottleVO params);	
 	
 	public int selectWorBottleCountTotal(Map<String, Object> map);	
 	

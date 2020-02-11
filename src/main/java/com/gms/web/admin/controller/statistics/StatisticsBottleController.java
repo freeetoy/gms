@@ -45,7 +45,7 @@ public class StatisticsBottleController {
 	public ModelAndView getStatisticsBottleDaily(StatisticsBottleVO params) {
 
 		logger.info("StatisticsBottleContoller getStatisticsBottleDaily");
-		logger.info("StatisticsBottleContoller searchStatisticsBottleDt "+ params.getSearchStatDt());
+		logger.debug("StatisticsBottleContoller searchStatisticsBottleDt "+ params.getSearchStatDt());
 
 		ModelAndView mav = new ModelAndView();
 		
@@ -97,11 +97,9 @@ public class StatisticsBottleController {
 	public ModelAndView getStatisticsBottleMonthly(StatisticsBottleVO params) {
 
 		logger.info("StatisticsBottleContoller getStatisticsBottleMonthly");
-		logger.info("StatisticsBottleContoller searchStatisticsBottleDt "+ params.getSearchStatDt());
+		logger.debug("StatisticsBottleContoller searchStatisticsBottleDt "+ params.getSearchStatDt());
 
 		ModelAndView mav = new ModelAndView();
-		
-		//Integer searchBottleId = params.getSearchBottleId();
 				
 		String searchStatDt = params.getSearchStatDt();	
 		

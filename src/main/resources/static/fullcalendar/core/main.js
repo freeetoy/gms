@@ -4592,11 +4592,11 @@ Docs & License: https://fullcalendar.io/
             prevYear: 'prev year',
             nextYear: 'next year',
             year: 'year',
-            today: 'today',
-            month: 'month',
+            today: '오늘',
+            month: '월',
             week: 'week',
             day: 'day',
-            list: 'list'
+            list: '목록'
         },
         weekLabel: 'W',
         allDayText: 'all-day',

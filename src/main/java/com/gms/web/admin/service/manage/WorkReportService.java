@@ -20,7 +20,7 @@ public interface WorkReportService {
 	
 	public Map<String,Object> getWorkBottleListTotal(BottleVO param);	
 	
-	public List<BottleVO> getWorkBottleListToday();	
+	public List<BottleVO> getWorkBottleListToday(BottleVO param);	
 	
 	public int getWorkReportSeq() ;
 	

@@ -222,7 +222,7 @@ public class ExcelServiceImpl implements ExcelService {
                 	
                 }
             }
-            logger.info("$$$$$$$$$$$$$$ ExcelService sb "+ sb.toString());
+            logger.error("$$$$$$$$$$$$$$ ExcelService sb "+ sb.toString());
             result = bottleService.registerBottles(list);
             
             logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);

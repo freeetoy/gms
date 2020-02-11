@@ -20,7 +20,7 @@ public class CodeServiceImpe implements CodeService {
 
 	@Override
 	public List<CodeVO> getCodeList(String param) {
-		logger.info("****** getCodeList *****===*" + param);
+		logger.debug("****** getCodeList *****===*" + param);
 		return codeMapper.selectCodeList(param);
 	}
 

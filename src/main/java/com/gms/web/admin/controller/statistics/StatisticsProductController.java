@@ -48,12 +48,10 @@ public class StatisticsProductController {
 	public ModelAndView getStatisticsProductDaily(StatisticsProductVO params) {
 
 		logger.info("StatisticsProductContoller getStatisticsProductDaily");
-		logger.info("StatisticsProductContoller searchStatisticsProductDt "+ params.getSearchStatDt());
+		logger.debug("StatisticsProductContoller searchStatisticsProductDt "+ params.getSearchStatDt());
 
-		ModelAndView mav = new ModelAndView();
-		
-		//Integer searchProductId = params.getSearchProductId();
-				
+		ModelAndView mav = new ModelAndView();		
+		//Integer searchProductId = params.getSearchProductId();				
 		String searchStatDt = params.getSearchStatDt();	
 		
 		String searchStatDtFrom = null;
@@ -92,8 +90,7 @@ public class StatisticsProductController {
 		List<ProductVO> productList = productService.getProductList();
 		mav.addObject("productList", productList);
 		
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_product"));	 
-		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_product"));			
 		
 		mav.setViewName("gms/statistics/product/daily");
 		
@@ -105,7 +102,7 @@ public class StatisticsProductController {
 	public ModelAndView getStatisticsProductMonthly(StatisticsProductVO params) {
 
 		logger.info("StatisticsProductContoller getStatisticsProductMonthly");
-		logger.info("StatisticsProductContoller searchStatisticsProductDt "+ params.getSearchStatDt());
+		logger.debug("StatisticsProductContoller searchStatisticsProductDt "+ params.getSearchStatDt());
 
 		ModelAndView mav = new ModelAndView();
 		
@@ -150,8 +147,7 @@ public class StatisticsProductController {
 		List<ProductVO> productList = productService.getProductList();
 		mav.addObject("productList", productList);
 		
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_product"));	 
-		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_product"));	 		
 		
 		mav.setViewName("gms/statistics/product/monthly");
 		
@@ -259,9 +255,7 @@ public class StatisticsProductController {
 		    }	
 	
 		    // 컨텐츠 타입과 파일명 지정
-		    response.setContentType("ms-vnd/excel");
-		    
-		    
+		    response.setContentType("ms-vnd/excel");    
 		    response.setHeader("Content-Disposition", "attachment;filename="+fileName);	
 	
 		    // 엑셀 출력

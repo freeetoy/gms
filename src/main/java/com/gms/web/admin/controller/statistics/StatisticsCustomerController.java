@@ -47,7 +47,7 @@ public class StatisticsCustomerController {
 	public ModelAndView getStatisticsCustomerDaily(StatisticsCustomerVO params) {
 
 		logger.info("StatisticsCustomerContoller getStatisticsCustomerDaily");
-		logger.info("StatisticsCustomerContoller searchStatisticsCustomerDt "+ params.getSearchStatDt());
+		logger.debug("StatisticsCustomerContoller searchStatisticsCustomerDt "+ params.getSearchStatDt());
 
 		ModelAndView mav = new ModelAndView();
 		
@@ -92,8 +92,7 @@ public class StatisticsCustomerController {
 		Map<String, Object> map = customerService.searchCustomerList("");
 		mav.addObject("customerList", map.get("list"));
 		
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_customer"));	 
-		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_customer"));	 		
 		
 		mav.setViewName("gms/statistics/customer/daily");
 		
@@ -105,11 +104,9 @@ public class StatisticsCustomerController {
 	public ModelAndView getStatisticsCustomerMonthly(StatisticsCustomerVO params) {
 
 		logger.info("StatisticsCustomerContoller getStatisticsCustomerMonthly");
-		logger.info("StatisticsCustomerContoller searchStatisticsCustomerDt "+ params.getSearchStatDt());
+		logger.debug("StatisticsCustomerContoller searchStatisticsCustomerDt "+ params.getSearchStatDt());
 
 		ModelAndView mav = new ModelAndView();
-		
-		//Integer searchCustomerId = params.getSearchCustomerId();
 				
 		String searchStatDt = params.getSearchStatDt();	
 		
@@ -150,8 +147,7 @@ public class StatisticsCustomerController {
 		Map<String, Object> map = customerService.searchCustomerList("");
 		mav.addObject("customerList", map.get("list"));
 		
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_customer"));	 
-		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_customer"));		
 		
 		mav.setViewName("gms/statistics/customer/monthly");
 		
@@ -256,9 +252,7 @@ public class StatisticsCustomerController {
 		    }	
 	
 		    // 컨텐츠 타입과 파일명 지정
-		    response.setContentType("ms-vnd/excel");
-		    
-		    
+		    response.setContentType("ms-vnd/excel"); 
 		    response.setHeader("Content-Disposition", "attachment;filename="+fileName);	
 	
 		    // 엑셀 출력

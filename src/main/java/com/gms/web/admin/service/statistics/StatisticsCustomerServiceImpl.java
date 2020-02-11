@@ -22,7 +22,7 @@ public class StatisticsCustomerServiceImpl implements StatisticsCustomerService 
 	
 	@Override
 	public List<StatisticsCustomerVO> getDailylStatisticsCustomerList(StatisticsCustomerVO param) {
-		logger.debug("****** getDailylStatisticsCustomerList *****start===*");	
+		logger.info("****** getDailylStatisticsCustomerList *****start===*");	
 		
 		Map<String, Object> map = new HashMap<String, Object>();		
 
@@ -36,12 +36,12 @@ public class StatisticsCustomerServiceImpl implements StatisticsCustomerService 
 		
 		if(param.getSearchStatDtFrom() != null) {
 			map.put("searchStatDtFrom", param.getSearchStatDtFrom());
-			logger.info("****** getDailylStatisticsCustomerList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
+			logger.debug("****** getDailylStatisticsCustomerList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
 		}
 		
 		if(param.getSearchStatDtEnd() != null) {
 			map.put("searchStatDtEnd", param.getSearchStatDtEnd());
-			logger.info("****** getDailylStatisticsCustomerList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
+			logger.debug("****** getDailylStatisticsCustomerList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
 		}	
 				
 		List<StatisticsCustomerVO> statList = statMapper.selectDailylStatisticsCustomerList(map);	
@@ -53,7 +53,7 @@ public class StatisticsCustomerServiceImpl implements StatisticsCustomerService 
 	@Override
 	public List<StatisticsCustomerVO> getMontlylStatisticsCustomerList(StatisticsCustomerVO param) {
 
-		logger.debug("****** getMonthlyStatisticsCustomerList *****start===*");	
+		logger.info("****** getMonthlyStatisticsCustomerList *****start===*");	
 		
 		Map<String, Object> map = new HashMap<String, Object>();		
 
@@ -66,12 +66,12 @@ public class StatisticsCustomerServiceImpl implements StatisticsCustomerService 
 		
 		if(param.getSearchStatDtFrom() != null) {
 			map.put("searchStatDtFrom", param.getSearchStatDtFrom());
-			logger.info("****** getMonthlylStatisticsCustomerList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
+			logger.debug("****** getMonthlylStatisticsCustomerList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
 		}
 		
 		if(param.getSearchStatDtEnd() != null) {
 			map.put("searchStatDtEnd", param.getSearchStatDtEnd());
-			logger.info("****** getMonthlylStatisticsCustomerList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
+			logger.debug("****** getMonthlylStatisticsCustomerList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
 		}	
 				
 		List<StatisticsCustomerVO> statList = statMapper.selectMontlylStatisticsCustomerList(map);	

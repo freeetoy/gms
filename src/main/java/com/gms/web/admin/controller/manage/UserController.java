@@ -66,7 +66,7 @@ public class UserController {
 			, HttpServletResponse response
 			, Model model
 			, UserVO params) {
-		logger.debug("UserContoller registerUser");
+		logger.info("UserContoller registerUser");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -147,12 +147,11 @@ public class UserController {
 	public String deleteUser(UserVO params, Model model) {
 
 		logger.info("******deleteUser params.getUserId()()) *****===*"+params.getUserId());
-		logger.info("******deleteUser params.currentPage) *****===*"+params.getCurrentPage());
+		logger.debug("******deleteUser params.currentPage) *****===*"+params.getCurrentPage());
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.user"));
 		
 		try { 
-			//임시
 			
 			boolean result = userService.deleteUser(params.getUserId());
 			if (result == false) {
@@ -224,8 +223,8 @@ public class UserController {
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.user"));
 		
-		if(result != null) logger.info("******result *****===*"+result.getUserId());
-		else logger.info("******result is null  *****===*"); 
+		if(result != null) logger.debug("******result *****===*"+result.getUserId());
+		else logger.debug("******result is null  *****===*"); 
 		
 		return result;
 	}

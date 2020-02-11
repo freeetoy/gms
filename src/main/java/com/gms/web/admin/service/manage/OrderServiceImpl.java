@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
 	public Map<String, Object> getOrderList(OrderVO param) {
 		logger.info("****** getOrderList *****start===*");		
 		
-		logger.info("****** getOrderList *****param.getRowPerPage===*" + param.getRowPerPage());
+		logger.debug("****** getOrderList *****param.getRowPerPage===*" + param.getRowPerPage());
 		
 		int currentPage = param.getCurrentPage();
 		int ROW_PER_PAGE = param.getRowPerPage();
@@ -149,17 +149,17 @@ public class OrderServiceImpl implements OrderService {
 		map.put("searchCustomerNm", param.getSearchCustomerNm());	
 		if(param.getSearchOrderDt() != null) {
 			map.put("searchOrderDt", param.getSearchOrderDt());
-			logger.info("****** getOrderListToExcel *****getSearchOrderDt===*"+param.getSearchOrderDt());
+			logger.debug("****** getOrderListToExcel *****getSearchOrderDt===*"+param.getSearchOrderDt());
 		}		
 		
 		if(param.getSearchOrderDtFrom() != null) {
 			map.put("searchOrderDtFrom", param.getSearchOrderDtFrom());
-			logger.info("****** getOrderListToExcel *****getSearchOrderDtFrom===*"+param.getSearchOrderDtFrom());
+			logger.debug("****** getOrderListToExcel *****getSearchOrderDtFrom===*"+param.getSearchOrderDtFrom());
 		}
 		
 		if(param.getSearchOrderDtEnd() != null) {
 			map.put("searchOrderDtEnd", param.getSearchOrderDtEnd());
-			logger.info("****** getOrderListToExcel *****getSearchOrderDtEnd===*"+param.getSearchOrderDtEnd());
+			logger.debug("****** getOrderListToExcel *****getSearchOrderDtEnd===*"+param.getSearchOrderDtEnd());
 		}	
 				
 		List<OrderVO> orderList = orderMapper.selectOrderListToExcel(map);
@@ -306,9 +306,7 @@ public class OrderServiceImpl implements OrderService {
 							productVo.setOrderAmount(orderAmount);
 							orderTotalAmount += orderAmount;								
 						}
-					}						
-									
-					
+					}				
 						
 					logger.debug("OrderContoller registerOrder orderTotalAmount== "+ orderTotalAmount);
 					
@@ -493,7 +491,6 @@ public class OrderServiceImpl implements OrderService {
 					}
 					
 					//logger.debug("OrderContoller modifyOrder customerPriceList.size() = "+ customerPriceList.size());		
-												
 						
 					for(int k=0;k<productPriceList.size();k++) {
 						orderAmount = 0;
@@ -561,8 +558,7 @@ public class OrderServiceImpl implements OrderService {
 				params.setOrderProductCapa(orderProductCapa);
 				params.setOrderTotalAmount(orderTotalAmount);
 			}
-			//
-			
+			//			
 			params.setOrderProcessCd(PropertyFactory.getProperty("common.code.order.process.01"));
 		
 			result =  orderMapper.updateOrder(params);	
@@ -804,7 +800,6 @@ public class OrderServiceImpl implements OrderService {
 	public int modifyOrderBottle(OrderBottleVO param) {
 		return orderMapper.updateOrderBottle(param);	
 	}
-
 	
 	
 }

@@ -63,8 +63,8 @@ public class UserServiceImpl implements UserService {
 			
 			String strPassword = param.getUserPasswd();
 			
-			logger.info("****** modifyUser()()) *****===*"+strPassword);
-			logger.info("****** modifyUser()()) *****===*"+aescipher.aesEncode( strPassword));
+			logger.debug("****** modifyUser()()) *****===*"+strPassword);
+			logger.debug("****** modifyUser()()) *****===*"+aescipher.aesEncode( strPassword));
 			
 			
 			param.setUserPasswd(aescipher.aesEncode( strPassword) );
@@ -171,8 +171,8 @@ public class UserServiceImpl implements UserService {
 		logger.info("****** getUserList *****start===*");
 		
 		
-		logger.info("****** getUserList *****param.getSearchUserNm===*" + param.getSearchUserNm());
-		logger.info("****** getUserList *****param.getRowPerPage===*" + param.getRowPerPage());
+		logger.debug("****** getUserList *****param.getSearchUserNm===*" + param.getSearchUserNm());
+		logger.debug("****** getUserList *****param.getRowPerPage===*" + param.getRowPerPage());
 		
 		int currentPage = param.getCurrentPage();
 		int ROW_PER_PAGE = param.getRowPerPage();
@@ -196,19 +196,18 @@ public class UserServiceImpl implements UserService {
 		
 		if(param.getUserPartCd() != null) {
 			map.put("userPartCd", param.getUserPartCd());
-			logger.info("****** getUserList *****userPartCd===*"+param.getUserPartCd());
+			logger.debug("****** getUserList *****userPartCd===*"+param.getUserPartCd());
 		}
-		logger.info("****** getUserList *****currentPage===*"+currentPage);
-		
+		logger.debug("****** getUserList *****currentPage===*"+currentPage);		
 		
 		int userCount = userMapper.selectUserCount(map);
 		
-		logger.info("****** getUserList.userCount *****===*"+userCount);
+		logger.debug("****** getUserList.userCount *****===*"+userCount);
 		
 		//int lastPage = (int)(Math.ceil(userCount/ROW_PER_PAGE));
 		int lastPage = (int)((double)userCount/ROW_PER_PAGE+0.95);
 		
-		logger.info("****** getUserList.lastPage *****===*"+lastPage);
+		logger.debug("****** getUserList.lastPage *****===*"+lastPage);
 		
 		if(currentPage >= (lastPage-4)) {
 			lastPageNum = lastPage;
@@ -216,7 +215,7 @@ public class UserServiceImpl implements UserService {
 		
 		//수정 Start
 		int pages = (userCount == 0) ? 1 : (int) ((userCount - 1) / ROW_PER_PAGE) + 1; // * 정수형이기때문에 소숫점은 표시안됨
-		logger.info("****** getCustomerList *****param.pages===*" + pages);
+		logger.debug("****** getCustomerList *****param.pages===*" + pages);
         int blocks;
         int block;
         blocks = (int) Math.ceil(1.0 * pages / ROW_PER_PAGE); // *소숫점 반올림

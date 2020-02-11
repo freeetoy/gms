@@ -22,7 +22,7 @@ public class StatisticsBottleServiceImpl implements StatisticsBottleService {
 	
 	@Override
 	public List<StatisticsBottleVO> getDailylStatisticsBottleList(StatisticsBottleVO param) {
-		logger.debug("****** getDailylStatisticsBottleList *****start===*");	
+		logger.info("****** getDailylStatisticsBottleList *****start===*");	
 		
 		Map<String, Object> map = new HashMap<String, Object>();		
 		
@@ -33,12 +33,12 @@ public class StatisticsBottleServiceImpl implements StatisticsBottleService {
 		
 		if(param.getSearchStatDtFrom() != null) {
 			map.put("searchStatDtFrom", param.getSearchStatDtFrom());
-			logger.info("****** getDailylStatisticsBottleList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
+			logger.debug("****** getDailylStatisticsBottleList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
 		}
 		
 		if(param.getSearchStatDtEnd() != null) {
 			map.put("searchStatDtEnd", param.getSearchStatDtEnd());
-			logger.info("****** getDailylStatisticsBottleList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
+			logger.debug("****** getDailylStatisticsBottleList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
 		}	
 				
 		List<StatisticsBottleVO> statList = statMapper.selectDailylStatisticsBottleList(map);	
@@ -48,7 +48,7 @@ public class StatisticsBottleServiceImpl implements StatisticsBottleService {
 
 	@Override
 	public List<StatisticsBottleVO> getMontlylStatisticsBottleList(StatisticsBottleVO param) {
-		logger.debug("****** getMonthlyStatisticsBottleList *****start===*");	
+		logger.info("****** getMonthlyStatisticsBottleList *****start===*");	
 		
 		Map<String, Object> map = new HashMap<String, Object>();		
 		
@@ -59,12 +59,12 @@ public class StatisticsBottleServiceImpl implements StatisticsBottleService {
 		
 		if(param.getSearchStatDtFrom() != null) {
 			map.put("searchStatDtFrom", param.getSearchStatDtFrom());
-			logger.info("****** getMonthlylStatisticsBottleList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
+			logger.debug("****** getMonthlylStatisticsBottleList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
 		}
 		
 		if(param.getSearchStatDtEnd() != null) {
 			map.put("searchStatDtEnd", param.getSearchStatDtEnd());
-			logger.info("****** getMonthlylStatisticsBottleList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
+			logger.debug("****** getMonthlylStatisticsBottleList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
 		}	
 				
 		List<StatisticsBottleVO> statList = statMapper.selectMontlylStatisticsBottleList(map);		

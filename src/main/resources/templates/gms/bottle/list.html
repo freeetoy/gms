@@ -62,195 +62,195 @@ var fn_deleteBottle = function(bottleId){
         form.submit();			
 	}                  		
 }
-	//Ajax공통 호출
-	function callAjax(ajaxInfo){
-		var dfd = $.Deferred();
-		$.ajax(ajaxInfo).done(function(data){
-			dfd.resolve(data);
-		});
-		
-		return dfd.promise();
-	}
+//Ajax공통 호출
+function callAjax(ajaxInfo){
+	var dfd = $.Deferred();
+	$.ajax(ajaxInfo).done(function(data){
+		dfd.resolve(data);
+	});
 	
+	return dfd.promise();
+}
+
+
+var fn_ChangeBottleWorkCd = function(bottleId){
+
+	//$("table.table-hover").find('tr').remove();
 	
-	var fn_ChangeBottleWorkCd = function(bottleId){
-	
-		//$("table.table-hover").find('tr').remove();
-		
-		var ajaxInfo ={
-			type:"POST",
-			url:"/gms/bottle/detail.do",
-			data:{
-				bottleId : bottleId
-			},
-			dataType: "json",
-		};
-		
-		ajax = callAjax(ajaxInfo);
-		
-		ajax.done(function(data){
-			console.log(data);
-
-			$("#chBottleId").val(data.bottleId);
-			$("#bottleBarCd").val(data.bottleBarCd);
-			
-			$('select[id="bottleWorkCd"]').find('option:contains(data.bottleWorkCd)').attr("selected",true);
-
-			$("#bottleWorkCd").val(data.bottleWorkCd);		
-			
-			$('select[id="bottleType"]').find('option:contains(data.bottleType)').attr("selected",true);
-
-			$("#bottleType").val(data.bottleType);		
-				
-			if(data.result == "fail"){
-				alert("용기가 존재하지 않습니다");			
-				return;
-			}
-			
-		});
-		
+	var ajaxInfo ={
+		type:"POST",
+		url:"/gms/bottle/detail.do",
+		data:{
+			bottleId : bottleId
+		},
+		dataType: "json",
 	};
 	
-	    
-	var goUpdate = function(bottleId){		
+	ajax = callAjax(ajaxInfo);
+	
+	ajax.done(function(data){
+		console.log(data);
+
+		$("#chBottleId").val(data.bottleId);
+		$("#bottleBarCd").val(data.bottleBarCd);
 		
-		//alert("goUpdate "+bottleId);
-		console.log("goUpdate bottleId ="+bottleId);
-		var form = $("#mainForm");	
+		$('select[id="bottleWorkCd"]').find('option:contains(data.bottleWorkCd)').attr("selected",true);
 
-		$("#bottleId").val(bottleId);
-    	
-    	//document.getElementById("priceCount").value = totalCount;
-    	mainForm.action="/gms/bottle/update.do";
-    	form.submit();view_type
-	}
-	
-	// 입력된 내용을 작성한다.
-	function goSearch(){	
+		$("#bottleWorkCd").val(data.bottleWorkCd);		
 		
-		var form = document.mainForm;	
-		$("#currentPage").val(1);  
-		form.currentPage.value=1;
-		form.action="/gms/bottle/list.do?currentPage=1";
-		form.submit();
-	};
+		$('select[id="bottleType"]').find('option:contains(data.bottleType)').attr("selected",true);
 
-
-
-	function gotoPage(pageNo) {
-		
-		var form =  document.mainForm;			
-		
-		$("#currentPage").val(pageNo);  
-		 mainForm.action="/gms/bottle/list.do";
-        //validate checkt시 confirm 중복되는 부분 처리 
-       
-    	mainForm.submit();
-    }
-	
-
-	$(function() {
-	
-	  $('input[name="searchChargeDt"]').daterangepicker({
-	      autoUpdateInput: false,
-	      startDate: new Date(),
-	      language: "kr",
-	      locale: {
-	          cancelLabel: 'Clear'
-	      }	  	
-	  });
-	
-	  $('input[name="searchChargeDt"]').on('apply.daterangepicker', function(ev, picker) {
-	      $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
-	  });
-	
-	  $('input[name="searchChargeDt"]').on('cancel.daterangepicker', function(ev, picker) {
-	      $(this).val('');
-	  });
-	
-	});	
-
-	
-	function fn_deleteBottles()
-	{
-		/*
-		var checked_len = $("input[name='check_id[]']:checked").length;
-		alert("checked_len="+checked_len);
-		if(checked_len <1){
-			alert('삭제할 항목을 선택 하세요.');
-				return false;
-		}
-		*/
-		var checkedValue = ""; 
-		var chki=0;
-		var inputElements = document.getElementsByClassName('IdCheckbox');
-		for(var i=0; inputElements[i]; ++i){
-		      if(inputElements[i].checked){	
-		    	  
-		    	   //checkedValue +="'";
-		           checkedValue += (inputElements[i].value);
-		           chki++;
-		           //break;
-		           checkedValue +=",";
-		      }
+		$("#bottleType").val(data.bottleType);		
+			
+		if(data.result == "fail"){
+			alert("용기가 존재하지 않습니다");			
+			return;
 		}
 		
-		if(chki < 1){
-			alert('삭제할 항목을 선택 하세요.');
+	});
+	
+};
+
+    
+var goUpdate = function(bottleId){		
+	
+	//alert("goUpdate "+bottleId);
+	console.log("goUpdate bottleId ="+bottleId);
+	var form = $("#mainForm");	
+
+	$("#bottleId").val(bottleId);
+   	
+   	//document.getElementById("priceCount").value = totalCount;
+   	mainForm.action="/gms/bottle/update.do";
+   	form.submit();view_type
+}
+
+// 입력된 내용을 작성한다.
+function goSearch(){	
+	
+	var form = document.mainForm;	
+	$("#currentPage").val(1);  
+	form.currentPage.value=1;
+	form.action="/gms/bottle/list.do?currentPage=1";
+	form.submit();
+};
+
+
+
+function gotoPage(pageNo) {
+	
+	var form =  document.mainForm;			
+	
+	$("#currentPage").val(pageNo);  
+	 mainForm.action="/gms/bottle/list.do";
+       //validate checkt시 confirm 중복되는 부분 처리 
+      
+   	mainForm.submit();
+   }
+
+
+$(function() {
+
+  $('input[name="searchChargeDt"]').daterangepicker({
+      autoUpdateInput: false,
+      startDate: new Date(),
+      language: "kr",
+      locale: {
+          cancelLabel: 'Clear'
+      }	  	
+  });
+
+  $('input[name="searchChargeDt"]').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+  });
+
+  $('input[name="searchChargeDt"]').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+  });
+
+});	
+
+
+function fn_deleteBottles()
+{
+	/*
+	var checked_len = $("input[name='check_id[]']:checked").length;
+	alert("checked_len="+checked_len);
+	if(checked_len <1){
+		alert('삭제할 항목을 선택 하세요.');
 			return false;
-			
-		}
-		console.log("chki="+chki);	
-		console.log("checkeValue="+checkedValue);		
-		
-		if(confirm("정말로 삭제 하시겠습니까?")){
-
-			var form = document.createElement("form");
-			form.setAttribute("charset","UTF-8");
-			form.setAttribute("method","post");
-			form.setAttribute("action","/gms/bottle/deleteChecked.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchProductId=[[ ${searchProductId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
-			
-			var hiddenField = document.createElement("input");
-	        hiddenField.setAttribute("type", "hidden");
-	        hiddenField.setAttribute("name", "bottleIds");
-	        hiddenField.setAttribute("value", checkedValue);
-
-	        form.appendChild(hiddenField);
-	       
-	        document.body.appendChild(form);
-
-	        form.submit();			
-			
-		}else{
-
-		return false;
-		}
-
+	}
+	*/
+	var checkedValue = ""; 
+	var chki=0;
+	var inputElements = document.getElementsByClassName('IdCheckbox');
+	for(var i=0; inputElements[i]; ++i){
+	      if(inputElements[i].checked){	
+	    	  
+	    	   //checkedValue +="'";
+	           checkedValue += (inputElements[i].value);
+	           chki++;
+	           //break;
+	           checkedValue +=",";
+	      }
 	}
 	
+	if(chki < 1){
+		alert('삭제할 항목을 선택 하세요.');
+		return false;
+		
+	}
+	console.log("chki="+chki);	
+	console.log("checkeValue="+checkedValue);		
 	
-	function doExcelUploadProcess(){
-		/*
-        var f = new FormData(document.getElementById('form1'));
-        
-        var ajaxInfo ={
-        		url: "/uploadExcelFile",
-                data: f,
-                processData: false,
-                contentType: false,
-                type: "POST",
-    			dataType: "json",
-    		};
-    		
-    		ajax = callAjax(ajaxInfo);
-    		
-    		ajax.done(function(data){
-    			console.log(data);
-    			//document.getElementById('result').innerHTML = JSON.stringify(data);
-    		});
-    		*/
-    		form1.submit();
-    }
+	if(confirm("정말로 삭제 하시겠습니까?")){
+
+		var form = document.createElement("form");
+		form.setAttribute("charset","UTF-8");
+		form.setAttribute("method","post");
+		form.setAttribute("action","/gms/bottle/deleteChecked.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchProductId=[[ ${searchProductId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
+		
+		var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "bottleIds");
+        hiddenField.setAttribute("value", checkedValue);
+
+        form.appendChild(hiddenField);
+       
+        document.body.appendChild(form);
+
+        form.submit();			
+		
+	}else{
+
+	return false;
+	}
+
+}
+
+
+function doExcelUploadProcess(){
+	/*
+       var f = new FormData(document.getElementById('form1'));
+       
+       var ajaxInfo ={
+       		url: "/uploadExcelFile",
+               data: f,
+               processData: false,
+               contentType: false,
+               type: "POST",
+   			dataType: "json",
+   		};
+   		
+   		ajax = callAjax(ajaxInfo);
+   		
+   		ajax.done(function(data){
+   			console.log(data);
+   			//document.getElementById('result').innerHTML = JSON.stringify(data);
+   		});
+   		*/
+	form1.submit();
+}
 	
 	
 $(document).ready(function(){	
@@ -509,8 +509,8 @@ $(document).ready(function(){
          		});
              break;  
            case 'btn_process_7':
-              msg = "'기타' 하시겠습니까?";
-              bottleWorkCd ='0311';
+              msg = "'충전기한확인' 하시겠습니까?";
+              bottleWorkCd ='0304';
               $("#view_type").show();
               $("#view_cust").hide();
               break;  
@@ -856,7 +856,7 @@ $(document).ready(function(){
 											<button type="button" id="btn_process_4" class="btn btn-info btn btn btn_process_check">출고</button>
 											<!--  button type="button" id="btn_process_5" class="btn btn-info btn btn_process_check">판매</button>-->
 											<button type="button" id="btn_process_6" class="btn btn-info btn btn_process_check">회수</button>
-											<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">기타</button>
+											<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">충전기한확인</button>
 										</div>
 										</tr>										
 									</table>									
@@ -1106,9 +1106,10 @@ $(document).ready(function(){
 				</div>
 			</div>
 			
-			<div class="col-2" align='right'>
+			<div th:if="${session.LoginUser.userAuthority=='99'}" class="col-2" align='right'>
 				 <a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i>용기변경</a> 
             	<a class="btn_select_process2 btn btn-primary btn-sm"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-upload"></i>엑셀등록</a>
+			<div th:unless="${session.LoginUser.userAuthority=='99'}" class="col-2" align='right'>
 			</div>
 			
 		</div>

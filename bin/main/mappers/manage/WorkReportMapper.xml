@@ -404,7 +404,7 @@
 		</if>								
 	</select>
 	
-	<select id="selectWorBottleListToday" resultType="com.gms.web.admin.domain.manage.BottleVO">		
+	<select id="selectWorBottleListToday" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="com.gms.web.admin.domain.manage.BottleVO">		
 		SELECT A.*, B.Customer_Nm
 		FROM (
 			SELECT
@@ -436,13 +436,16 @@
 			AND 
 				DATE_FORMAT(Work_Dt,'%Y/%m/%d') = DATE_FORMAT(curdate(),'%Y/%m/%d')	
 			AND 
-				TWB.`Work_Report_Seq` = TW.`Work_Report_Seq`
+				TWB.Work_Report_Seq = TW.Work_Report_Seq
 			AND 
-				TWB.`Bottle_ID` = TB.`Bottle_ID`
+				TWB.Bottle_ID = TB.Bottle_ID
 			AND 
 				TWB.Bottle_Work_CD = TC.CD_ID	
 			AND 
 				TWB.Product_ID = TG.Product_Id
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchWorkCd)">
+			AND TWB.Bottle_Work_CD =  #{searchWorkCd}
+			</if>			
 		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID	
 		ORDER BY Bottle_Work_DT DESC 
 	</select>

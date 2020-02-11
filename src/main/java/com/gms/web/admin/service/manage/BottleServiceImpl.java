@@ -131,7 +131,6 @@ public class BottleServiceImpl implements BottleService {
 		Map<String, Object> resutlMap = new HashMap<String, Object>();
 		
 		List<BottleVO> bottleList = bottleMapper.selectBottleList(map);
-
 		
 		resutlMap.put("list",  bottleList);
 		
@@ -143,8 +142,7 @@ public class BottleServiceImpl implements BottleService {
 		
 		logger.debug("BottleService startPageNum "+ startPageNum);
 		logger.debug("BottleService lastPageNum "+ lastPageNum);
-		logger.debug("BottleService lastPage "+ lastPage);
-		
+		logger.debug("BottleService lastPage "+ lastPage);		
 		
 		return resutlMap;
 	}
@@ -160,8 +158,7 @@ public class BottleServiceImpl implements BottleService {
 	
 	@Override
 	public List<BottleVO> getBottleListToExcel(BottleVO param) {
-		logger.info("****** getBottleListToExcel *****start===*");
-		
+		logger.info("****** getBottleListToExcel *****start===*");		
 		
 		logger.debug("****** getBottleListToExcel *****param.getMenuType===*" + param.getMenuType());		
 		
@@ -490,20 +487,20 @@ public class BottleServiceImpl implements BottleService {
 	
 	@Override
 	public Map<String, Object> checkBottleIdDuplicate(BottleVO param) {		
-			// 중복체크
-			int count = bottleMapper.selectBottleIdCheck(param);
-			// 결과 변수
-			Map<String, Object> result = new HashMap<String, Object>();
-			
-			if(count > 0){
-				result.put("result", "fail");
-				result.put("message", "용기코드가 존재 합니다. 확인 후 입력해 주세요.");
-				return result;
-			}
-			
-			result.put("result", "success");
-			
-			return result;	
+		// 중복체크
+		int count = bottleMapper.selectBottleIdCheck(param);
+		// 결과 변수
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		if(count > 0){
+			result.put("result", "fail");
+			result.put("message", "용기코드가 존재 합니다. 확인 후 입력해 주세요.");
+			return result;
+		}
+		
+		result.put("result", "success");
+		
+		return result;	
 	}
 
 	@Override
@@ -641,9 +638,6 @@ public class BottleServiceImpl implements BottleService {
 		
 		return result;
 	}
-
-
-
 	
 
 }

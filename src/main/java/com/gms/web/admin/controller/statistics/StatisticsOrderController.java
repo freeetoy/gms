@@ -47,12 +47,10 @@ public class StatisticsOrderController {
 	public ModelAndView getStatisticsOrderDaily(StatisticsOrderVO params) {
 
 		logger.info("StatisticsOrderContoller getStatisticsOrderDaily");
-		logger.info("StatisticsOrderContoller searchStatisticsOrderDt "+ params.getSearchStatDt());
+		logger.debug("StatisticsOrderContoller searchStatisticsOrderDt "+ params.getSearchStatDt());
 
 		ModelAndView mav = new ModelAndView();
 		
-		//Integer searchOrderId = params.getSearchOrderId();
-				
 		String searchStatDt = params.getSearchStatDt();	
 		
 		String searchStatDtFrom = null;
@@ -99,11 +97,9 @@ public class StatisticsOrderController {
 	public ModelAndView getStatisticsOrderMonthly(StatisticsOrderVO params) {
 
 		logger.info("StatisticsOrderContoller getStatisticsOrderMonthly");
-		logger.info("StatisticsOrderContoller searchStatisticsOrderDt "+ params.getSearchStatDt());
+		logger.debug("StatisticsOrderContoller searchStatisticsOrderDt "+ params.getSearchStatDt());
 
 		ModelAndView mav = new ModelAndView();
-		
-		//Integer searchOrderId = params.getSearchOrderId();
 				
 		String searchStatDt = params.getSearchStatDt();	
 		
@@ -258,8 +254,6 @@ public class StatisticsOrderController {
 	
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel");
-		    
-		    
 		    response.setHeader("Content-Disposition", "attachment;filename="+fileName);	
 	
 		    // 엑셀 출력

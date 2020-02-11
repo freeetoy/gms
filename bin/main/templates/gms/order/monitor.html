@@ -44,9 +44,11 @@ var goUpdate = function(bottleId){
 	
 	  $('input[name="searchChargeDt"]').daterangepicker({
 	      autoUpdateInput: false,
+	      startDate: new Date(),
+	      language: "kr",
 	      locale: {
 	          cancelLabel: 'Clear'
-	      }
+	      }	  	
 	  });
 	
 	  $('input[name="searchChargeDt"]').on('apply.daterangepicker', function(ev, picker) {

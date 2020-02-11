@@ -92,7 +92,7 @@ public class CustomerController {
 			, HttpServletResponse response
 			, Model model
 			, CustomerVO params) {
-		logger.debug("CustomerContoller registerCustomer");
+		logger.info("CustomerContoller registerCustomer");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -239,11 +239,9 @@ public class CustomerController {
 			, HttpServletResponse response
 			, Model model) {
 		
-		logger.debug("CustomerContoller registerCustomerPrice");
-			
+		logger.info("CustomerContoller registerCustomerPrice");			
 		
-		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));
-		
+		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));		
 		
 		try {
 			
@@ -347,8 +345,7 @@ public class CustomerController {
 	@RequestMapping(value = "/api/customerAllList1.do")
 	@ResponseBody
 	public String getCustomerListString(@RequestParam(value = "searchCustomerNm", required = false) String searchCustomerNm)	{	
-				
-		
+						
 		String customerList = customerService.searchCustomerSimpleListString(searchCustomerNm);
 		
 		return customerList;

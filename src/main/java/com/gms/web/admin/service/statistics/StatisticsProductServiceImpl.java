@@ -22,12 +22,10 @@ public class StatisticsProductServiceImpl implements StatisticsProductService {
 
 	@Override
 	public List<StatisticsProductVO>  getDailylStatisticsProductList(StatisticsProductVO param) {
-		logger.debug("****** getDailylStatisticsProductList *****start===*");	
+		logger.info("****** getDailylStatisticsProductList *****start===*");	
 		
 		Map<String, Object> map = new HashMap<String, Object>();		
-
-		map.put("searchProductId", param.getSearchProductId());	
-		
+		map.put("searchProductId", param.getSearchProductId());			
 		
 		if(param.getSearchStatDt() != null) {
 			map.put("searchStatDt", param.getSearchStatDt());
@@ -36,23 +34,22 @@ public class StatisticsProductServiceImpl implements StatisticsProductService {
 		
 		if(param.getSearchStatDtFrom() != null) {
 			map.put("searchStatDtFrom", param.getSearchStatDtFrom());
-			logger.info("****** getDailylStatisticsProductList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
+			logger.debug("****** getDailylStatisticsProductList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
 		}
 		
 		if(param.getSearchStatDtEnd() != null) {
 			map.put("searchStatDtEnd", param.getSearchStatDtEnd());
-			logger.info("****** getDailylStatisticsProductList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
+			logger.debug("****** getDailylStatisticsProductList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
 		}	
 				
-		List<StatisticsProductVO> statList = statMapper.selectDailylStatisticsProductList(map);	
-		
+		List<StatisticsProductVO> statList = statMapper.selectDailylStatisticsProductList(map);			
 				
 		return statList;
 	}
 
 	@Override
 	public List<StatisticsProductVO>  getMontlylStatisticsProductList(StatisticsProductVO param) {
-		logger.debug("****** getMonthlyStatisticsProductList *****start===*");	
+		logger.info("****** getMonthlyStatisticsProductList *****start===*");	
 		
 		Map<String, Object> map = new HashMap<String, Object>();		
 
@@ -65,16 +62,15 @@ public class StatisticsProductServiceImpl implements StatisticsProductService {
 		
 		if(param.getSearchStatDtFrom() != null) {
 			map.put("searchStatDtFrom", param.getSearchStatDtFrom());
-			logger.info("****** getMonthlylStatisticsProductList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
+			logger.debug("****** getMonthlylStatisticsProductList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
 		}
 		
 		if(param.getSearchStatDtEnd() != null) {
 			map.put("searchStatDtEnd", param.getSearchStatDtEnd());
-			logger.info("****** getMonthlylStatisticsProductList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
+			logger.debug("****** getMonthlylStatisticsProductList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
 		}	
 				
-		List<StatisticsProductVO> statList = statMapper.selectMontlylStatisticsProductList(map);	
-		
+		List<StatisticsProductVO> statList = statMapper.selectMontlylStatisticsProductList(map);			
 				
 		return statList;
 	}

@@ -27,19 +27,11 @@ public class ApiServiceImpl implements ApiService {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
-	private WorkReportMapper workMapper;
-	
-	@Autowired
 	private WorkReportService workService;
-	
-	@Autowired
-	private OrderService orderService;
-	
+
 	@Autowired
 	private BottleService bottleService;
-	
-	@Autowired
-	private ProductService productService;
+
 	
 	@Autowired
 	private CustomerService customerService;
@@ -60,8 +52,7 @@ public class ApiServiceImpl implements ApiService {
 			
 		}else {
 			return result;
-		}
-		
+		}		
 				
 		return result;
 	}
@@ -116,9 +107,7 @@ public class ApiServiceImpl implements ApiService {
 	private CustomerVO getCustomer(String customerNm) {				
 		return customerService.getCustomerDetailsByNm(customerNm);
 
-	}
-
-	
+	}	
 
 	
 }

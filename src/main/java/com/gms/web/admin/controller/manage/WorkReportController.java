@@ -53,15 +53,13 @@ public class WorkReportController {
 
 		logger.info("WorkReportController getWorkReportList");
 		
-		RequestUtils.initUserPrgmInfo(request, params);		
-		
+		RequestUtils.initUserPrgmInfo(request, params);				
 		
 		ModelAndView mav = new ModelAndView();		
 		
-		params.setUserId(params.getCreateId());
+		params.setUserId(params.getCreateId());		
 		
-		
-		logger.info("WorkReportController getWorkReportList User_id= "+ params.getUserId());		
+		logger.debug("WorkReportController getWorkReportList User_id= "+ params.getUserId());		
 		
 		//LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);			
 		
@@ -120,15 +118,13 @@ public class WorkReportController {
 
 		logger.info("WorkReportController getWorkReportList");
 		
-		RequestUtils.initUserPrgmInfo(request, params);		
-		
+		RequestUtils.initUserPrgmInfo(request, params);				
 		
 		ModelAndView mav = new ModelAndView();		
 		
-		params.setUserId(params.getCreateId());
+		params.setUserId(params.getCreateId());		
 		
-		
-		logger.info("WorkReportController getWorkReportList User_id= "+ params.getUserId());
+		logger.debug("WorkReportController getWorkReportList User_id= "+ params.getUserId());
 		
 		/*
 		LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);
@@ -170,11 +166,10 @@ public class WorkReportController {
 		RequestUtils.initUserPrgmInfo(request, params);
 		ModelAndView mav = new ModelAndView();	
 		
-		//ModelAndView mav = new ModelAndView();	
 		//검색조건 셋팅
-		logger.info("WorkReportController OrderBottleVO "+ params.getOrderId());
-		logger.info("WorkReportController bottleWorkCd "+ params.getBottleWorkCd());
-		logger.info("WorkReportController searchBottleIds "+ params.getBottleIds());
+		logger.debug("WorkReportController OrderBottleVO "+ params.getOrderId());
+		logger.debug("WorkReportController bottleWorkCd "+ params.getBottleWorkCd());
+		logger.debug("WorkReportController searchBottleIds "+ params.getBottleIds());
 		
 		int result =0;
 		try {	
@@ -201,8 +196,7 @@ public class WorkReportController {
 					"/gms/mypage/assign.do");
 		}
 		return null;
-		//return "redirect:/gms/mypage/assign.do";
-		
+		//return "redirect:/gms/mypage/assign.do";		
 	}
 	
 	@RequestMapping(value = "/gms/report/registerAll.do", method = RequestMethod.POST)
@@ -217,9 +211,9 @@ public class WorkReportController {
 		ModelAndView mav = new ModelAndView();	
 		//검색조건 셋팅
 		
-		logger.info("WorkReportController bottleWorkCd "+ params.getBottleWorkCd());
-		logger.info("WorkReportController BottleIds "+ params.getBottlesIds());
-		logger.info("WorkReportController customerId "+ params.getCustomerId());
+		logger.debug("WorkReportController bottleWorkCd "+ params.getBottleWorkCd());
+		logger.debug("WorkReportController BottleIds "+ params.getBottlesIds());
+		logger.debug("WorkReportController customerId "+ params.getCustomerId());
 		
 		int result =0;
 		try {	
@@ -265,9 +259,9 @@ public class WorkReportController {
 		
 		//ModelAndView mav = new ModelAndView();	
 		//검색조건 셋팅
-		logger.info("WorkReportController OrderBottleVO "+ params.getOrderId());
-		logger.info("WorkReportController bottleWorkCd "+ params.getBottleWorkCd());
-		logger.info("WorkReportController searchBottleIds "+ params.getBottleIds());
+		logger.debug("WorkReportController OrderBottleVO "+ params.getOrderId());
+		logger.debug("WorkReportController bottleWorkCd "+ params.getBottleWorkCd());
+		logger.debug("WorkReportController searchBottleIds "+ params.getBottleIds());
 		
 		int result =0;
 		try {	
@@ -297,9 +291,7 @@ public class WorkReportController {
 		//return "redirect:/gms/mypage/assign.do";
 		
 	}
-	
-	
-	
+		
 	@RequestMapping(value = "/gms/report/print.do")
 	public ModelAndView getWorkReportListPrint(
 			HttpServletRequest request
@@ -310,7 +302,6 @@ public class WorkReportController {
 		
 		RequestUtils.initUserPrgmInfo(request, params);		
 		
-		
 		ModelAndView mav = new ModelAndView();		
 		
 		if(params.getSearchUserId()!=null && params.getSearchUserId().length() > 1) {
@@ -319,14 +310,12 @@ public class WorkReportController {
 			params.setUserId(params.getCreateId());
 		}
 		
-		logger.info("WorkReportController getWorkReportList User_id= "+ params.getUserId());
-		
+		logger.debug("WorkReportController getWorkReportList User_id= "+ params.getUserId());		
 		
 		List<WorkReportViewVO> workList = workService.getWorkReportList1(params);
 		
 		mav.addObject("workList", workList);	
-		mav.addObject("searchDt", params.getSearchDt());	
-		
+		mav.addObject("searchDt", params.getSearchDt());			
 		
 		mav.setViewName("gms/report/print");
 		

@@ -95,8 +95,7 @@ public class OrderController {
 		mav.addObject("totalCount", map.get("totalCount"));
 		mav.addObject("rowPerPage", params.getRowPerPage());
 		
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));	 
-		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));	 		
 		
 		mav.setViewName("gms/order/list");
 		return mav;
@@ -108,14 +107,11 @@ public class OrderController {
 
 		logger.info("BottleContoller getWorkBottleListToday");
 
-		ModelAndView mav = new ModelAndView();
-		
+		ModelAndView mav = new ModelAndView();		
 		
 		Map<String, Object> map =  workService.getWorkBottleListTotal(params);
 		
-		mav.addObject("bottleList", map.get("list"));	
-		
-		
+		mav.addObject("bottleList", map.get("list"));			
 				
 		//검색어 셋팅
 		mav.addObject("searchChargeDt", params.getSearchChargeDt());	
@@ -287,8 +283,8 @@ public class OrderController {
 		RequestUtils.initUserPrgmInfo(request, params);
 		
 		//검색조건 셋팅
-		logger.info("OrderContoller searchOrderDt "+ params.getSearchOrderDt());
-		logger.info("OrderContoller searchCustomerNm "+ params.getSearchCustomerNm());
+		logger.debug("OrderContoller searchOrderDt "+ params.getSearchOrderDt());
+		logger.debug("OrderContoller searchCustomerNm "+ params.getSearchCustomerNm());
 		
 		int  result = orderService.deleteOrder(params);
 		
@@ -316,13 +312,13 @@ public class OrderController {
 			, HttpServletResponse response
 			, OrderVO params) {
 		
-		logger.debug("OrderContoller changeProcess");
-		
-		logger.debug("OrderContoller orderProcessCd=="+params.getOrderProcessCd());
+		logger.info("OrderContoller modifyOrderWorkCd");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
+		logger.debug("OrderContoller orderProcessCd=="+params.getOrderProcessCd());		
 		logger.debug("OrderContoller befeor service searchCustomerNm=="+params.getSearchCustomerNm());
+		
 		int result = orderService.changeOrderProcessCd(params);
 		logger.debug("OrderContoller after service searchCustomerNm=="+params.getSearchCustomerNm());
 		if(result > 0){
@@ -338,7 +334,7 @@ public class OrderController {
 	@RequestMapping(value = "/gms/order/popupOrder.do")
 	public String getPopupOrderDetail(@RequestParam(value = "orderId", required = false) Integer orderId, Model model)	{
 		
-		logger.debug("OrderContoller getPopupOrderDetail");
+		logger.info("OrderContoller getPopupOrderDetail");
 		
 		OrderExtVO result = orderService.getOrder(orderId);			
 		
@@ -351,7 +347,7 @@ public class OrderController {
 		
 		model.addAttribute("customer", customer);
 		
-		return "/gms/order/popupOrder";
+		return "gms/order/popupOrder";
 	}
 	
 }

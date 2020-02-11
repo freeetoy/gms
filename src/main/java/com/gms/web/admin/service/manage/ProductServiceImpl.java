@@ -107,7 +107,7 @@ public class ProductServiceImpl implements ProductService {
 		ProductVO product = productMapper.selectProductDetail(productId);
 		
 		logger.info("****** deleteProduct.productId *****===*"+productId);
-		logger.info("****** product.productId()*****===*"+product.getProductId());
+		logger.debug("****** product.productId()*****===*"+product.getProductId());
 		
 		if (product == null || "0".equals(product.getProductStatus())) {
 			return false;
@@ -133,10 +133,10 @@ public class ProductServiceImpl implements ProductService {
 		boolean successFlag = false;
 		// 가스정보 등록
 		int result = 0;
-		logger.info("****** registerProductPrice.getProductId()()) *****===*"+param.getProductId());
+		logger.debug("****** registerProductPrice.getProductId()()) *****===*"+param.getProductId());
 		if (param.getProductId() != null) {					
 			
-			logger.info("****** registerProductparam.getProductId()()) *****===*"+param.getProductId());
+			logger.debug("****** registerProductparam.getProductId()()) *****===*"+param.getProductId());
 			
 			result = productMapper.insertProductPrice(param);
 			if (result > 0) {				
@@ -206,22 +206,20 @@ public class ProductServiceImpl implements ProductService {
 			param.setProductId(Integer.valueOf(productId));
 			param.setMemberCompSeq(1);		
 			
-			logger.info("****** after set ProductId registerProduct param.getProductId()()) *****===*"+param.getProductId());
-			logger.info("****** registerProduct param.getGasId *****===*"+param.getGasId());
-			logger.info("****** registerProduct param.param1.length *****===*"+param1.length);
+			logger.debug("****** after set ProductId registerProduct param.getProductId()()) *****===*"+param.getProductId());
+			logger.debug("****** registerProduct param.getGasId *****===*"+param.getGasId());
+			logger.debug("****** registerProduct param.param1.length *****===*"+param1.length);
 			
 			
-			logger.info("****** before registerProduct param. result *****===*"+result);
+			logger.debug("****** before registerProduct param. result *****===*"+result);
 			result = productMapper.insertProduct(param);
 			
-			logger.info("****** after registerProductparam. result *****===*"+result);
+			logger.debug("****** after registerProductparam. result *****===*"+result);
 			
 			
 			if (result > 0) {
-				ProductPriceVO priceVo = null;
-				
-				//int productPriceSeq = getProductProductSeq(Integer.valueOf(productId));
-				
+				ProductPriceVO priceVo = null;				
+				//int productPriceSeq = getProductProductSeq(Integer.valueOf(productId));				
 				//logger.info("****** registerProductparam.getProductPriceSeq()()) *****===*"+productPriceSeq);
 				
 				boolean pResult = false;
@@ -253,21 +251,19 @@ public class ProductServiceImpl implements ProductService {
 		// 가스정보 등록
 		int result = 0;
 		
-		logger.info("****** Start modifyProduct param.getProductId()()) *****===*"+param.getProductId());
+		logger.debug("****** Start modifyProduct param.getProductId()()) *****===*"+param.getProductId());
 		if (param.getProductId() != null) {
 			
 			productId = param.getProductId();
 			
-			logger.info("****** after set ProductId modifyProduct param.getProductId()()) *****===*"+param.getProductId());
-			logger.info("****** modifyProduct param.getGasId *****===*"+param.getGasId());
-			logger.info("****** modifyrProduct param.param1.length *****===*"+param1.length);
+			logger.debug("****** after set ProductId modifyProduct param.getProductId()()) *****===*"+param.getProductId());
+			logger.debug("****** modifyProduct param.getGasId *****===*"+param.getGasId());
+			logger.debug("****** modifyrProduct param.param1.length *****===*"+param1.length);
+			logger.debug("****** before modifyProduct param. result *****===*"+result);
 			
-			
-			logger.info("****** before modifyProduct param. result *****===*"+result);
 			result = productMapper.updateProduct(param);
 			
-			logger.info("****** after modifyProductparam. result *****===*"+result);
-			
+			logger.debug("****** after modifyProductparam. result *****===*"+result);
 			
 			if (result > 0) {
 				
@@ -278,7 +274,7 @@ public class ProductServiceImpl implements ProductService {
 					
 					//int productPriceSeq = getProductProductSeq(Integer.valueOf(productId));					
 					//logger.info("****** modify Productparam.getProductPriceSeq()()) *****===*"+productPriceSeq);					
-					logger.info("****** modify Product param1.length) *****===*"+param1.length);
+					logger.debug("****** modify Product param1.length) *****===*"+param1.length);
 					
 					boolean pResult = false;
 					for(int i =0 ; i < param1.length ; i++ ) {
@@ -315,7 +311,7 @@ public class ProductServiceImpl implements ProductService {
 		// 정보 등록
 		int result = 0;
 		logger.info("****** modifyProductPriceStatus.getProductId()()) *****===*"+param.getProductId());
-		logger.info("****** modifyProductPriceStatus.getProductPriceSeq()()) *****===*"+param.getProductPriceSeq());
+		logger.debug("****** modifyProductPriceStatus.getProductPriceSeq()()) *****===*"+param.getProductPriceSeq());
 		
 		result = productMapper.updateProductPriceStatus(param);
 		if (result > 0) {
@@ -342,6 +338,5 @@ public class ProductServiceImpl implements ProductService {
 		return productMapper.selectPrice(param);
 	}
 
-	
 	
 }

@@ -59,7 +59,7 @@ public class GasServiceImpl implements GasService {
 		GasVO gas = gasMapper.selectGasDetail(gasId);
 		
 		logger.info("****** deleteGas.getGasId()()) *****===*"+gasId);
-		logger.info("****** deleteGas.getGasId()()) *****===*"+gas.getGasId());
+		logger.debug("****** deleteGas.getGasId()()) *****===*"+gas.getGasId());
 		
 		if (gas == null || "Y".equals(gas.getDeleteYn())) {
 			return false;

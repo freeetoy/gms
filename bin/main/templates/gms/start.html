@@ -4,218 +4,17 @@
 
 <th:block layout:fragment="content"> 
 <script type="text/javascript">	
-
-function checkAll(){
-   
-    
-    if( $("#checkAll").is(':checked') ) {
-
-        $("input[name=check_id]").prop("checked", true);
-
-	} else {
-	
-	        $("input[name=check_id]").prop("checked", false);
-	
-	}
-}
-
-	
-function validationOfForm(form) {
-	
-	console.log(form.chBottle.value);
-	return ture;
-}
-	
-
-
-function fn_modifyBottleWorkCd(){				
-		
-		var form = $("#chForm");	
-    	chForm.action="/gms/bottle/changeWorkCd.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchProductId=[[ ${searchProductId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]";
-    	chForm.submit();
-	}
-	
-var fn_deleteBottle = function(bottleId){
-		
-	if(confirm("삭제하시겠습니까?")){	
-		
-		var form = document.createElement("form");
-		form.setAttribute("charset","UTF-8");
-		form.setAttribute("method","post");
-		form.setAttribute("action","/gms/bottle/delete.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchProductId=[[ ${searchProductId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
-		
-		var hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", "bottleId");
-        hiddenField.setAttribute("value", bottleId);
-
-        form.appendChild(hiddenField);      
-        document.body.appendChild(form);
-
-        form.submit();			
-	}                  		
-}
-	//Ajax공통 호출
-	function callAjax(ajaxInfo){
-		var dfd = $.Deferred();
-		$.ajax(ajaxInfo).done(function(data){
-			dfd.resolve(data);
-		});
-		
-		return dfd.promise();
-	}
-	
-	
-	var fn_ChangeBottleWorkCd = function(bottleId){
-	
-		//$("table.table-hover").find('tr').remove();
-		
-		var ajaxInfo ={
-			type:"POST",
-			url:"/gms/bottle/detail.do",
-			data:{
-				bottleId : bottleId
-			},
-			dataType: "json",
-		};
-		
-		ajax = callAjax(ajaxInfo);
-		
-		ajax.done(function(data){
-			console.log(data);
-		
-			console.log("####bottleCd---"+data.bottleId);		
-			
-			$("#chBottleId").val(data.bottleId);
-			$("#bottleBarCd").val(data.bottleBarCd);
-			
-			$('select[id="bottleWorkCd"]').find('option:contains(data.bottleWorkCd)').attr("selected",true);
-
-			$("#bottleWorkCd").val(data.bottleWorkCd);			
-				
-			if(data.result == "fail"){
-				alert("용기가 존재하지 않습니다");			
-				return;
-			}
-			
-		});
-		
-	};
-	
-	    
-	var goUpdate = function(bottleId){		
-		
-		//alert("goUpdate "+bottleId);
-		console.log("goUpdate bottleId ="+bottleId);
-		var form = $("#mainForm");	
-
-		$("#bottleId").val(bottleId);
-    	
-    	//document.getElementById("priceCount").value = totalCount;
-    	mainForm.action="/gms/bottle/update.do";
-    	form.submit();
-	}
-	
-	// 입력된 내용을 작성한다.
-	function goSearch(){	
-		
+$(document).ready(function(){
+	$(".btn-navbar").click(function()  
+    {
 		var form = document.mainForm;	
-		mainForm.action="/gms/bottle/sales.do";
-		form.submit();
-	};
-
-
-
-	function gotoPage(pageNo) {
 		
-		var form =  document.mainForm;			
-		
-		$("#currentPage").val(pageNo);  
-		 mainForm.action="/gms/bottle/sales.do";
-        //validate checkt시 confirm 중복되는 부분 처리 
-       
-    	mainForm.submit();
-    }
-	
-
-	$(function() {
-	
-	  $('input[name="searchChargeDt"]').daterangepicker({
-	      autoUpdateInput: false,
-	      locale: {
-	          cancelLabel: 'Clear'
-	      }
-	  });
-	
-	  $('input[name="searchChargeDt"]').on('apply.daterangepicker', function(ev, picker) {
-	      $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
-	  });
-	
-	  $('input[name="searchChargeDt"]').on('cancel.daterangepicker', function(ev, picker) {
-	      $(this).val('');
-	  });
-	
-	});	
-
-	
-	function fn_deleteBottles()
-	{
-		/*
-		var checked_len = $("input[name='check_id[]']:checked").length;
-		alert("checked_len="+checked_len);
-		if(checked_len <1){
-			alert('삭제할 항목을 선택 하세요.');
-				return false;
-		}
-		*/
-		var checkedValue = ""; 
-		var chki=0;
-		var inputElements = document.getElementsByClassName('IdCheckbox');
-		for(var i=0; inputElements[i]; ++i){
-		      if(inputElements[i].checked){	
-		    	  
-		    	   //checkedValue +="'";
-		           checkedValue += (inputElements[i].value);
-		           chki++;
-		           //break;
-		           checkedValue +=",";
-		      }
-		}
-		
-		if(chki < 1){
-			alert('삭제할 항목을 선택 하세요.');
-			return false;
-			
-		}
-		console.log("chki="+chki);	
-		console.log("checkeValue="+checkedValue);		
-		
-		if(confirm("정말로 삭제 하시겠습니까?")){
-
-			var form = document.createElement("form");
-			form.setAttribute("charset","UTF-8");
-			form.setAttribute("method","post");
-			form.setAttribute("action","/gms/bottle/deleteChecked.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchProductId=[[ ${searchProductId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");
-			
-			var hiddenField = document.createElement("input");
-	        hiddenField.setAttribute("type", "hidden");
-	        hiddenField.setAttribute("name", "bottleIds");
-	        hiddenField.setAttribute("value", checkedValue);
-
-	        form.appendChild(hiddenField);
-	       
-	        document.body.appendChild(form);
-
-	        form.submit();			
-			
-		}else{
-
-		return false;
-		}
-
-	}
-	
-	</script>
+		mainForm.action="/gms/start";
+		mainForm.submit();
+      
+    });
+});
+</script>
    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -232,6 +31,36 @@ var fn_deleteBottle = function(bottleId){
    
     	
         <div class="row">	
+	        <div class="col-12">
+	        <table class="table table-hover">
+	         </table>
+	        </div>
+        </div>
+        <form id="mainForm" name="mainForm"  method="post">
+         <div class="row">	         
+	        <div class="col-3">
+               	<select id="searchWorkCd" name="searchWorkCd" class="form-control">
+                    <option value="">작업</option>				    
+			        <option th:each="row : ${codeList}"
+			                th:text="${row.cdNm}"
+			                th:value="${row.cdId}"
+			                th:if="${searchWorkCd ==row.cdId}" selected>					             
+			        </option>	
+			        <option th:each="row : ${codeList}"
+			                th:text="${row.cdNm}"
+			                th:value="${row.cdId}"
+			                th:unless="${searchWorkCd ==row.cdId}">					             
+			        </option>					        				
+                 </select>
+              </div>        
+              <div class="col-9">
+                <button class="btn btn-navbar" type="button">
+		            <i class="fas fa-search"></i>
+		          </button>           		
+              </div>         
+        </div>
+        </form>
+         <div class="row">	
 	        <div class="col-12">
 	        <table class="table table-hover">
 	         </table>
