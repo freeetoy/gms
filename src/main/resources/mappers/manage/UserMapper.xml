@@ -71,13 +71,13 @@
 	<update id="updateUser" parameterType="com.gms.web.admin.domain.manage.UserVO">
 		UPDATE TB_USER
 		SET
-			  User_NM	= #{userNm}
-			, User_Phone	= #{userPhone}
-			, User_Part_CD	= #{userPartCd}
-			, User_Authority = #{userAuthority}
-			, User_Passwd	= #{userPasswd}
-			, UPDATE_ID	= #{updateId}
-			, UPDATE_DT	= NOW()
+			  User_NM			= #{userNm}
+			, User_Phone		= #{userPhone}
+			, User_Part_CD		= #{userPartCd}
+			, User_Authority	= #{userAuthority}
+			, User_Passwd		= #{userPasswd}
+			, UPDATE_ID			= #{updateId}
+			, UPDATE_DT			= NOW()
 		WHERE
 			USER_ID = #{userId}
 	</update>

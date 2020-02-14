@@ -152,10 +152,10 @@
 	<update id="updateProductPrice" parameterType="com.gms.web.admin.domain.manage.ProductPriceVO">
 		UPDATE TB_Product_Price
 		SET
-			  Product_Price = #{productPrice}
-			, product_Capa = #{productCapa}
-			, UPDATE_ID = #{updateId}
-			, UPDATE_DT = NOW()
+			  Product_Price 	= #{productPrice}
+			, product_Capa 		= #{productCapa}
+			, UPDATE_ID 		= #{updateId}
+			, UPDATE_DT 		= NOW()
 		WHERE
 			Product_ID = #{productId}
 		AND 
@@ -165,9 +165,11 @@
 	<update id="updateProductPriceStatus" parameterType="com.gms.web.admin.domain.manage.ProductPriceVO">
 		UPDATE TB_Product_Price
 		SET
-			  Product_Status = #{productStatus}
+			  Product_Status 	= #{productStatus}
+			  , UPDATE_ID 		= #{updateId}
+			  , UPDATE_DT 		= NOW()
 		WHERE
-			Product_ID = #{productId}
+			Product_ID 			= #{productId}
 		AND 
 			Product_Price_Seq =  #{productPriceSeq}
 	</update>
@@ -176,8 +178,8 @@
 		UPDATE TB_Product
 		SET
 			  Product_Status = '0'
-			, UPDATE_ID = #{updateId}
-			, UPDATE_DT = NOW()
+			, UPDATE_ID 	= #{updateId}
+			, UPDATE_DT 	= NOW()
 		WHERE
 			Product_ID = #{productId}
 	</update>
@@ -192,8 +194,8 @@
 		UPDATE TB_Product
 		SET
 			  Product_Status = #{productStatus}
-			, UPDATE_ID = #{updateId}
-			, UPDATE_DT = NOW()
+			, UPDATE_ID 	= #{updateId}
+			, UPDATE_DT 	= NOW()
 		WHERE
 			Product_ID = #{productId}
 	</update>

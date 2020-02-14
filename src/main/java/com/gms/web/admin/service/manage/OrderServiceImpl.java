@@ -457,6 +457,7 @@ public class OrderServiceImpl implements OrderService {
 			CustomerVO customer = customerService.getCustomerDetails(params.getCustomerId());
 			
 			params.setSalesId(customer.getSalesId());
+			params.setUpdateId(params.getCreateId());
 			
 			if(orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.01")) ||  orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.02"))
 					|| orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.03"))) {

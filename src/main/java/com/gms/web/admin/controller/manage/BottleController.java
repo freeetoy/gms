@@ -467,10 +467,10 @@ public class BottleController {
 		logger.info("BottleContoller modifyBottle");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
-		
+						
 		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		logger.debug("BottleContoller searchGasId "+ params.getSearchGasId());
-		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
+		//logger.debug("BottleContoller searchGasId "+ params.getSearchGasId());
+		//logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		
 		String searchChargetDt = params.getSearchChargeDt();	
 		
@@ -479,7 +479,7 @@ public class BottleController {
 				
 		if(searchChargetDt != null && searchChargetDt.length() > 20) {
 			
-			logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
+			//logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
 			searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
 			
 			searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;

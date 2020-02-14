@@ -237,7 +237,6 @@
 		</if>
 	</select>
 	<select id="selectWorkReportList1" resultType="com.gms.web.admin.domain.manage.WorkBottleVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
-		
 		SELECT Product_Count,Work_Report_Seq, AA.Customer_ID,Customer_nm  , AA.Product_ID  ,Product_NM , AA.Product_Price_Seq ,Product_Capa    
 		,Bottle_work_Cd, CD_NM Bottle_work_Cd_NM, AA.Order_Id, Order_Total_Amount
 		FROM TB_CODE TC, TB_Customer TS, tb_product TP, tb_product_price TPP, (

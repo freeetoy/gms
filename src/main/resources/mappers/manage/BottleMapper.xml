@@ -269,6 +269,8 @@
 			, Bottle_Volumn		= #{bottleVolumn}
 			, Bottle_Charge_Prss= #{bottleChargePrss}
 			, Bottle_Own_YN		= #{bottleOwnYn}
+			, UPDATE_ID 		= #{updateId}
+			, UPDATE_DT 		= NOW()
 		WHERE
 			Bottle_ID = #{bottleId}
 	</update>	

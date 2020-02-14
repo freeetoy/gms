@@ -283,6 +283,8 @@
 			, Order_Product_Capa	= #{orderProductCapa}
 			, Customer_ID			= #{customerId}
 			, Order_Total_Amount	= #{orderTotalAmount}
+			, UPDATE_ID 			= #{updateId}
+			, UPDATE_DT 			= NOW()
 		WHERE
 			Order_ID = #{orderId}
 	</update>
@@ -293,6 +295,8 @@
 			Order_Product_Nm		= #{orderProductNm}
 			, Order_Product_Capa	= #{orderProductCapa}
 			, Order_Total_Amount	= #{orderTotalAmount}
+			, UPDATE_ID 			= #{updateId}
+			, UPDATE_DT 			= NOW()
 		WHERE
 			Order_ID = #{orderId}
 	</update>
@@ -315,6 +319,7 @@
 		UPDATE TB_Order
 		SET
 			  Order_Process_CD 	= #{orderProcessCd}
+			  ,SALES_ID = #{updateId}
 			  <if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(orderDeliveryDt)">
 			  ,Order_Delivery_Dt = #{orderDeliveryDt}
 			  </if>
@@ -340,6 +345,8 @@
 		UPDATE TB_Order_Bottle
 		SET
 			  Bottle_ID 	= #{bottleId}
+			, UPDATE_ID 	= #{updateId}
+			, UPDATE_DT 	= NOW()
 		WHERE
 			Order_Bottle_Seq = #{orderBottleSeq}
 	</update>	

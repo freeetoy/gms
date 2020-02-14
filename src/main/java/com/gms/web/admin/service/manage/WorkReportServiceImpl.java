@@ -250,7 +250,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 			
 			//Order 정보가져오기
 			OrderExtVO  orderInfo = orderService.getOrderNotDelivery(param.getOrderId());			
-			
+			orderInfo.getOrder().setUpdateId(param.getCreateId());
 			/*
 			BottleVO bottle = new BottleVO();
 			
@@ -405,7 +405,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 						workBottle.setCreateId(param.getCreateId());
 						workBottle.setCustomerId(orderInfo.getOrder().getCustomerId());
 						workBottle.setBottleWorkCd(param.getBottleWorkCd());		
-						
+						workBottle.setBottleType(param.getBottleType());
 						workBottle.setGasId(tempBottle.getGasId());
 						workBottle.setProductId(tempBottle.getProductId());
 						workBottle.setProductPriceSeq(tempBottle.getProductPriceSeq());	
@@ -511,6 +511,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					workBottle.setBottleBarCd(temp.getBottleBarCd());
 					workBottle.setWorkReportSeq(workReportSeq);
 					workBottle.setCreateId(param.getCreateId());
+					workBottle.setBottleType(param.getBottleType());
 					workBottle.setCustomerId(orderInfo.getOrder().getCustomerId());
 					workBottle.setBottleWorkCd(param.getBottleWorkCd());	
 					workBottle.setGasId(temp.getGasId());
@@ -543,6 +544,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 				//TODO order 셋팅 필요
 				orderInfo.getOrder().setOrderProductNm(orderInfo.getOrderProduct().get(0).getProductNm()+" 외"+bottleList.size());
 				orderInfo.getOrder().setOrderProductCapa(orderInfo.getOrderProduct().get(0).getProductCapa()+" 외"+bottleList.size());
+				
 				//orderInfo.getOrder().setOrderProcessCd(PropertyFactory.getProperty("common.code.order.process.04"));
 				
 				

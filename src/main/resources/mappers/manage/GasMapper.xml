@@ -69,8 +69,8 @@
 	<update id="updateGas" parameterType="com.gms.web.admin.domain.manage.GasVO">
 		UPDATE TB_GAS
 		SET
-			  Gas_NM = #{gasNm}
-			, GAS_CD = #{gasCd}
+			  Gas_NM 	= #{gasNm}
+			, GAS_CD 	= #{gasCd}
 			, UPDATE_ID = #{updateId}
 			, UPDATE_DT = NOW()
 		WHERE

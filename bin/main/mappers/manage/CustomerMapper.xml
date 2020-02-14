@@ -210,17 +210,17 @@
 	<update id="updateCustomer" parameterType="com.gms.web.admin.domain.manage.CustomerVO">
 		UPDATE TB_CUSTOMER
 		SET
-			  Customer_NM		= #{customerNm}
-			, Business_Reg_ID	= #{businessRegId}
-			, Customer_Rep_Nm	= #{customerRepNm}
+			  Customer_NM			= #{customerNm}
+			, Business_Reg_ID		= #{businessRegId}
+			, Customer_Rep_Nm		= #{customerRepNm}
 			, Customer_Busi_Type	= #{customerBusiType}
-			, Customer_Item		= #{customerItem}
-			, Customer_Addr		= #{customerAddr}
-			, Customer_Phone	= #{customerPhone}
-			, Customer_Email	= #{customerEmail}
-			, Sales_ID		= #{salesId}
-			, UPDATE_ID		= #{updateId}
-			, UPDATE_DT		= NOW()
+			, Customer_Item			= #{customerItem}
+			, Customer_Addr			= #{customerAddr}
+			, Customer_Phone		= #{customerPhone}
+			, Customer_Email		= #{customerEmail}
+			, Sales_ID				= #{salesId}
+			, UPDATE_ID				= #{updateId}
+			, UPDATE_DT				= NOW()
 		WHERE
 			CUSTOMER_ID = #{customerId}
 	</update>
@@ -236,8 +236,8 @@
 			, Customer_Addr		= #{customerAddr}
 			, Customer_Phone	= #{customerPhone}
 			, Customer_Email	= #{customerEmail}
-			, UPDATE_ID		= #{updateId}
-			, UPDATE_DT		= NOW()
+			, UPDATE_ID			= #{updateId}
+			, UPDATE_DT			= NOW()
 		WHERE
 			CUSTOMER_ID = #{customerId}
 	</update>
@@ -246,8 +246,8 @@
 		UPDATE TB_CUSTOMER
 		SET
 			  Customer_Status = '0'
-			, UPDATE_ID = #{updateId}
-			, UPDATE_DT = NOW()
+			, UPDATE_ID 	= #{updateId}
+			, UPDATE_DT 	= NOW()
 		WHERE
 			CUSTOMER_ID = #{customerId}
 	</update>
