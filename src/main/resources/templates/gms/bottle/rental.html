@@ -334,7 +334,11 @@ $(document).ready(function(){
          </div>
         <div class="row">	
 	        <div class="col-12">
-	        <table class="table table-hover">
+	        <table>
+	        	<tr>
+			        <td th:if="${totalCount > 999 }" th:text="|총 ${#numbers.formatInteger(totalCount, 3, 'COMMA')}개|">
+		            <td th:unless="${totalCount > 999  }" th:text="|총 ${totalCount}개|">
+		        </tr>	         
 	         </table>
 	        </div>
         </div>

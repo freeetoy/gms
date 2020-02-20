@@ -576,7 +576,10 @@ $(document).ready(function(){
         <div class="row">	
 	        <div class="col-12">
 	        <table>
-	       </br>
+	        	<tr>
+			        <td th:if="${totalCount > 999 }" th:text="|총 ${#numbers.formatInteger(totalCount, 3, 'COMMA')}개|">
+		            <td th:unless="${totalCount > 999  }" th:text="|총 ${totalCount}개|">
+		        </tr>	         
 	         </table>
 	        </div>
         </div>

@@ -38,6 +38,7 @@ public class startController {
 		List<BottleVO> bottleList =  workService.getWorkBottleListToday(params);
 		
 		mav.addObject("bottleList", bottleList);		
+		mav.addObject("totalCount", bottleList.size());	
 		
 		//BOTTLE_WORK_CD 코드정보 불러오기 
 		List<CodeVO> codeList = codeService.getCodeList(PropertyFactory.getProperty("common.bottle.status"));
