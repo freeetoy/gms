@@ -340,4 +340,15 @@
 		AND
 			DELETE_YN='N'
 	</select>
+	
+	<select id="selectNoGasProductList"  resultType="com.gms.web.admin.domain.manage.ProductVO">
+		SELECT
+			<include refid="ProductColumns" />
+		FROM
+			TB_Product
+		WHERE
+			Product_Status  != '0'
+		AND 
+			GAS_ID = 0 		
+	</select>
 </mapper>

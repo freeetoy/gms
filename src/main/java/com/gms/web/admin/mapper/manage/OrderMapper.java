@@ -50,7 +50,7 @@ public interface OrderMapper {
 	
 	public int updateOrderDeposit(OrderVO param);
 
-	//public int updateOrderProduct(OrderProductVO param);
+	public int updateOrderProductCount(OrderProductVO param);
 	
 	//public int updateOrderProductDeliveryDt(OrderProductVO param);
 	

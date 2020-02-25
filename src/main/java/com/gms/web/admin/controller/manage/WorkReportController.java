@@ -22,6 +22,7 @@ import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.OrderBottlesVO;
 import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.domain.manage.UserVO;
+import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.domain.manage.WorkReportViewVO;
 import com.gms.web.admin.service.manage.CustomerService;
@@ -320,6 +321,48 @@ public class WorkReportController {
 		mav.setViewName("gms/report/print");
 		
 		return mav;
+	}
+	
+	
+	@RequestMapping(value = "/gms/report/noGasSales.do", method = RequestMethod.POST)
+	public ModelAndView registerWorkReportNoGasProduct(HttpServletRequest request
+			, HttpServletResponse response
+			, WorkBottleVO param) {
+		
+		logger.info("WorkReportController registerWorkReportNoGasProduct");
+		
+		RequestUtils.initUserPrgmInfo(request, param);
+		
+		ModelAndView mav = new ModelAndView();	
+		//검색조건 셋팅
+		
+		logger.debug("WorkReportController bottleWorkCd "+ param.getBottleWorkCd());
+		logger.debug("WorkReportController customerId "+ param.getCustomerId());
+		logger.debug("WorkReportController ProductId "+ param.getProductId());
+		logger.debug("WorkReportController ProductPriceSeq "+ param.getProductPriceSeq());
+		
+		int result =0;
+		try {	
+				result =1;	
+			result = workService.registerWorkNoBottle(param);					
+		
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		//return "redirect:/gms/mypage/assign.do";
+		
+		if(result > 0){
+			String alertMessage = "처리되었습니다.";
+			LoginUserVO adminLoginUserVO = (LoginUserVO)request.getSession().getAttribute(LoginUserVO.ATTRIBUTE_NAME); 
+			if(adminLoginUserVO.getUserAuthority().equals(PropertyFactory.getProperty("common.user.Authority.manager")))
+				RequestUtils.responseWriteException(response, alertMessage, "/gms/report/listAll.do");
+			else 
+				RequestUtils.responseWriteException(response, alertMessage, "/gms/report/list.do");
+			
+		}
+		return null;
+		
 	}
 	
 }

@@ -27,7 +27,8 @@
 	</resultMap>	
 
 	<resultMap id="WorkBottleMap" type="com.gms.web.admin.domain.manage.WorkBottleVO" >
-		<result property="workReportSeq"		column="Work_Report_Seq"		/>				
+		<result property="workReportSeq"		column="Work_Report_Seq"		/>		
+		<result property="workSeq"				column="Work_Seq"		/>				
 		<result property="bottleId"				column="Bottle_ID"				/>
 		<result property="bottleBarCd"			column="Bottle_BarCd"			/>		
 		<result property="customerId"			column="Customer_ID"			/>
@@ -47,6 +48,12 @@
 		<result property="createDt"				column="CREATE_DT"				/>
 		<result property="updateId"				column="UPDATE_ID"				/>		
 		<result property="updateDt"				column="UPDATE_DT"				/>	
+	</resultMap>
+	
+	<resultMap id="WorkBottleRegisterMap" type="com.gms.web.admin.domain.manage.WorkBottleRegisterVO" >
+		<result property="productId"			column="Product_ID"				/>
+		<result property="productPriceSeq"		column="Product_Price_Seq"		/>		
+		<result property="registeredCount"		column="Registered_Count"		/>		
 	</resultMap>
 	
 	<sql id="WorkReportColumns">
@@ -90,6 +97,7 @@
 	</sql>
 	<sql id="WorkBottleColumns">
 		 Work_Report_Seq
+		 , Work_Seq		 
 		 , Bottle_ID
 		 , Bottle_BarCd       
 		 , Customer_ID         
@@ -130,7 +138,8 @@
 			<include refid="WorkBottleColumns" />
 		) VALUES (
 			#{workReportSeq}
-			, #{bottleId}	
+			, #{workSeq}	
+			, #{bottleId}				
 			, #{bottleBarCd}	
 			, #{customerId}	
 			, #{bottleWorkCd}	
@@ -152,6 +161,7 @@
 		<foreach collection="list" item="item" separator=" , ">
 		(
 			#{item.workReportSeq}
+			, #{item.workSeq}	
 			, #{item.bottleId}	
 			, #{item.bottleBarCd}	
 			, #{item.customerId}	
@@ -166,30 +176,18 @@
 			, NOW()
 		)
 		</foreach>
-	</insert>
+	</insert>	
 	
-	<insert id="insertWorkReportList" parameterType="java.util.List">
-		INSERT INTO TB_Work_Bottle(
-			<include refid="WorkBottleColumns" />
-		) VALUES 
-		<foreach collection="list" item="item" separator=" , ">
-		(
-			#{item.workReportSeq}
-			, #{item.bottleId}	
-			, #{item.bottleBarCd}	
-			, #{item.customerId}	
-			, #{item.bottleWorkCd}
-			, #{item.gasID}				
-			, #{item.productId}	
-			, #{item.productPriceSeq}			
-			, #{item.bottleType}
-			, #{item.createId}			
-			, NOW()
-			, NULL
-			, NOW()
-		)
-		</foreach>
-	</insert>
+	<update id="modifyWorkReportProduct" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">
+		UPDATE TB_Work_Report
+		SET
+			Work_Product_NM		= #{workProductNm}
+			, Work_Product_Capa	= #{workProductCapa}
+			, UPDATE_ID 			= #{updateId}
+			, UPDATE_DT 			= NOW()
+		WHERE
+			Work_Report_Seq = #{workReportSeq}
+	</update>
 	
 	<select id="selectWorkReportList" resultType="com.gms.web.admin.domain.manage.WorkReportVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
 		SELECT
@@ -288,6 +286,15 @@
 			FROM TB_Work_Report   ) A
 	</select>
 	
+	<select id="selectWorkBottleSeq" resultType="int" parameterType="int">
+		SELECT IFNULL(A.Work_Seq, 0)+1
+		FROM 
+		(
+			SELECT max(Work_Seq) Work_Seq
+			FROM TB_Work_Bottle
+			WHERE Work_Report_Seq =  #{workReportSeq}  ) A
+	</select>
+	
 	<select id="selectWorkReportSeqForCustomerToday" parameterType="com.gms.web.admin.domain.manage.WorkReportVO" resultType="int">
 		SELECT IFNULL(max(Work_Report_Seq), 0) Work_Report_Seq
 		FROM 
@@ -332,9 +339,9 @@
 				WHERE
 					TB.Delete_YN = 'N'			
 				AND 
-					TWB.`Work_Report_Seq` = TW.`Work_Report_Seq`
+					TWB.Work_Report_Seq = TW.Work_Report_Seq
 				AND 
-					TWB.`Bottle_ID` = TB.`Bottle_ID`
+					TWB.Bottle_ID = TB.Bottle_ID
 				AND 
 					TWB.Bottle_Work_CD = TC.CD_ID	
 				AND 
@@ -447,5 +454,33 @@
 			</if>			
 		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID	
 		ORDER BY Bottle_Work_DT DESC 
+	</select>
+	
+	<select id="selectWorkBottleListOfOrder" resultType="com.gms.web.admin.domain.manage.WorkBottleVO" parameterType="int">		
+		SELECT 
+			<include refid="WorkBottleColumns" />
+		FROM (
+			SELECT
+				TB.*
+			FROM
+				TB_Work_Bottle TB,TB_Work_Report TW
+			WHERE
+				TB.Delete_YN = 'N'		
+			AND 				
+				TB.Work_Report_Seq = TW.Work_Report_Seq
+			AND 
+				Order_Id = #{orderId}			
+		) A 
+	</select>
+	
+	<select id="selectWorkBottleListAndCountOfOrder" resultType="com.gms.web.admin.domain.manage.WorkBottleRegisterVO" parameterType="int">			
+			SELECT
+				count(Work_Seq) Registered_Count,Product_ID, Product_Price_Seq
+			FROM
+				TB_Work_Bottle TB,TB_Work_Report TW
+			WHERE						
+				TB.Work_Report_Seq = TW.Work_Report_Seq
+			AND 
+				Order_Id = #{orderId}		
 	</select>
 </mapper>

@@ -228,20 +228,24 @@ $(document).ready(function(){
 						$("table.mod-doc-list").append(newRow);
 
 						for(var i=0;i<data.orderProduct.length;i++){
-					        	var newRow1 = $("<tr>");
-					        	var cols1 = "";	
-					        	cols1 += '<th>'+data.orderProduct[i].productNm+'</th>';
-					        	cols1 += '<th>'+data.orderProduct[i].productCapa+'</th>';
-					        	cols1 += '<th>'+data.orderProduct[i].orderCount+'</th>';
-					        	cols1 += '<th>'+data.orderProduct[i].orderProductEtc+'</th>';
-					        	cols1 += '<th>'+data.orderProduct[i].bottleChangeYn+'</th>';
-					        	cols1 += '<th>'+data.orderProduct[i].bottleSaleYn+'</th>';
-					        	cols1 += '</tr>'     ;    
-					        	newRow1.append(cols1);
-						        $("table.mod-doc-list").append(newRow1);
-						        
-						        newRow1 = "";
-					        }     
+				        	var newRow1 = $("<tr>");
+				        	var cols1 = "";	
+				        	cols1 += '<th>'+data.orderProduct[i].productNm+'</th>';
+				        	if(data.orderProduct[i].productCapa==null) cols1 += '<th></th>';
+				        	else cols1 += '<th>'+data.orderProduct[i].productCapa+'</th>';				        	
+				        	cols1 += '<th>'+data.orderProduct[i].orderCount+'</th>';
+				        	if(data.orderProduct[i].orderProductEtc==null ) cols1 += '<th></th>';
+				        	else cols1 += '<th>'+data.orderProduct[i].orderProductEtc+'</th>';
+				        	if(data.orderProduct[i].bottleChangeYn==null ) cols1 += '<th></th>';
+				        	else cols1 += '<th>'+data.orderProduct[i].bottleChangeYn+'</th>';
+				        	if(data.orderProduct[i].bottleSaleYn==null ) cols1 += '<th></th>';
+				        	else cols1 += '<th>'+data.orderProduct[i].bottleSaleYn+'</th>';
+				        	cols1 += '</tr>'     ;    
+				        	newRow1.append(cols1);
+					        $("table.mod-doc-list").append(newRow1);
+					        
+					        newRow1 = "";
+				        }     
 					}
 			       })
 			       .fail(function(){

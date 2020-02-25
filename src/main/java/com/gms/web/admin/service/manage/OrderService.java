@@ -35,6 +35,8 @@ public interface OrderService {
 	public int getOrderId() ;
 	
 	public int registerOrder(HttpServletRequest request,OrderVO param);	
+	
+	public int registerOrder(OrderVO param);	
 
 	public int registerOrderProduct(OrderProductVO orderProduct);	
 	
@@ -52,7 +54,7 @@ public interface OrderService {
 	
 	public int modifyOrderDeposit(OrderVO param);
 
-	public int modifyOrderProduct(OrderProductVO param);
+	public int modifyOrderProductCount(OrderProductVO param);
 	
 	public int modifyOrderBottleId(OrderProductVO param);
 	

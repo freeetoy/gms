@@ -368,4 +368,15 @@ public class ProductController {
 		return productList;
 		//return null;
 	}
+	
+	@RequestMapping(value = "/gms/common/ngasProducts.do")
+	@ResponseBody
+	public List<ProductVO> getProductListOfNoGas(Model model)	{	
+		
+		List<ProductVO> productList = productService.getNoGasProductList();
+		model.addAttribute("productList", productList);
+		
+		return productList;
+		//return null;
+	}
 }

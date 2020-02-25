@@ -49,4 +49,6 @@ public interface ProductService {
 	public List<ProductVO> getProductList();
 	
 	public List<ProductVO> getGasProductList();
+	
+	public List<ProductVO> getNoGasProductList();
 }

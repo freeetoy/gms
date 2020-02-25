@@ -16,6 +16,9 @@ public class WorkBottleVO extends AbstractVO implements Serializable {
 	/**Work_Report_Seq      */
 	private Integer workReportSeq;
 	
+	/**Work_Seq      */
+	private int workSeq;
+	
 	/** Bottle_ID		*/
 	private String bottleId;
 	

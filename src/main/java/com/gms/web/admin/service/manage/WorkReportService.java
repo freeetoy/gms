@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gms.web.admin.domain.manage.BottleVO;
+import com.gms.web.admin.domain.manage.WorkBottleRegisterVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.domain.manage.WorkReportViewVO;
@@ -17,6 +18,10 @@ public interface WorkReportService {
 	public List<WorkReportViewVO> getWorkReportListAll(WorkReportVO param);	
 	
 	public List<WorkBottleVO> getWorkBottleList(Integer workReportSeq);	
+	
+	public List<WorkBottleVO> getWorkBottleListOfOrder(Integer orderId);	
+	
+	public List<WorkBottleRegisterVO> getWorkBottleListAndCountOfOrder(Integer orderId);	
 	
 	public Map<String,Object> getWorkBottleListTotal(BottleVO param);	
 	
@@ -37,4 +42,6 @@ public interface WorkReportService {
 	public int registerWorkBottle(WorkBottleVO param);
 	
 	public int registerWorkBottleList(List<WorkBottleVO> param);
+	
+	public int registerWorkNoBottle(WorkBottleVO param);
 }

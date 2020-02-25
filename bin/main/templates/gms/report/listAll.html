@@ -122,12 +122,9 @@ $(document).ready(function(){
 		return dfd.promise();
 	}
   
-  
-  
 	 var bottlesIds = "";
    $(".btn_select_process1").click(function()  
 	{
-		console.log("start btn_select_process1}");		
 		
 		$("table.mod-doc-list1").find('tr').remove();			
 		
@@ -150,22 +147,92 @@ $(document).ready(function(){
 			dataType: "json",
 		};
 			
-			ajax = callAjax(ajaxInfo);
+		ajax = callAjax(ajaxInfo);
+		
+		ajax.done(function(data){
 			
-			ajax.done(function(data){
-				console.log(data);
-
-				for(i=0; i< data.length;i++) {
-					console.log(data[i]);      
-					$('#customerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')					
-				}			
+			for(i=0; i< data.length;i++) {
+				$('#customerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')					
+			}			
 				
 		})
-		       .fail(function(){
-			  console.log("fail");
+	       .fail(function(){
+		  console.log("fail");
 		});
 	
    });
+   
+   $(".btn_select_process2").click(function()  
+	{		
+		var ajaxInfo ={
+			type:"POST",
+			url:"/gms/common/customerList.do",			
+			dataType: "json",
+		};
+			
+		ajax = callAjax(ajaxInfo);
+		
+		ajax.done(function(data){			
+			for(i=0; i< data.length;i++) {				 
+				$('#customerId1').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')					
+			}						
+		})
+	       .fail(function(){
+		  console.log("fail");
+		});
+		
+		var ajaxInfo1 ={
+				type:"POST",
+				url:"/gms/common/ngasProducts.do",			
+				dataType: "json",
+			};
+				
+			ajax1 = callAjax(ajaxInfo1);
+			
+			ajax1.done(function(data){				
+				for(i=0; i< data.length;i++) {					
+					$('#productId').append('<option value='+data[i].productId+'>'+data[i].productNm+'</option>')
+				}						
+			})
+		       .fail(function(){
+			  console.log("fail");
+			});
+		
+   });
+   
+   $('#productId').change( function(){
+
+		var pid = $('#productId').val();
+
+		getCapaList(pid);
+	});
+   
+   
+   function getCapaList(pid){
+		
+		$.ajax({
+			url: '/gms/product/priceList.do',
+			type: 'POST',
+			data: 'productId='+ pid ,
+			dataType: 'json',
+
+		 })
+		.done(function(data){	    
+	    	var i=0;
+	    	$('#productPriceSeq').find('option').remove(); 
+			//$('#productCapa_' + sel_pid).find('option').remove(); 
+			for(i=0; i< data.length;i++) {
+				console.log(data[i]);      
+				$('#productPriceSeq').append('<option value='+data[i].productPriceSeq+'>'+data[i].productCapa+'</option>')				
+			}
+					
+		})
+		.fail(function(){
+			console.log("fail");
+		 });
+
+	} 
+   
    
    $("#btn_search").click(function()  
 	{
@@ -210,6 +277,34 @@ $(document).ready(function(){
 	
 	  });
 	    
+	$("#btn_search1").click(function()  
+	{
+	
+	 	var strCustomerNm = $("#strCustomerNm1").val();	
+	 	
+		var ajaxInfo ={
+			type:"POST",
+			url:"/gms/common/customerList.do?searchCustomerNm="+strCustomerNm,			
+			dataType: "json",
+		};
+			
+			ajax = callAjax(ajaxInfo);
+			
+			ajax.done(function(data){
+				console.log(data);
+				 $('#customerId1').find('option').remove(); 
+				for(i=0; i< data.length;i++) {
+					console.log(data[i]);      
+					$('#customerId1').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')					
+				}			
+				
+		})
+		       .fail(function(){
+			  console.log("fail");
+		});
+	
+	  });
+			    
 		    
 	$(".btn_bottle_search").click(function()  
 	{
@@ -257,114 +352,177 @@ $(document).ready(function(){
  		});
 		    	
 			
-		// 진행 확인 버튼 클릭
-	    $(".btn_process_check").click(function()  
-	    {
-	    
-	       var select_pid = $(this).attr('id'); 
-	       var msg = '';
-	       var bottleWorkCd = '';
-	      
-	       console.log("bottlesIds ="+bottlesIds);
-	       customerId= $("#customerId").val();
-	       console.log("customerId ="+customerId);	       
-	       
-	       if(customerId ==0){
-	    	   alert("거래처를 선택해주세요");
-	    	   return;
-	       }
+	// 진행 확인 버튼 클릭
+    $(".btn_process_check").click(function()  
+    {
+    
+       var select_pid = $(this).attr('id'); 
+       var msg = '';
+       var bottleWorkCd = '';
+      
+       console.log("bottlesIds ="+bottlesIds);
+       customerId= $("#customerId").val();
+       console.log("customerId ="+customerId);	       
+       
+       if(customerId ==0){
+    	   alert("거래처를 선택해주세요");
+    	   return;
+       }
 
-	       if(bottlesIds ==''){
-	    	   alert("용기를 선택해주세요");
-	    	   return;
-	       }
+       if(bottlesIds ==''){
+    	   alert("용기를 선택해주세요");
+    	   return;
+       }
 
-	       switch (select_pid){
-	          case 'btn_process_1':
-	            msg = "'입고' 하시겠습니까?";
-	            bottleWorkCd ='0301';
-	            break;
-	          case 'btn_process_2':
-	            msg = "'충전' 하시겠습니까?";
-	            bottleWorkCd ='0305';
-	            break;
-	          case 'btn_process_3':
-	            msg = "'상차' 하시겠습니까?";
-	            bottleWorkCd ='0307';
-	            break;  
-	          case 'btn_process_4':
-	             msg = "'출고' 하시겠습니까?";;
-	             bottleWorkCd ='0306';
-	             break;
-	           case 'btn_process_5':
-	             msg = "'판매' 하시겠습니까?";
-	             bottleWorkCd ='0308';
-	             break;
-	           case 'btn_process_6':
-	             msg = "'회수' 하시겠습니까?";
-	             bottleWorkCd ='0310';
-	             break;  
-	           case 'btn_process_7':
-	              msg = "'기타' 하시겠습니까?";
-	              bottleWorkCd ='0311';
+       switch (select_pid){
+          case 'btn_process_1':
+            msg = "'입고' 하시겠습니까?";
+            bottleWorkCd ='0301';
+            break;
+          case 'btn_process_2':
+            msg = "'충전' 하시겠습니까?";
+            bottleWorkCd ='0305';
+            break;
+          case 'btn_process_3':
+            msg = "'상차' 하시겠습니까?";
+            bottleWorkCd ='0307';
+            break;  
+          case 'btn_process_4':
+             msg = "'출고' 하시겠습니까?";;
+             bottleWorkCd ='0306';
+             break;
+           case 'btn_process_5':
+             msg = "'판매' 하시겠습니까?";
+             bottleWorkCd ='0308';
+             break;
+           case 'btn_process_6':
+             msg = "'회수' 하시겠습니까?";
+             bottleWorkCd ='0310';
+             break;  
+           case 'btn_process_7':
+              msg = "'기타' 하시겠습니까?";
+              bottleWorkCd ='0311';
+              break;  
+           case 'btn_process_8':
+	              msg = "'대여' 하시겠습니까?";
+	              bottleWorkCd ='0309';
 	              break;  
-	           case 'btn_process_8':
-		              msg = "'대여' 하시겠습니까?";
-		              bottleWorkCd ='0309';
-		              break;  
-	          default:
-	            break;
+          default:
+            break;
 
-	       }           
-	       console.log("bottleWorkCd ="+bottleWorkCd);	       
-	      
-			if(confirm(msg)){
-				
-				var form = document.createElement("form");
-				form.setAttribute("charset","UTF-8");
-				form.setAttribute("method","post");
-				form.setAttribute("action","/gms/report/registerAll.do");			
-		        
-				var hiddenField = document.createElement("input");
-		        hiddenField.setAttribute("type", "hidden");
-		        hiddenField.setAttribute("name", "bottleWorkCd");
-		        hiddenField.setAttribute("value", bottleWorkCd);
-		        form.appendChild(hiddenField);   
-		        
-		        var hiddenField1 = document.createElement("input");
-		        hiddenField1.setAttribute("type", "hidden");
-		        hiddenField1.setAttribute("name", "customerId");
-		        hiddenField1.setAttribute("value", customerId);
+       }           
+       console.log("bottleWorkCd ="+bottleWorkCd);	       
+      
+		if(confirm(msg)){
+			
+			var form = document.createElement("form");
+			form.setAttribute("charset","UTF-8");
+			form.setAttribute("method","post");
+			form.setAttribute("action","/gms/report/registerAll.do");			
+	        
+			var hiddenField = document.createElement("input");
+	        hiddenField.setAttribute("type", "hidden");
+	        hiddenField.setAttribute("name", "bottleWorkCd");
+	        hiddenField.setAttribute("value", bottleWorkCd);
+	        form.appendChild(hiddenField);   
+	        
+	        var hiddenField1 = document.createElement("input");
+	        hiddenField1.setAttribute("type", "hidden");
+	        hiddenField1.setAttribute("name", "customerId");
+	        hiddenField1.setAttribute("value", customerId);
 
-		        form.appendChild(hiddenField1);     
-		        
-		        var hiddenField2 = document.createElement("input");
-		        hiddenField2.setAttribute("type", "hidden");
-		        hiddenField2.setAttribute("name", "bottlesIds");
-		        hiddenField2.setAttribute("value", bottlesIds);
+	        form.appendChild(hiddenField1);     
+	        
+	        var hiddenField2 = document.createElement("input");
+	        hiddenField2.setAttribute("type", "hidden");
+	        hiddenField2.setAttribute("name", "bottlesIds");
+	        hiddenField2.setAttribute("value", bottlesIds);
 
-		        form.appendChild(hiddenField2);    
-		        
-		        document.body.appendChild(form);
-		        
-		        form.submit();				
-			}
-	      
-		});
+	        form.appendChild(hiddenField2);    
+	        
+	        document.body.appendChild(form);
+	        
+	        form.submit();				
+		}
+      
+	});
 		
-	 // 근무일지 출력
-	    $(".btn_print").click(function()  
-	    {
-	 	   var searchDt = $('#searchDt').val();
-	 	   var searchUserId = $('#searchUserId').val();
-	 	   console.log("searchDt=="+searchDt);
-	       $.popupWindow('/gms/report/print.do?searchDt='+searchDt+"&searchUserId="+searchUserId, {
-	              width: 980,
-	              height: 700,
-	              center: 'screen',          
-	              scrollbars: 'true'
-	          });
-	    });
+    
+	$(".btn_process_sale").click(function()  
+    {
+		
+		var msg = '판매를 하시겠습니까?';       
+       	var bottleWorkCd = '0308';
+       	customerId= $("#customerId1").val();
+       	console.log("customerId ="+customerId);	       
+       	productId= $("#productId").val();
+       	productPriceSeq= $("#productPriceSeq").val();       	
+    	productCount= $("#productCount").val();
+       	console.log("productId ="+productId);	    
+       	console.log("productPriceSeq ="+productPriceSeq);	    
+       	console.log("productCount ="+productCount);	
+       	if(customerId ==0){
+    	   alert("거래처를 선택해주세요");
+    	   return;
+       	}
+      
+		if(confirm(msg)){
+			
+			var form = document.createElement("form");
+			form.setAttribute("charset","UTF-8");
+			form.setAttribute("method","post");
+			form.setAttribute("action","/gms/report/noGasSales.do");			
+	        
+			var hiddenField = document.createElement("input");
+	        hiddenField.setAttribute("type", "hidden");
+	        hiddenField.setAttribute("name", "bottleWorkCd");
+	        hiddenField.setAttribute("value", bottleWorkCd);
+	        form.appendChild(hiddenField);   
+	        
+	        var hiddenField1 = document.createElement("input");
+	        hiddenField1.setAttribute("type", "hidden");
+	        hiddenField1.setAttribute("name", "customerId");
+	        hiddenField1.setAttribute("value", customerId);
+	        form.appendChild(hiddenField1);  
+	        
+	        var hiddenField2 = document.createElement("input");
+	        hiddenField2.setAttribute("type", "hidden");
+	        hiddenField2.setAttribute("name", "productId");
+	        hiddenField2.setAttribute("value", productId);
+	        form.appendChild(hiddenField2);  
+	        
+	        var hiddenField3 = document.createElement("input");
+	        hiddenField3.setAttribute("type", "hidden");
+	        hiddenField3.setAttribute("name", "productPriceSeq");
+	        hiddenField3.setAttribute("value", productPriceSeq);
+	        form.appendChild(hiddenField3);  
+	        
+	        var hiddenField4 = document.createElement("input");
+	        hiddenField4.setAttribute("type", "hidden");
+	        hiddenField4.setAttribute("name", "productCount");
+	        hiddenField4.setAttribute("value", productCount);
+	        form.appendChild(hiddenField4);  
+	        
+	        document.body.appendChild(form);
+	        
+	        form.submit();				
+		}
+      
+	});
+    
+ // 근무일지 출력
+    $(".btn_print").click(function()  
+    {
+ 	   var searchDt = $('#searchDt').val();
+ 	   var searchUserId = $('#searchUserId').val();
+ 	   console.log("searchDt=="+searchDt);
+       $.popupWindow('/gms/report/print.do?searchDt='+searchDt+"&searchUserId="+searchUserId, {
+              width: 980,
+              height: 700,
+              center: 'screen',          
+              scrollbars: 'true'
+          });
+    });
 });
 	
 </script>
@@ -492,6 +650,97 @@ $(document).ready(function(){
 		</div>
 		</div>
 		<!-- /.modal -->
+		
+		<!--  process modat2 start -->  
+		<div class="modal modal-info fade" id="process-modal2">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+		             	<h4 class="modal-title">용기정보</h4>
+		              	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                <span aria-hidden="true">&times;</span>
+		              	</button>
+		            </div>
+		
+					<div class="modal-body">
+					<div class="clearfix"></div>
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12" >
+							<div class="x_panel">
+								
+								<div class="x_content">
+								<br />
+								<div  class="card-body">
+								<form id="bForm" name="bForm" th:object="${workReport}" action="/gms/report/registerAll.do" method="post">
+					              <input type="hidden" id="bottlesIds" name="bottlesIds" value="">	
+					              
+									<table id="myTable" class="table customer-info">									
+										<tr>
+											<td width="80" class="card-footer">거래처</td>
+											<td  colspan=3  width="350">
+											<select id="customerId1" name="customerId1" class="form-control">
+						                        <option value="0">거래처 선택</option>			                      	
+										    </select>	
+										    </td>
+										    <td class="card-footer">
+										    <input type="text" id="strCustomerNm1" name="strCustomerNm1" class="form-control" placeholder="">
+											</td>
+										   	<td class="card-footer">
+										    	<button class="btn btn-navbar" id="btn_search1" type="button">
+									            <i class="fas fa-search"></i>
+									          </button>
+		          
+											</td>
+										</tr>				
+										<tr>
+											<td class="card-footer">상 품</td>
+											<td  colspan=2>
+											<select id="productId" name="productId" class="form-control" >
+						                        <option value="0">상품선택</option>			                      	
+										    </select>	
+											</td>
+											<td> 
+					                       		<select id="productPriceSeq" name="productPriceSeq" class="form-control" style="width:100px">
+							                        <option value="0">옵션</option>			                      	
+											    </select>	 					                        
+					                       </td>   
+					                       <td> 
+					                       		<input type="text" id="productCount" name="productCount" class="form-control" placeholder="수량"> 
+					                        
+					                       </td>   
+										</tr>					
+									</table>
+									
+									<table id="myTable" class="table order-info">
+										<tr>
+											<div align="center">
+											<button type="button" id="btn_process_0" class="btn btn-info btn btn_process_sale">판매</button>
+										</div>
+										</tr>										
+									</table>
+											
+									
+									</form>
+									<div class="ln_solid"></div>
+									<div id="view_button" >
+										<div align="center">
+											<button type="button"  class="close" data-dismiss="modal" >Close</button>
+										</div>
+									</div>
+									
+									
+									<div id="test_char">
+									</div>
+								</div>
+							</div> <!-- X_content end -->
+						</div>
+					</div> <!-- /.x_panel end -->
+				</div> <!-- / .col -->
+			</div>
+		</div> <!-- / . modal body -->
+		</div>
+		</div>
+		<!-- /.modal -->
     	
         <div class="row">
             <div class="col-1">
@@ -515,11 +764,11 @@ $(document).ready(function(){
 				</option>		
             	</select>   
             </div>         
-            <div class="col-2">         
+            <div class="col-1">         
             	<button class="btn btn-navbar" type="submit"><i class="fas fa-search"></i></button>        
             </div>
-            <div class="col-2" align=right>
-         	<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 판매&납품</a>
+            <div class="col-3" align=right>
+         	
          	<a class="btn_print btn btn-secondary btn-sm"   th:userId="${session.userId}"  href="#" >
                               <i class="fas fa-print"></i>프린트</a>
          	</div>	
@@ -588,9 +837,12 @@ $(document).ready(function(){
         </div>    
         <!-- /.row -->
         <div class="row">	
-        	<div class="col-12">
-         <a th:href="@{/gms/excelDownloadEcount.do}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> ECount엑셀받기</button></a> 
-        	
+        	<div class="col-3">
+        		<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 가스 판매&납품</a>
+        		<a class="btn_select_process2 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-check-circle"></i> 단품판매</a>
+        	</div>
+        	<div class="col-9">
+         		<a th:href="@{/gms/excelDownloadEcount.do}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> ECount엑셀받기</button></a>         	
         	</div>
         </div>
       </div><!-- /.container-fluid -->

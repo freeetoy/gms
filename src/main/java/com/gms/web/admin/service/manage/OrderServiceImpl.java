@@ -224,8 +224,7 @@ public class OrderServiceImpl implements OrderService {
 			
 			int productCount  = params.getProductCount();
 			
-			logger.debug("OrderContoller registerOrder productCount== "+ params.getProductCount());			
-		
+			logger.debug("OrderContoller registerOrder productCount== "+ params.getProductCount());				
 			
 			List<OrderProductVO> orderProduct = new ArrayList<OrderProductVO>();
 			List<OrderBottleVO> orderBottleList = new ArrayList<OrderBottleVO>();
@@ -249,14 +248,12 @@ public class OrderServiceImpl implements OrderService {
 			
 			String bottleChangeYn = null;
 			String bottleSaleYn = "N";
-			ProductTotalVO tempProduct = null;
-			
+			ProductTotalVO tempProduct = null;			
 			
 			// Sales ID 설정
 			CustomerVO customer = customerService.getCustomerDetails(params.getCustomerId());
 			
 			params.setSalesId(customer.getSalesId());
-		
 		
 			if(orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.01")) ||  orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.02"))
 					|| orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.03"))) {
@@ -265,8 +262,7 @@ public class OrderServiceImpl implements OrderService {
 				//List<CustomerPriceExtVO> customerPriceList = customerService.getCustomerPriceList(params.getCustomerId());			
 				
 				// 거래처 상품별 단가 정보 가져오기
-				List<ProductTotalVO> productPriceList = productService.getCustomerProductTotalList(params.getCustomerId());
-						
+				List<ProductTotalVO> productPriceList = productService.getCustomerProductTotalList(params.getCustomerId());						
 				
 				for(int i =0 ; i < productCount ; i++ ) {
 					
@@ -279,25 +275,27 @@ public class OrderServiceImpl implements OrderService {
 					orderCount = 0;
 					bottleChangeYn = "N";
 					bottleSaleYn = "N";
+					boolean bottleFlag = false;
 					
 					productId = Integer.parseInt(request.getParameter("productId_"+i));
 					productPriceSeq = Integer.parseInt(request.getParameter("productPriceSeq_"+i));
 					orderCount = Integer.parseInt(request.getParameter("orderCount_"+i));
 					
 					if(request.getParameter("bottleChangeYn_"+i) !=null)  bottleChangeYn = "Y";
-					if(request.getParameter("bottleSaleYn_"+i) !=null)  bottleSaleYn = "Y";
-									
+					if(request.getParameter("bottleSaleYn_"+i) !=null)  bottleSaleYn = "Y";									
 					
 					for(int k=0;k<productPriceList.size();k++) {
 						orderAmount = 0;
 						tempProduct = productPriceList.get(k);
 						
 						if(productId == tempProduct.getProductId() && productPriceSeq == tempProduct.getProductPriceSeq()) {
+							if(tempProduct.getGasId()!=null && tempProduct.getGasId() > 0) bottleFlag = true;
 							
 							if(i==0) {
 								orderProductNm = tempProduct.getProductNm();
 								orderProductCapa = tempProduct.getProductCapa();
 								logger.debug("OrderContoller registerOrder productPriceList orderProductNm== "+ orderProductNm);
+								logger.debug("OrderContoller registerOrder productPriceList orderProductNm== "+ productPriceSeq);
 								logger.debug("OrderContoller registerOrder productPriceList orderProductCapa== "+ orderProductCapa);
 							}
 							
@@ -307,7 +305,8 @@ public class OrderServiceImpl implements OrderService {
 							orderTotalAmount += orderAmount;								
 						}
 					}				
-						
+					logger.debug("OrderContoller registerOrder productPriceList productId== "+ productId);
+					logger.debug("OrderContoller registerOrder productPriceList productPriceSeq== "+ productPriceSeq);
 					logger.debug("OrderContoller registerOrder orderTotalAmount== "+ orderTotalAmount);
 					
 					productVo.setOrderId(params.getOrderId());
@@ -323,17 +322,18 @@ public class OrderServiceImpl implements OrderService {
 					orderProduct.add(productVo);
 					
 					for(int k=0; k< orderCount ; k++) {
-						
-						OrderBottleVO orderBottle = new OrderBottleVO();
-						
-						orderBottle.setOrderId(orderId);
-						orderBottle.setOrderProductSeq(i+1);
-						orderBottle.setProductId(productId);
-						orderBottle.setProductPriceSeq(productPriceSeq);
-						orderBottle.setCreateId(params.getCreateId());
-						orderBottle.setUpdateId(params.getCreateId());
-						
-						orderBottleList.add(orderBottle);						
+						//if(bottleFlag) {
+							OrderBottleVO orderBottle = new OrderBottleVO();
+							
+							orderBottle.setOrderId(orderId);
+							orderBottle.setOrderProductSeq(i+1);
+							orderBottle.setProductId(productId);
+							orderBottle.setProductPriceSeq(productPriceSeq);
+							orderBottle.setCreateId(params.getCreateId());
+							orderBottle.setUpdateId(params.getCreateId());
+							
+							orderBottleList.add(orderBottle);			
+						//}
 					}
 				}
 				
@@ -347,7 +347,8 @@ public class OrderServiceImpl implements OrderService {
 							
 				result1 = orderMapper.insertOrderProducts(orderProduct);				
 				
-				result1 = orderMapper.insertOrderBottles(orderBottleList);
+				if(orderBottleList.size() > 0)
+					result1 = orderMapper.insertOrderBottles(orderBottleList);
 				
 				params.setOrderProductNm(orderProductNm);
 				params.setOrderProductCapa(orderProductCapa);
@@ -367,9 +368,16 @@ public class OrderServiceImpl implements OrderService {
 			e.printStackTrace();
 		}
 		
-		
 		return result;
 	}
+	
+	@Override
+	public int registerOrder(OrderVO param) {
+		// TODO Auto-generated method stub
+		return orderMapper.insertOrder(param);	
+	}
+	
+	
 
 	@Override
 	@Transactional
@@ -585,9 +593,9 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Override
 	@Transactional
-	public int modifyOrderProduct(OrderProductVO param) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int modifyOrderProductCount(OrderProductVO param) {
+		
+		return orderMapper.updateOrderProductCount(param);
 	}
 	
 	@Override
@@ -801,6 +809,8 @@ public class OrderServiceImpl implements OrderService {
 	public int modifyOrderBottle(OrderBottleVO param) {
 		return orderMapper.updateOrderBottle(param);	
 	}
+
+	
 	
 	
 }
