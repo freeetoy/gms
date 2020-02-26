@@ -18,8 +18,7 @@ public class ProductPriceVO extends AbstractVO implements Serializable {
 	private Integer productId;
 		
 	/** Product_Price_Seq */
-	private Integer productPriceSeq;
-	
+	private Integer productPriceSeq;	
 	
 	/** Product_Price 	*/    
 	private int productPrice;

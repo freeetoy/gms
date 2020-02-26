@@ -351,4 +351,19 @@
 		AND 
 			GAS_ID = 0 		
 	</select>
+	
+	<select id="selectNoGasProductPriceList"  resultType="com.gms.web.admin.domain.manage.ProductPriceSimpleVO">
+		SELECT
+			TP.Product_ID ,Product_Price_Seq,concat(Product_Nm , " - " ,Product_Capa) Product_Nm
+		FROM
+			TB_Product  TP, TB_Product_Price TPP
+		WHERE
+			TP.Product_Status  != '0'
+		AND 
+			TPP.Product_Status  != '0'
+		AND 
+			TP.Product_ID = TPP.Product_ID
+		AND 
+			GAS_ID = 0 		
+	</select>
 </mapper>

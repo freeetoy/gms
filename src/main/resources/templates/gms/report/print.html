@@ -103,8 +103,8 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 	  <tr height="40">    
 		<td class="tl_dot" align="center">순번</td>
 		<td class="tl_dot" align="center">거래처</td>
-		<td class="tl_dot" align="center">납품</td>
-		<td class="tl_dot" align="center">회수</td>
+		<td class="tl_dot" align="center" width="30%">납품</td>
+		<td class="tl_dot" align="center" width="30%">회수</td>
 		<td class="tl_dot" align="center">금액</td>
 		<td class="tl_dot" align="center">수금액</td>  
 		<td class="tl_dot" style="border-right-style: solid;border-right-width: 1px;" align="center">적 요</td>
@@ -113,14 +113,14 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 	  <tr th:if="${not #lists.isEmpty( workList )}" th:each="row : ${workList}" height="40">     
 		<td class="tl_dot" style="border-top-style:none" align="center" th:text="${workList.indexOf(row)+1}" >상차</td>
 		<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.CustomerNm}"></td>
-		<td class="tl_dot" style="border-top-style:none" align="center" >
+		<td class="tl_dot" style="border-top-style:none" align="left" >
 			<table>     
               	<tr>
               		<td th:if="${not #lists.isEmpty(row.salesBottles )}" th:each="row1 : ${row.salesBottles}"  th:text="${row1.productNm} + ' ' + ${row1.productCapa}+ ' ' + ${row1.productCount}">
               	</tr>
              </table>
          </td>
-		<td class="tl_dot" style="border-top-style:none" align="center" >
+		<td class="tl_dot" style="border-top-style:none" align="left" >
 			<table>     
 	           	<tr  >
 	           		<td th:if="${not #lists.isEmpty(row.backBottles )}" th:each="row2 : ${row.backBottles}" th:text="${row2.productNm} + ' ' + ${row2.productCapa}+ ' ' + ${row2.productCount}">
@@ -131,7 +131,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 		<td class="tl_dot" style="border-top-style:none" align="center" th:unless="${row.orderAmount> 999 }" th:text="${row.orderAmount}">		
 		</td>
 		<td class="tl_dot" style="border-top-style:none" align="center"></td>
-		<td class="tl_dot" style="border-top-style:none" align="center"></td>
+		<td class="tl_dot" style="border-right-style: solid;border-right-width: 1px;" align="center" ></td>
 	  </tr>
 
 	  <tr height="40" th:each="seq : ${#numbers.sequence(1,20-workList.size())}"> 
@@ -141,7 +141,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 		<td class="tl_dot" style="border-top-style:none" align="center"></td>
 		<td class="tl_dot" style="border-top-style:none" align="center"></td>
 		<td class="tl_dot" style="border-top-style:none" align="center"></td>
-		<td class="tl_dot" style="border-top-style:none" align="center"></td>
+		<td class="tl_dot" style="border-right-style: solid;border-right-width: 1px;" align="center"></td>
 	  </tr>
   </tbody>
  </table>

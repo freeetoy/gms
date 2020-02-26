@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.domain.manage.CustomerSimpleVO;
+import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.service.common.ApiService;
 import com.gms.web.admin.service.manage.WorkReportService;
@@ -87,6 +88,33 @@ public class ApiController {
 			result = apiService.registerWorkReportForChangeCd(workReport);
 		}
 		return "success";
+		//return null;
+	}
+
+	
+	@RequestMapping(value = "/api/controlActionNoGas.do")
+	@ResponseBody
+	public String controllActionNoGas(String userId, String customerNm, Integer productId, Integer productPriceSeq, int productCount )	{	
+				
+		logger.debug("userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
+		
+		boolean phoneCall = true;
+		int result = 0;
+		
+		WorkBottleVO workBottle = new WorkBottleVO();
+		
+		workBottle.setProductId(productId);
+		workBottle.setProductPriceSeq(productPriceSeq);
+		workBottle.setProductCount(productCount);
+		workBottle.setCustomerNm(customerNm);				
+		workBottle.setCreateId(userId);	
+		
+		logger.info("단품판매 start");
+		//workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
+		result = apiService.registerWorkReportNoGas(workBottle);			
+		
+		if(result > 0) 		return "success";
+		else return "fail";
 		//return null;
 	}
 

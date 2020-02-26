@@ -3,6 +3,7 @@ package com.gms.web.admin.service.manage;
 import java.util.List;
 
 import com.gms.web.admin.domain.manage.BottleVO;
+import com.gms.web.admin.domain.manage.ProductPriceSimpleVO;
 import com.gms.web.admin.domain.manage.ProductPriceVO;
 import com.gms.web.admin.domain.manage.ProductTotalVO;
 import com.gms.web.admin.domain.manage.ProductVO;
@@ -51,4 +52,6 @@ public interface ProductService {
 	public List<ProductVO> getGasProductList();
 	
 	public List<ProductVO> getNoGasProductList();
+	
+	public List<ProductPriceSimpleVO> getNoGasProductPriceList();
 }

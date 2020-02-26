@@ -21,6 +21,7 @@ import org.springframework.dao.DataAccessException;
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.GasVO;
+import com.gms.web.admin.domain.manage.ProductPriceSimpleVO;
 import com.gms.web.admin.domain.manage.ProductPriceVO;
 import com.gms.web.admin.domain.manage.ProductTotalVO;
 import com.gms.web.admin.domain.manage.ProductVO;
@@ -374,6 +375,17 @@ public class ProductController {
 	public List<ProductVO> getProductListOfNoGas(Model model)	{	
 		
 		List<ProductVO> productList = productService.getNoGasProductList();
+		model.addAttribute("productList", productList);
+		
+		return productList;
+		//return null;
+	}
+	
+	@RequestMapping(value = "/api/ngasProductPriceList.do")
+	@ResponseBody
+	public List<ProductPriceSimpleVO> getProductPriceListOfNoGas(Model model)	{	
+		
+		List<ProductPriceSimpleVO> productList = productService.getNoGasProductPriceList();
 		model.addAttribute("productList", productList);
 		
 		return productList;

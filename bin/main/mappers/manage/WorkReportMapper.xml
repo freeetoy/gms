@@ -216,8 +216,8 @@
 			WorK_CD in ('0308','0309', '0310')
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
 		AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
-		ORDER BY Work_Report_Seq DESC 
 		</if>
+		ORDER BY Work_Report_Seq DESC 		
 	</select>
 	
 	<select id="selectWorkReportOnlyListAll" resultType="com.gms.web.admin.domain.manage.WorkReportVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
@@ -231,9 +231,10 @@
 			WorK_CD in ('0308','0309', '0310')
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
 		AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
-		ORDER BY Work_Report_Seq DESC 
 		</if>
+		ORDER BY Work_Report_Seq DESC 		
 	</select>
+	
 	<select id="selectWorkReportList1" resultType="com.gms.web.admin.domain.manage.WorkBottleVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
 		SELECT Product_Count,Work_Report_Seq, AA.Customer_ID,Customer_nm  , AA.Product_ID  ,Product_NM , AA.Product_Price_Seq ,Product_Capa    
 		,Bottle_work_Cd, CD_NM Bottle_work_Cd_NM, AA.Order_Id, Order_Total_Amount
@@ -482,5 +483,6 @@
 				TB.Work_Report_Seq = TW.Work_Report_Seq
 			AND 
 				Order_Id = #{orderId}		
+			Group By Product_ID, Product_Price_Seq 
 	</select>
 </mapper>

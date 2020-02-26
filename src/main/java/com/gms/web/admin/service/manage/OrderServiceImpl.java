@@ -321,8 +321,10 @@ public class OrderServiceImpl implements OrderService {
 					
 					orderProduct.add(productVo);
 					
-					for(int k=0; k< orderCount ; k++) {
-						//if(bottleFlag) {
+					if(bottleFlag) {
+					
+						for(int k=0; k< orderCount ; k++) {
+						
 							OrderBottleVO orderBottle = new OrderBottleVO();
 							
 							orderBottle.setOrderId(orderId);
@@ -333,7 +335,7 @@ public class OrderServiceImpl implements OrderService {
 							orderBottle.setUpdateId(params.getCreateId());
 							
 							orderBottleList.add(orderBottle);			
-						//}
+						}
 					}
 				}
 				

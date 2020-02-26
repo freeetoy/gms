@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.GasVO;
+import com.gms.web.admin.domain.manage.ProductPriceSimpleVO;
 import com.gms.web.admin.domain.manage.ProductPriceVO;
 import com.gms.web.admin.domain.manage.ProductTotalVO;
 import com.gms.web.admin.domain.manage.ProductVO;
@@ -341,6 +342,11 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<ProductVO> getNoGasProductList() {
 		return productMapper.selectNoGasProductList();
+	}
+
+	@Override
+	public List<ProductPriceSimpleVO> getNoGasProductPriceList() {
+		return productMapper.selectNoGasProductPriceList();
 	}
 
 	

@@ -13,6 +13,7 @@ import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.OrderVO;
+import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.mapper.manage.WorkReportMapper;
 import com.gms.web.admin.service.manage.BottleService;
@@ -107,6 +108,22 @@ public class ApiServiceImpl implements ApiService {
 	private CustomerVO getCustomer(String customerNm) {				
 		return customerService.getCustomerDetailsByNm(customerNm);
 
+	}
+
+	@Override
+	public int registerWorkReportNoGas(WorkBottleVO param) {
+		int result = 0;	
+		
+		//Customer 정보가져
+		CustomerVO customer = getCustomer(param.getCustomerNm());
+		
+		if(customer!=null) {
+			param.setCustomerId(customer.getCustomerId());
+
+			result = workService.registerWorkNoBottle(param);		
+		}		
+				
+		return result;
 	}	
 
 	
