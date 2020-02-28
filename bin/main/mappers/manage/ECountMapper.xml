@@ -14,7 +14,7 @@
 		<result property="vat"				column="VAT"				/>
 	</resultMap>	
 
-
+<!-- 
 	<select id="selectECount" resultType="com.gms.web.admin.domain.manage.ECountVO">		
 		SELECT
 			TD.Customer_Id, Customer_Nm, User_Nm Sales_Nm ,TP.Product_Id , TT.Product_Nm, TPP.Product_Capa,
@@ -37,5 +37,36 @@
 			TP.Product_Price_Seq = TPP.Product_Price_Seq
 		AND 
 			TD.Sales_ID= TU.User_ID
+	</select>
+	 -->
+	 <select id="selectECount" resultType="com.gms.web.admin.domain.manage.ECountVO">		
+		SELECT 
+			WR.Customer_ID,Customer_NM, WB.Product_ID, PT.Product_Nm, PP.Product_Capa, User_Nm Sales_Nm, 
+			WB.Order_Count, OP.Order_Amount/OP.Order_Count Product_Price, WB.Order_Count*Product_Price Supply_Price,WB.Order_Count*Product_Price*0.1 VAT
+		FROM 
+			(
+				SELECT count(Work_Seq) Order_Count,Work_Report_Seq,Product_ID, Product_Price_Seq,Create_ID
+				FROM TB_Work_Bottle 
+				WHERE Bottle_Work_Cd in ('0308','0309')
+				AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(curdate(),'%Y/%m/%d')
+				Group By Work_Report_Seq,Product_ID, Product_Price_Seq ,Create_ID
+			) WB,TB_Work_Report WR ,TB_Order_Product OP,TB_Product PT, TB_Product_Price PP, TB_Customer TC, TB_User TU
+		WHERE 
+			WB.Work_Report_Seq = WR.Work_Report_Seq
+		AND 
+			WR.Order_ID = OP.Order_ID
+		AND 
+			WB.Product_Price_Seq = OP.Product_Price_Seq 
+		AND 
+			WB.Product_ID = PT.Product_ID
+		AND 
+			WB.Product_ID = PP.Product_ID 
+		AND 
+			WB.Product_Price_Seq = PP.Product_Price_Seq 
+		AND 
+			WR.Customer_ID = TC.Customer_ID
+		AND 
+			WB.Create_ID = TU.User_Id
+		Order By WB.Work_Report_Seq
 	</select>
 </mapper>

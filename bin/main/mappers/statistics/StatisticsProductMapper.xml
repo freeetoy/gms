@@ -19,7 +19,7 @@
 		 , Create_Dt
 	</sql>
 
-	<insert id="inserDailyStatisticsProduct">
+	<!-- insert id="inserDailyStatisticsProduct">
 		INSERT INTO TB_Daily_Stat_Product(
 			<include refid="StatisticsProductColumns" />
 		) 
@@ -32,6 +32,21 @@
 			AND 	B.Order_Process_CD !='0299'
 			AND 	B.Order_ID = A.Order_ID
 			GROUP BY DATE_FORMAT(A.Create_Dt,'%Y/%m/%d'),A.Product_Id
+		) tc on tb.Product_ID = tc.product_id
+	</insert> -->
+	
+	<insert id="inserDailyStatisticsProduct">
+		INSERT INTO TB_Daily_Stat_Product(
+			<include refid="StatisticsProductColumns" />
+		) 
+		SELECT tb.Product_ID, DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') Stat_Dt,IFNULL(Order_Count,0), IFNULL(Order_Amount,0) ,'admin', NOW()
+		FROM  TB_Product tb left join 
+		(
+			SELECT Product_Id, Count(Work_Seq) Order_Count, Sum(Product_Price) Order_Amount
+			FROM TB_Work_Bottle
+			WHERE Bottle_Work_Cd in ('0308','0309')
+			AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')		
+			Group by Product_Id
 		) tc on tb.Product_ID = tc.product_id
 	</insert>
 	

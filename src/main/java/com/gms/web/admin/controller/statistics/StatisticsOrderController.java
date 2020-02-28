@@ -28,6 +28,7 @@ import com.gms.web.admin.common.utils.ExcelStyle;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.statistics.StatisticsBottleVO;
 import com.gms.web.admin.domain.statistics.StatisticsOrderVO;
+import com.gms.web.admin.domain.statistics.StatisticsSalesVO;
 import com.gms.web.admin.service.statistics.StatisticsOrderService;
 import com.gms.web.admin.service.statistics.StatisticsProductService;
 
@@ -268,4 +269,225 @@ public class StatisticsOrderController {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	@RequestMapping(value = "/gms/statistics/sales/daily.do")
+	public ModelAndView getStatisticsSalesDaily(StatisticsSalesVO params) {
+
+		logger.info("StatisticsOrderContoller getStatisticsSalesDaily");
+		logger.debug("StatisticsOrderContoller searchStatisticsOrderDt "+ params.getSearchStatDt());
+
+		ModelAndView mav = new ModelAndView();
+		
+		String searchStatDt = params.getSearchStatDt();	
+		
+		String searchStatDtFrom = null;
+		String searchStatDtEnd = null;
+				
+		if(searchStatDt != null && searchStatDt.length() > 20) {						
+			searchStatDtFrom = searchStatDt.substring(0, 10) ;			
+			searchStatDtEnd = searchStatDt.substring(13, searchStatDt.length()) ;
+			
+			params.setSearchStatDtFrom(searchStatDtFrom);
+			params.setSearchStatDtEnd(searchStatDtEnd);			
+		}else {						
+			
+			searchStatDtFrom = DateUtils.getNextDate(-30,"yyyy/MM/dd");
+			logger.debug("****** getStatisticsSalesDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
+			
+			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
+			logger.debug("****** getStatisticsSalesDaily else *****getSearchStatDtEnd===*"+searchStatDtEnd);
+			
+			params.setSearchStatDtFrom(searchStatDtFrom);
+			params.setSearchStatDtEnd(searchStatDtEnd);
+			
+			searchStatDt = searchStatDtFrom +" - "+ searchStatDtEnd;
+			
+			params.setSearchStatDt(searchStatDt);
+		}		
+		
+		List<StatisticsSalesVO> statOrderList = statService.getDailylStatisticsSalesList(params);
+		
+		mav.addObject("statList", statOrderList);	
+		
+		//검색어 셋팅
+		mav.addObject("searchStatDt", searchStatDt);			
+		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_sales"));	 		
+		
+		mav.setViewName("gms/statistics/sales/daily");
+		
+		return mav;
+	}
+	
+	
+	@RequestMapping(value = "/gms/statistics/sales/monthly.do")
+	public ModelAndView getStatisticsSalesMonthly(StatisticsSalesVO params) {
+
+		logger.info("StatisticsOrderContoller getStatisticsSalesMonthly");
+		logger.debug("StatisticsOrderContoller searchStatisticsOrderDt "+ params.getSearchStatDt());
+
+		ModelAndView mav = new ModelAndView();
+				
+		String searchStatDt = params.getSearchStatDt();	
+		
+		String searchStatDtFrom = null;
+		String searchStatDtEnd = null;
+				
+		if(searchStatDt != null && searchStatDt.length() > 20) {						
+			searchStatDtFrom = searchStatDt.substring(0, 10) ;			
+			searchStatDtEnd = searchStatDt.substring(13, searchStatDt.length()) ;
+			
+			params.setSearchStatDtFrom(searchStatDtFrom);
+			params.setSearchStatDtEnd(searchStatDtEnd);			
+		}else {						
+			
+			searchStatDtFrom = DateUtils.getNextDate(-365,"yyyy/MM/dd");
+			logger.debug("****** getStatisticsSalesMonthly *****getSearchStatDtFrom===*"+searchStatDtFrom);
+			
+			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
+			logger.debug("****** getStatisticsSalesMonthly *****getSearchStatDtEnd===*"+searchStatDtEnd);
+			
+			params.setSearchStatDtFrom(searchStatDtFrom);
+			params.setSearchStatDtEnd(searchStatDtEnd);
+			
+			searchStatDt = searchStatDtFrom +" - "+ searchStatDtEnd;
+			params.setSearchStatDt(searchStatDt);
+		}		
+		
+		List<StatisticsSalesVO> statOrderList = statService.getMontlylStatisticsSalesList(params);
+		
+		mav.addObject("statList", statOrderList);	
+		
+		//검색어 셋팅
+		mav.addObject("searchStatDt", searchStatDt);			
+		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_sales"));	 		
+		
+		mav.setViewName("gms/statistics/sales/monthly");
+		
+		return mav;
+	}
+	
+	
+	@RequestMapping(value = "/gms/statistics/sales/excelDown.do")
+	public void excelDownloadSalesStatistics(HttpServletResponse response,StatisticsSalesVO params){
+	// 게시판 목록조회
+
+	   try {
+		   // 가스 정보 불러오기
+		   String searchStatDt = params.getSearchStatDt();	
+			
+			String searchStatDtFrom = null;
+			String searchStatDtEnd = null;
+					
+			if(searchStatDt != null && searchStatDt.length() > 20) {						
+				searchStatDtFrom = searchStatDt.substring(0, 10) ;			
+				searchStatDtEnd = searchStatDt.substring(13, searchStatDt.length()) ;
+				
+				params.setSearchStatDtFrom(searchStatDtFrom);
+				params.setSearchStatDtEnd(searchStatDtEnd);			
+			}else {						
+					
+				searchStatDtFrom = DateUtils.getNextDate(-30,"yyyy/MM/dd");
+				logger.debug("****** excelDownloadSalesStatistics else *****getSearchStatDtFrom===*"+searchStatDtFrom);
+		
+				searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
+				logger.debug("****** excelDownloadSalesStatistics else *****getSearchStatDtEnd===*"+searchStatDtEnd);
+		
+				
+				params.setSearchStatDtFrom(searchStatDtFrom);
+				params.setSearchStatDtEnd(searchStatDtEnd);
+		
+				searchStatDt = searchStatDtFrom +" - "+ searchStatDtEnd;
+				
+				params.setSearchStatDt(searchStatDt);
+			}		
+			
+			List<StatisticsSalesVO> statList = null;
+			
+			String fileName="StatisticsSales";
+			if(params.getPeriodType()==1) {
+				statList= statService.getDailylStatisticsSalesList(params);
+				fileName +="Daily_"+DateUtils.getDate()+".xls";
+			}else {
+				statList = statService.getMontlylStatisticsSalesList(params);
+				fileName +="Monthly_"+DateUtils.getDate()+".xls";
+			}
+		    // 워크북 생성
+	
+		    Workbook wb = new HSSFWorkbook();
+		    Sheet sheet = (Sheet) wb.createSheet("용기");
+		    Row row = null;
+		    Cell cell = null;
+	
+		    int rowNo = 0;
+		    
+		    // 테이블 헤더용 스타일
+		    CellStyle headStyle = wb.createCellStyle();
+	
+		    headStyle= ExcelStyle.getHeadStyle(headStyle);
+
+		    // 데이터용 경계 스타일 테두리만 지정
+		    CellStyle bodyStyle = wb.createCellStyle();
+		    
+		    bodyStyle= ExcelStyle.getBodyStyle(bodyStyle);
+		   
+		    // 날짜,판매건수,판매금액,대여건수,대여금액
+		    //			0	1		2		3		4		5		6
+		    row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
+		    
+		    List<String> list = null;		    
+		    list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.stat.sales.title"), ","); 		
+		    
+		    for(int i =0;i<list.size();i++) {
+		    
+			    cell = row.createCell(i);
+			    cell.setCellStyle(headStyle);
+			    cell.setCellValue(list.get(i));		    
+		    }
+		    
+		   // 날짜,판매건수,판매금액,대여건수,대여금액
+		    // 데이터 부분 생성
+		    for(StatisticsSalesVO vo : statList) {
+		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
+		        cell = row.createCell(0);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getStatDt());
+		        
+		        cell = row.createCell(1);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getSalesCount());
+		        
+		        cell = row.createCell(2);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getSalesAmount());
+		        
+		        cell = row.createCell(3);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getRentalCount());
+		        
+		        cell = row.createCell(4);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getRentalAmount());		        
+		    }	
+	
+		    // 컨텐츠 타입과 파일명 지정
+		    response.setContentType("ms-vnd/excel");
+		    response.setHeader("Content-Disposition", "attachment;filename="+fileName);	
+	
+		    // 엑셀 출력
+		    wb.write(response.getOutputStream());
+		    wb.close();
+		    
+	   } catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+	}
+	
+	
 }

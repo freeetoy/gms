@@ -38,6 +38,7 @@
 		<result property="gasID"				column="Gas_ID"					/>
 		<result property="productId"			column="Product_ID"				/>
 		<result property="productPriceSeq"		column="Product_Price_Seq"		/>
+		<result property="productPrice"			column="Product_Price"			/>
 		<result property="productNm"			column="Product_Nm"				/>	
 		<result property="productCapa"			column="product_Capa"			/>	
 		<result property="bottleType"			column="Bottle_Type"			/>
@@ -105,6 +106,7 @@
 		 , Gas_ID              
 		 , Product_ID          
 		 , Product_Price_Seq   
+		 , Product_Price
 		 , Bottle_Type
 		 , Create_ID        
 		 , Create_Dt        
@@ -146,6 +148,7 @@
 			, #{gasId}				
 			, #{productId}	
 			, #{productPriceSeq}
+			, #{productPrice}
 			, #{bottleType}
 			, #{createId}			
 			, NOW()
@@ -169,6 +172,7 @@
 			, #{item.gasId}				
 			, #{item.productId}	
 			, #{item.productPriceSeq}
+			, #{item.productPrice}
 			, #{item.bottleType}
 			, #{item.createId}			
 			, NOW()
@@ -304,10 +308,8 @@
 			Customer_Id = #{customerId}	
 		AND 
 			DATE_FORMAT(Work_Dt,'%Y/%m/%d') = DATE_FORMAT(curdate(),'%Y/%m/%d')		
-	</select>
-	
-	
-	
+	</select>	
+	<!-- 
 	<select id="selectWorBottleListTotal" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="java.util.Map">
 		SELECT C.*
 		FROM (
@@ -400,6 +402,103 @@
 					TWB.Bottle_Work_CD = TC.CD_ID	
 				AND 
 					TWB.Product_ID = TG.Product_Id
+			) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID	
+		) C
+		WHERE 1 = 1
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
+		AND Customer_Nm	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
+		</if>				
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
+		AND date_format(Bottle_Work_DT,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
+		</if>								
+	</select>
+	 -->
+	 <select id="selectWorBottleListTotal" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="java.util.Map">
+		SELECT C.*
+		FROM (
+			SELECT A.*, B.Customer_Nm
+			FROM (
+				SELECT
+					TWB.Bottle_ID
+					, TWB.Bottle_BarCd
+					, TWB.Product_ID
+					, TWB.Product_Price_Seq
+					, TWB.Gas_ID	
+					, Product_Nm
+					, TP.Product_Capa Bottle_Capa
+					, TWB.Bottle_Work_CD
+					, USER_ID Bottle_Work_ID
+					, TWB.Customer_ID
+					, TW.Order_ID
+					, TWB.Bottle_Type
+					, TWB.Create_DT Bottle_Work_DT
+					, TW.CREATE_ID
+					, TW.CREATE_DT
+					, TW.UPDATE_ID
+					, TW.UPDATE_DT
+					, CD_NM Bottle_Work_CD_NM
+				FROM
+					TB_Work_Bottle TWB,TB_Work_Report TW, TB_CODE TC, TB_Product TG, TB_Product_Price TP
+				WHERE
+					TWB.Work_Report_Seq = TW.Work_Report_Seq
+				AND 
+					TWB.Bottle_Work_CD = TC.CD_ID	
+				AND 
+					TWB.Product_ID = TG.Product_Id				
+				AND 
+					TWB.Product_ID = TP.Product_Id
+				AND
+					TWB.Product_Price_Seq = TP.Product_Price_Seq
+			) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID	
+		) C
+		WHERE 1 = 1
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
+		AND Customer_Nm	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
+		</if>				
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
+		AND date_format(Bottle_Work_DT,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
+		</if>										
+		ORDER BY Bottle_Work_DT DESC 
+		Limit #{startRow}, #{rowPerPage}
+	</select>
+	
+	
+	<select id="selectWorBottleCountTotal" resultType="int" parameterType="java.util.Map">		
+		SELECT Count(Bottle_ID)
+		FROM (
+			SELECT A.*, B.Customer_Nm
+			FROM (
+				SELECT
+					TWB.Bottle_ID
+					, TWB.Bottle_BarCd
+					, TWB.Product_ID
+					, TWB.Product_Price_Seq
+					, TWB.Gas_ID	
+					, Product_Nm
+					, Product_Capa
+					, TWB.Bottle_Work_CD
+					, USER_ID Bottle_Work_ID
+					, TWB.Customer_ID
+					, TW.Order_ID
+					, TWB.Bottle_Type
+					, TWB.Create_DT Bottle_Work_DT
+					, TW.CREATE_ID
+					, TW.CREATE_DT
+					, TW.UPDATE_ID
+					, TW.UPDATE_DT
+					, CD_NM Bottle_Work_CD_NM
+				FROM
+					TB_Work_Bottle TWB,TB_Work_Report TW, TB_CODE TC, TB_Product TG, TB_Product_Price TP
+				WHERE
+					TWB.Work_Report_Seq = TW.Work_Report_Seq
+				AND 
+					TWB.Bottle_Work_CD = TC.CD_ID	
+				AND 
+					TWB.Product_ID = TG.Product_Id
+				AND 
+					TWB.Product_ID = TP.Product_Id
+				AND
+					TWB.Product_Price_Seq = TP.Product_Price_Seq
 			) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID	
 		) C
 		WHERE 1 = 1

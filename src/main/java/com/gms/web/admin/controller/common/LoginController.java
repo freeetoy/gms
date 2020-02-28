@@ -45,8 +45,12 @@ public class LoginController {
 	public String loginByGet(Model model,HttpServletRequest req){
 		model.addAttribute("message",req.getServletContext());
 		
+		HttpSession session = req.getSession();
+		
+		LoginUserVO sessionInfo = SessionUtil.getSessionInfo(req);
+		if(sessionInfo!=null) return "redirect:/gms/start";
 		//req.getSession().invalidate();
-		return "gms/login";
+		else return "gms/login";
 	}
 	/*
 	@RequestMapping(value="/loginAction.do")

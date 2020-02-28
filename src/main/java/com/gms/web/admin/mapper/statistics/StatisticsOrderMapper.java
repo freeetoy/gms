@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gms.web.admin.domain.statistics.StatisticsOrderVO;
+import com.gms.web.admin.domain.statistics.StatisticsSalesVO;
 
 @Mapper
 public interface StatisticsOrderMapper {
@@ -17,4 +18,12 @@ public interface StatisticsOrderMapper {
 	public int inserDailyStatisticsOrder();
 
 	public int inserMonthlyStatisticsOrder();
+	
+	public List<StatisticsSalesVO> selectDailylStatisticsSalesList(Map<String, Object> map);	
+	
+	public List<StatisticsSalesVO> selectMontlylStatisticsSalesList(Map<String, Object> map);	
+	
+	public int inserDailyStatisticsSales();
+	
+	public int inserMonthlyStatisticsSales();
 }

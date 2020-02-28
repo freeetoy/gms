@@ -38,6 +38,9 @@ public class SchedulerServiceImpl implements SchedulerService {
 			//TB_Daily_Statistics_Order
 			result = statOrderService.registerDailyStatisticsOrder();
 			
+			//TB_Daily_Statistics_Sales
+			result = statOrderService.registerDailyStatisticsSales();
+			
 			// TB_Daily_Statistics_Product
 			result = statProductService.registerDailyStatisticsProduct();
 					
@@ -64,6 +67,9 @@ public class SchedulerServiceImpl implements SchedulerService {
 		try {
 			//TB_Daily_Statistics_Order
 			result = statOrderService.registerMonthlyStatisticsOrder();
+			
+			//TB_Daily_Statistics_Sales
+			result = statOrderService.registerMonthlyStatisticsSales();
 			
 			// TB_Daily_Statistics_Product
 			result = statProductService.registerMonthlyStatisticsProduct();

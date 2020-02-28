@@ -18,7 +18,7 @@
 		 , Create_ID        
 		 , Create_Dt
 	</sql>
-
+<!-- 
 	<insert id="inserDailyStatisticsCustomer">
 		INSERT INTO TB_Daily_Stat_Customer(
 			<include refid="StatisticsCustomerColumns" />
@@ -32,6 +32,21 @@
 			AND 	DATE_FORMAT(A.Create_Dt,'%Y/%m/%d') = DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')
 			GROUP BY DATE_FORMAT(A.Create_Dt,'%Y/%m/%d'), A.customer_Id
 		) Tm  on tm.customer_id = tp.`customer_ID`
+	</insert> -->
+	
+	<insert id="inserDailyStatisticsCustomer">
+		INSERT INTO TB_Daily_Stat_Customer(
+			<include refid="StatisticsCustomerColumns" />
+		) 
+		SELECT tp.Customer_ID,DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d'), IFNULL(Order_Count,0) , IFNULL(Order_Amount,0),'admin' ,now()
+		FROM tb_customer tp left join
+		( 
+			SELECT a.customer_Id, count(Work_Seq) Order_Count, SUM(Product_Price)  Order_Amount
+			FROM 	TB_Work_Bottle A
+			WHERE  	Bottle_Work_Cd in ('0308','0309')
+			AND 	DATE_FORMAT(A.Create_Dt,'%Y/%m/%d') = DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')
+			GROUP BY A.customer_Id
+		) Tm  on tm.customer_id = tp.customer_ID
 	</insert>
 	
 	<insert id="inserMonthlyStatisticsCustomer">

@@ -438,12 +438,10 @@ public class OrderServiceImpl implements OrderService {
 			
 			List<OrderProductVO> orderProduct = new ArrayList<OrderProductVO>();
 			List<OrderBottleVO> orderBottleList = new ArrayList<OrderBottleVO>();
-					
+			
 			Integer orderId = params.getOrderId();
-			//params.setOrderId(Integer.valueOf(orderId));
-			
-			logger.debug("OrderContoller modifyOrder orderId== "+ orderId);
-			
+			//params.setOrderId(Integer.valueOf(orderId));			
+						
 			String orderTypeCd = params.getOrderTypeCd();
 						
 			int orderAmount = 0;
@@ -559,7 +557,14 @@ public class OrderServiceImpl implements OrderService {
 					orderProductNm = orderProductNm +"외 "+ (productCount-1);
 					orderProductCapa = orderProductCapa +"외 "+ (productCount-1);
 				}
-							
+				/*
+				// 기존 상품과 비교
+				 * 
+				List<OrderProductVO> oldOrderProductList = getOrderProductList(orderId);
+				for(int i = 0 ; i<oldOrderProductList.size();i++) {
+					
+				}
+				*/
 				if(orderMapper.deleteOrderProducts(orderId) > 0 ) {
 					result1 = orderMapper.insertOrderProducts(orderProduct);
 					

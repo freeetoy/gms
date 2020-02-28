@@ -54,6 +54,9 @@ public class WorkBottleVO extends AbstractVO implements Serializable {
 	/** Product_Price_Seq */
 	private Integer productPriceSeq;
 	
+	/** Product_Price 	*/    
+	private int productPrice;	
+	
 	/** 삭제여부  Bottle_Type */
 	/** E 공병, F 실병 */
 	private String bottleType;

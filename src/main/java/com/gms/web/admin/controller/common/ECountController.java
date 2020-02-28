@@ -182,7 +182,7 @@ public class ECountController {
 		        // 단가(VAT포함)	
 		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getPrdouctPriceVAT());
+		        cell.setCellValue(vo.getProductPrice()*1.1);
 		        
 		        //생산전표생성	
 		        cell = row.createCell(k++);
@@ -195,7 +195,20 @@ public class ECountController {
 		        cell.setCellValue(vo.getEcountString());
 	
 		    }	
-	
+		    // width 자동조절
+ 			for (int x = 0; x < sheet.getRow(1).getPhysicalNumberOfCells(); x++) {
+ 				sheet.autoSizeColumn(x);
+ 				int width = sheet.getColumnWidth(x);
+ 				int minWidth = list.get(x).getBytes().length * 450;
+ 				int maxWidth = 18000;
+ 				if (minWidth > width) {
+ 					sheet.setColumnWidth(x, minWidth);
+ 				} else if (width > maxWidth) {
+ 					sheet.setColumnWidth(x, maxWidth);
+ 				} else {
+ 					sheet.setColumnWidth(x, width + 2000);
+ 				}
+ 			}
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel");
 		    response.setHeader("Content-Disposition", "attachment;filename=Ecount"+DateUtils.getDate()+".xls");	
