@@ -49,4 +49,6 @@ public interface WorkReportMapper {
 	public int insertWorkBottles(List<WorkBottleVO> param);	
 	
 	public int modifyWorkReportProduct(WorkReportVO param);
+	
+	public int modifyWorkReportOrderId(WorkReportVO param);
 }

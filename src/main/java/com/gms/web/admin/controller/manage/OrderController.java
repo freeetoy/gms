@@ -330,6 +330,29 @@ public class OrderController {
 		
 	}
 	
+	@RequestMapping(value = "/gms/order/changeOrdersProcess.do", method = RequestMethod.POST)
+	public ModelAndView modifyOrdersProcessCd(HttpServletRequest request
+			, HttpServletResponse response
+			, OrderVO params) {
+		
+		logger.info("OrderContoller modifyOrdersProcessCd");
+		//TODO 로직 처리 필요
+		RequestUtils.initUserPrgmInfo(request, params);
+		
+		logger.debug("OrderContoller orderProcessCd=="+params.getOrderProcessCd());		
+		logger.debug("OrderContoller befeor service chOrderId=="+params.getOrderIds());
+		
+		int result = orderService.changeOrdersProcessCd(params);
+		logger.debug("OrderContoller after service searchCustomerNm=="+params.getSearchCustomerNm());
+		if(result > 0){
+			String alertMessage = "진행상태를 변경하였습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/order/list.do?currentPage="+params.getCurrentPage()+"&searchCustomerNm="+params.getSearchCustomerNm()+"&searchOrderDt="+params.getSearchOrderDt());
+		}
+		return null;
+		
+	}
+	
 	
 	@RequestMapping(value = "/gms/order/popupOrder.do")
 	public String getPopupOrderDetail(@RequestParam(value = "orderId", required = false) Integer orderId, Model model)	{

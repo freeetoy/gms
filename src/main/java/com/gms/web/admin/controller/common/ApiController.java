@@ -108,6 +108,7 @@ public class ApiController {
 		workBottle.setProductCount(productCount);
 		workBottle.setCustomerNm(customerNm);				
 		workBottle.setCreateId(userId);	
+		workBottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
 		
 		logger.info("단품판매 start");
 		//workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));

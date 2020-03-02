@@ -33,6 +33,8 @@ public interface OrderMapper {
 	public OrderVO selectLastOrderForCustomer(Integer customerId) ;		
 	
 	public int selectOrderId() ;
+	
+	public int selectNextOrderProductSeq(Integer orderId) ;
 
 	public int insertOrder(OrderVO param);
 
@@ -61,11 +63,16 @@ public interface OrderMapper {
 	public int updateOrderBottles(List<OrderBottleVO> param);
 	
 	public int updateOrderProcessCd(OrderVO param);
+	
+	public int updateOrdersProcessCd(OrderVO param);
 
 	public int deleteOrder(OrderVO param);
 
 	public int deleteOrderProduct(OrderProductVO param);
 	
 	public int deleteOrderProducts(Integer orderId);
+	
+	public int deleteOrderBottles(Integer orderId);
+
 
 }

@@ -6,6 +6,15 @@
 <script src="/dist/js/jquery.popupWindow.js"></script>
 <script type="text/javascript">	
 
+function checkAll(){
+    
+    if( $("#checkAll").is(':checked') ) {
+        $("input[name=check_id]").prop("checked", true);
+
+	} else {	
+	        $("input[name=check_id]").prop("checked", false);	
+	}
+}
 var goUpdate = function(orderId){		
 	/*
 	//alert("goUpdate "+orderId);
@@ -52,8 +61,6 @@ var gotoPage = function(pageNo) {
 	document.mainForm.submit();   
    		
 }
-
-
 	
 var goDelete = function(orderId){
 		
@@ -124,7 +131,6 @@ $(document).ready(function(){
 		console.log("start btn_selelct_pr}");
 		
 		var orderId = $(this).attr('orderId'); 
-
 					    
 			var ajaxInfo ={
 					type:"POST",
@@ -138,7 +144,7 @@ $(document).ready(function(){
 				ajax = callAjax(ajaxInfo);
 				
 				ajax.done(function(data){
-					console.log(data);
+					//console.log(data);
 					var Ampm = "오전";
 					if(data.order.deliveryReqAmpm=='P' ) Ampm = "오후" ;
 					
@@ -148,7 +154,7 @@ $(document).ready(function(){
 					$("#deliveryReqDt").val(moment(data.order.deliveryReqDt).format('YYYY/MM/DD') + ' ' +Ampm);			
 					$("#orderEtc").val(data.order.orderEtc);			
 					$("#orderTotalAmount").val(numberWithCommas(data.order.orderTotalAmount));	
-					console.log(data.order.OrderTotalAmount);
+					//console.log(data.order.OrderTotalAmount);
 					
 					if(data.order.orderProcessCd =='0210'){			
 						$("#view_button").show();
@@ -265,8 +271,7 @@ $(document).ready(function(){
        var msg = '';
        var orderProcessCd = '';
 
-       var orderId = $('#chOrderId').val();
-       
+       var orderId = $('#chOrderId').val();       
        
        switch (select_pid){
 
@@ -335,6 +340,62 @@ $(document).ready(function(){
 		}
 	});
 
+    $(".btn_order_change_all").click(function()  
+    {
+    	var checkedValue = ""; 
+    	var chki=0;
+    	var inputElements = document.getElementsByClassName('IdCheckbox');
+    	for(var i=0; inputElements[i]; ++i){
+    	      if(inputElements[i].checked){	
+    	    	  
+    	    	   //checkedValue +="'";
+    	           checkedValue += (inputElements[i].value);
+    	           chki++;
+    	           //break;
+    	           checkedValue +=",";
+    	      }
+    	}
+    	
+    	if(chki < 1){
+    		alert('변경할 주문을 선택 하세요.');
+    		return false;
+    		
+    	}
+    	var orderProcessCd =  $("#searchWorkCd1").val();
+    	console.log("chki="+chki);	
+    	console.log("checkeValue="+checkedValue);	
+    	
+    	if(confirm("정말로 상태를 변경하시겠습니까?")){
+
+    		var form = document.createElement("form");
+    		form.setAttribute("charset","UTF-8");
+    		form.setAttribute("method","post");
+    		form.setAttribute("action","/gms/order/changeOrdersProcess.do?currentPage=[[ ${currentPage} ]]&searchCustomerNm=[[ ${searchCustomerNm} ]]&searchOrderDt=[[ ${searchOrderDt} ]]");
+    		
+    		var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "orderIds");
+            hiddenField.setAttribute("value", checkedValue);
+
+            form.appendChild(hiddenField);
+            
+            var hiddenField1 = document.createElement("input");
+            hiddenField1.setAttribute("type", "hidden");
+            hiddenField1.setAttribute("name", "orderProcessCd");
+            hiddenField1.setAttribute("value", orderProcessCd);
+
+            form.appendChild(hiddenField1);
+           
+            document.body.appendChild(form);
+
+            form.submit();			
+    		
+    	}else{
+
+    		return false;
+    	}
+	});
+    
  	// 거래명세서 출력
     $(".btn_order_print").click(function()  
     {
@@ -517,6 +578,62 @@ $(document).ready(function(){
 		</div>
 		</div>
 		<!-- /.modal -->
+		
+		<!--  process modat1 start(일괄처리 -->  
+		<div class="modal modal-info fade" id="process-modal1">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+		             	<h4 class="modal-title">진행 상태 변경</h4>
+		              	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                <span aria-hidden="true">&times;</span>
+		              	</button>
+		            </div>
+		
+					<div class="modal-body">
+					<div class="clearfix"></div>
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12" >
+							<div class="x_panel">
+								
+								<div class="x_content">
+								<div  class="card-body">
+								<form id="chForm1" name="chForm1" th:object="${order}" method="post">					              
+									<table id="myTable" class="table order-info">
+									<thead>
+										<tr>
+											<td>
+											<select id="searchWorkCd1" name="searchWorkCd1" class="form-control">
+							                    <option value="">작업</option>				    
+										        <option th:each="row : ${codeList}"
+										                th:text="${row.cdNm}"
+										                th:value="${row.cdId}">					             
+										        </option>	
+							                 </select>
+											</td>
+										</tr>
+										
+									</thead>
+									</table>
+									
+									</form>
+									<div class="modal-footer justify-content-between">
+						              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						              <a class="btn_order_change_all btn-info btn-sm" href="#" ><i class="fas fa-pencil-alt"></i>상태변경</a>
+						            </div>
+									
+									<div id="test_char">
+									</div>
+								</div>
+							</div> <!-- X_content end -->
+						</div>
+					</div> <!-- /.x_panel end -->
+				</div> <!-- / .col -->
+			</div>
+		</div> <!-- / . modal body -->
+		</div>
+		</div>
+		<!-- /.modal -->
     	
     	<div class="row">        	
     		
@@ -595,6 +712,7 @@ $(document).ready(function(){
                 <table class="table table-hover">                
                   <thead>
                     <tr>
+                      <th><input type="checkbox" name="checkAll" id="checkAll" onclick="checkAll();"/></th>
                       <th>순번</th>
                       <th>거래처</th>
                       <th>품명</th>
@@ -610,6 +728,8 @@ $(document).ready(function(){
                   <tbody>
                  
                   	<tr th:if="${not #lists.isEmpty( orderList )}" th:each="row : ${orderList}" style="font-size:13px;">
+                  	  <td>
+                      <input class="IdCheckbox"  name="check_id" type="checkbox" th:value="${row.orderId}"></td>                     
                       <td th:text="${totalCount-((currentPage-1)*rowPerPage) - orderList.indexOf(row)}"></td>
                       <th th:text="${row.CustomerNm}"></th>
                       <th th:text="${row.orderProductNm}"></th>
@@ -656,8 +776,11 @@ $(document).ready(function(){
         </div>    
         <!-- /.row -->
         
-         <div class="row">								
-			<div class="col-12">
+         <div class="row">	
+         <div class="col-1">
+         		<a id="select_del" class="btn_select_order btn-primary btn-sm" data-toggle="modal" data-target="#process-modal1"  href="#"><i class="fas fa-check-circle"></i>진행</a>            	
+         	</div>									
+			<div class="col-11">
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
 					<ul class="pagination">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">

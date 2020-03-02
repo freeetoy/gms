@@ -193,6 +193,16 @@
 			Work_Report_Seq = #{workReportSeq}
 	</update>
 	
+	<update id="modifyWorkReportOrderId" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">
+		UPDATE TB_Work_Report
+		SET
+			Order_Id			= #{orderId}
+			, UPDATE_ID 		= #{updateId}
+			, UPDATE_DT 		= NOW()
+		WHERE
+			Work_Report_Seq = #{workReportSeq}
+	</update>
+	
 	<select id="selectWorkReportList" resultType="com.gms.web.admin.domain.manage.WorkReportVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
 		SELECT
 			<include refid="SelectWorkReportColumns" />

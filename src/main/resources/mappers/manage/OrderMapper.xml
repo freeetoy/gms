@@ -317,6 +317,23 @@
 	</update>
 	
 	
+	<update id="updateOrdersProcessCd" parameterType="com.gms.web.admin.domain.manage.OrderVO">
+		UPDATE TB_Order
+		SET
+			  Order_Process_CD 	= #{orderProcessCd}
+			  ,SALES_ID = #{updateId}
+			  <if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(orderDeliveryDt)">
+			  ,Order_Delivery_Dt = #{orderDeliveryDt}
+			  </if>
+			, UPDATE_ID 		= #{updateId}
+			, UPDATE_DT 		= NOW()
+		WHERE
+			Order_ID in
+			<foreach collection="orderList" item="item" index="index" open="(" separator="," close=")">
+				#{item} 
+			</foreach> 
+	</update>	
+	
 	<update id="updateOrderProcessCd" parameterType="com.gms.web.admin.domain.manage.OrderVO">
 		UPDATE TB_Order
 		SET
@@ -390,12 +407,27 @@
 		WHERE
 			Order_ID = #{orderId}		
 	</update>	
+	
+	<update id="deleteOrderBottles" parameterType="Integer">
+		DELETE FROM  TB_Order_Bottle	
+		WHERE
+			Order_ID = #{orderId}		
+	</update>	
 
 	<select id="selectOrderId" resultType="int">
 		SELECT
 			MAX(IFNULL(Order_id,0))+1
 		FROM
 			TB_ORDER
+	</select>
+	
+	<select id="selectNextOrderProductSeq" parameterType="Integer" resultType="int">
+		SELECT
+			MAX(IFNULL(Order_Product_Seq,0))+1
+		FROM
+			TB_ORDER_Product
+		WHERE
+			Order_ID = #{orderId}	
 	</select>
 	
 	<select id="selectOrderDetail" parameterType="Integer" resultType="com.gms.web.admin.domain.manage.OrderVO">

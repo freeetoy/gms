@@ -271,8 +271,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 			logger.debug("WorkReportServiceImpl registerWorkReportForOrder bottleIds =" + param.getBottlesIds());
 			
 			//Order 정보가져오기
-			OrderExtVO  orderInfo = orderService.getOrderNotDelivery(param.getOrderId());		
-			
+			OrderExtVO  orderInfo = orderService.getOrderNotDelivery(param.getOrderId());
 			
 			orderInfo.getOrder().setUpdateId(param.getCreateId());
 			/*
@@ -344,8 +343,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 			
 			logger.debug("WorkReportServiceImpl registerWorkReport orderProductTotalCount =" + orderProductTotalCount );		
 			logger.debug("%%%% - WorkReportServiceImpl registerWorkReport tempOrderProductList.size() ==" + tempOrderProductList.size());
-			logger.debug("WorkReportServiceImpl registerWorkReport bottleWorkCd =" + param.getBottleWorkCd() );
-			
+						
 			if(param.getBottleType()==null) {
 				if(param.getBottleWorkCd() == PropertyFactory.getProperty("common.bottle.status.0308") || param.getBottleWorkCd() == PropertyFactory.getProperty("common.bottle.status.0309")) {
 					param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Full"));
@@ -372,18 +370,17 @@ public class WorkReportServiceImpl implements WorkReportService {
 				isGo = true;
 				tempBottle = bottleList.get(i);			
 				logger.debug("~~~~~~~~~~~~~~~~~~# WorkReportServiceImpl registerWorkReport tempBottle.getBottleId ==" +i+"=="+ tempBottle.getBottleId());
-				logger.debug("---------------- WorkReportServiceImpl registerWorkReport orderService.tempOrderProductList.size() ==" + tempOrderProductList.size());
-			
+				
 				for(int j = 0 ; j < tempOrderProductList.size() ; j++) {
 					
 					TempProductVO tempProduct = tempOrderProductList.get(j);
 					logger.debug("###### ### WorkReportServiceImpl registerWorkReport isGo ==" +j+"=="+ isGo);
-					logger.debug("###### ### WorkReportServiceImpl registerWorkReport tempBottle.getBottleId() i==" +i+"== j=" +j+"="+tempBottle.getBottleId());
+					logger.debug("WorkReportServiceImpl registerWorkReport tempBottle.getBottleId() i==" +i+"== j=" +j+"="+tempBottle.getBottleId());
 					
-					logger.debug("$$$$$$$$$$$$  WorkReportServiceImpl registerWorkReport tempBottle.getProductId() ==" +j+"=="+ tempBottle.getProductId());
-					logger.debug("###### ### WorkReportServiceImpl registerWorkReport tempProduct.getProductId() ==" +j+"=="+ tempProduct.getProductId());
-					logger.debug("###### ### WorkReportServiceImpl registerWorkReport tempBottle.getProductPriceSeq() ==" +j+"=="+ tempBottle.getProductPriceSeq());
-					logger.debug("###### ### WorkReportServiceImpl registerWorkReport tempProduct.getProductPriceSeq() ==" +j+"=="+ tempProduct.getProductPriceSeq());
+					logger.debug("WorkReportServiceImpl registerWorkReport tempBottle.getProductId() =="+ tempBottle.getProductId());
+					logger.debug("WorkReportServiceImpl registerWorkReport tempProduct.getProductId() =="+ tempProduct.getProductId());
+					logger.debug("WorkReportServiceImpl registerWorkReport tempBottle.getProductPriceSeq() =="+ tempBottle.getProductPriceSeq());
+					logger.debug("WorkReportServiceImpl registerWorkReport tempProduct.getProductPriceSeq() ==" + tempProduct.getProductPriceSeq());
 					
 					if(isGo && tempBottle.getProductId() == tempProduct.getProductId() 
 							&& tempBottle.getProductPriceSeq() == tempProduct.getProductPriceSeq()) {
@@ -467,12 +464,10 @@ public class WorkReportServiceImpl implements WorkReportService {
 			
 			OrderProductVO tempOrderProduct1 = null;
 			
-			int lastOrderProductSeq = orderInfo.getOrderProduct().size();
-			//logger.debug("***********  WorkReportServiceImpl registerWorkReport orderService.tempbottleList.size() ==" + tempbottleList.size());
-			logger.debug("***********  WorkReportServiceImpl registerWorkReport orderService.tempOrderProductList.size() ==" + tempOrderProductList.size());
-			
 			if(bottleList.size() > 0){	// 추가 용기가 있는 경우
 				BottleVO temp = null;
+				
+				int lastOrderProductSeq = orderService.getNextOrderProductSeq(orderInfo.getOrder().getOrderId());
 				
 				for(int i=0;i<bottleList.size();i++) {
 					temp = bottleList.get(i);					
@@ -484,7 +479,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					ProductTotalVO tempProductTotal = productService.getPrice(temp);		
 					
 					tempOrderProduct1.setOrderId(orderInfo.getOrder().getOrderId());					
-					tempOrderProduct1.setOrderProductSeq(++lastOrderProductSeq);
+					tempOrderProduct1.setOrderProductSeq(lastOrderProductSeq++);
 					
 					tempOrderProduct1.setProductId(temp.getProductId());
 					tempOrderProduct1.setProductPriceSeq(temp.getProductPriceSeq());
@@ -595,8 +590,15 @@ public class WorkReportServiceImpl implements WorkReportService {
 			param.setOrderAmount(orderInfo.getOrder().getOrderTotalAmount());			
 			logger.debug("WorkReportServiceImpl registerWorkReport orderAmount =" + orderInfo.getOrder().getOrderTotalAmount() );
 			
-			if(registerFlag) result = workMapper.insertWorkReport(param);			
-			if(result <= 0) return 0;
+			// TB_Work_Report 등록 여부 확인
+			if(registerFlag) {
+				result = workMapper.insertWorkReport(param);			
+				if(result <= 0) return 0;
+			}else {
+				// TB_Work_Report 의 Order_ID 업데이트								
+				result = workMapper.modifyWorkReportOrderId(param);
+				if(result <= 0) return 0;
+			}
 			
 			result = workMapper.insertWorkBottles(workBottleList);	
 			if(result <= 0) return 0;
@@ -1470,6 +1472,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 		
 		logger.debug("WorkReportServiceImpl registerWorkNoBottle  productId=" + param.getProductId() );
 		logger.debug("WorkReportServiceImpl registerWorkNoBottle  productPriceSeq=" + param.getProductPriceSeq() );
+		logger.debug("WorkReportServiceImpl registerWorkNoBottle  getBottleWorkCd=" + param.getBottleWorkCd() );
 		
 		boolean registerFlag = false;
 		int result = 0;
@@ -1518,11 +1521,11 @@ public class WorkReportServiceImpl implements WorkReportService {
 				
 				//해당 주문 상품이 이미 처리되어 있는지 확인 WorkReport & WorkBottle 조회
 				List<WorkBottleRegisterVO> registeredWorkBottleList = getWorkBottleListAndCountOfOrder(orderTemp.getOrderId());
-				
+				/*
 				for(int i =0 ; i < registeredWorkBottleList.size(); i++) {
 					
 				}
-				
+				*/
 				// 주문 상품수 새로 설정
 				for(int i = 0 ; i < orderProductList.size();i++) {
 					OrderProductVO tempOrderProduct = orderProductList.get(i);
@@ -1574,8 +1577,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 							orderProductList.get(i).setOrderCount(0);	
 						}else if(addCount < 0) { // 기존 주문 상품을 전체 납품을 못할 경우
 							
-						}else if(addCount == 0) {	//해당 상품 납품 완료
-							
+						}else if(addCount == 0) {	//해당 상품 납품 완료							
 							orderProductList.get(i).setOrderCount(0);
 						}
 						orderProductList.get(i).setOrderCount(addCount);
@@ -1750,7 +1752,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 				workReport.setOrderId(orderTemp.getOrderId());
 				workReport.setOrderProductNm(productTotal.getProductNm());
 				workReport.setOrderProductCapa(productTotal.getProductCapa());
-				workReport.setWorkCd(param.getBottleWorkCd());
+				workReport.setWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));				
 				
 				//WorkReport 등록
 				result = workMapper.insertWorkReport(workReport);				

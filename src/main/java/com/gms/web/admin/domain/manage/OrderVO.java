@@ -135,5 +135,8 @@ public class OrderVO extends AbstractSearchVO implements Serializable {
 	/** 주문상태 검색	*/
 	private String searchOrderProcessCd;
 	
+	/** 상태변경용 chOrderId	*/
+	private String  orderIds;
 
+	private List<Integer> orderList;
 }

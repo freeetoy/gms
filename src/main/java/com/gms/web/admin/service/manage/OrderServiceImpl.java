@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
@@ -279,7 +280,10 @@ public class OrderServiceImpl implements OrderService {
 					
 					productId = Integer.parseInt(request.getParameter("productId_"+i));
 					productPriceSeq = Integer.parseInt(request.getParameter("productPriceSeq_"+i));
-					orderCount = Integer.parseInt(request.getParameter("orderCount_"+i));
+					if(request.getParameter("orderCount_"+i) != null)
+						orderCount = Integer.parseInt(request.getParameter("orderCount_"+i));
+					else 
+						orderCount = 1;
 					
 					if(request.getParameter("bottleChangeYn_"+i) !=null)  bottleChangeYn = "Y";
 					if(request.getParameter("bottleSaleYn_"+i) !=null)  bottleSaleYn = "Y";									
@@ -295,7 +299,7 @@ public class OrderServiceImpl implements OrderService {
 								orderProductNm = tempProduct.getProductNm();
 								orderProductCapa = tempProduct.getProductCapa();
 								logger.debug("OrderContoller registerOrder productPriceList orderProductNm== "+ orderProductNm);
-								logger.debug("OrderContoller registerOrder productPriceList orderProductNm== "+ productPriceSeq);
+								logger.debug("OrderContoller registerOrder productPriceList productPriceSeq== "+ productPriceSeq);
 								logger.debug("OrderContoller registerOrder productPriceList orderProductCapa== "+ orderProductCapa);
 							}
 							
@@ -487,6 +491,7 @@ public class OrderServiceImpl implements OrderService {
 					orderCount = 0;
 					bottleChangeYn = "N";
 					bottleSaleYn = "N";
+					boolean bottleFlag = false;
 					
 					productId = Integer.parseInt(request.getParameter("productId_"+i));
 					productPriceSeq = Integer.parseInt(request.getParameter("productPriceSeq_"+i));
@@ -506,7 +511,7 @@ public class OrderServiceImpl implements OrderService {
 						tempProduct = productPriceList.get(k);
 						
 						if(productId == tempProduct.getProductId() && productPriceSeq == tempProduct.getProductPriceSeq()) {
-							
+							if(tempProduct.getGasId()!=null && tempProduct.getGasId() > 0) bottleFlag = true;
 							if(i==0) {
 								orderProductNm = tempProduct.getProductNm();
 								orderProductCapa = tempProduct.getProductCapa();
@@ -534,19 +539,20 @@ public class OrderServiceImpl implements OrderService {
 					//productVo.setProductDeliveryDt(null);
 					
 					orderProduct.add(productVo);
-					
-					for(int k=0; k< orderCount ; k++) {
-						
-						OrderBottleVO orderBottle = new OrderBottleVO();
-						
-						orderBottle.setOrderId(orderId);
-						orderBottle.setOrderProductSeq(i+1);
-						orderBottle.setProductId(productId);
-						orderBottle.setProductPriceSeq(productPriceSeq);
-						orderBottle.setCreateId(params.getCreateId());
-						orderBottle.setUpdateId(params.getCreateId());
-						
-						orderBottleList.add(orderBottle);						
+					if(bottleFlag) {
+						for(int k=0; k< orderCount ; k++) {
+							
+							OrderBottleVO orderBottle = new OrderBottleVO();
+							
+							orderBottle.setOrderId(orderId);
+							orderBottle.setOrderProductSeq(i+1);
+							orderBottle.setProductId(productId);
+							orderBottle.setProductPriceSeq(productPriceSeq);
+							orderBottle.setCreateId(params.getCreateId());
+							orderBottle.setUpdateId(params.getCreateId());
+							
+							orderBottleList.add(orderBottle);						
+						}
 					}
 				}
 				
@@ -566,7 +572,10 @@ public class OrderServiceImpl implements OrderService {
 				}
 				*/
 				if(orderMapper.deleteOrderProducts(orderId) > 0 ) {
+					
 					result1 = orderMapper.insertOrderProducts(orderProduct);
+					
+					result1 = orderMapper.deleteOrderBottles(orderId);
 					
 					result1 = orderMapper.insertOrderBottles(orderBottleList);
 				}
@@ -815,6 +824,32 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public int modifyOrderBottle(OrderBottleVO param) {
 		return orderMapper.updateOrderBottle(param);	
+	}
+
+	@Override
+	public int getNextOrderProductSeq(Integer orderId) {
+		
+		return orderMapper.selectNextOrderProductSeq(orderId);	
+	}
+
+	@Override
+	public int changeOrdersProcessCd(OrderVO param) {
+		
+		List<String> list = null;
+		if(param.getOrderIds()!=null && param.getOrderIds().length() > 0) {
+			list = StringUtils.makeForeach(param.getOrderIds(), ","); 	
+		}	
+		
+		List<Integer> orderList = new ArrayList();
+		for(int i = 0 ; i < list.size() ; i++) {
+			int orderId = Integer.parseInt(list.get(i));
+			
+			Integer order = new Integer(orderId);
+			orderList.add(order);			
+		}
+		param.setOrderList(orderList);
+		
+		return orderMapper.updateOrdersProcessCd(param);	
 	}
 
 	
