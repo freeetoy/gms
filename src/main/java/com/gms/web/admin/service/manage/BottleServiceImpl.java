@@ -362,7 +362,6 @@ public class BottleServiceImpl implements BottleService {
 		workReport.setBottlesIds(param.getBottleIds());		
 		workReport.setCustomerId(param.getCustomerId());
 		
-		
 		result = workService.registerWorkReportByBottle(workReport, bottleList);
 		if(result <= 0) return result;
 		

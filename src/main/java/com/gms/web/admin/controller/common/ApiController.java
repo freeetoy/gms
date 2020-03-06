@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
@@ -36,13 +37,14 @@ public class ApiController {
 		boolean phoneCall = true;
 		int result = 0;
 		
-		WorkReportVO workReport = new WorkReportVO();
+		WorkReportVO workReport = new WorkReportVO();	
 		
 		workReport.setBottleType(bottleType);
 		workReport.setBottlesIds(bottles);		//BottleBarCd 모음
 		workReport.setCustomerNm(customerNm);		
 		workReport.setPhoneFlag(phoneCall);
 		workReport.setCreateId(userId);				
+		workReport.setUpdateId(userId);
 		
 		
 		if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.come"))) {
@@ -108,6 +110,7 @@ public class ApiController {
 		workBottle.setProductCount(productCount);
 		workBottle.setCustomerNm(customerNm);				
 		workBottle.setCreateId(userId);	
+		workBottle.setUpdateId(userId);
 		workBottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
 		
 		logger.info("단품판매 start");

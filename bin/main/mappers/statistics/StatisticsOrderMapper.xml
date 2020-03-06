@@ -56,8 +56,8 @@
 		FROM 
 		(SELECT count(order_id) order_total_count FROM tb_order WHERE order_process_cd !='0299' AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')) aa,
 		(SELECT sum(`Order_Total_Amount`) order_total_amount FROM tb_order WHERE order_process_cd !='0299' AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')) ab,
-		(SELECT count(order_id) order_completed_count FROM tb_order WHERE order_process_cd ='0250' AND DATE_FORMAT(Update_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')) bb,
-		(SELECT sum(`Order_Total_Amount`) order_completed_amount FROM tb_order WHERE order_process_cd ='0250' AND DATE_FORMAT(Update_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')) bc,
+		(SELECT count(order_id) order_completed_count FROM tb_order WHERE order_process_cd in ('0240', '0250', '0260', '0260','0280','0290') AND DATE_FORMAT(Order_Delivery_Dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')) bb,
+		(SELECT sum(`Order_Total_Amount`) order_completed_amount FROM tb_order WHERE order_process_cd in ('0240', '0250', '0260', '0260','0280','0290') AND DATE_FORMAT(Order_Delivery_Dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')) bc,
 		(SELECT count(order_id) order_product_count FROM tb_order WHERE order_type_cd='0101' AND order_process_cd !='0299' AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) a,
 		(SELECT count(order_id) order_cancel_count  FROM tb_order WHERE order_type_cd='0102' AND order_process_cd !='0299' AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) b ,
 		(SELECT count(order_id) order_auto_count  FROM tb_order WHERE order_type_cd='0103' AND order_process_cd !='0299' AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) c,

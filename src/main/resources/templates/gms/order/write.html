@@ -21,8 +21,7 @@ $(function() {
 
 	  $('input[name="deliveryReqDt"]').on('cancel.daterangepicker', function(ev, picker) {
 	      $(this).val('');
-	  });
-	  
+	  });	  
 	 
 	});
 
@@ -38,8 +37,8 @@ $(document).ready(function(){
 		//alert("addrow");
 		counter++;
 		totalCount++;
-		console.log("1counter=="+counter); 
-		console.log("1 totalCount=="+totalCount); 
+		//console.log("1counter=="+counter); 
+		//console.log("1 totalCount=="+totalCount); 
 		if (counter > 11){
 
 		  alert('더 이상 추가 할수 없습니다.');
@@ -173,20 +172,18 @@ $(document).ready(function(){
 
        })
   	 .done(function(data){
-  		console.log(data);       
+  		//console.log(data);       
   		var i=0;
   		$('#productId_' + pid).append('<option value=0>상품</option>');
 		for(i=0; i< data.length;i++) {
-			console.log(data[i]);      
-			$('#productId_' + pid).append('<option value='+data[i].productId+'>'+data[i].productNm+'</option>')
-			
+			//console.log(data[i]);      
+			$('#productId_' + pid).append('<option value='+data[i].productId+'>'+data[i].productNm+'</option>')			
 		}
   	 
        })
        .fail(function(){
   			console.log("fail");
        });
-
     } 
     
     
@@ -247,22 +244,15 @@ $(document).ready(function(){
 		      //this.checked = true; //checked 처리
 
 		      if(this.checked){//checked 처리된 항목의 값
-
 		            
 		      this.value='Y'
-		    	  alert(i+"==="+this.value); 
-		      
-		      //document.getElementsByNmae("bottleChangeYn_"+i).value = this.value;
-		      
+		    	  alert(i+"==="+this.value); 		      
+		      //document.getElementsByNmae("bottleChangeYn_"+i).value = this.value;		      
 		      //alert(i+"==="+document.getElementsByNmae("bottleChangeYn_"+i).value); 
 		      }
 			i++;
-		 });
-		 
-    	
-    	console.log("5 mod_counter==="+mod_counter);
-    	console.log("5 counter==="+counter);
-    	console.log("5 totalCount==="+totalCount);
+		 });		 
+
     	var form = $("#writeForm");	
 
     	//document.getElementById("priceCount").value = counter+mod_counter;
@@ -272,9 +262,7 @@ $(document).ready(function(){
     	form.submit();
     });
     
-    function init_storage_list(pumname,sel_pid,type){
-	      
-		console.log(type);      
+    function init_storage_list(pumname,sel_pid,type){   
 		
 		$.ajax({
 			url: '/gms/product/priceList.do',
@@ -284,19 +272,13 @@ $(document).ready(function(){
 
 		 })
 		.done(function(data){	           
-		  //console.log("sel pid:" + sel_pid + "type:" + type);
-			console.log(data);        
-
-			//var json_obj = $.parseJSON(data);//parse JSON
-
+		 
 			if(type == "ins"){
 		    	var i=0;
 		    	$('#productPriceSeq_' + sel_pid).find('option').remove(); 
 				//$('#productCapa_' + sel_pid).find('option').remove(); 
-				for(i=0; i< data.length;i++) {
-					console.log(data[i]);      
-					$('#productPriceSeq_' + sel_pid).append('<option value='+data[i].productPriceSeq+'>'+data[i].productCapa+'</option>')
-					
+				for(i=0; i< data.length;i++) {					
+					$('#productPriceSeq_' + sel_pid).append('<option value='+data[i].productPriceSeq+'>'+data[i].productCapa+'</option>')					
 				}
 			}else if(type == "mod"){
 				console.log("this is mod =="+sel_pid);
@@ -338,7 +320,6 @@ $(document).ready(function(){
 	         console.log("fail");
 	      });
 	 });
-
 
 
     $('select[name=orderTypeCd]').change(function() {

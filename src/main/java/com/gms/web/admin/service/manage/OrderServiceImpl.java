@@ -842,10 +842,12 @@ public class OrderServiceImpl implements OrderService {
 		
 		List<Integer> orderList = new ArrayList();
 		for(int i = 0 ; i < list.size() ; i++) {
-			int orderId = Integer.parseInt(list.get(i));
-			
-			Integer order = new Integer(orderId);
-			orderList.add(order);			
+			if(list.get(i) != null) {
+				int orderId = Integer.parseInt(list.get(i));
+				
+				Integer order = new Integer(orderId);
+				orderList.add(order);	
+			}
 		}
 		param.setOrderList(orderList);
 		

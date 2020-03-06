@@ -63,5 +63,8 @@ public class OrderProductVO extends AbstractVO implements Serializable {
 	
 	/* Order_Bottle_Seq*/
 	private Integer orderBottleSeq;
+	
+	/* Sales_Count*/
+	private int salesCount;
 
 }

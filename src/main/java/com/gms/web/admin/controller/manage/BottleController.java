@@ -216,9 +216,7 @@ public class BottleController {
 		model.addAttribute("lastPage", map.get("lastPage"));
 		model.addAttribute("startPageNum", map.get("startPageNum"));
 		model.addAttribute("lastPageNum", map.get("lastPageNum"));
-		model.addAttribute("totalCount", map.get("totalCount"));
-		
-		
+		model.addAttribute("totalCount", map.get("totalCount"));		
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.boottle.test"));	 
 		
@@ -373,8 +371,6 @@ public class BottleController {
 		  
 		return result;
 	}
-	
-	
 	
 	
 	@RequestMapping(value = "/gms/bottle/register.do", method = RequestMethod.POST)

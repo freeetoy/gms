@@ -234,7 +234,8 @@ $(document).ready(function(){
 						$("table.mod-doc-list").append(newRow);
 
 						for(var i=0;i<data.orderProduct.length;i++){
-				        	var newRow1 = $("<tr>");
+							if(data.orderProduct[i].salesCount <=0) var newRow1 = $("<tr style='color: blue'>"); 
+							else var newRow1 = $("<tr >");
 				        	var cols1 = "";	
 				        	cols1 += '<th>'+data.orderProduct[i].productNm+'</th>';
 				        	if(data.orderProduct[i].productCapa==null) cols1 += '<th></th>';
@@ -715,7 +716,7 @@ $(document).ready(function(){
                       <th><input type="checkbox" name="checkAll" id="checkAll" onclick="checkAll();"/></th>
                       <th>순번</th>
                       <th>거래처</th>
-                      <th>품명</th>
+                      <th>상품명</th>
                       <th>용량</th>
                       <th>접수자</th>
                       <th>상태</th>
@@ -731,7 +732,7 @@ $(document).ready(function(){
                   	  <td>
                       <input class="IdCheckbox"  name="check_id" type="checkbox" th:value="${row.orderId}"></td>                     
                       <td th:text="${totalCount-((currentPage-1)*rowPerPage) - orderList.indexOf(row)}"></td>
-                      <th th:text="${row.CustomerNm}"></th>
+                      <th><a th:href="@{/gms/customer/update.do( customerId=${row.customerId})}" th:text="${row.CustomerNm}"></a></th>
                       <th th:text="${row.orderProductNm}"></th>
                       <td th:text="${row.orderProductCapa}"></td>
                       <td th:text="|${row.createNm}(${row.createId})|"></td>
@@ -755,10 +756,10 @@ $(document).ready(function(){
 						<a class="btn_select_process btn btn-success btn-xs" th:orderId="${row.orderId}" data-toggle="modal" data-target="#process-modal" href="#"><i class="fas fa-check-circle"></i>진행확인</a>
 					  </td>
 					  <td>  	
-					  <a class="btn btn-info btn-xs" href="#" th:onclick="javascript:goUpdate([[ ${row.orderId} ]])"><i class="fas fa-pencil-alt"></i>수정 </a>
+					    <a class="btn btn-info btn-xs" href="#" th:onclick="javascript:goUpdate([[ ${row.orderId} ]])"><i class="fas fa-pencil-alt"></i>수정 </a>
 						<a class="btn btn-danger btn-xs" href="#" th:onclick="goDelete([[ ${row.orderId} ]])">
                               <i class="fas fa-trash"></i>삭제</a>
-                          <a class="btn_order_print btn btn-secondary btn-xs" th:orderId="${row.orderId}"  href="#" >
+                        <a class="btn_order_print btn btn-secondary btn-xs" th:orderId="${row.orderId}"  href="#" >
                               <i class="fas fa-print"></i>거래명세서</a>
                       </td>
                     </tr>
