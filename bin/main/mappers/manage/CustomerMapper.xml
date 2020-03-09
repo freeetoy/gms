@@ -219,6 +219,7 @@
 			, Customer_Phone		= #{customerPhone}
 			, Customer_Email		= #{customerEmail}
 			, Sales_ID				= #{salesId}
+			, Car_YN				= #{carYn}
 			, UPDATE_ID				= #{updateId}
 			, UPDATE_DT				= NOW()
 		WHERE

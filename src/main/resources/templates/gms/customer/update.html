@@ -177,6 +177,15 @@ var goWrite = function(){
                       <th><input type="text" class="form-control" id="customerEmail" name="customerEmail" th:value="${customer.customerEmail}"></th>
                     </tr>
                     <tr>
+                      <th class="card-footer">자동차여부</th>
+                      <th>
+		      			<input type="radio" name="carYn" id="carYn" value="Y" th:if="${customer.carYn =='Y'}" checked="">     
+		      			<input type="radio" name="carYn" id="carYn" value="Y" th:unless="${customer.carYn =='Y'}"> 자동차                                
+                      	<input type="radio" name="carYn" id="carYn" value="N" th:if="${customer.carYn =='N'}" checked="">		
+                      	<input type="radio" name="carYn" id="carYn" value="N" th:unless="${customer.carYn =='N'}"> 고객		      		
+		      		 </th>  
+                    </tr>
+                    <tr>
                       <th class="card-footer">영업 담당자</th>
                       <th>
                        <select id="salesId" name="salesId" class="form-control">

@@ -452,7 +452,7 @@
 			TB_Order A, TB_Customer B, TB_Code C, TB_User D
 		WHERE
 			A.Customer_Id = #{customerId}
-		AND Order_Process_CD in ('0210','0220','0230')
+		AND Order_Process_CD in ('0210','0220','0230','0240')
 		AND A.Customer_Id = B.Customer_ID	
 		AND A.Order_Process_Cd = C.CD_ID
 		AND A.Create_Id = D.User_ID			
