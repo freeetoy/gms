@@ -206,6 +206,20 @@
 		FROM
 			TB_Product		
 	</select>
+	
+	<select id="selectProductPriceCount" resultType="int">
+		SELECT 
+			Count(pp.Product_ID)
+		FROM 
+			TB_Product p, TB_Product_Price pp 
+		WHERE 
+			p.Product_Status > 0
+		AND 
+			pp.Product_Status > 0
+		AND 
+			p.Product_ID = pp.Product_ID
+	</select>
+	
 	<select id="selectProductPriceList" parameterType="integer" resultType="com.gms.web.admin.domain.manage.ProductPriceVO">
 		SELECT
 			<include refid="ProductPriceColumns" />

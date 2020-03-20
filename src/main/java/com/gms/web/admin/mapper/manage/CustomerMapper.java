@@ -41,7 +41,7 @@ public interface CustomerMapper {
 	
 	public int updateCustomerStatus(CustomerVO param);
 
-	public int deleteCustomer(Integer customerId);	
+	public int deleteCustomer(CustomerVO param);	
 		
 	public int insertCustomerPrice(CustomerPriceVO param);
 	
@@ -63,5 +63,6 @@ public interface CustomerMapper {
 	
 	public int updateCustomerPrice(CustomerPriceVO param);
 	
+	public CustomerVO selectCustomerCar(String userId) ;
 
 }

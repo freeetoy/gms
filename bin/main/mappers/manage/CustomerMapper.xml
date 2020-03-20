@@ -243,7 +243,7 @@
 			CUSTOMER_ID = #{customerId}
 	</update>
 
-	<update id="deleteCustomer" parameterType="Integer">
+	<update id="deleteCustomer" parameterType="com.gms.web.admin.domain.manage.CustomerVO">
 		UPDATE TB_CUSTOMER
 		SET
 			  Customer_Status = '0'

@@ -207,9 +207,9 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	@Transactional
-	public boolean deleteCustomer(Integer customerId) {
-		// TODO Auto-generated method stub
-		return false;
+	public int deleteCustomer(CustomerVO param) {
+		
+		return customerMapper.deleteCustomer(param);
 	}
 
 	@Override

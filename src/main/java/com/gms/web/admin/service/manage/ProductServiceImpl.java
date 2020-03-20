@@ -169,9 +169,7 @@ public class ProductServiceImpl implements ProductService {
 	public ProductTotalVO getBottleGasCapa(BottleVO param) {
 	
 		return productMapper.selectBottleGasCapa(param);
-	}
-
-	
+	}	
 	
 	@Override
 	public int getProductId() {
@@ -182,6 +180,11 @@ public class ProductServiceImpl implements ProductService {
 		return result;
 	}
 
+	@Override
+	public int getProductPriceCount() {
+		return productMapper.selectProductPriceCount();
+	}
+	
 	@Override
 	public int getProductProductSeq(Integer productId) {
 		// TODO Auto-generated method stub
@@ -205,23 +208,13 @@ public class ProductServiceImpl implements ProductService {
 			productId = getProductId();
 			
 			param.setProductId(Integer.valueOf(productId));
-			param.setMemberCompSeq(1);		
-			
-			logger.debug("****** after set ProductId registerProduct param.getProductId()()) *****===*"+param.getProductId());
-			logger.debug("****** registerProduct param.getGasId *****===*"+param.getGasId());
-			logger.debug("****** registerProduct param.param1.length *****===*"+param1.length);
-			
-			
+			param.setMemberCompSeq(1);				
+					
 			logger.debug("****** before registerProduct param. result *****===*"+result);
 			result = productMapper.insertProduct(param);
 			
-			logger.debug("****** after registerProductparam. result *****===*"+result);
-			
-			
 			if (result > 0) {
 				ProductPriceVO priceVo = null;				
-				//int productPriceSeq = getProductProductSeq(Integer.valueOf(productId));				
-				//logger.info("****** registerProductparam.getProductPriceSeq()()) *****===*"+productPriceSeq);
 				
 				boolean pResult = false;
 				for(int i =0 ; i < param1.length ; i++ ) {
@@ -256,15 +249,8 @@ public class ProductServiceImpl implements ProductService {
 		if (param.getProductId() != null) {
 			
 			productId = param.getProductId();
-			
-			logger.debug("****** after set ProductId modifyProduct param.getProductId()()) *****===*"+param.getProductId());
-			logger.debug("****** modifyProduct param.getGasId *****===*"+param.getGasId());
-			logger.debug("****** modifyrProduct param.param1.length *****===*"+param1.length);
-			logger.debug("****** before modifyProduct param. result *****===*"+result);
-			
+		
 			result = productMapper.updateProduct(param);
-			
-			logger.debug("****** after modifyProductparam. result *****===*"+result);
 			
 			if (result > 0) {
 				
@@ -272,10 +258,6 @@ public class ProductServiceImpl implements ProductService {
 				
 				if(delProductPrice > 0) {
 					ProductPriceVO priceVo = null;
-					
-					//int productPriceSeq = getProductProductSeq(Integer.valueOf(productId));					
-					//logger.info("****** modify Productparam.getProductPriceSeq()()) *****===*"+productPriceSeq);					
-					logger.debug("****** modify Product param1.length) *****===*"+param1.length);
 					
 					boolean pResult = false;
 					for(int i =0 ; i < param1.length ; i++ ) {
@@ -348,6 +330,5 @@ public class ProductServiceImpl implements ProductService {
 	public List<ProductPriceSimpleVO> getNoGasProductPriceList() {
 		return productMapper.selectNoGasProductPriceList();
 	}
-
 	
 }

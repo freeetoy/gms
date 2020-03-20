@@ -114,6 +114,27 @@ var goWrite = function(){
 	form.submit();
 }
 	
+//입력된 내용을 작성한다.
+var goDelete = function(){
+	if(confirm("삭제하시겠습니까?")){	
+		
+		var form = document.createElement("form");
+		form.setAttribute("charset","UTF-8");
+		form.setAttribute("method","post");
+		form.setAttribute("action","/gms/customer/delete.do?currentPage=[[ ${currentPage} ]]&searchCustomerNm=[[ ${searchCustomerNm} ]]");
+		
+		var hiddenField = document.createElement("input");
+        hiddenField.setAttribute("type", "hidden");
+        hiddenField.setAttribute("name", "customerId");
+        hiddenField.setAttribute("value", [[ ${customer.customerId} ]]);
+
+        form.appendChild(hiddenField);      
+        document.body.appendChild(form);
+
+        form.submit();			
+	}              
+}
+
 </script>
 
    <div class="content-wrapper">
@@ -177,10 +198,10 @@ var goWrite = function(){
                       <th><input type="text" class="form-control" id="customerEmail" name="customerEmail" th:value="${customer.customerEmail}"></th>
                     </tr>
                     <tr>
-                      <th class="card-footer">자동차여부</th>
+                      <th class="card-footer">차량여부</th>
                       <th>
 		      			<input type="radio" name="carYn" id="carYn" value="Y" th:if="${customer.carYn =='Y'}" checked="">     
-		      			<input type="radio" name="carYn" id="carYn" value="Y" th:unless="${customer.carYn =='Y'}"> 자동차                                
+		      			<input type="radio" name="carYn" id="carYn" value="Y" th:unless="${customer.carYn =='Y'}"> 차량                                
                       	<input type="radio" name="carYn" id="carYn" value="N" th:if="${customer.carYn =='N'}" checked="">		
                       	<input type="radio" name="carYn" id="carYn" value="N" th:unless="${customer.carYn =='N'}"> 고객		      		
 		      		 </th>  
@@ -211,8 +232,9 @@ var goWrite = function(){
             <!-- /.card -->
       		<div class="col-md-8">
       			<div class="card-footer">
-                 <a href="#" th:onclick="history.back()" class="btn btn-secondary float-left">취소</a>
-		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">
+                 <a href="#" th:onclick="history.back()" class="btn btn-secondary float-left">취소</a> &nbsp;&nbsp;
+                 <input type="button" value="삭제" onclick="javascript:goDelete()" class="btn btn-danger">
+		         <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">
                 </div>		     		
             </form>   
              </div>                          

@@ -38,6 +38,8 @@ public interface ProductMapper {
 	public int statusChangeProduct(ProductVO param);
 	
 	public int selectProductCount();
+	
+	public int selectProductPriceCount();
 
 	public List<ProductTotalVO> selectProductTotalList();
 	

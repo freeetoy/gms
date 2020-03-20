@@ -22,7 +22,6 @@ public interface ProductService {
 	
 	public boolean modifyProductPriceStatus(ProductPriceVO param);
 
-
 	public ProductVO getProductDetails(Integer productId);
 	
 	public ProductTotalVO getProductTotalDetails(ProductTotalVO param);
@@ -34,6 +33,8 @@ public interface ProductService {
 	public boolean deleteProductPrice(Integer productId);
 	
 	public int getProductId();
+	
+	public int getProductPriceCount();
 
 	public List<ProductTotalVO> getProductTotalList();
 	

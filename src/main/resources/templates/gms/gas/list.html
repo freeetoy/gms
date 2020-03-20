@@ -123,8 +123,8 @@
                 </div>
               </div>            
             <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Save changes</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+              <button type="submit" class="btn btn-primary">저장</button>
             </div>
             </form>
           </div>
@@ -135,7 +135,7 @@
       <!-- /.modal -->
       <div class="container-fluid">
         
-        <div class="row">
+        <div class="row" th:if="${session.LoginUser.userAuthority=='99'}" >
           <div class="col-md-6">         
             <!-- /.card -->
 			<form role="form" id="regForm" th:action="@{/gms/gas/register.do}" th:object="${gas}" method="post" onsubmit="return validationOfForm(this)">
@@ -178,7 +178,7 @@
                       <th>가스코드</th>
                       <th>등록자</th>
                       <th>등록일</th>
-                      <th>관리</th>
+                      <th th:if="${session.LoginUser.userAuthority=='99'}" >관리</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -188,7 +188,8 @@
                       <th th:text="${row.gasCd}"></th>
                       <td th:text="${row.createId}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
-                      <td><a class="btn btn-info btn-xs" href="#" th:gasId="${row.gasId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_modifyGas([[ ${row.gasId} ]])"><i class="fas fa-pencil-alt"></i>수정 </a> 
+                      <td th:if="${session.LoginUser.userAuthority=='99'}" >
+                      <a class="btn btn-info btn-xs" href="#" th:gasId="${row.gasId}" data-toggle="modal" data-target="#modal-default" th:onclick="fn_modifyGas([[ ${row.gasId} ]])"><i class="fas fa-pencil-alt"></i>수정 </a> 
                       <a class="btn btn-danger btn-xs" href="#"  th:onclick="fn_deleteGas([[ ${row.gasId} ]])"><i class="fas fa-trash"></i>삭제</a>
                       
                       </td>

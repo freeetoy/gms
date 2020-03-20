@@ -274,9 +274,9 @@
 	
 	<select id="selectWorkReportListAll" resultType="com.gms.web.admin.domain.manage.WorkBottleVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
 		SELECT Product_Count,Work_Report_Seq, AA.Customer_ID,Customer_nm  , AA.Product_ID  ,Product_NM , AA.Product_Price_Seq ,Product_Capa    
-		,Bottle_work_Cd, CD_NM Bottle_work_Cd_NM, AA.Order_Id, Order_Total_Amount
+		,Bottle_work_Cd, CD_NM Bottle_work_Cd_NM, AA.Order_Id, Order_Total_Amount,AA.Product_Price
 		FROM TB_CODE TC, TB_Customer TS, tb_product TP, tb_product_price TPP, (
-			SELECT Count(TB.Product_Price_Seq) Product_Count, TB.Work_Report_Seq, TB.Customer_ID  , TB.Product_ID   , TB.Product_Price_Seq    ,Bottle_work_Cd,Order_Id
+			SELECT Count(TB.Product_Price_Seq) Product_Count, TB.Work_Report_Seq, TB.Customer_ID, TB.Product_ID, TB.Product_Price_Seq, Bottle_work_Cd,Product_Price, Order_Id
 			FROM tb_work_bottle TB, tb_work_report TW
 			WHERE tb.Work_Report_Seq  = tw.Work_Report_Seq
 			AND User_id = #{searchUserId}
@@ -540,7 +540,7 @@
 				, TW.Order_ID
 				, Order_Product_Seq	
 				, TWB.Bottle_Type
-				, Work_DT Bottle_Work_DT
+				, TWB.Create_DT Bottle_Work_DT
 				, TW.CREATE_ID
 				, TW.CREATE_DT
 				, TW.UPDATE_ID

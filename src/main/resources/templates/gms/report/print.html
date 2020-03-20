@@ -131,7 +131,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 		<td class="tl_dot" style="border-top-style:none" align="center" th:unless="${row.orderAmount> 999 }" th:text="${row.orderAmount}">		
 		</td>
 		<td class="tl_dot" style="border-top-style:none" align="center"></td>
-		<td class="tl_dot" style="border-right-style: solid;border-right-width: 1px;" align="center" ></td>
+		<td class="tl_dot" style="border-top-style:none: border-right-style: solid;border-right-width: 1px;" align="center" ></td>
 	  </tr>
 
 	  <tr height="40" th:each="seq : ${#numbers.sequence(1,20-workList.size())}"> 

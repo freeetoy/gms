@@ -22621,6 +22621,7 @@ html.maximized-card {
   -ms-flex-align: center;
   align-items: center;
   background: #e9ecef;
+  //background: url(http://www.gass.co.kr/index_img/mainheader_1910.png) no-repeat center center;
   display: -ms-flexbox;
   display: flex;
   height: 100vh;

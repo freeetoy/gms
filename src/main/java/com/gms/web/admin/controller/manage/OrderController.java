@@ -181,8 +181,7 @@ public class OrderController {
 		logger.info("OrderContoller openOrderUpate "+ params.getOrderId());
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));	
-		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));			
 			
 		if (params.getOrderId() == null) {
 			return null;
@@ -227,6 +226,7 @@ public class OrderController {
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));
 		
 		int result = 0;
+		//TODO 판매완료된 상품 주문 수정 안되게 처리
 		
 		result = orderService.modifyOrder(request,params);
 		if(result > 0){
@@ -284,7 +284,7 @@ public class OrderController {
 		
 		//검색조건 셋팅
 		logger.debug("OrderContoller searchOrderDt "+ params.getSearchOrderDt());
-		logger.debug("OrderContoller searchCustomerNm "+ params.getSearchCustomerNm());
+		logger.debug("OrderContoller searchCustomerNm "+ params.getSearchCustomerNm());		
 		
 		int  result = orderService.deleteOrder(params);
 		
@@ -292,9 +292,12 @@ public class OrderController {
 			String alertMessage = "삭제하였습니다.";
 			RequestUtils.responseWriteException(response, alertMessage,
 					"/gms/order/list.do?currentPage="+params.getCurrentPage()+"&searchCustomerNm="+params.getSearchCustomerNm()+"&searchOrderDt="+params.getSearchOrderDt());
+		}else if(result < 0) {
+			String alertMessage = "이미 납품 진행된 주문입니다..";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/order/list.do?currentPage="+params.getCurrentPage()+"&searchCustomerNm="+params.getSearchCustomerNm()+"&searchOrderDt="+params.getSearchOrderDt());
 		}
-		return null;
-		
+		return null;		
 	}
 	
 	

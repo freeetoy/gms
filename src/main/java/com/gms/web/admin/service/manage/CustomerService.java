@@ -40,7 +40,7 @@ public interface CustomerService {
 	
 	public boolean modifyCustomerStatus(CustomerVO param);
 	
-	public boolean deleteCustomer(Integer customerId);
+	public int deleteCustomer(CustomerVO param);
 
 	public Map<String, Object> checkBusinessRegIdDuplicate(CustomerVO param);
 	

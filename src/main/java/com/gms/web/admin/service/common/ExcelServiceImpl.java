@@ -176,7 +176,33 @@ public class ExcelServiceImpl implements ExcelService {
                 		if(customer != null &&  customer.getCustomerId()!=null)
                 			bottle.setCustomerId(customerService.getCustomerDetailsByNm(colValue).getCustomerId());
                 	}
-                	else if(j == 11) bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0388"));
+                	else if(j == 11) {                		
+                		
+                		if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.come")))
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.vacuum")))
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0302"));
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.hole")))
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0303"));
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.chargeDt")))
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0304"));
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.charge")))
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0305"));
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.out")))
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0306"));
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.incar")))
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0307"));
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.sales")))
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.rental")))
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.back")))
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0310"));
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.discard")))
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0399"));
+                		else	
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0388"));
+                	}
                 	else if(j == 12) { 
                 		if(colValue.equals("자사")) bottle.setBottleOwnYn("N");
                 		else bottle.setBottleOwnYn("Y");
@@ -208,8 +234,7 @@ public class ExcelServiceImpl implements ExcelService {
 	                		isRegisteFlag = false;
 	                		result = bottleService.modifyBottle(bottle);
 	                		updateCount++;
-	                	}
-	                		
+	                	}	                		
 	                }
 	                if(isRegisteFlag) {
 	                	list.add(bottle);
@@ -369,11 +394,12 @@ public class ExcelServiceImpl implements ExcelService {
             // 첫번째 시트 불러오기
             XSSFSheet sheet = workbook.getSheetAt(0);
             
-            int COLUMN_COUNT = 144;
+            //int COLUMN_COUNT = 144;
+            int COLUMN_COUNT = productService.getProductPriceCount();
+            if(COLUMN_COUNT <= 0) COLUMN_COUNT = 144;
             int insertCount = 0;
             StringBuffer sb = new StringBuffer();
             String strProductPrice="";
-
 
             List<ProductTotalVO> productList = productService.getProductTotalList();
             
@@ -434,8 +460,7 @@ public class ExcelServiceImpl implements ExcelService {
             	logger.debug("ExcelSerive uploadExcelFile i=1 ==");
             	
             	CustomerVO customer = null;
-            	CustomerVO tempcustomer = new CustomerVO();
-            	
+            	CustomerVO tempcustomer = new CustomerVO();            	
             	
                 XSSFRow row = sheet.getRow(i);
                 
@@ -539,13 +564,11 @@ public class ExcelServiceImpl implements ExcelService {
             	용기검사비	
             	147
             	1단 받침대
-*/
-  
+*/  
                 String colValue="";       
                 int productPrice = 0;
                 String customerNm ="";
-            	String businessRegId="";
-            	
+            	String businessRegId="";            	
             	
                 for(int j=0; j< COLUMN_COUNT; j++) {
                 	CustomerPriceVO customerPrice = new CustomerPriceVO();
@@ -603,16 +626,14 @@ public class ExcelServiceImpl implements ExcelService {
                 			//logger.debug("ExcelSerive uploadExcelFile customerId ** =="+ customer.getCustomerId());
                 		}else {
                 			sb.append(customerNm).append(";");
-                		}
-                	
+                		}                	
                 	}
                 	
 					if(j>2 && colValue.length() > 0) {
 						
 						ProductTotalVO productTotal = productList.get(j-3);
 						logger.debug("&& ExcelSerive uploadExcelFile getProductNm j =="+j+"=="+ productTotal.getProductNm());
-						logger.debug("&& ExcelSerive uploadExcelFile getProductCapa j =="+j+"=="+ productTotal.getProductCapa());
-					
+						logger.debug("&& ExcelSerive uploadExcelFile getProductCapa j =="+j+"=="+ productTotal.getProductCapa());					
 					
 						customerPrice.setProductId(productTotal.getProductId());
 						customerPrice.setProductPriceSeq(productTotal.getProductPriceSeq());
@@ -659,19 +680,19 @@ public class ExcelServiceImpl implements ExcelService {
             if(list.size() > 0) result = customerService.registerCustomerPrices(list);
             logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+" insertCount="+insertCount);
             
-    } catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
-    	e.printStackTrace();
-	} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
-		e.printStackTrace();
+	    } catch (DataAccessException e) {
+				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+	    	e.printStackTrace();
+		} catch (Exception e) {
+				// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		return result;
 	}
-	return result;
-}
-
 
 	
 	public void readExcelXLSX(String excel) {
+		
         try {
             String[] tempFileName = excel.split("/");
             String fileName = tempFileName[excel.split("/").length - 1];
@@ -749,8 +770,6 @@ public class ExcelServiceImpl implements ExcelService {
             default:
                 colValue = "";
             }
- 
-            
             
             colValue = colValue.trim();
  
@@ -766,14 +785,9 @@ public class ExcelServiceImpl implements ExcelService {
                 //}
             }
         }
-        // FOR Section (E)
- 
+        // FOR Section (E) 
         // TODO : DAO 영역 메소드 호출 후 Data insert 또는 update 로직 구현
-        // excel로부터 읽어들인 name, value 값을 DB에 insert하거나 update하는 로직을 구현할 수 있다.
- 
+        // excel로부터 읽어들인 name, value 값을 DB에 insert하거나 update하는 로직을 구현할 수 있다. 
     }
-
-
-	
 
 }

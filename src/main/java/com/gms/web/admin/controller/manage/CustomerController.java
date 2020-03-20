@@ -169,9 +169,8 @@ public class CustomerController {
 		boolean result = false;
 		try {			
 			logger.debug("******params.getCustomerId()()) *****===*"+params.getCustomerId());
-			
-			logger.debug("******params.getSearchCustomerNm()) *****===*"+searchCustomerNm);
-			
+			mav.addObject("currentPage", params.getCurrentPage());
+			mav.addObject("searchCustomerNm", params.getSearchCustomerNm());
 			result = customerService.modifyCustomer(params);
 			
 			if (result == false) {
@@ -188,6 +187,46 @@ public class CustomerController {
 		if(result){
 			String alertMessage = "수정되었습니다.";
 			RequestUtils.responseWriteException(response, alertMessage, "/gms/customer/list.do?currentPage="+params.getCurrentPage()+"&searchCustomerNm="+searchCustomerNm);
+		}
+		return null;
+		//return "/gms/customer/list.do?currentPage="+params.getCurrentPage()+"&searchCustomerNm="+searchCustomerNm;
+	}
+	
+	
+	@RequestMapping(value = "/gms/customer/delete.do", method = RequestMethod.POST)
+	public ModelAndView deleteCustomer(HttpServletRequest request
+			, HttpServletResponse response
+			, CustomerVO param) {
+		
+		ModelAndView mav = new ModelAndView();	
+		
+		logger.info("CustomerContoller deleteCustomer");
+		
+		RequestUtils.initUserPrgmInfo(request, param);
+		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.customer"));
+		
+		String searchCustomerNm = param.getSearchCustomerNm();
+		
+		int result = 0;
+		try {			
+			logger.debug("******params.getCustomerId()()) *****===*"+param.getCustomerId());
+			mav.addObject("currentPage", param.getCurrentPage());
+			mav.addObject("searchCustomerNm", param.getSearchCustomerNm());
+			
+			result = customerService.deleteCustomer(param);			
+			
+		} catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		
+		if(result > 0){
+			String alertMessage = "삭제되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/customer/list.do?currentPage="+param.getCurrentPage()+"&searchCustomerNm="+searchCustomerNm);
 		}
 		return null;
 		//return "/gms/customer/list.do?currentPage="+params.getCurrentPage()+"&searchCustomerNm="+searchCustomerNm;

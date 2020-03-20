@@ -99,7 +99,6 @@ public class BottleController {
 			model.addAttribute("searchProductId", Integer.parseInt(searchProductId));
 			model.addAttribute("searchProductId1", Integer.parseInt(searchProductId));
 			
-			logger.debug("BottleContoller **** searchProductId "+ searchProductId);
 		}
 		
 		// 가스 정보 불러오기

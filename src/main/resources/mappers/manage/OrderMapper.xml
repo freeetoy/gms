@@ -513,7 +513,7 @@
 					FROM TB_Work_Bottle TB,TB_Work_Report TW 
 					WHERE TB.Work_Report_Seq = TW.Work_Report_Seq AND Order_Id = #{orderId}	
 					Group By Product_ID, Product_Price_Seq 
-			) TW on (A.`Product_ID` = TW.product_id and A.`Product_Price_Seq` = TW.Product_Price_Seq)
+			) TW on (A.Product_ID = TW.product_id and A.Product_Price_Seq = TW.Product_Price_Seq)
 		WHERE
 			Order_ID = #{orderId}	
 		AND A.Product_ID = B.Product_ID
@@ -615,4 +615,14 @@
 			A.Order_Process_Cd = C.CD_ID			
 		ORDER BY Delivery_Req_Dt DESC 
 	</select>
+	
+	<select id="selectOrderBottleList" resultType="com.gms.web.admin.domain.manage.OrderBottleVO" parameterType="Integer">		
+		SELECT
+			<include refid="OrderBottleColumns" />
+		FROM
+			TB_Order_Bottle
+		WHERE
+			Order_ID = #{orderId}
+	</select>
+	
 </mapper>

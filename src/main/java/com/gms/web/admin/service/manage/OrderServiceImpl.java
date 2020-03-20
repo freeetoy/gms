@@ -444,8 +444,10 @@ public class OrderServiceImpl implements OrderService {
 			List<OrderBottleVO> orderBottleList = new ArrayList<OrderBottleVO>();
 			
 			Integer orderId = params.getOrderId();
-			//params.setOrderId(Integer.valueOf(orderId));			
-						
+			//params.setOrderId(Integer.valueOf(orderId));					
+			List<OrderProductVO> oldProductList = getOrderProductList(orderId);
+			List<OrderBottleVO> oldOrderBottleList = getOrderBottleList(orderId);
+			
 			String orderTypeCd = params.getOrderTypeCd();
 						
 			int orderAmount = 0;
@@ -461,9 +463,7 @@ public class OrderServiceImpl implements OrderService {
 			String bottleSaleYn = "N";
 			
 			CustomerPriceExtVO tempCustomerPrice = null;
-			ProductTotalVO tempProduct = null;
-		
-			logger.debug("OrderContoller modifyOrder orderTypeCd== "+ orderTypeCd);
+			ProductTotalVO tempProduct = null;		
 			
 			// Sales ID 설정
 			CustomerVO customer = customerService.getCustomerDetails(params.getCustomerId());
@@ -473,9 +473,6 @@ public class OrderServiceImpl implements OrderService {
 			
 			if(orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.01")) ||  orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.02"))
 					|| orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.03"))) {
-				
-				// 거래처 상품별 단가 정보 가져오기
-				//List<CustomerPriceExtVO> customerPriceList = customerService.getCustomerPriceList(params.getCustomerId());		
 				
 				// 상품별 단가 정보 가져오기
 				List<ProductTotalVO> productPriceList = productService.getCustomerProductTotalList(params.getCustomerId());
@@ -492,15 +489,33 @@ public class OrderServiceImpl implements OrderService {
 					bottleChangeYn = "N";
 					bottleSaleYn = "N";
 					boolean bottleFlag = false;
+					int requestIndex = i;
 					
-					productId = Integer.parseInt(request.getParameter("productId_"+i));
-					productPriceSeq = Integer.parseInt(request.getParameter("productPriceSeq_"+i));
-					orderCount = Integer.parseInt(request.getParameter("orderCount_"+i));
+					logger.debug("OrderContoller modifyOrder request.getParameter(\"productId_\"+i)== "+ request.getParameter("productId_"+i));	
+					
+					if(request.getParameter("productId_"+i) != null) {
+						requestIndex = i;
+						productId = Integer.parseInt(request.getParameter("productId_"+i));
+						productPriceSeq = Integer.parseInt(request.getParameter("productPriceSeq_"+i));
+						orderCount = Integer.parseInt(request.getParameter("orderCount_"+i));
+					}else {
+						for(int j=1;j<11-productCount ; j++) {
+							if(request.getParameter("productId_"+(i+j)) != null) {
+								requestIndex = i+j;
+								productId = Integer.parseInt(request.getParameter("productId_"+(i+j)));
+								productPriceSeq = Integer.parseInt(request.getParameter("productPriceSeq_"+(i+j)));
+								orderCount = Integer.parseInt(request.getParameter("orderCount_"+(i+j)));
+								break;
+							}
+						}						
+					}
+					
+					
 										
-					if(request.getParameter("bottleChangeYn_"+i) !=null)  {
+					if(request.getParameter("bottleChangeYn_"+requestIndex) !=null)  {
 						bottleChangeYn = "Y";
 					}
-					if(request.getParameter("bottleSaleYn_"+i) !=null)  {
+					if(request.getParameter("bottleSaleYn_"+requestIndex) !=null)  {
 						bottleSaleYn = "Y";
 					}
 					
@@ -528,12 +543,17 @@ public class OrderServiceImpl implements OrderService {
 					
 					logger.debug("OrderContoller modifyOrder orderTotalAmount== "+ orderTotalAmount);
 					
+					//기존 주문상품과 빅교
+					for(int j=0; j< oldProductList.size() ; j++) {
+						OrderProductVO oldProductVo = oldProductList.get(j);
+						
+					}
 					productVo.setOrderId(params.getOrderId());
 					productVo.setOrderProductSeq(i+1);
 					productVo.setProductId(productId);
 					productVo.setProductPriceSeq(productPriceSeq);				
 					productVo.setOrderCount(orderCount);
-					productVo.setOrderProductEtc(request.getParameter("orderProductEtc_"+i));
+					productVo.setOrderProductEtc(request.getParameter("orderProductEtc_"+requestIndex));
 					productVo.setBottleChangeYn(bottleChangeYn);								
 					productVo.setBottleSaleYn(bottleSaleYn);		
 					//productVo.setProductDeliveryDt(null);
@@ -543,11 +563,22 @@ public class OrderServiceImpl implements OrderService {
 						for(int k=0; k< orderCount ; k++) {
 							
 							OrderBottleVO orderBottle = new OrderBottleVO();
+							String orderBottleId ="";
 							
+							for(int l=oldOrderBottleList.size()-1 ; l >= 0 ;l--) {
+								OrderBottleVO oldOrderBottle = oldOrderBottleList.get(l);
+								
+								if(oldOrderBottle.getProductId() == productId && oldOrderBottle.getProductPriceSeq()==productPriceSeq) {
+									orderBottleId = oldOrderBottle.getBottleId();
+									oldOrderBottleList.remove(l);
+								}
+								
+							}
 							orderBottle.setOrderId(orderId);
 							orderBottle.setOrderProductSeq(i+1);
-							orderBottle.setProductId(productId);
+							orderBottle.setProductId(productId);							
 							orderBottle.setProductPriceSeq(productPriceSeq);
+							orderBottle.setBottleId(orderBottleId);
 							orderBottle.setCreateId(params.getCreateId());
 							orderBottle.setUpdateId(params.getCreateId());
 							
@@ -595,8 +626,7 @@ public class OrderServiceImpl implements OrderService {
 			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();
 		}
-		
-		
+			
 		return result;
 	}
 
@@ -707,7 +737,7 @@ public class OrderServiceImpl implements OrderService {
 			}			
 			
 			result = orderMapper.updateOrderProcessCd(params);
-			logger.debug("Orderserive end searchOrderDt "+ params.getSearchOrderDt());
+			
 					
 		} catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -723,6 +753,17 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	@Transactional
 	public int deleteOrder(OrderVO param) {
+		
+		//TODO 판매완료된 상품 주문 삭제시 안되게 처리		
+		List<OrderProductVO> orderProductList = getOrderProductList(param.getOrderId());
+		
+		boolean alreadySales = false;
+		for(int i=0; i<orderProductList.size() ; i++) {
+			if(orderProductList.get(i).getSalesCount() <= 0) alreadySales = true;
+		}
+		//logger.debug("Orderserive deleteOrder alreadySales=="+ alreadySales);
+		if(alreadySales) return -1;
+		
 		return orderMapper.deleteOrder(param);
 	}
 
@@ -854,7 +895,9 @@ public class OrderServiceImpl implements OrderService {
 		return orderMapper.updateOrdersProcessCd(param);	
 	}
 
-	
+	private  List<OrderBottleVO> getOrderBottleList(Integer orderId){
+		return orderMapper.selectOrderBottleList(orderId);	
+	}
 	
 	
 }

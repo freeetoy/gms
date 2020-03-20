@@ -23,7 +23,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-		log.debug("preHandle!!");
+		//log.debug("preHandle!!");
 		String requestURI = request.getRequestURI().trim();
 		
 		/*
@@ -53,9 +53,9 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
             userId 		= StringUtils.defaultString(sessionInfo.getUserId());
             systemRole 	= StringUtils.defaultString(sessionInfo.getUserAuthority());
             log.info("preHandle userId ************ "+userId);
-            log.debug("preHandle userNm ************ "+StringUtils.defaultString(sessionInfo.getUserNm()));
-            log.debug("preHandle userPartCd ************ "+StringUtils.defaultString(sessionInfo.getUserPartCd()));
-            log.debug("preHandle systemRole ************ "+systemRole);
+            //log.debug("preHandle userNm ************ "+StringUtils.defaultString(sessionInfo.getUserNm()));
+            //log.debug("preHandle userPartCd ************ "+StringUtils.defaultString(sessionInfo.getUserPartCd()));
+            //log.debug("preHandle systemRole ************ "+systemRole);
                       
             session.setAttribute("compNm", PropertyFactory.getProperty("common.Member.Comp.Daehan.name"));		
             

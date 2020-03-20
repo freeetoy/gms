@@ -77,7 +77,7 @@
               </div>               
              
               <div class="col-1">
-               		<a href="/gms/product/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm"><i class="far fa-edit"></i>추가</button></a>
+               		<a th:if="${session.LoginUser.userAuthority=='99'}" href="/gms/product/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm"><i class="far fa-edit"></i>추가</button></a>
               </div>
          </div>
          <div class="row">	
@@ -102,7 +102,7 @@
                       <th>상품가격</th>
                       <th>등록자</th>
                       <th>등록일</th>
-                      <th>관리</th>
+                      <th th:if="${session.LoginUser.userAuthority=='99'}" >관리</th>
                       
                     </tr>
                   </thead>
@@ -116,7 +116,7 @@
                       <td th:text="${#numbers.formatInteger(row.productPrice, 3, 'COMMA')}"></td>
                       <td th:text="${row.CreateId}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
-                      <td> 
+                      <td th:if="${session.LoginUser.userAuthority=='99'}" > 
                       <a class="btn btn-danger btn-xs" href="#"  th:if="${row.productOrderCount==0}"  th:onclick="fn_modifyProduct([[ ${row.productId} ]],[[ ${row.productPriceSeq} ]], 0)"><i class="fas fa-trash"></i>삭제</a>
                       <a class="btn btn-success btn-xs" href="#"  th:unless="${row.productOrderCount==0}"  th:onclick="fn_modifyProduct([[ ${row.productId} ]],[[ ${row.productPriceSeq} ]],1)"><i class="fas fa-ban"></i>판매중지</a>
                       </td>

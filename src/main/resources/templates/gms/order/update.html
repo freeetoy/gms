@@ -94,9 +94,7 @@ $(document).ready(function(){
 		getProductList(selProductId,0,"ins");
 	});
 
-
-
-    //수정시 row 추가
+	//수정시 row 추가
 
      var mod_counter = 0;
 
@@ -107,11 +105,6 @@ $(document).ready(function(){
         mod_counter++;       
         totalCount++;
         
-        console.log("2 mod_counter=="+mod_counter); 
-		console.log("2 totalCount=="+totalCount); 
-		
-        console.log("추가 mod_counter:" + mod_counter);
-
         var newRow = $("<tr>");
         var cols = "";
 
@@ -153,17 +146,12 @@ $(document).ready(function(){
 		console.log("3 totalCount=="+totalCount); 
     });
 
-
-
-
     $("table.doc-list").on("click", ".ibtnDelMod", function (event) {
         $(this).closest("tr").remove();       
-       
+        console.log("4 $(this)=="+$(this).id);
         mod_counter -= 1
         totalCount -= 1
         $("#productCount").val(mod_counter);
-
-		console.log("4 totalCount=="+totalCount); 
     });
     
 
@@ -175,7 +163,7 @@ $(document).ready(function(){
 		});
       }
     
-    function initProduct(pid){
+	function initProduct(pid){
 
         $.ajax({
   	  	url: '/gms/product/nlist.do',
@@ -188,9 +176,8 @@ $(document).ready(function(){
   		var i=0;
   		$('#productId_' + pid).append('<option value=0>상품</option>');
 		for(i=0; i< data.length;i++) {
-			console.log(data[i]);      
-			$('#productId_' + pid).append('<option value='+data[i].productId+'>'+data[i].productNm+'</option>')
-			
+			   
+			$('#productId_' + pid).append('<option value='+data[i].productId+'>'+data[i].productNm+'</option>')			
 		}
   	 
        })
@@ -202,13 +189,13 @@ $(document).ready(function(){
     
     
     function addProductCapa(counter) {
-    	// body...
-    		$('#productId_' + counter).change( function(){
-    			var select_pumname = $('#productId_' + counter).val();
+   	// body...
+   		$('#productId_' + counter).change( function(){
+   			var select_pumname = $('#productId_' + counter).val();
 
-    			getProductList(select_pumname,counter,'ins');
-    		});
-    	}
+   			getProductList(select_pumname,counter,'ins');
+   		});
+   	}
     
  // 입력된 내용을 작성한다.
     $("#save").on("click", function () {
@@ -314,8 +301,8 @@ $(document).ready(function(){
 	} 
 
     
-    $("#btn_com_search").click(function()  
-   {    	
+	$("#btn_com_search").click(function()  
+   	{    	
 	  var searchCustomerNm = $("#searchCustomerNm1").val();
 
 	   $.ajax({
@@ -329,15 +316,13 @@ $(document).ready(function(){
 	    	$('#customerId').find('option').remove();        
 	    	  for(i=0; i< data.length;i++) {
 	  			//console.log(data[i]);      
-	  			$('#customerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')
-	  			
+	  			$('#customerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')	  			
 	  		}
 	      })
 	      .fail(function(){
 	         console.log("fail");
 	      });
 	 });
-
 
 
     $('select[name=orderTypeCd]').change(function() {
@@ -362,9 +347,8 @@ $(document).ready(function(){
 		 })
 		.done(function(data){	           
 			var counter = 0;
-	        var cols = "";
-	        
-			console.log("start datea ="+data);     
+	        var cols = "";	        
+			    
 			for(i=0; i< data.length;i++) {
 	            $('#productId_' + i).find('option').remove();
 	        }			
@@ -412,7 +396,6 @@ $(document).ready(function(){
 				cols += '</td>';
 				cols +='</tr>';
 
-
 				newRow.append(cols);
 				$("table.doc-list").append(newRow);
 				
@@ -438,14 +421,15 @@ $(document).ready(function(){
 		        $("table.doc-list").append(newRow);
 		        
 				for(i=0; i< data.length;i++) {
-					console.log(data);     
-					console.log(data[i]);     
+					 
 					var newRow = $("<tr>");
 			        
-		            cols = "";
-				
+		            cols = "";				
 					cols += '<td style="padding-left:5px;">';
-					cols += '	<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:200px">'; 
+					if(data[i].salesCount <=0)
+						cols += '	<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:200px" readonly>'; 
+					else
+						cols += '	<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:200px">'; 
 					cols += '	<option value="' + data[i].productId +'" selected>' + data[i].productNm + '</option>';
 					cols += '	</select>';
 					cols += '</td><td>';
@@ -453,7 +437,10 @@ $(document).ready(function(){
 					cols += '	<option value="' + data[i].productPriceSeq +'" selected>' + data[i].productCapa + '</option>';
 					cols += '	</select> ';
 					cols += '</td><td>';
-					cols += '	<input type="number" class="form-control" id="orderCount_' + counter + '" name="orderCount_' + counter + '" value="' + data[i].orderCount + '" style="width:60px;height:35px;" onkeypress="return event.charCode >= 48" min="1" max="99999">';
+					if(data[i].salesCount <=0)
+						cols += '	<input type="number" class="form-control" id="orderCount_' + counter + '" name="orderCount_' + counter + '" value="' + data[i].orderCount + '" style="width:60px;height:35px;" onkeypress="return event.charCode >= 48" min="1" max="99999" readonly>';
+					else
+						cols += '	<input type="number" class="form-control" id="orderCount_' + counter + '" name="orderCount_' + counter + '" value="' + data[i].orderCount + '" style="width:60px;height:35px;" onkeypress="return event.charCode >= 48" min="1" max="99999">';
 					cols += '</td><td>';  
 					cols += '	<input type="text" class="form-control" id="orderProductEtc_' + counter + '" name="orderProductEtc_' + counter + '"  value="' + data[i].orderProductEtc + '">';
 					cols += '</td><td>';  
@@ -474,7 +461,7 @@ $(document).ready(function(){
 					if (counter < 1){	
 						cols += ' <input type="button" class="ibtnAddMod btn btn-md btn-info" id="mod_addrow" value="추가" />';	
 					}else{	
-						cols += ' <input type="button" class="ibtnDelMod btn btn-md btn-danger" id="addrow" value="삭제" />';	
+						cols += ' <input type="button" class="ibtnDelMod btn btn-md btn-danger" id="addrow_' + counter+'" value="삭제" />';	
 					}
 					cols += '</td>';
 					cols +='</tr>';
@@ -502,7 +489,6 @@ $(document).ready(function(){
 		 });		
 
     }
-
 
 
 });
