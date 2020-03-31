@@ -43,6 +43,16 @@ public class ExcelUploadController {
 	        if(iterator.hasNext()) {
 	            file = request.getFile(iterator.next());
 	        }
+	        long SIZE_LIMIT = 1024*1024;
+	        long fileSize = file.getSize();
+        	if(fileSize > SIZE_LIMIT) {
+        		String alertMessage = "파일은 1M 이하로 업로드 해주세요.";
+    			RequestUtils.responseWriteException(response, alertMessage,
+    					"/gms/bottle/list.do");
+    			return null;
+        	}
+        	logger.debug("$$$$$$$$$$$$$$ ExcelService fileSize "+ fileSize);
+        	
 	        result = excelService.uploadBottleExcelFile(request, file);	        
 	      
 	        //model.addAttribute("gaslist", gaslist);
@@ -78,6 +88,15 @@ public class ExcelUploadController {
 	        if(iterator.hasNext()) {
 	            file = request.getFile(iterator.next());
 	        }
+	        long SIZE_LIMIT = 1024*1024;
+	        long fileSize = file.getSize();
+        	if(fileSize > SIZE_LIMIT) {
+        		String alertMessage = "파일은 1M 이하로 업로드 해주세요.";
+    			RequestUtils.responseWriteException(response, alertMessage,
+    					"/gms/customer/list.do");
+    			return null;
+        	}
+        	        	
 	        result = excelService.uploadCustomerExcelFile(request,file);	        
 	      
 	        //model.addAttribute("gaslist", gaslist);
@@ -111,6 +130,15 @@ public class ExcelUploadController {
 	        if(iterator.hasNext()) {
 	            file = request.getFile(iterator.next());
 	        }
+	        long SIZE_LIMIT = 1024*1024;
+	        long fileSize = file.getSize();
+        	if(fileSize > SIZE_LIMIT) {
+        		String alertMessage = "파일은 1M 이하로 업로드 해주세요.";
+    			RequestUtils.responseWriteException(response, alertMessage,
+    					"/gms/price/write.do");
+    			return null;
+        	}
+        	
 	        result = excelService.uploadCustomerPriceExcelFile(request,file);	        
 	      
 	        //model.addAttribute("gaslist", gaslist);

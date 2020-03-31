@@ -42,7 +42,7 @@ public class BottleServiceImpl implements BottleService {
 	
 	@Override
 	public Map<String,Object> getBottleList(BottleVO param) {
-		logger.info("****** getBottleList *****start===*");
+		logger.debug("****** getBottleList *****start===*");
 		
 		
 		logger.debug("****** getBottleList *****param.getSearchBottleId===*" + param.getSearchBottleId());
@@ -158,7 +158,7 @@ public class BottleServiceImpl implements BottleService {
 	
 	@Override
 	public List<BottleVO> getBottleListToExcel(BottleVO param) {
-		logger.info("****** getBottleListToExcel *****start===*");		
+		logger.debug("****** getBottleListToExcel *****start===*");		
 		
 		logger.debug("****** getBottleListToExcel *****param.getMenuType===*" + param.getMenuType());		
 		
@@ -181,14 +181,14 @@ public class BottleServiceImpl implements BottleService {
 				// Date 로 구하기
 			    SimpleDateFormat fm1 = new SimpleDateFormat("yyyy/MM/dd");
 			    String fromDate = fm1.format(new Date());
-			    logger.info("현재시간 년월일 = " + fromDate);
+			    logger.debug("현재시간 년월일 = " + fromDate);
 
 			    Calendar cal = Calendar.getInstance();;
 			    cal.setTime(new Date());
 			    cal.add(Calendar.DAY_OF_YEAR, 7); // 하루를 더한다.
 			    	    
 			    String endDate = fm1.format(cal.getTime());
-			    logger.info("현재시간 년월일 = " + endDate);
+			    logger.debug("현재시간 년월일 = " + endDate);
 			    
 			    String searchChargeDt = fromDate+" - "+endDate;
 			    
@@ -270,7 +270,7 @@ public class BottleServiceImpl implements BottleService {
 	public int registerBottle(BottleVO param) {
 
 		// 정보 등록
-		logger.info("****** registerBottle.getBottleId()()) *****===*"+param.getBottleId());
+		logger.debug("****** registerBottle.getBottleId()()) *****===*"+param.getBottleId());
 		int result = 0;
 		/*
 		ProductPriceVO productPrice = new ProductPriceVO();
@@ -466,7 +466,7 @@ public class BottleServiceImpl implements BottleService {
 	@Override
 	@Transactional
 	public int deleteBottle(BottleVO param) {
-		logger.info("****** deleteBottle *****===*"+param.getBottleId());
+		logger.debug("****** deleteBottle *****===*"+param.getBottleId());
 		
 		int result = 0;
 		result =   bottleMapper.deleteBottle(param);

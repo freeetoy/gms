@@ -275,7 +275,7 @@
 			UNION 
 			SELECT DISTINCT c.product_id pid, c.product_price_seq pseq, c.product_price price
 			FROM tb_customer_product_price c
-			WHERE customer_id=1
+			WHERE customer_id=#{customerId}	
 			) ta, TB_Product p, TB_Product_Price pp
 		WHERE ta.pid= p.product_Id
 		AND p.product_Id =pp.product_Id

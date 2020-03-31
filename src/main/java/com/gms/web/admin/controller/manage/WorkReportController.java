@@ -52,7 +52,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, WorkReportVO params) {
 
-		logger.info("WorkReportController getWorkReportList");
+		logger.debug("WorkReportController getWorkReportList");
 		
 		RequestUtils.initUserPrgmInfo(request, params);				
 		
@@ -82,7 +82,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, WorkReportVO params) {
 
-		logger.info("WorkReportController getWorkReportList");
+		logger.debug("WorkReportController getWorkReportList");
 		
 		RequestUtils.initUserPrgmInfo(request, params);		
 		
@@ -92,7 +92,7 @@ public class WorkReportController {
 		params.setUserId(params.getCreateId());
 		
 		
-		logger.info("WorkReportController getWorkReportList User_id= "+ params.getUserId());
+		logger.debug("WorkReportController getWorkReportList User_id= "+ params.getUserId());
 		
 		
 		LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);	
@@ -117,7 +117,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, WorkReportVO params) {
 
-		logger.info("WorkReportController getWorkReportList");
+		logger.debug("WorkReportController getWorkReportList");
 		
 		RequestUtils.initUserPrgmInfo(request, params);				
 		
@@ -162,7 +162,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, OrderBottlesVO params) {
 		
-		logger.info("WorkReportController registerWorkReportForOrder");
+		logger.debug("WorkReportController registerWorkReportForOrder");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		ModelAndView mav = new ModelAndView();	
@@ -205,7 +205,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, WorkReportVO params) {
 		
-		logger.info("WorkReportController registerWorkReportAll");
+		logger.debug("WorkReportController registerWorkReportAll");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -253,7 +253,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, OrderBottlesVO params) {
 		
-		logger.info("WorkReportController registerWorkReportForOrder");
+		logger.debug("WorkReportController registerWorkReportForOrder");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		ModelAndView mav = new ModelAndView();	
@@ -299,7 +299,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, WorkReportVO params) {
 
-		logger.info("WorkReportController getWorkReportList");
+		logger.debug("WorkReportController getWorkReportList");
 		
 		RequestUtils.initUserPrgmInfo(request, params);		
 		
@@ -329,7 +329,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, WorkBottleVO param) {
 		
-		logger.info("WorkReportController registerWorkReportNoGasProduct");
+		logger.debug("WorkReportController registerWorkReportNoGasProduct");
 		
 		RequestUtils.initUserPrgmInfo(request, param);
 		

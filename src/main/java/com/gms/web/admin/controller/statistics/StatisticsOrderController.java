@@ -47,7 +47,7 @@ public class StatisticsOrderController {
 	@RequestMapping(value = "/gms/statistics/order/daily.do")
 	public ModelAndView getStatisticsOrderDaily(StatisticsOrderVO params) {
 
-		logger.info("StatisticsOrderContoller getStatisticsOrderDaily");
+		logger.debug("StatisticsOrderContoller getStatisticsOrderDaily");
 		logger.debug("StatisticsOrderContoller searchStatisticsOrderDt "+ params.getSearchStatDt());
 
 		ModelAndView mav = new ModelAndView();
@@ -97,7 +97,7 @@ public class StatisticsOrderController {
 	@RequestMapping(value = "/gms/statistics/order/monthly.do")
 	public ModelAndView getStatisticsOrderMonthly(StatisticsOrderVO params) {
 
-		logger.info("StatisticsOrderContoller getStatisticsOrderMonthly");
+		logger.debug("StatisticsOrderContoller getStatisticsOrderMonthly");
 		logger.debug("StatisticsOrderContoller searchStatisticsOrderDt "+ params.getSearchStatDt());
 
 		ModelAndView mav = new ModelAndView();
@@ -274,7 +274,7 @@ public class StatisticsOrderController {
 	@RequestMapping(value = "/gms/statistics/sales/daily.do")
 	public ModelAndView getStatisticsSalesDaily(StatisticsSalesVO params) {
 
-		logger.info("StatisticsOrderContoller getStatisticsSalesDaily");
+		logger.debug("StatisticsOrderContoller getStatisticsSalesDaily");
 		logger.debug("StatisticsOrderContoller searchStatisticsOrderDt "+ params.getSearchStatDt());
 
 		ModelAndView mav = new ModelAndView();
@@ -324,7 +324,7 @@ public class StatisticsOrderController {
 	@RequestMapping(value = "/gms/statistics/sales/monthly.do")
 	public ModelAndView getStatisticsSalesMonthly(StatisticsSalesVO params) {
 
-		logger.info("StatisticsOrderContoller getStatisticsSalesMonthly");
+		logger.debug("StatisticsOrderContoller getStatisticsSalesMonthly");
 		logger.debug("StatisticsOrderContoller searchStatisticsOrderDt "+ params.getSearchStatDt());
 
 		ModelAndView mav = new ModelAndView();

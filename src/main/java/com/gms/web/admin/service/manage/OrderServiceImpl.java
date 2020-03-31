@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Map<String, Object> getOrderList(OrderVO param) {
-		logger.info("****** getOrderList *****start===*");		
+		logger.debug("****** getOrderList *****start===*");		
 		
 		logger.debug("****** getOrderList *****param.getRowPerPage===*" + param.getRowPerPage());
 		
@@ -68,8 +68,7 @@ public class OrderServiceImpl implements OrderService {
 		
 		map.put("startRow", startRow);
 		map.put("rowPerPage", ROW_PER_PAGE);	
-		map.put("searchCustomerNm", param.getSearchCustomerNm());	
-		
+		map.put("searchCustomerNm", param.getSearchCustomerNm());			
 		
 		if(param.getSearchOrderDt() != null) {
 			map.put("searchOrderDt", param.getSearchOrderDt());
@@ -89,21 +88,15 @@ public class OrderServiceImpl implements OrderService {
 			map.put("searchOrderProcessCd", param.getSearchOrderProcessCd());
 			logger.debug("****** getOrderList *****getSearchOrderProcessCd===*"+param.getSearchOrderProcessCd());
 		}	
-		logger.debug("****** getOrderList *****currentPage===*"+currentPage);		
 		
-		int orderCount = orderMapper.selectOrderCount(map);
-		
-		logger.debug("****** getOrderList.orderCount *****===*"+orderCount);
+		int orderCount = orderMapper.selectOrderCount(map);		
 		
 		//int lastPage = (int)(Math.ceil(orderCount/ROW_PER_PAGE));
 		int lastPage = (int)((double)orderCount/ROW_PER_PAGE+0.95);
 		
-		logger.debug("****** getOrderList.lastPage *****===*"+lastPage);
-		
 		if(currentPage >= (lastPage-4)) {
 			lastPageNum = lastPage;
 		}
-		
 		
 		//수정 Start
 		int pages = (orderCount == 0) ? 1 : (int) ((orderCount - 1) / ROW_PER_PAGE) + 1; // * 정수형이기때문에 소숫점은 표시안됨		
@@ -112,8 +105,7 @@ public class OrderServiceImpl implements OrderService {
         blocks = (int) Math.ceil(1.0 * pages / ROW_PER_PAGE); // *소숫점 반올림
         block = (int) Math.ceil(1.0 * currentPage / ROW_PER_PAGE); // *소숫점 반올림
         startPageNum = (block - 1) * ROW_PER_PAGE + 1;
-        lastPageNum = block * ROW_PER_PAGE;
-        
+        lastPageNum = block * ROW_PER_PAGE;        
         
         if (lastPageNum > pages){
         	lastPageNum = pages;
@@ -124,7 +116,6 @@ public class OrderServiceImpl implements OrderService {
 		
 		List<OrderVO> orderList = orderMapper.selectOrderList(map);
 		
-		logger.debug("****** getOrderList.orderList *****===*"+orderList.size());
 		logger.debug("****** getOrderList.lastPageNum *****===*"+lastPageNum);
 		logger.debug("****** getOrderList.startPageNum *****===*"+startPageNum);
 		resutlMap.put("list",  orderList);
@@ -142,8 +133,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<OrderVO> getOrderListToExcel(OrderVO param) {
-		logger.info("****** getOrderListToExcel *****start===*");		
-		
+		logger.debug("****** getOrderListToExcel *****start===*");			
 					
 		Map<String, Object> map = new HashMap<String, Object>();		
 		
@@ -163,8 +153,7 @@ public class OrderServiceImpl implements OrderService {
 			logger.debug("****** getOrderListToExcel *****getSearchOrderDtEnd===*"+param.getSearchOrderDtEnd());
 		}	
 				
-		List<OrderVO> orderList = orderMapper.selectOrderListToExcel(map);
-		
+		List<OrderVO> orderList = orderMapper.selectOrderListToExcel(map);		
 			
 		return orderList;
 	}
@@ -212,7 +201,7 @@ public class OrderServiceImpl implements OrderService {
 	@Transactional
 	public int registerOrder(HttpServletRequest request,OrderVO params) {
 		// 정보 등록
-		logger.info("****** registerOrder Start *****===*");
+		logger.debug("****** registerOrder Start *****===*");
 		
 		RequestUtils.initUserPrgmInfo(request, params);		
 		int result = 0;
@@ -223,9 +212,7 @@ public class OrderServiceImpl implements OrderService {
 			//임시
 			params.setMemberCompSeq(1);
 			
-			int productCount  = params.getProductCount();
-			
-			logger.debug("OrderContoller registerOrder productCount== "+ params.getProductCount());				
+			int productCount  = params.getProductCount();						
 			
 			List<OrderProductVO> orderProduct = new ArrayList<OrderProductVO>();
 			List<OrderBottleVO> orderBottleList = new ArrayList<OrderBottleVO>();
@@ -293,14 +280,13 @@ public class OrderServiceImpl implements OrderService {
 						tempProduct = productPriceList.get(k);
 						
 						if(productId == tempProduct.getProductId() && productPriceSeq == tempProduct.getProductPriceSeq()) {
+							logger.debug("OrderService registerOrder productId== "+ productId);
+							logger.debug("OrderService registerOrder productPriceList productPriceSeq== "+ productPriceSeq);
 							if(tempProduct.getGasId()!=null && tempProduct.getGasId() > 0) bottleFlag = true;
 							
 							if(i==0) {
 								orderProductNm = tempProduct.getProductNm();
 								orderProductCapa = tempProduct.getProductCapa();
-								logger.debug("OrderContoller registerOrder productPriceList orderProductNm== "+ orderProductNm);
-								logger.debug("OrderContoller registerOrder productPriceList productPriceSeq== "+ productPriceSeq);
-								logger.debug("OrderContoller registerOrder productPriceList orderProductCapa== "+ orderProductCapa);
 							}
 							
 							orderAmount = tempProduct.getProductPrice() *orderCount;	
@@ -308,10 +294,7 @@ public class OrderServiceImpl implements OrderService {
 							productVo.setOrderAmount(orderAmount);
 							orderTotalAmount += orderAmount;								
 						}
-					}				
-					logger.debug("OrderContoller registerOrder productPriceList productId== "+ productId);
-					logger.debug("OrderContoller registerOrder productPriceList productPriceSeq== "+ productPriceSeq);
-					logger.debug("OrderContoller registerOrder orderTotalAmount== "+ orderTotalAmount);
+					}			
 					
 					productVo.setOrderId(params.getOrderId());
 					productVo.setOrderProductSeq(i+1);
@@ -389,7 +372,7 @@ public class OrderServiceImpl implements OrderService {
 	@Transactional
 	public int registerOrderProduct(OrderProductVO param) {
 		// 정보 등록
-		logger.info("****** registerOrderProduct()()) *****===*");
+		logger.debug("****** registerOrderProduct()()) *****===*");
 		int result = 0;
 		result =  orderMapper.insertOrderProduct(param);		
 		//if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
@@ -415,7 +398,6 @@ public class OrderServiceImpl implements OrderService {
 			e.printStackTrace();
 		}
 		
-		
 		return result;
 	}
 
@@ -424,7 +406,7 @@ public class OrderServiceImpl implements OrderService {
 	@Transactional
 	public int modifyOrder(HttpServletRequest request, OrderVO params) {
 		// 정보 등록
-		logger.info("****** modifyOrder Start *****===*");
+		logger.debug("****** modifyOrder Start *****===*");
 		
 		RequestUtils.initUserPrgmInfo(request, params);		
 		int result = 0;
@@ -491,7 +473,6 @@ public class OrderServiceImpl implements OrderService {
 					boolean bottleFlag = false;
 					int requestIndex = i;
 					
-					logger.debug("OrderContoller modifyOrder request.getParameter(\"productId_\"+i)== "+ request.getParameter("productId_"+i));	
 					
 					if(request.getParameter("productId_"+i) != null) {
 						requestIndex = i;
@@ -508,10 +489,8 @@ public class OrderServiceImpl implements OrderService {
 								break;
 							}
 						}						
-					}
-					
-					
-										
+					}				
+									
 					if(request.getParameter("bottleChangeYn_"+requestIndex) !=null)  {
 						bottleChangeYn = "Y";
 					}
@@ -530,8 +509,8 @@ public class OrderServiceImpl implements OrderService {
 							if(i==0) {
 								orderProductNm = tempProduct.getProductNm();
 								orderProductCapa = tempProduct.getProductCapa();
-								logger.debug("OrderContoller modifyOrder productPriceList orderProductNm== "+ orderProductNm);
-								logger.debug("OrderContoller modifyOrder productPriceList orderProductCapa== "+ orderProductCapa);
+								logger.debug("OrderService modifyOrder productPriceList orderProductNm== "+ orderProductNm);
+								logger.debug("OrderService modifyOrder productPriceList orderProductCapa== "+ orderProductCapa);
 							}
 							
 							orderAmount = tempProduct.getProductPrice() *orderCount;	
@@ -540,8 +519,7 @@ public class OrderServiceImpl implements OrderService {
 							orderTotalAmount += orderAmount;								
 						}
 					}	
-					
-					logger.debug("OrderContoller modifyOrder orderTotalAmount== "+ orderTotalAmount);
+					logger.debug("OrderContoller modifyOrder productPriceList bottleFlag== "+ bottleFlag);
 					
 					//기존 주문상품과 빅교
 					for(int j=0; j< oldProductList.size() ; j++) {
@@ -720,13 +698,10 @@ public class OrderServiceImpl implements OrderService {
 		int  result = 0;
 		
 		try {		
-			logger.debug("******params.getOrderId()()) *****===*"+params.getChOrderId());
-			logger.debug("Orderserive  searchOrderDt "+ params.getSearchOrderDt());
+			
 			String searchOrderDt = params.getSearchOrderDt();	
 					
 			if(searchOrderDt != null && searchOrderDt.length() > 20) {
-				
-				logger.debug("OrderContoller searchOrderDt "+ searchOrderDt.length());
 
 				searchOrderDtFrom = searchOrderDt.substring(0, 10) ;				
 				searchOrderDtEnd = searchOrderDt.substring(13, searchOrderDt.length()) ;
@@ -736,8 +711,7 @@ public class OrderServiceImpl implements OrderService {
 				
 			}			
 			
-			result = orderMapper.updateOrderProcessCd(params);
-			
+			result = orderMapper.updateOrderProcessCd(params);			
 					
 		} catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -777,7 +751,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	@Transactional
 	public int registerOrderProducts(List<OrderProductVO> orderProduct) {
-		logger.info("****** registerOrderProduct.getOrderI()) *****===*");
+		logger.debug("****** registerOrderProduct.getOrderI()) *****===*");
 		int result = 0;
 		result =  orderMapper.insertOrderProducts(orderProduct);		
 		//if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
@@ -850,7 +824,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public int registerOrderBottles(List<OrderBottleVO> param) {
-		logger.info("****** registerOrderProduct.registerOrderBottles *****===*");
+		logger.debug("****** registerOrderProduct.registerOrderBottles *****===*");
 		int result = 0;
 		result =  orderMapper.insertOrderBottles(param);		
 		

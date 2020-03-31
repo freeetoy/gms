@@ -522,49 +522,51 @@
 	</select>
 	
 	<select id="selectWorBottleListToday" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="com.gms.web.admin.domain.manage.BottleVO">		
-		SELECT A.*, B.Customer_Nm
+		SELECT C.*
 		FROM (
-			SELECT
-				TWB.Bottle_ID
-				, TWB.Bottle_BarCd
-				, TWB.Product_ID
-				, TWB.Product_Price_Seq
-				, TWB.Gas_ID	
-				, Product_Nm
-				, Bottle_Capa
-				, Bottle_Volumn
-				, TWB.Bottle_Work_CD
-				, USER_ID Bottle_Work_ID
-				, TWB.Customer_ID
-				, TB.Member_Comp_Seq	
-				, TW.Order_ID
-				, Order_Product_Seq	
-				, TWB.Bottle_Type
-				, TWB.Create_DT Bottle_Work_DT
-				, TW.CREATE_ID
-				, TW.CREATE_DT
-				, TW.UPDATE_ID
-				, TW.UPDATE_DT
-				, CD_NM Bottle_Work_CD_NM
-			FROM
-				TB_Work_Bottle TWB,TB_Work_Report TW, TB_Bottle TB, TB_CODE TC, TB_Product TG
-			WHERE
-				TB.Delete_YN = 'N'		
-			AND 
-				DATE_FORMAT(Work_Dt,'%Y/%m/%d') = DATE_FORMAT(curdate(),'%Y/%m/%d')	
-			AND 
-				TWB.Work_Report_Seq = TW.Work_Report_Seq
-			AND 
-				TWB.Bottle_ID = TB.Bottle_ID
-			AND 
-				TWB.Bottle_Work_CD = TC.CD_ID	
-			AND 
-				TWB.Product_ID = TG.Product_Id
-			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchWorkCd)">
+			SELECT A.*, B.Customer_Nm
+			FROM (
+				SELECT
+					TWB.Bottle_ID
+					, TWB.Bottle_BarCd
+					, TWB.Product_ID
+					, TWB.Product_Price_Seq
+					, TWB.Gas_ID	
+					, Product_Nm
+					, TP.Product_Capa Bottle_Capa
+					, TWB.Bottle_Work_CD
+					, USER_ID Bottle_Work_ID
+					, TWB.Customer_ID
+					, TW.Order_ID
+					, TWB.Bottle_Type
+					, TWB.Create_DT Bottle_Work_DT
+					, TW.CREATE_ID
+					, TW.CREATE_DT
+					, TW.UPDATE_ID
+					, TW.UPDATE_DT
+					, CD_NM Bottle_Work_CD_NM
+				FROM
+					TB_Work_Bottle TWB,TB_Work_Report TW, TB_CODE TC, TB_Product TG, TB_Product_Price TP
+				WHERE
+					TWB.Work_Report_Seq = TW.Work_Report_Seq
+				AND 
+					DATE_FORMAT(Work_Dt,'%Y/%m/%d') = DATE_FORMAT(curdate(),'%Y/%m/%d')	
+				AND 
+					TWB.Bottle_Work_CD = TC.CD_ID	
+				AND 
+					TWB.Product_ID = TG.Product_Id				
+				AND 
+					TWB.Product_ID = TP.Product_Id
+				AND
+					TWB.Product_Price_Seq = TP.Product_Price_Seq
+				<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchWorkCd)">
 			AND TWB.Bottle_Work_CD =  #{searchWorkCd}
-			</if>			
-		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID	
+			</if>	
+			) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID	
+		) C
+		WHERE 1 = 1								
 		ORDER BY Bottle_Work_DT DESC 
+		
 	</select>
 	
 	<select id="selectWorkBottleListOfOrder" resultType="com.gms.web.admin.domain.manage.WorkBottleVO" parameterType="int">		

@@ -126,9 +126,14 @@ public class CustomerController {
 
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));		
 		model.addAttribute("searchCustomerNm", request.getParameter("searchCustomerNm"));
-		model.addAttribute("currentPage",request.getParameter("currentPage"));
+		if(request.getParameter("currentPage")!=null)
+			model.addAttribute("currentPage",request.getParameter("currentPage"));
+		else
+			model.addAttribute("currentPage","1");
 		
-		logger.debug("******params.getCurrentPage()()) *****===*"+request.getParameter("currentPage"));
+		String old_url = request.getHeader("referer");
+		logger.debug(" 리스트 ======> "+old_url);
+		
 		if (customerId == null) {
 			return "redirect:/gms/customer/list.do";
 		} else {
@@ -202,18 +207,20 @@ public class CustomerController {
 		
 		logger.info("CustomerContoller deleteCustomer");
 		
-		RequestUtils.initUserPrgmInfo(request, param);
-		
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.customer"));
+		RequestUtils.initUserPrgmInfo(request, param);		
 		
 		String searchCustomerNm = param.getSearchCustomerNm();
 		
 		int result = 0;
 		try {			
 			logger.debug("******params.getCustomerId()()) *****===*"+param.getCustomerId());
+			mav.addObject("menuId", PropertyFactory.getProperty("common.menu.customer"));
 			mav.addObject("currentPage", param.getCurrentPage());
 			mav.addObject("searchCustomerNm", param.getSearchCustomerNm());
-			
+			/*
+			if(bottleService.getCustomerBottleList(param.getCustomerId()).size() > 0 ) 
+				result = -1;
+			else */
 			result = customerService.deleteCustomer(param);			
 			
 		} catch (DataAccessException e) {
@@ -227,6 +234,12 @@ public class CustomerController {
 		if(result > 0){
 			String alertMessage = "삭제되었습니다.";
 			RequestUtils.responseWriteException(response, alertMessage, "/gms/customer/list.do?currentPage="+param.getCurrentPage()+"&searchCustomerNm="+searchCustomerNm);
+		/*
+		}else if(result == -1) {
+			String alertMessage = "삭제되었습니다.";
+			http://27.96.134.138/gms/customer/update.do?customerId=5393
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/customer/list.do?currentPage="+param.getCurrentPage()+"&searchCustomerNm="+searchCustomerNm);
+		*/
 		}
 		return null;
 		//return "/gms/customer/list.do?currentPage="+params.getCurrentPage()+"&searchCustomerNm="+searchCustomerNm;

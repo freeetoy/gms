@@ -26,15 +26,6 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
 		//log.debug("preHandle!!");
 		String requestURI = request.getRequestURI().trim();
 		
-		/*
-		String[] menu = requestURI.split("/");
-		String currentMenu ="";
-		
-		if(menu.length > 1) {
-			log.debug("#### requestURI menu : " + menu[2]);
-			currentMenu = menu[2];
-		}
-        */
 		log.debug("requestURI : " + requestURI);
         
 		HttpSession session = request.getSession(false);
@@ -45,18 +36,13 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
         String forwardUrl = "gms/login";
         
         LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);
-        //String userTempId= session.getAttribute("userId").toString();
-        //log.info("preHandle userTempId ************ "+userTempId);
-        
+       
         if(sessionInfo != null) {  
             
             userId 		= StringUtils.defaultString(sessionInfo.getUserId());
             systemRole 	= StringUtils.defaultString(sessionInfo.getUserAuthority());
             log.info("preHandle userId ************ "+userId);
-            //log.debug("preHandle userNm ************ "+StringUtils.defaultString(sessionInfo.getUserNm()));
-            //log.debug("preHandle userPartCd ************ "+StringUtils.defaultString(sessionInfo.getUserPartCd()));
-            //log.debug("preHandle systemRole ************ "+systemRole);
-                      
+                   
             session.setAttribute("compNm", PropertyFactory.getProperty("common.Member.Comp.Daehan.name"));		
             
             // Session에 있는 ID가 존재하는지 확인하여 없으면, 강제 로그아웃 처리

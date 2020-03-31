@@ -14,6 +14,19 @@ $(document).ready(function(){
       
     });
 });
+
+var goUpdate = function(bottleId){		
+	
+	//alert("goUpdate "+bottleId);
+	console.log("goUpdate bottleId ="+bottleId);
+	var form = $("#mainForm");	
+
+	$("#bottleId").val(bottleId);
+   	
+   	//document.getElementById("priceCount").value = totalCount;
+   	mainForm.action="/gms/bottle/update.do";
+   	form.submit();view_type
+}
 </script>
    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -37,6 +50,7 @@ $(document).ready(function(){
 	        </div>
         </div>
         <form id="mainForm" name="mainForm"  method="post">
+        <input type="hidden" id="bottleId" name="bottleId" value="">
          <div class="row">	         
 	        <div class="col-3">
                	<select id="searchWorkCd" name="searchWorkCd" class="form-control">
@@ -82,7 +96,7 @@ $(document).ready(function(){
                       <th>용기코드</th>
                       <th>바코드</th>
                       <th>거래처</th>
-                      <th>가스</th>
+                      <th>상품</th>
                       <th>용량</th>
                       <th>작업</th>                      
                       <th>작업일</th>

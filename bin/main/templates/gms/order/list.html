@@ -54,8 +54,7 @@ var gotoPage = function(pageNo) {
 	 //mainForm.action="/gms/order/list.do";
     //validate checkt시 confirm 중복되는 부분 처리 
    
-	//mainForm.submit();
-    
+	//mainForm.submit();    
 	var form = document.mainForm;	
 	document.mainForm.action="/gms/order/list.do";
 	document.mainForm.submit();   
@@ -82,9 +81,7 @@ var goDelete = function(orderId){
         form.submit();			
 	}                  		
 }
-	
-	
-	
+		
 	
 $(function() {
 	
@@ -123,6 +120,7 @@ $(function() {
 		  });
 	  
 	});	
+
 
 $(document).ready(function(){ 
 	
@@ -698,9 +696,9 @@ $(document).ready(function(){
 	        <div class="col-12">
 	        <table>
 	        	<tr>
-			        <td th:if="${totalCount > 999 }" th:text="|총 ${#numbers.formatInteger(totalCount, 3, 'COMMA')}개|">
-		            <td th:unless="${totalCount > 999  }" th:text="|총 ${totalCount}개|">
-		        </tr>	         
+			        <th th:if="${totalCount > 999 }" th:text="|총 ${#numbers.formatInteger(totalCount, 3, 'COMMA')}개|"></th>
+		            <th th:unless="${totalCount > 999  }" th:text="|총 ${totalCount}개|"></th>		           
+		        </tr>         
 	         </table>
 	        </div>
         </div>

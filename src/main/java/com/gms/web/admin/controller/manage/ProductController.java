@@ -81,7 +81,7 @@ public class ProductController {
 	public String registerProduct(HttpServletRequest req) {
 		
 		
-		logger.info("ProductContoller registerProduct");
+		logger.debug("ProductContoller registerProduct");
 		try {
 			//임시
 			
@@ -138,7 +138,7 @@ public class ProductController {
 	
 	@RequestMapping(value = "/gms/product/update.do")
 	public String updateProductForm(ProductVO params, Model model) {
-		logger.info("ProductContoller updateProduct");
+		logger.debug("ProductContoller updateProduct");
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.product"));
 		
@@ -173,7 +173,7 @@ public class ProductController {
 	
 	@RequestMapping(value = "/gms/product/modify.do", method = RequestMethod.POST)
 	public String modifyProduct(HttpServletRequest req) {
-		logger.info("ProductContoller modifyProduct");
+		logger.debug("ProductContoller modifyProduct");
 		try {
 			//임시
 			
@@ -249,7 +249,7 @@ public class ProductController {
 	@RequestMapping(value = "/gms/product/delete.do")
 	public String deleteProduct(@RequestParam(value = "productId", required = false) Integer productId, Model model) {
 
-		logger.info("******deleteProduct params.getProductId()()) *****===*"+productId);
+		logger.debug("******deleteProduct params.getProductId()()) *****===*"+productId);
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.product"));
 		
@@ -283,7 +283,7 @@ public class ProductController {
 		ProductPriceVO params = new ProductPriceVO();
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.product"));
 
-		logger.info("******modifyProductPriceStatus params.getProductId()()) *****===*"+productId);
+		logger.debug("******modifyProductPriceStatus params.getProductId()()) *****===*"+productId);
 		logger.debug("******modifyProductPriceStatus params.productPriceSeq()()) *****===*"+productPriceSeq);
 		
 		try { 

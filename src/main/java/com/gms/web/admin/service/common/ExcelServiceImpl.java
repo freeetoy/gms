@@ -66,6 +66,7 @@ public class ExcelServiceImpl implements ExcelService {
         int result = 0;
         int updateCount = 0;
         int insertCount = 0;
+        
         try {
         	
             OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream());
@@ -248,7 +249,8 @@ public class ExcelServiceImpl implements ExcelService {
                 }
             }
             logger.error("$$$$$$$$$$$$$$ ExcelService sb "+ sb.toString());
-            result = bottleService.registerBottles(list);
+            if(list.size() > 0)
+            	result = bottleService.registerBottles(list);
             
             logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
             
@@ -359,8 +361,8 @@ public class ExcelServiceImpl implements ExcelService {
                 
                 if(isRegisteFlag) list.add(customer);
             }
-            
-            result = customerService.registerCustomers(list);
+            if(list.size() > 0)
+            	result = customerService.registerCustomers(list);
             
             logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result);
             

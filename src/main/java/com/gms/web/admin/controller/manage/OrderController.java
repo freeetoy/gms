@@ -59,7 +59,7 @@ public class OrderController {
 	@RequestMapping(value = "/gms/order/list.do")
 	public ModelAndView getOrderList(OrderVO params) {
 
-		logger.info("BottleContoller getBottleList");
+		logger.debug("BottleContoller getBottleList");
 
 		ModelAndView mav = new ModelAndView();
 		
@@ -105,7 +105,7 @@ public class OrderController {
 	@RequestMapping(value = "/gms/order/monitor.do")
 	public ModelAndView getWorkBottleListToday(BottleVO params) {
 
-		logger.info("BottleContoller getWorkBottleListToday");
+		logger.debug("BottleContoller getWorkBottleListToday");
 
 		ModelAndView mav = new ModelAndView();		
 		
@@ -178,7 +178,7 @@ public class OrderController {
 			, HttpServletResponse response,
 			OrderVO params) {
 		
-		logger.info("OrderContoller openOrderUpate "+ params.getOrderId());
+		logger.debug("OrderContoller openOrderUpate "+ params.getOrderId());
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));			
@@ -213,6 +213,7 @@ public class OrderController {
 		return mav;
 					
 	}
+	
 	
 	@RequestMapping(value = "/gms/order/modify.do", method = RequestMethod.POST)
 	public ModelAndView modifyOrder(
@@ -264,7 +265,7 @@ public class OrderController {
 	@ResponseBody
 	public List<OrderProductVO> getOrderProductList(@RequestParam(value = "orderId", required = false) Integer orderId, Model model)	{	
 				
-		logger.info("OrderContoller getOrderProductList "+ orderId);
+		logger.debug("OrderContoller getOrderProductList "+ orderId);
 		
 		List<OrderProductVO> orderProductList = orderService.getOrderProductList(orderId);
 		//model.addAttribute("orderProductList", orderProductList);
@@ -278,7 +279,7 @@ public class OrderController {
 			, HttpServletResponse response
 			, OrderVO params) {
 		
-		logger.info("OrderContoller deleteOrder");
+		logger.debug("OrderContoller deleteOrder");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -315,7 +316,7 @@ public class OrderController {
 			, HttpServletResponse response
 			, OrderVO params) {
 		
-		logger.info("OrderContoller modifyOrderWorkCd");
+		logger.debug("OrderContoller modifyOrderWorkCd");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -338,7 +339,7 @@ public class OrderController {
 			, HttpServletResponse response
 			, OrderVO params) {
 		
-		logger.info("OrderContoller modifyOrdersProcessCd");
+		logger.debug("OrderContoller modifyOrdersProcessCd");
 		//TODO 로직 처리 필요
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -360,7 +361,7 @@ public class OrderController {
 	@RequestMapping(value = "/gms/order/popupOrder.do")
 	public String getPopupOrderDetail(@RequestParam(value = "orderId", required = false) Integer orderId, Model model)	{
 		
-		logger.info("OrderContoller getPopupOrderDetail");
+		logger.debug("OrderContoller getPopupOrderDetail");
 		
 		OrderExtVO result = orderService.getOrder(orderId);			
 		

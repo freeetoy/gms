@@ -32,7 +32,7 @@ public class ApiController {
 	@ResponseBody
 	public String controllAction(String userId, String bottles, String customerNm, String bottleType, String bottleWorkCd)	{	
 				
-		logger.debug("userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
+		logger.info("userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
 		
 		boolean phoneCall = true;
 		int result = 0;
@@ -66,13 +66,12 @@ public class ApiController {
 			result = apiService.registerWorkReportForChangeCd(workReport);
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.sales"))) {			//판매
 			
-			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
-			
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));			
 			result = apiService.registerWorkReportForSale(workReport);
 			
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.rental"))) {			//대여
-			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
 			
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));			
 			result = apiService.registerWorkReportForSale(workReport);
 			
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.back"))) {			//회수
@@ -98,7 +97,7 @@ public class ApiController {
 	@ResponseBody
 	public String controllActionNoGas(String userId, String customerNm, Integer productId, Integer productPriceSeq, int productCount )	{	
 				
-		logger.debug("userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
+		logger.info("userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
 		
 		boolean phoneCall = true;
 		int result = 0;
@@ -113,7 +112,7 @@ public class ApiController {
 		workBottle.setUpdateId(userId);
 		workBottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
 		
-		logger.info("단품판매 start");
+		logger.debug("단품판매 start");
 		//workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
 		result = apiService.registerWorkReportNoGas(workBottle);			
 		

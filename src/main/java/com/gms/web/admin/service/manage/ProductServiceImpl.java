@@ -173,8 +173,6 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public int getProductId() {
-		// TODO Auto-generated method stub
-		
 		int result = productMapper.selectProductCount()+1;
 		
 		return result;
@@ -187,7 +185,6 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public int getProductProductSeq(Integer productId) {
-		// TODO Auto-generated method stub
 		
 		int result = productMapper.selectProductPriceSeq(productId)+1;
 		
@@ -273,8 +270,7 @@ public class ProductServiceImpl implements ProductService {
 						}				
 					}		
 					successFlag = true;
-				}
-				
+				}				
 			}
 		} 
 		

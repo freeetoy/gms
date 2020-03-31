@@ -323,7 +323,7 @@
 		UPDATE TB_Order
 		SET
 			  Order_Process_CD 	= #{orderProcessCd}
-			  ,SALES_ID = #{updateId}
+			  ,SALES_ID = #{salesId}
 			  <if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(orderDeliveryDt)">
 			  ,Order_Delivery_Dt = #{orderDeliveryDt}
 			  </if>
@@ -340,7 +340,7 @@
 		UPDATE TB_Order
 		SET
 			  Order_Process_CD 	= #{orderProcessCd}
-			  ,SALES_ID = #{updateId}
+			  ,SALES_ID = #{salesId}
 			  <if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(orderDeliveryDt)">
 			  ,Order_Delivery_Dt = #{orderDeliveryDt}
 			  </if>

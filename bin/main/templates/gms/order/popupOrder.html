@@ -181,7 +181,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
 			</td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderAmount*0.1}"></td>
-			<td class="tl_dot" style="border-top-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none;border-right-width: 1px;" align="center" ></td>
 		</tr>
 		<tr height="20" th:each="seq : ${#numbers.sequence(1,15-orderExt.orderProduct.size())}"> 
 			<td class="border_in" style="border-top-style:none;" align="center"></td>
@@ -192,7 +192,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 			<td class="tl_dot" style="border-top-style:none" align="center"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center"></td>
-			<td class="tl_dot" style="border-top-style:none" align="center"></td>
+			<td class="tl_dot" style="border-top-style:none;border-right-width: 1px;" align="center" ></td>
 		</tr>
 		
 	</tbody>

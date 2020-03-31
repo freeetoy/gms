@@ -27,7 +27,7 @@
                 <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
             <!-- 일자별 로그파일 최대 보관주기(일단위) 
-            만약 해당 설정일 이상된 파일은 자동으로 제거-->
+           		 만약 해당 설정일 이상된 파일은 자동으로 제거-->
             <maxHistory>60</maxHistory>
         </rollingPolicy>
     </appender>
@@ -39,7 +39,7 @@
     <logger name="jdbc.resultsettable" level="DEBUG" appender-ref="console-infolog"/> 
     <logger name="jdbc.connection" level="OFF" /> 
     
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="ROLLING_FILE" />   
     </root>

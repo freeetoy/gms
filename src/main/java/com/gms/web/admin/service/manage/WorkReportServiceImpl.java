@@ -59,11 +59,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 		if(param.getSearchDt() == null || param.getSearchDt().length() == 0) {						
 			
 			param.setSearchDt(DateUtils.getDate("yyyy/MM/dd"));
-		}		
-		logger.debug("WorkReportServiceImpl getWorkReportList Work_Dt= "+ param.getSearchDt());
-		
-		//List<WorkBottleVO> workBottleList = workMapper.selectWorkReportList(param);
-		
+		}
 		
 		return workMapper.selectWorkReportList(param);
 	}
@@ -79,9 +75,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 		if(param.getSearchDt() == null || param.getSearchDt().length() == 0) {						
 			
 			param.setSearchDt(DateUtils.getDate("yyyy/MM/dd"));
-		}		
-		logger.debug("WorkReportServiceImpl getWorkReportList1 Work_Dt= "+ param.getSearchDt());
-		
+		}				
 		
 		List<WorkBottleVO> workBottleList = workMapper.selectWorkReportList1(param);
 		
@@ -250,9 +244,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 		try {
 			//Order 정보가져오기(가스주문정보만)
 			OrderExtVO  orderInfo = orderService.getOrderNotDelivery(param.getOrderId());			
-			orderInfo.getOrder().setUpdateId(param.getCreateId());
-			
-			
+			orderInfo.getOrder().setUpdateId(param.getCreateId());			
 			
 		} catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -269,7 +261,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 	@Override
 	@Transactional
 	public int registerWorkReportForOrder(WorkReportVO param) {
-		logger.info("WorkReportServiceImpl registerWorkReport start ");
+		logger.debug("WorkReportServiceImpl registerWorkReport start ");
 		int result = 0;
 		try {
 			logger.debug("WorkReportServiceImpl registerWorkReportForOrder orderId =" + param.getOrderId());
@@ -369,8 +361,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 			
 			boolean isGo = false;
 			int checkBottle = 0;
-			logger.debug("***********************  WorkReportServiceImpl registerWorkReport bottleList.size()=="+ bottleList.size());
-			
+			logger.debug("***********************  WorkReportServiceImpl registerWorkReport bottleList.size()=="+ bottleList.size());			
 			
 			for(int i = 0; i < bottleList.size() ; i++) {
 				isGo = true;
@@ -459,8 +450,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 			if(chi.size() > 0) {
 				for(int i = 0; i < chi.size() ; i++) {
 					logger.debug("***********  WorkReportServiceImpl registerWorkReport chi.size()-i-1==" + (chi.size()-i-1));
-					bottleList.remove(chi.get(chi.size()-i-1).intValue());
-					
+					bottleList.remove(chi.get(chi.size()-i-1).intValue());					
 				}
 			}			
 				
@@ -471,6 +461,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 			OrderProductVO tempOrderProduct1 = null;
 			int lastOrderProductSeq = 0;
 			int addOrderTotalAmount = 0;
+			
 			if(bottleList.size() > 0){	// 추가 용기가 있는 경우
 				BottleVO temp = null;
 				
@@ -668,6 +659,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 			// Order 상태 정보 변경
 			if(orderCompleted) {
 				orderInfo.getOrder().setOrderDeliveryDt(DateUtils.getDate("yyyy/MM/dd HH:mm"));
+				orderInfo.getOrder().setSalesId(param.getCreateId());
 				result = orderService.changeOrderProcessCd(orderInfo.getOrder());
 			}
 			/// End of Order & Bottle			
@@ -849,7 +841,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 	@Override
 	@Transactional
 	public int registerWorkReportNoOrder(WorkReportVO param) {
-		logger.info("===================== WorkReportServiceImpl registerWorkReportNoOrder start ===============");
+		logger.debug("===================== WorkReportServiceImpl registerWorkReportNoOrder start ===============");
 		logger.debug("WorkReportServiceImpl registerWorkReportNoOrder bottleIds =" + param.getBottlesIds());			
 		logger.debug("WorkReportServiceImpl registerWorkReportNoOrder customerId =" + param.getCustomerId());			
 		
@@ -924,11 +916,9 @@ public class WorkReportServiceImpl implements WorkReportService {
 				Calendar cal = Calendar.getInstance();
 				int amPm = cal.get(Calendar.AM_PM);
 				order.setDeliveryReqDt(cal.getTime());
-				logger.debug("WorkReportServiceImpl registerWorkReportNoOrder cal.getTime() =" + order.getDeliveryReqDt());
 				
 				if (amPm == 1 ) order.setDeliveryReqAmpm(PropertyFactory.getProperty("Order.Request.PM"));
 				else  order.setDeliveryReqAmpm(PropertyFactory.getProperty("Order.Request.AM"));
-				logger.debug("WorkReportServiceImpl registerWorkReportNoOrder AMPM =" + order.getDeliveryReqAmpm());			
 				
 				order.setOrderEtc("현장주문");
 				order.setOrderProcessCd(PropertyFactory.getProperty("common.code.order.process.04"));
@@ -1053,6 +1043,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					tempOrderBottle.setProductId(tempBottle.getProductId());
 					tempOrderBottle.setProductPriceSeq(tempBottle.getProductPriceSeq());
 					tempOrderBottle.setBottleId(tempBottle.getBottleId());			
+					tempOrderBottle.setUpdateId(param.getCreateId());
 					
 					orderBottleList.add(tempOrderBottle);		
 					
@@ -1117,7 +1108,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 	@Override
 	@Transactional
 	public int registerWorkReportByBottle(WorkReportVO param, List<BottleVO> bottleList) {
-		logger.info("WorkReportServiceImpl registerWorkReport start ");
+		logger.debug("WorkReportServiceImpl registerWorkReport start ");
 		int result = 0;
 		boolean insertFlag = false;
 		try {			
@@ -1258,7 +1249,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 	@Override
 	public Map<String,Object> getWorkBottleListTotal(BottleVO param) {
 							  
-		logger.info("****** getWorkBottleListToday *****start===*");	
+		logger.debug("****** getWorkBottleListTotal *****start===*");	
 				
 		int currentPage = param.getCurrentPage();
 		int ROW_PER_PAGE = param.getRowPerPage();
@@ -1285,7 +1276,6 @@ public class WorkReportServiceImpl implements WorkReportService {
 		
 		if(searchChargeDt != null && searchChargeDt.length() > 20) {
 			map.put("searchChargeDt", searchChargeDt);
-			logger.debug("****** getWorkBottleListToday *****getSearchChargeDt===*"+param.getSearchChargeDt());
 			
 			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;			
 			map.put("searchChargeDtFrom", searchChargeDtFrom);
@@ -1294,16 +1284,10 @@ public class WorkReportServiceImpl implements WorkReportService {
 			map.put("searchChargeDtEnd", searchChargeDtEnd);
 		}						
 		
-		logger.debug("****** getWorkBottleListToday *****currentPage===*"+currentPage);		
-		
-		int bottleCount = workMapper.selectWorBottleCountTotal(map);
-		
-		logger.debug("****** getWorkBottleListToday.bottleCount *****===*"+bottleCount);
+		int bottleCount = workMapper.selectWorBottleCountTotal(map);		
 		
 		//int lastPage = (int)(Math.ceil(bottleCount/ROW_PER_PAGE));
 		int lastPage = (int)((double)bottleCount/ROW_PER_PAGE+0.95);
-		
-		logger.debug("****** getBottleList.lastPage *****===*"+lastPage);
 		
 		if(currentPage >= (lastPage-4)) {
 			lastPageNum = lastPage;
@@ -1329,8 +1313,6 @@ public class WorkReportServiceImpl implements WorkReportService {
 		
 		List<BottleVO> bottleList = workMapper.selectWorBottleListTotal(map);
 		
-		logger.debug("****** getWorkBottleListToday.bottleList *****===*"+bottleList.size());
-		
 		resutlMap.put("list",  bottleList);		
 		
 		resutlMap.put("currentPage", currentPage);
@@ -1350,7 +1332,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 
 	@Override
 	public int registerWorkReport0310(WorkReportVO param) {
-		logger.info("WorkReportServiceImpl registerWorkReport start ");
+		logger.debug("WorkReportServiceImpl registerWorkReport start ");
 		int result = 0;		
 		
 		try {			
@@ -1739,6 +1721,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 				
 				if(leftOrderProduct <= 0) {
 					orderTemp.setOrderProcessCd(PropertyFactory.getProperty("common.code.order.process.04"));
+					orderTemp.setSalesId(param.getCreateId());
 					result = orderService.changeOrderProcessCd(orderTemp);
 				}
 			}else {
@@ -1788,6 +1771,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					orderProduct.setOrderAmount(param.getProductCount()* productTotal.getProductPrice());
 				
 				//orderProduct.setOrderAmount(param.getProductCount()*productTotal.getProductPrice());
+				orderProduct.setOrderProductEtc("무주문상품");
 				orderProduct.setCreateId(param.getCreateId());
 				orderProduct.setUpdateId(param.getCreateId());
 				
@@ -1832,8 +1816,6 @@ public class WorkReportServiceImpl implements WorkReportService {
 		}
 		return result;
 	}
-
-
 	
 
 }
