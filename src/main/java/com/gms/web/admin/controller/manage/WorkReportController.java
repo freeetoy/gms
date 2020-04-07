@@ -59,12 +59,14 @@ public class WorkReportController {
 		ModelAndView mav = new ModelAndView();		
 		
 		params.setUserId(params.getCreateId());		
+		params.setSearchUserId(params.getCreateId());
 		
 		logger.debug("WorkReportController getWorkReportList User_id= "+ params.getUserId());		
 		
 		//LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);			
 		
-		List<WorkReportViewVO> workList = workService.getWorkReportList1(params);
+		//List<WorkReportViewVO> workList = workService.getWorkReportList1(params);
+		List<WorkReportViewVO> workList = workService.getWorkReportListAll(params);
 		
 		mav.addObject("workList", workList);	
 		mav.addObject("searchDt", params.getSearchDt());	
@@ -144,6 +146,8 @@ public class WorkReportController {
 		if(params.getSearchUserId() == null && userList.size() > 0) params.setSearchUserId(userList.get(0).getUserId());
 		
 		List<WorkReportViewVO> workList = workService.getWorkReportListAll(params);
+		
+		logger.debug("WorkReportController getWorkReportList workList.size="+workList.size());
 		
 		mav.addObject("workList", workList);	
 		mav.addObject("searchDt", params.getSearchDt());	
@@ -309,14 +313,16 @@ public class WorkReportController {
 			params.setUserId(params.getSearchUserId());
 		}else {
 			params.setUserId(params.getCreateId());
+			params.setSearchUserId(params.getCreateId());
 		}
 		
 		logger.debug("WorkReportController getWorkReportList User_id= "+ params.getUserId());		
 		
-		List<WorkReportViewVO> workList = workService.getWorkReportList1(params);
+		//List<WorkReportViewVO> workList = workService.getWorkReportList1(params);
+		List<WorkReportViewVO> workList = workService.getWorkReportListAll(params);
 		
 		mav.addObject("workList", workList);	
-		mav.addObject("searchDt", params.getSearchDt());			
+		mav.addObject("searchDt", params.getSearchDt());			 
 		
 		mav.setViewName("gms/report/print");
 		

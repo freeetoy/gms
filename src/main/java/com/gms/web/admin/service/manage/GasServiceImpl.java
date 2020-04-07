@@ -80,6 +80,11 @@ public class GasServiceImpl implements GasService {
 		return gasMapper.selectGasList();
 	}
 
+	@Override
+	public GasVO getGasDetailsByCd(String gasCd) {
+		return gasMapper.selectGasDetailByCd(gasCd);	
+	}
+
 	
 
 }

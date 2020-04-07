@@ -42,6 +42,8 @@ public interface WorkReportMapper {
 	
 	public int selectWorkReportSeqForCustomerToday(WorkReportVO param) ;
 	
+	public int selectWorkReportSeqForCustomer(WorkReportVO param) ;
+	
 	public int insertWorkReport(WorkReportVO param);
 	
 	public int insertWorkBottle(WorkBottleVO param);
@@ -51,4 +53,6 @@ public interface WorkReportMapper {
 	public int modifyWorkReportProduct(WorkReportVO param);
 	
 	public int modifyWorkReportOrderId(WorkReportVO param);
+	
+	public int updateWorkReportReceivedAmount(WorkReportVO param);
 }

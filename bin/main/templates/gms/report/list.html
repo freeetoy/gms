@@ -568,7 +568,8 @@ $(document).ready(function(){
                       <td th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
                       <td th:unless="${row.orderAmount> 0 }" th:text="${row.orderAmount}">
                      
-		     		  <td></td>
+		     		  <td th:if="${row.receivedAmount> 0 }" th:text="${#numbers.formatInteger(row.receivedAmount, 3, 'COMMA')}">
+		     		  <td th:unless="${row.receivedAmount> 0 }" th:text="${row.receivedAmount}"></td>
 		     		                  
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( workList )}">

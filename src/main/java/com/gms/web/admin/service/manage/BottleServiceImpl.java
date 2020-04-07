@@ -23,6 +23,7 @@ import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.ProductPriceVO;
 import com.gms.web.admin.domain.manage.ProductTotalVO;
 import com.gms.web.admin.domain.manage.ProductVO;
+import com.gms.web.admin.domain.manage.SimpleBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.mapper.manage.BottleMapper;
 
@@ -153,7 +154,6 @@ public class BottleServiceImpl implements BottleService {
 	public List<BottleVO> getBottleListAll() {
 		return bottleMapper.selectBottleListAll();
 	}
-
 	
 	
 	@Override
@@ -166,16 +166,20 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchGasId() != null) {
 			map.put("searchGasId", param.getSearchGasId());
-			logger.debug("****** getBottleList *****searchGasId===*"+param.getSearchGasId());
+			logger.debug("****** getBottleListToExcel *****searchGasId===*"+param.getSearchGasId());
 		}
 		
 		if(param.getSearchProductId() != null  ) {			
 			map.put("searchProductId", param.getSearchProductId());
 		}
 		
+		if(param.getSearchWorkCd() != null  ) {			
+			map.put("searchWorkCd", param.getSearchWorkCd());
+		}
+		
 		if(param.getSearchChargeDt() != null) {
 			map.put("searchChargeDt", param.getSearchChargeDt());
-			logger.debug("****** getBottleList *****getSearchChargeDt===*"+param.getSearchChargeDt());
+			logger.debug("****** getBottleListToExcel *****getSearchChargeDt===*"+param.getSearchChargeDt());
 		}else {
 			if(param.getMenuType()==2) {		// 용기충전
 				// Date 로 구하기
@@ -202,7 +206,7 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchChargeDtFrom() != null) {
 			map.put("searchChargeDtFrom", param.getSearchChargeDtFrom());
-			logger.debug("****** getBottleList *****getSearchChargeDtFrom===*"+param.getSearchChargeDtFrom());
+			logger.debug("****** getBottleListToExcel *****getSearchChargeDtFrom===*"+param.getSearchChargeDtFrom());
 		}
 		
 		if(param.getSearchChargeDtEnd() != null) {
@@ -236,6 +240,10 @@ public class BottleServiceImpl implements BottleService {
 		return bottleMapper.selectCustomerBottleList(customerId);	
 	}
 	
+	@Override
+	public List<SimpleBottleVO> getCustomerSimpleBottleList(Integer customerId) {
+		return bottleMapper.selectSimpleCustomerBottleList(customerId);	
+	}
 	
 	@Override
 	public BottleVO getBottleDetail(String bottleId) {

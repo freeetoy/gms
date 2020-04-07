@@ -15,6 +15,8 @@ public interface GasMapper {
 	public GasVO selectGasDetail(Integer gasId) ;
 	
 	public GasVO selectGasDetailByNm(String gasNm) ;
+	
+	public GasVO selectGasDetailByCd(String gasCd) ;
 
 	public int updateGas(GasVO param);
 

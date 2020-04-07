@@ -6,6 +6,7 @@ import java.util.Map;
 import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
+import com.gms.web.admin.domain.manage.SimpleBottleVO;
 
 public interface BottleService {
 
@@ -16,6 +17,8 @@ public interface BottleService {
 	public List<BottleVO> getBottleListToExcel(BottleVO params);
 	
 	public List<BottleVO> getCustomerBottleList(Integer customerId);
+	
+	public List<SimpleBottleVO> getCustomerSimpleBottleList(Integer customerId) ;
 	
 	public BottleVO getBottleDetail(String bottleId) ;
 	

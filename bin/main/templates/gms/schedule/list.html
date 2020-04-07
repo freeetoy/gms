@@ -5,17 +5,6 @@
 <th:block layout:fragment="content"> 
 <script type="text/javascript">
 
-	function validationOfForm(form) {
-	
-		var result = (
-				   isValid(form.gasNm, "가스명", null, null)
-				&& isValid(form.gasCd, "가스코드", null, null)
-		);
-		
-		if ( result === false ) {
-			return false;
-		}
-	}
 	// end of function
 	
 	var fn_deleteUser = function(userId){
@@ -29,14 +18,6 @@
 	        form.submit();			
 		}                  		
 	}
-	
-	// 입력된 내용을 작성한다.
-	function goSearch(){	
-		
-		var form = document.mainForm;	
-		
-		form.submit();
-	};
 
 
 

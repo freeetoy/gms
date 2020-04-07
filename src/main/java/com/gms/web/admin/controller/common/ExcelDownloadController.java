@@ -62,7 +62,6 @@ public class ExcelDownloadController {
 
 	   try {
 		   
-		   logger.info("BottleContoller searchGasId "+ param.getSearchGasId());
 		   // 가스 정보 불러오기
 			List<BottleVO> bottleList = bottleService.getBottleListToExcel(param);
 		    // 워크북 생성
@@ -88,78 +87,168 @@ public class ExcelDownloadController {
 		    row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
 		    
 		    List<String> list = null;		    
-		    list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.bottle.title"), ","); 		
 		    
-		    for(int i =0;i<list.size();i++) {
-		    
-			    cell = row.createCell(i);
-			    cell.setCellStyle(headStyle);
-			    cell.setCellValue(list.get(i));		   
-			    sheet.autoSizeColumn(i);
+		    if(param.getSearchWorkCd() != null  && param.getSearchWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0305"))) {			
+			    list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.bottle.charge.title"), ","); 		
+			    
+			    for(int i =0;i<list.size();i++) {
+			    
+				    cell = row.createCell(i);
+				    cell.setCellStyle(headStyle);
+				    cell.setCellValue(list.get(i));		   
+				    sheet.autoSizeColumn(i);
+			    }
+			   
+			    //순번,바코드번호,용기번호,가스종류,품명,충전용량,충전압력,충전기한확인,진공배기,누출확인,용기타입,충전기한,작업자,삭제요청	
+	            //0		1		2	3		4	5		6		7	8		9	 10		11	 12, 	13
+		
+			    // 데이터 부분 생성
+			    for(BottleVO vo : bottleList) {
+			    	int k=0;
+			        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(k+1);
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleBarCd());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleId());  			        
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getGasCd());
+			        
+			        cell = row.createCell(k++);;
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getProductNm());
+			        
+			        cell = row.createCell(k++);;
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleCapa());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleChargePrss());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue("○");
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue("○");
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue("○");
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        if(vo.getBottleType().equals("F"))
+			        	cell.setCellValue("실병");
+			        else	
+			        	cell.setCellValue("공병");
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        if(vo.getBottleChargeDt() !=null) 
+			        	cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleChargeDt(),"yyyy-MM-dd"));
+			        else
+			        	cell.setCellValue("");
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getUpdateId());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue("N");
+		
+			    }	
+		    }else {	// 충전을 제외한 분류
+		    	
+		    	list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.bottle.title"), ","); 		
+			    
+			    for(int i =0;i<list.size();i++) {
+			    
+				    cell = row.createCell(i);
+				    cell.setCellStyle(headStyle);
+				    cell.setCellValue(list.get(i));		   
+				    sheet.autoSizeColumn(i);
+			    }
+			   
+			    //용기	바코드/RFID	가스	품명	가스용량	용기체적	충전용량	충전기한	충전압력	제조일	거래처	작업		소유	
+	            //0		1			2	3		4		5		6		7		8		9	10		11		12
+		
+			    // 데이터 부분 생성
+			    for(BottleVO vo : bottleList) {
+			    	int k=0;
+			        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleId());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleBarCd());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getGasCd());
+			        
+			        cell = row.createCell(k++);;
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getProductNm());
+			        
+			        cell = row.createCell(k++);;
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleCapa());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleVolumn());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getChargeCapa());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        if(vo.getBottleChargeDt() !=null) 
+			        	cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleChargeDt(),"yyyy-MM-dd"));
+			        else
+			        	cell.setCellValue("");
+			       
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleChargePrss());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        if(vo.getBottleCreateDt()!=null)
+			        	cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleCreateDt(),"yyyy-MM-dd"));
+			        else
+			        	cell.setCellValue("");
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getCustomerNm());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleWorkCdNm());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleOwnYn());
+		
+			    }	
 		    }
-		   
-		    //용기	바코드/RFID	가스	가스용량	용기체적	충전용량	충전기한	충전압력	제조일	거래처	작업		소유	
-            //0		1			2	3		4		5		6		7		8		9		10		11	
-	
-		    // 데이터 부분 생성
-		    for(BottleVO vo : bottleList) {
-		    	int k=0;
-		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
-		        cell = row.createCell(k++);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getBottleId());
-		        
-		        cell = row.createCell(k++);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getBottleBarCd());
-		        
-		        cell = row.createCell(k++);;
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getProductNm());
-		        
-		        cell = row.createCell(k++);;
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getBottleCapa());
-		        
-		        cell = row.createCell(k++);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getBottleVolumn());
-		        
-		        cell = row.createCell(k++);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getChargeCapa());
-		        
-		        cell = row.createCell(k++);
-		        cell.setCellStyle(bodyStyle);
-		        if(vo.getBottleChargeDt() !=null) 
-		        	cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleChargeDt(),"yyyy-MM-dd"));
-		        else
-		        	cell.setCellValue("");
-		       
-		        cell = row.createCell(k++);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getBottleChargePrss());
-		        
-		        cell = row.createCell(k++);
-		        cell.setCellStyle(bodyStyle);
-		        if(vo.getBottleCreateDt()!=null)
-		        	cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleCreateDt(),"yyyy-MM-dd"));
-		        else
-		        	cell.setCellValue("");
-		        
-		        cell = row.createCell(k++);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getCustomerNm());
-		        
-		        cell = row.createCell(k++);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getBottleWorkCdNm());
-		        
-		        cell = row.createCell(k++);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getBottleOwnYn());
-	
-		    }	
 		    // width 자동조절
 			for (int x = 0; x < sheet.getRow(1).getPhysicalNumberOfCells(); x++) {
 				sheet.autoSizeColumn(x);

@@ -580,4 +580,22 @@
 		AND TB.Product_ID = TG.Product_Id
 		Order By Bottle_Work_DT DESC
 	</select>
+	
+	<select id="selectSimpleCustomerBottleList" resultType="com.gms.web.admin.domain.manage.SimpleBottleVO" parameterType="Integer">		
+		SELECT
+			Bottle_Id, Bottle_BarCd, Product_Nm, Bottle_Capa
+			,(SELECT Sum(Receivable_Amount) - Sum(Income_Amount)
+				FROM TB_Cash_Flow WHERE  Customer_id = TB.Customer_Id) Receivable_Amount
+		FROM
+			TB_Bottle TB, TB_Product TP
+		WHERE
+			Bottle_Work_CD in ('0308' , '0309')
+		AND
+			TB.Delete_YN = 'N'			
+		AND 
+			Customer_Id = #{customerId}
+		AND
+			TB.Product_Id = TP.Product_Id
+		
+	</select>
 </mapper>

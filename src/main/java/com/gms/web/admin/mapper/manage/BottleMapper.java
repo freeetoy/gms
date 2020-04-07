@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
+import com.gms.web.admin.domain.manage.SimpleBottleVO;
 
 @Mapper
 public interface BottleMapper {
@@ -18,6 +19,8 @@ public interface BottleMapper {
 	public List<BottleVO> selectBottleListToExcel(Map<String, Object> map);
 	
 	public List<BottleVO> selectCustomerBottleList(Integer customerId);	
+	
+	public List<SimpleBottleVO> selectSimpleCustomerBottleList(Integer customerId);	
 	
 	public BottleVO selectBottleDetail(String bottleId) ;
 	

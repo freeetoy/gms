@@ -12,6 +12,8 @@ public interface GasService {
 	public GasVO getGasDetails(Integer gasId);
 	
 	public GasVO getGasDetailsByNm(String gasNm);
+	
+	public GasVO getGasDetailsByCd(String gasCd);
 
 	public boolean deleteGas(Integer gasId);
 

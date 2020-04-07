@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.web.utils.RequestUtils;
+import com.gms.web.admin.domain.manage.BottleVO;
+import com.gms.web.admin.domain.manage.CashFlowVO;
 import com.gms.web.admin.domain.manage.CustomerSimpleVO;
+import com.gms.web.admin.domain.manage.SimpleBottleVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.service.common.ApiService;
+import com.gms.web.admin.service.manage.BottleService;
 import com.gms.web.admin.service.manage.WorkReportService;
 
 @Controller
@@ -27,6 +31,9 @@ public class ApiController {
 	 */
 	@Autowired
 	private ApiService apiService;
+	
+	@Autowired
+	private BottleService bottleService;
 	
 	@RequestMapping(value = "/api/controlAction.do")
 	@ResponseBody
@@ -120,5 +127,35 @@ public class ApiController {
 		else return "fail";
 		//return null;
 	}
+	
+	@RequestMapping(value = "/api/controlCashFlow.do")
+	@ResponseBody
+	public String manageCashFlow(String userId, String customerNm,  int incomeAmount, int receivableAmount, String incomeWay )	{	
+				
+		logger.info("userId="+userId+" : incomeAmount ="+incomeAmount +": receivableAmount ="+ receivableAmount + " : customerNm ="+customerNm + " : incomeWay ="+incomeWay);
+				
+		int result = 0;
+		
+		CashFlowVO cashFlow = new CashFlowVO();
+		
+		cashFlow.setCustomerNm(customerNm);
+		cashFlow.setIncomeAmount(incomeAmount);
+		cashFlow.setReceivableAmount(receivableAmount);
+		cashFlow.setIncomeWay(incomeWay);
+		cashFlow.setCreateId(userId);
+		
+		result = apiService.registerCashFlow(cashFlow);
+		
+		if(result > 0) 		return "success";
+		else return "fail";
+		//return null;
+	}
 
+	
+	@RequestMapping(value = "/api/customerBottle.do")
+	@ResponseBody
+	public List<SimpleBottleVO> getCustomerSimpleBottleList(String customerNm)	{			
+		
+		return apiService.getCustomerSimpleBottleList(customerNm);
+	}
 }

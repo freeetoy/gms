@@ -65,6 +65,17 @@
 		AND
 			GAS_Nm = #{gasNm}
 	</select>
+	
+	<select id="selectGasDetailByCd" parameterType="String" resultType="com.gms.web.admin.domain.manage.GasVO">
+		SELECT
+			<include refid="GasColumns" />
+		FROM
+			TB_GAS
+		WHERE
+			delete_yn = 'N'
+		AND
+			GAS_CD = #{gasCd}
+	</select>
 
 	<update id="updateGas" parameterType="com.gms.web.admin.domain.manage.GasVO">
 		UPDATE TB_GAS

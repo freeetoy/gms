@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.service.manage.GasService;
 import com.gms.web.admin.common.config.PropertyFactory;
@@ -45,24 +46,48 @@ public class GasController {
 	}
 	
 	@RequestMapping(value = "/gms/gas/register.do", method = RequestMethod.POST)
-	public String registerGas(
+	public ModelAndView registerGas(
 			HttpServletRequest request
 			, HttpServletResponse response
-			, Model model
 			, GasVO params) {
 		
-		RequestUtils.initUserPrgmInfo(request, params);
-		
 		logger.debug("GasContoller registerGas");
+		
+		RequestUtils.initUserPrgmInfo(request, params);
+		ModelAndView mav = new ModelAndView();		
+		
+		boolean result =  false;
 		try {
 			//임시
 			params.setMemberCompSeq(1);
 			
-			boolean result = gasService.registerGas(params);
-			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.gas"));	
+			mav.addObject("menuId", PropertyFactory.getProperty("common.menu.gas"));	
 			
-			if (result == false) {
-				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			GasVO gas = gasService.getGasDetailsByNm(params.getGasNm());
+			if(gas !=null) {
+				
+				String alertMessage = "가스명이 존재합니다.";
+				RequestUtils.responseWriteException(response, alertMessage,
+						"/gms/gas/list.do");				
+				
+			}else {			
+				gas = gasService.getGasDetailsByCd(params.getGasCd());
+				
+				if(gas !=null) {
+					
+					String alertMessage = "가스코드가 존재합니다.";
+					RequestUtils.responseWriteException(response, alertMessage,
+							"/gms/gas/list.do");				
+					
+				}else {	
+					result = gasService.registerGas(params);					
+				}
+			}
+			
+			if (result) {
+				String alertMessage = "가스를 등록하였습니다.";
+				RequestUtils.responseWriteException(response, alertMessage,
+						"/gms/gas/list.do");	
 			}
 		} catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -72,7 +97,8 @@ public class GasController {
 			e.printStackTrace();
 		}
 	
-		return "redirect:/gms/gas/list.do";
+		//return "redirect:/gms/gas/list.do";
+		return null;
 	}
 	
 	
@@ -90,6 +116,10 @@ public class GasController {
 		try {
 			//임시
 			params.setMemberCompSeq(1);
+			
+			GasVO gas = gasService.getGasDetailsByNm(params.getGasNm());
+			if(gas !=null)
+			
 			logger.debug("******params.getGasId()()) *****===*"+params.getGasId());
 			boolean result = gasService.registerGas(params);
 			if (result == false) {

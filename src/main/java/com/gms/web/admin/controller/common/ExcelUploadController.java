@@ -31,6 +31,8 @@ public class ExcelUploadController {
 	@Autowired
 	private ExcelService excelService;
 	
+	private long SIZE_LIMIT = 1024*1024*3;
+	
 	@RequestMapping(value = "/uploadExcelFile", method = RequestMethod.POST)	
     public ModelAndView uploadExcelFile(MultipartHttpServletRequest request
     		, HttpServletResponse response) {
@@ -43,7 +45,7 @@ public class ExcelUploadController {
 	        if(iterator.hasNext()) {
 	            file = request.getFile(iterator.next());
 	        }
-	        long SIZE_LIMIT = 1024*1024;
+	        //long SIZE_LIMIT = 1024*1024*3;
 	        long fileSize = file.getSize();
         	if(fileSize > SIZE_LIMIT) {
         		String alertMessage = "파일은 1M 이하로 업로드 해주세요.";
@@ -88,7 +90,7 @@ public class ExcelUploadController {
 	        if(iterator.hasNext()) {
 	            file = request.getFile(iterator.next());
 	        }
-	        long SIZE_LIMIT = 1024*1024;
+	        //long SIZE_LIMIT = 1024*1024;
 	        long fileSize = file.getSize();
         	if(fileSize > SIZE_LIMIT) {
         		String alertMessage = "파일은 1M 이하로 업로드 해주세요.";
@@ -130,7 +132,7 @@ public class ExcelUploadController {
 	        if(iterator.hasNext()) {
 	            file = request.getFile(iterator.next());
 	        }
-	        long SIZE_LIMIT = 1024*1024;
+	        //long SIZE_LIMIT = 1024*1024;
 	        long fileSize = file.getSize();
         	if(fileSize > SIZE_LIMIT) {
         		String alertMessage = "파일은 1M 이하로 업로드 해주세요.";

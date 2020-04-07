@@ -204,6 +204,16 @@
 			Work_Report_Seq = #{workReportSeq}
 	</update>
 	
+	<update id="updateWorkReportReceivedAmount" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">
+		UPDATE TB_Work_Report
+		SET
+			Received_Amount		= Received_Amount + #{receivedAmount}
+			, UPDATE_ID 		= #{updateId}
+			, UPDATE_DT 		= NOW()
+		WHERE
+			Work_Report_Seq = #{workReportSeq}
+	</update>
+	
 	<select id="selectWorkReportList" resultType="com.gms.web.admin.domain.manage.WorkReportVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
 		SELECT
 			<include refid="SelectWorkReportColumns" />
@@ -237,16 +247,19 @@
 	
 	<select id="selectWorkReportOnlyListAll" resultType="com.gms.web.admin.domain.manage.WorkReportVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
 		SELECT
-			<include refid="WorkReportColumns" />
+			Work_Report_Seq , User_ID , TW.Customer_ID , Customer_Nm, Order_ID , 
+			Work_Product_NM , Work_Product_Capa , Work_CD , Work_Dt , Received_Amount , 
+			Bottle_Type , TW.Create_ID , TW.Create_Dt , TW.Update_ID , TW.Update_Dt 
 		FROM
-			TB_Work_Report TW
+			TB_Work_Report TW, tb_customer TC
 		WHERE
 			User_id = #{searchUserId}
 		AND 
-			WorK_CD in ('0308','0309', '0310')
+			WorK_CD in ('0308','0309', '0310','0312')
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
 		AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
 		</if>
+		AND TW.Customer_ID = TC.Customer_ID
 		ORDER BY Work_Report_Seq DESC 		
 	</select>
 	
@@ -319,6 +332,16 @@
 			Customer_Id = #{customerId}	
 		AND 
 			DATE_FORMAT(Work_Dt,'%Y/%m/%d') = DATE_FORMAT(curdate(),'%Y/%m/%d')		
+	</select>	
+	
+	<select id="selectWorkReportSeqForCustomer" parameterType="com.gms.web.admin.domain.manage.WorkReportVO" resultType="int">
+		SELECT IFNULL(max(Work_Report_Seq), 0) Work_Report_Seq
+		FROM 
+			TB_Work_Report
+		WHERE 
+			Customer_Id = #{customerId}	
+		AND 
+			DATE_FORMAT(Work_Dt,'%Y/%m/%d') = DATE_FORMAT(#{createDt},'%Y/%m/%d')		
 	</select>	
 	<!-- 
 	<select id="selectWorBottleListTotal" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="java.util.Map">
