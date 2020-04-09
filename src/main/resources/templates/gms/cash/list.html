@@ -320,7 +320,8 @@ $(function() {
                       <th th:if="${row.incomeAmount> 999 }" th:text="${#numbers.formatInteger(row.incomeAmount, 3, 'COMMA')}"></th>
                       <th th:unless="${row.incomeAmount> 999 }" th:text="${row.incomeAmount}"></th>
                       <td th:if="${row.incomeWay=='CASH'}">현금
-                      <td th:unless="${row.incomeWay=='CASH'}">카드
+                      <td th:if="${row.incomeWay=='CARD'}">카드        
+                      <td th:if="${row.incomeWay==''}">                 
                       </td>
                       <td> 
                       <a class="btn_select_process btn btn-info btn-xs" th:cashFlowSeq="${row.cashFlowSeq}" data-toggle="modal" data-target="#modal-default"  href="#"><i class="fas fa-check-circle"></i>수정 </a>

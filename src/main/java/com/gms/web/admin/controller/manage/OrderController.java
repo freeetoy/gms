@@ -319,12 +319,12 @@ public class OrderController {
 		logger.debug("OrderContoller modifyOrderWorkCd");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
-		
+		/*
 		logger.debug("OrderContoller orderProcessCd=="+params.getOrderProcessCd());		
 		logger.debug("OrderContoller befeor service searchCustomerNm=="+params.getSearchCustomerNm());
-		
+		*/
 		int result = orderService.changeOrderProcessCd(params);
-		logger.debug("OrderContoller after service searchCustomerNm=="+params.getSearchCustomerNm());
+		//logger.debug("OrderContoller after service searchCustomerNm=="+params.getSearchCustomerNm());
 		if(result > 0){
 			String alertMessage = "진행상태를 변경하였습니다.";
 			RequestUtils.responseWriteException(response, alertMessage,
@@ -342,12 +342,12 @@ public class OrderController {
 		logger.debug("OrderContoller modifyOrdersProcessCd");
 		//TODO 로직 처리 필요
 		RequestUtils.initUserPrgmInfo(request, params);
-		
+	/*	
 		logger.debug("OrderContoller orderProcessCd=="+params.getOrderProcessCd());		
 		logger.debug("OrderContoller befeor service chOrderId=="+params.getOrderIds());
-		
+	*/	
 		int result = orderService.changeOrdersProcessCd(params);
-		logger.debug("OrderContoller after service searchCustomerNm=="+params.getSearchCustomerNm());
+	//	logger.debug("OrderContoller after service searchCustomerNm=="+params.getSearchCustomerNm());
 		if(result > 0){
 			String alertMessage = "진행상태를 변경하였습니다.";
 			RequestUtils.responseWriteException(response, alertMessage,

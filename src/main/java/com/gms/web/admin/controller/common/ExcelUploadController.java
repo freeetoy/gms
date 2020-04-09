@@ -98,7 +98,7 @@ public class ExcelUploadController {
     					"/gms/customer/list.do");
     			return null;
         	}
-        	        	
+        	logger.debug("ExcelUploadContoller file "+ file.getOriginalFilename());
 	        result = excelService.uploadCustomerExcelFile(request,file);	        
 	      
 	        //model.addAttribute("gaslist", gaslist);

@@ -3,15 +3,21 @@ package com.gms.web.admin.controller.common;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.web.utils.SessionUtil;
 import com.gms.web.admin.domain.common.CodeVO;
+import com.gms.web.admin.domain.common.LoginUserVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.service.common.CodeService;
 import com.gms.web.admin.service.manage.WorkReportService;
@@ -47,5 +53,10 @@ public class startController {
 			mav.addObject("searchWorkCd",params.getSearchWorkCd());
 		mav.setViewName("gms/start");
 		return mav;
+	}
+	
+	@RequestMapping(value="/policy")
+	public String getPolicy(Model model,HttpServletRequest req){
+		return"gms/policy";
 	}
 }

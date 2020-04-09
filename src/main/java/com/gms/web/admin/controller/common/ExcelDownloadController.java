@@ -429,8 +429,7 @@ public class ExcelDownloadController {
 		    int i = 1;
 		    
 		    for(CustomerVO vo : customerlist) {
-		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
-		        
+		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);		        
 		        
 		        cell = row.createCell(0);
 		        cell.setCellStyle(bodyStyle);
@@ -482,7 +481,7 @@ public class ExcelDownloadController {
  			}
 		 			
 		    // 컨텐츠 타입과 파일명 지정
-		    response.setContentType("ms-vnd/excel");
+		    response.setContentType("application/vnd.ms-excel");
 		    response.setHeader("Content-Disposition", "attachment;filename=customer_"+DateUtils.getDate()+".xls");	
 	
 		    // 엑셀 출력

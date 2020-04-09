@@ -16,7 +16,8 @@
 		<result property="salesId"				column="Sales_ID"			/>
 		<result property="salesNm"				column="Sales_Nm"			/>
 		<result property="customerStatus"		column="Customer_Status"	/>		
-		<result property="carYn"				column="Car_YN"				/>		
+		<result property="carYn"				column="Car_YN"				/>	
+		<result property="agencyYn"				column="Agency_YN"			/>		
 		<result property="createId"				column="CREATE_ID"		/>
 		<result property="createDt"				column="CREATED_DT"		/>
 		<result property="updateId"				column="UPDATE_ID"		/>		
@@ -52,6 +53,7 @@
 		, Sales_ID
 		, Customer_Status
 		, Car_Yn
+		, Agency_Yn
 		, CREATE_ID	
 		, CREATE_DT	
 		, UPDATE_ID	
@@ -72,6 +74,7 @@
 		, User_Nm Sales_Nm
 		, Customer_Status
 		, Car_YN
+		, Agency_Yn
 		, A.CREATE_ID	
 		, A.CREATE_DT	
 		, A.UPDATE_ID	
@@ -103,6 +106,7 @@
 			, #{salesId}
 			, '2'
 			, #{carYn}
+			, #{agencyYn}
 			, #{createId}			
 			, NOW()
 			, NULL
@@ -128,6 +132,7 @@
 			, #{item.salesId}
 			, '2'
 			, #{item.carYn}
+			, #{item.agencyYn}
 			, #{item.createId}			
 			, NOW()
 			, NULL
@@ -220,6 +225,7 @@
 			, Customer_Email		= #{customerEmail}
 			, Sales_ID				= #{salesId}
 			, Car_YN				= #{carYn}
+			, Agency_YN				= #{agencyYn}
 			, UPDATE_ID				= #{updateId}
 			, UPDATE_DT				= NOW()
 		WHERE

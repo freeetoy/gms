@@ -64,12 +64,13 @@ public class BottleController {
 	public String getBottleList(BottleVO params, Model model) {
 
 		logger.debug("BottleContoller getBottleList");
+		/*
 		logger.debug("BottleContoller currentPage "+ params.getCurrentPage());
 		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
 		logger.debug("BottleContoller searchProductId "+ params.getSearchProductId());
 		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		logger.debug("BottleContoller searchWorkCd "+ params.getSearchWorkCd());
-		
+		*/
 		String searchChargeDt = params.getSearchChargeDt();	
 		
 		String searchChargeDtFrom = null;
@@ -77,7 +78,7 @@ public class BottleController {
 				
 		if(searchChargeDt != null && searchChargeDt.length() > 20) {
 			
-			logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
+			//logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
 			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;
 			
 			searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;
@@ -140,11 +141,12 @@ public class BottleController {
 	public String getBottleTestList(BottleVO params, Model model) {
 
 		logger.debug("BottleContoller getBottleList");
+		/*
 		logger.debug("BottleContoller currentPage "+ params.getCurrentPage());
 		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
 		logger.debug("BottleContoller searchProductId "+ params.getSearchProductId());
 		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
-		
+		*/
 		String searchChargeDt = params.getSearchChargeDt();	
 		
 		String searchChargeDtFrom = null;
@@ -152,7 +154,7 @@ public class BottleController {
 				
 		if(searchChargeDt != null && searchChargeDt.length() > 20) {
 			
-			logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
+			//logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
 			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;
 			
 			searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;
@@ -182,7 +184,7 @@ public class BottleController {
 			params.setSearchChargeDtEnd(endDate); 
 			
 		}
-		logger.debug("BottleContoller searchChargeDt "+ searchChargeDt);
+		//logger.debug("BottleContoller searchChargeDt "+ searchChargeDt);
 		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
 		
 		Map<String, Object> map = bottleService.getBottleList(params);
@@ -226,11 +228,12 @@ public class BottleController {
 	public String getBottleSalesList(BottleVO params, Model model) {
 
 		logger.debug("BottleContoller getBottleList");
+		/*
 		logger.debug("BottleContoller currentPage "+ params.getCurrentPage());
 		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
 		logger.debug("BottleContoller searchProductId "+ params.getSearchProductId());
 		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
-		
+		*/
 		String searchChargeDt = params.getSearchChargeDt();	
 		
 		String searchChargeDtFrom = null;
@@ -238,7 +241,7 @@ public class BottleController {
 				
 		if(searchChargeDt != null && searchChargeDt.length() > 20) {
 			
-			logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
+			//logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
 			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;
 			
 			searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;
@@ -248,7 +251,7 @@ public class BottleController {
 			
 		}
 		
-		logger.debug("BottleContoller searchChargeDt "+ searchChargeDt);
+		//logger.debug("BottleContoller searchChargeDt "+ searchChargeDt);
 		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
 		
 		//params.setSearchSalesYn("Y");
@@ -302,7 +305,7 @@ public class BottleController {
 				
 		if(searchChargeDt != null && searchChargeDt.length() > 20) {
 			
-			logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
+			//logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
 			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;			
 			searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;
 			
@@ -313,7 +316,7 @@ public class BottleController {
 		//params.setSearchSalesYn("Y");
 		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
 		params.setSearchWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
-		logger.debug("BottleContoller searchSalesYn "+ params.getSearchSalesYn());
+		//logger.debug("BottleContoller searchSalesYn "+ params.getSearchSalesYn());
 		
 		Map<String, Object> map = bottleService.getBottleList(params);
 		
@@ -463,7 +466,7 @@ public class BottleController {
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 						
-		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
+		//logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
 		//logger.debug("BottleContoller searchGasId "+ params.getSearchGasId());
 		//logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		
@@ -541,11 +544,13 @@ public class BottleController {
 		RequestUtils.initUserPrgmInfo(request, params);
 		
 		//검색조건 셋팅
+		/*
 		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());		
 		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		logger.debug("BottleContoller chBottleId "+ request.getParameter("chBottleId"));
 		
 		logger.debug("BottleContoller customerId "+ params.getCarCustomerId());
+		*/
 		if(params.getCarCustomerId() != null && params.getCarCustomerId().length()>0)
 			params.setCustomerId(Integer.parseInt(request.getParameter("carCustomerId"))) ; 
 		
@@ -562,7 +567,7 @@ public class BottleController {
 					
 			if(searchChargetDt != null && searchChargetDt.length() > 20) {
 				
-				logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
+				//logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
 				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
 				
 				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
@@ -624,12 +629,13 @@ public class BottleController {
 		RequestUtils.initUserPrgmInfo(request, params);
 		
 		//검색조건 셋팅
+		/*
 		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
 		logger.debug("BottleContoller getSearchProductId "+ params.getSearchProductId());
 		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		logger.debug("BottleContoller chBottleId "+ request.getParameter("chBottleId"));
 		logger.debug("BottleContoller customerId "+ params.getCustomerId());
-		
+		*/
 		String searchChargeDtFrom = null;
 		String searchChargeDtEnd = null;
 		String searchProductId = "";
@@ -696,9 +702,10 @@ public class BottleController {
 		RequestUtils.initUserPrgmInfo(request, params);
 		
 		//검색조건 셋팅
+		/*
 		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
 		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
-		
+		*/
 		String searchChargetDt = params.getSearchChargeDt();	
 		
 		String searchChargeDtFrom = null;
@@ -709,7 +716,7 @@ public class BottleController {
 			
 			if(searchChargetDt != null && searchChargetDt.length() > 20) {
 				
-				logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
+				//logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
 				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
 				
 				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
@@ -771,10 +778,11 @@ public class BottleController {
 		ModelAndView mav = new ModelAndView();
 		
 		//검색조건 셋팅
+		/*
 		logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
 		logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());		
 		logger.debug("BottleContoller datastring "+ request.getParameter("bottleIds"));
-		
+		*/
 		String bottleIds = null;	
 		
 		String searchChargetDt = params.getSearchChargeDt();	
@@ -787,7 +795,7 @@ public class BottleController {
 			
 			if(searchChargetDt != null && searchChargetDt.length() > 20) {
 				
-				logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
+				//logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
 				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
 				
 				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;

@@ -1,6 +1,7 @@
 package com.gms.web.admin.service.common;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,7 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -254,6 +258,199 @@ public class ExcelServiceImpl implements ExcelService {
             
             logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
             
+        } catch (org.apache.poi.poifs.filesystem.OfficeXmlFileException e) {
+        	try {
+            	
+        		FileInputStream excelFIS = (FileInputStream)(excelFile.getInputStream());
+
+                HSSFWorkbook excelWB = new HSSFWorkbook(excelFIS);
+               
+                // 첫번째 시트 불러오기
+                //XSSFSheet sheet = workbook.getSheetAt(0);
+                HSSFSheet sheet = excelWB.getSheetAt(0);
+                
+                boolean isRegisteFlag = false;
+                StringBuffer sb = new StringBuffer();
+                
+                for(int i=1; i<sheet.getLastRowNum() + 1; i++) {
+                	
+                	isRegisteFlag = true;
+                	
+                    BottleVO bottle = new BottleVO();
+                    HSSFRow row = sheet.getRow(i);
+                    
+                    // 행이 존재하기 않으면 패스
+                    if(null == row) {
+                        continue;
+                    }                
+                    
+                  //용기	바코드/RFID	가스	품명	용기체적	가스용량	충전용량	충전기한	충전압력	제조일	거래처	작업	소유	
+                    //0		1			2	3	4		5		6		7		8		9		10		11	12
+
+                    //N:자사소유                //Y:타사소유                
+                    
+                    String colValue="";
+                   
+                    String productNm = "";
+                	String productCapa = "";
+                	
+                    for(int j=0; j< 13; j++) {
+                    	HSSFCell cell = row.getCell(j);
+                    //if(null != cell) fruit.setGasNm(cell.getNumericCellValue());
+                    	//logger.debug("ExcelSerive uploadExcelFile i=="+i+ "== "+ cell.getNumericCellValue());                	
+                    	
+                    	
+                    	switch (cell.getCellType()) {
+    	                    case Cell.CELL_TYPE_STRING:
+    	                        colValue = cell.getRichStringCellValue().getString();
+    	                        //logger.debug("ExcelSerive uploadExcelFile j ==="+ j);
+    	                        break;
+    	                    case Cell.CELL_TYPE_NUMERIC:
+    	                        if (DateUtil.isCellDateFormatted(cell)) {
+    	                            colValue = cell.getDateCellValue().toString();
+    	                            
+    	                            if(j==6) bottle.setBottleChargeDt(cell.getDateCellValue());
+    	                            else if(j==8) bottle.setBottleCreateDt(cell.getDateCellValue());
+    	                        } else {
+    	                            Long roundVal = Math.round(cell.getNumericCellValue());
+    	                            Double doubleVal = cell.getNumericCellValue();
+    	                            if (doubleVal.equals(roundVal.doubleValue())) {
+    	                                colValue = String.valueOf(roundVal);
+    	                            } else {
+    	                                colValue = String.valueOf(doubleVal);
+    	                            }
+    	                        }
+    	                        break;
+    	                    case Cell.CELL_TYPE_BOOLEAN:
+    	                        colValue = String.valueOf(cell.getBooleanCellValue());
+    	                        break;
+    	                    case Cell.CELL_TYPE_FORMULA:
+    	                        colValue = cell.getCellFormula();
+    	                        break;
+    	         
+    	                    default:
+    	                        colValue = "";
+                        }
+                    	
+                    	//logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ colValue);
+                    	
+                    	//용기	바코드/RFID	가스	품명	용기체적	가스용량	충전용량	충전기한	충전압력	제조일	거래처	작업	소유	
+                        //0		1			2	3	4		5		6		7		8		9		10		11	12
+
+                        //N:자사소유
+                        //Y:타사소유                	
+                    	
+                    	if(j == 0) bottle.setBottleId(colValue);
+                    	else if(j == 1) bottle.setBottleBarCd(colValue);
+                    	else if(j == 2) bottle.setGasCd(colValue);
+                    	else if(j == 3) productNm = colValue;
+                    	else if(j == 4) bottle.setBottleVolumn(colValue);
+                    	else if(j == 5) {
+                    		bottle.setBottleCapa(colValue);
+                    		productCapa = colValue;
+                    	}
+                    	else if(j == 6) bottle.setChargeCapa(colValue);
+                    	else if(j == 7) {
+                    		if(colValue!=null && colValue.length() > 9) {
+    	                		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+    	                		Date date = sdf.parse(colValue);
+    	                		
+    	                		bottle.setBottleChargeDt(date);
+                    		}
+                    	}
+                    	else if(j == 8) bottle.setBottleChargePrss(colValue);
+                    	else if(j == 9) {
+                    		if(colValue!=null && colValue.length() > 9) {
+    	                		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+    	                		Date date = sdf.parse(colValue);
+    	                		
+    	                		bottle.setBottleCreateDt(date);
+                    		}
+                    	}
+                    	else if(j == 10) {
+                    		CustomerVO customer = customerService.getCustomerDetailsByNm(colValue) ;
+                    		if(customer != null &&  customer.getCustomerId()!=null)
+                    			bottle.setCustomerId(customerService.getCustomerDetailsByNm(colValue).getCustomerId());
+                    	}
+                    	else if(j == 11) {                		
+                    		
+                    		if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.come")))
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.vacuum")))
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0302"));
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.hole")))
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0303"));
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.chargeDt")))
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0304"));
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.charge")))
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0305"));
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.out")))
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0306"));
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.incar")))
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0307"));
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.sales")))
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.rental")))
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.back")))
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0310"));
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.discard")))
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0399"));
+                    		else	
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0388"));
+                    	}
+                    	else if(j == 12) { 
+                    		if(colValue.equals("자사")) bottle.setBottleOwnYn("N");
+                    		else bottle.setBottleOwnYn("Y");
+                    	}
+                    }
+                    
+                    ProductTotalVO productTotal = new ProductTotalVO();
+                    productTotal.setProductNm(productNm);
+                    productTotal.setProductCapa(productCapa);
+                    
+                    //logger.debug("&&&  ExcelService productNm "+ productNm);
+                    //logger.debug("$$$$$$$$$$$$$$ ExcelService productCapa "+ productCapa);
+                    
+                    productTotal = productService.getProductTotalDetails(productTotal);
+                    
+                    if(productTotal != null) {
+    	                
+    	                bottle.setProductId(productTotal.getProductId());
+    	                bottle.setProductPriceSeq(productTotal.getProductPriceSeq());
+    	                bottle.setGasId(productTotal.getGasId());
+    	                RequestUtils.initUserPrgmInfo(request, bottle);
+    	                bottle.setBottleWorkId(bottle.getCreateId());
+    	                
+    	                bottle.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
+    	                bottle.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
+    	              
+    	                for(int k=0 ; k < bottlelist.size() ; k++) {
+    	                	if(bottle.getBottleId().equals(bottlelist.get(k).getBottleId())) {
+    	                		isRegisteFlag = false;
+    	                		result = bottleService.modifyBottle(bottle);
+    	                		updateCount++;
+    	                	}	                		
+    	                }
+    	                if(isRegisteFlag) {
+    	                	list.add(bottle);
+    	                	//result = bottleService.registerBottle(bottle);
+    	                	insertCount++;
+    	                }
+                    }else {
+                    	sb.append(bottle.getBottleId());
+                    	sb.append(";");
+                    	
+                    }
+                }
+                logger.error("$$$$$$$$$$$$$$ ExcelService sb "+ sb.toString());
+                if(list.size() > 0)
+                	result = bottleService.registerBottles(list);
+                
+                logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
+        	} catch (Exception e1) {
+        		e.printStackTrace();
+        	}
         } catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();
@@ -274,12 +471,18 @@ public class ExcelServiceImpl implements ExcelService {
         int result = 0;
         try {
         	
-            OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream());
-            XSSFWorkbook workbook = new XSSFWorkbook(opcPackage);
+            //OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream());
+            FileInputStream excelFIS = (FileInputStream)(excelFile.getInputStream());
+
+            HSSFWorkbook excelWB = new HSSFWorkbook(excelFIS);
+           
+            //XSSFWorkbook workbook = new XSSFWorkbook(opcPackage);
             
             // 첫번째 시트 불러오기
-            XSSFSheet sheet = workbook.getSheetAt(0);
-            
+            //XSSFSheet sheet = workbook.getSheetAt(0);
+            HSSFSheet sheet = excelWB.getSheetAt(0);
+
+           
             int COLUMN_COUNT = 8;
             boolean isRegisteFlag = false;
             
@@ -288,7 +491,8 @@ public class ExcelServiceImpl implements ExcelService {
             	isRegisteFlag = true;
             	
             	CustomerVO customer = new CustomerVO();
-                XSSFRow row = sheet.getRow(i);
+                //XSSFRow row = sheet.getRow(i);
+            	HSSFRow row = sheet.getRow(i);
                 
                 // 행이 존재하기 않으면 패스
                 if(null == row) {
@@ -301,10 +505,9 @@ public class ExcelServiceImpl implements ExcelService {
                 String colValue="";               
                 
                 for(int j=0; j< COLUMN_COUNT; j++) {
-                	XSSFCell cell = row.getCell(j);
-                //if(null != cell) fruit.setGasNm(cell.getNumericCellValue());
-                	//logger.debug("ExcelSerive uploadExcelFile i=="+i+ "== "+ cell.getNumericCellValue());                	
                 	
+                	HSSFCell cell = row.getCell(j);
+               	
                 	switch (cell.getCellType()) {
 	                    case Cell.CELL_TYPE_STRING:
 	                        colValue = cell.getRichStringCellValue().getString();
@@ -333,11 +536,12 @@ public class ExcelServiceImpl implements ExcelService {
 	                        colValue = "";
                     }
                 	
-                	logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ colValue);
-                	
                 	//사업자등록번호	거래처명	거래처주소	거래처사업자등록번호	거래처전화	대표자	업태	종목	이메일
                     //			0		1		2				3		4		5	6	7	
-                	if(j == 0) customer.setCustomerNm(colValue);
+                	if(j == 0) {
+                		customer.setCustomerNm(colValue);
+                		logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ colValue);
+                	}
                 	else if(j == 1) customer.setCustomerAddr(colValue);
                 	else if(j == 2) customer.setBusinessRegId(colValue);
                 	else if(j == 3) customer.setCustomerPhone(colValue);
@@ -352,7 +556,7 @@ public class ExcelServiceImpl implements ExcelService {
                 customer.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
               
                 for(int k=0;k<customerList.size();k++) {
-                	if(customer.getCustomerNm().equals(customerList.get(k).getCustomerNm())) {
+                	if(customer.getBusinessRegId().equals(customerList.get(k).getBusinessRegId())) {
                 		customer.setCustomerId(customerList.get(k).getCustomerId());
                 		boolean result1 = customerService.modifyCustomer(customer);
                 		isRegisteFlag = false;
@@ -363,9 +567,104 @@ public class ExcelServiceImpl implements ExcelService {
             }
             if(list.size() > 0)
             	result = customerService.registerCustomers(list);
-            
+            else
+            	result = 1;
             logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result);
             
+        } catch (org.apache.poi.poifs.filesystem.OfficeXmlFileException e) {
+        	try {
+	        	OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream());
+	            XSSFWorkbook workbook = new XSSFWorkbook(opcPackage);
+	            
+	            // 첫번째 시트 불러오기
+	            XSSFSheet sheet = workbook.getSheetAt(0);
+	           
+	            int COLUMN_COUNT = 8;
+	            boolean isRegisteFlag = false;
+	            
+	            for(int i=1; i<sheet.getLastRowNum() + 1; i++) {
+	            	
+	            	isRegisteFlag = true;
+	            	
+	            	CustomerVO customer = new CustomerVO();
+	                XSSFRow row = sheet.getRow(i);
+	            	
+	                // 행이 존재하기 않으면 패스
+	                if(null == row) {
+	                    continue;
+	                }                             
+	                
+	                //	거래처명	거래처주소	거래처사업자등록번호	거래처전화	대표자	업태	종목	이메일
+	                //		0		1		2				3	4		5	6	7	                             
+	                String colValue="";               
+	                
+	                for(int j=0; j< COLUMN_COUNT; j++) {
+	                	XSSFCell cell = row.getCell(j);                	
+	               
+	                	switch (cell.getCellType()) {
+		                    case Cell.CELL_TYPE_STRING:
+		                        colValue = cell.getRichStringCellValue().getString();
+		                        break;
+		                    case Cell.CELL_TYPE_NUMERIC:
+		                        if (DateUtil.isCellDateFormatted(cell)) {
+		                            colValue = cell.getDateCellValue().toString();	                            
+		                        } else {
+		                            Long roundVal = Math.round(cell.getNumericCellValue());
+		                            Double doubleVal = cell.getNumericCellValue();
+		                            if (doubleVal.equals(roundVal.doubleValue())) {
+		                                colValue = String.valueOf(roundVal);
+		                            } else {
+		                                colValue = String.valueOf(doubleVal);
+		                            }
+		                        }
+		                        break;
+		                    case Cell.CELL_TYPE_BOOLEAN:
+		                        colValue = String.valueOf(cell.getBooleanCellValue());
+		                        break;
+		                    case Cell.CELL_TYPE_FORMULA:
+		                        colValue = cell.getCellFormula();
+		                        break;
+		         
+		                    default:
+		                        colValue = "";
+	                    }	                	
+	                	//사업자등록번호	거래처명	거래처주소	거래처사업자등록번호	거래처전화	대표자	업태	종목	이메일
+	                    //			0		1		2				3		4		5	6	7	
+	                	if(j == 0) {
+	                		customer.setCustomerNm(colValue);
+	                		logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ colValue);
+	                	}
+	                	else if(j == 1) customer.setCustomerAddr(colValue);
+	                	else if(j == 2) customer.setBusinessRegId(colValue);
+	                	else if(j == 3) customer.setCustomerPhone(colValue);
+	                	else if(j == 4) customer.setCustomerRepNm(colValue);
+	                	else if(j == 5) customer.setCustomerBusiType(colValue);
+	                	else if(j == 6) customer.setCustomerItem(colValue);
+	                	else if(j == 7) customer.setCustomerEmail(colValue);
+	                	
+	                }
+	                RequestUtils.initUserPrgmInfo(request, customer);
+	                
+	                customer.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
+	              
+	                for(int k=0;k<customerList.size();k++) {
+	                	if(customer.getCustomerNm().equals(customerList.get(k).getCustomerNm())) {
+	                		customer.setCustomerId(customerList.get(k).getCustomerId());
+	                		boolean result1 = customerService.modifyCustomer(customer);
+	                		isRegisteFlag = false;
+	                	}                 		
+	                }
+	                
+	                if(isRegisteFlag) list.add(customer);
+	            }
+	            if(list.size() > 0)
+	            	result = customerService.registerCustomers(list);
+	            else
+	            	result = 1;
+        	} catch (Exception e1) {
+    			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+    			e.printStackTrace();
+    		}
         } catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();
