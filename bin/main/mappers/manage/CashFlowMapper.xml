@@ -108,6 +108,50 @@
 		Limit #{startRow}, #{rowPerPage}
 	</select>
 	
+	<select id="selectAllCashFlowCount" parameterType="java.util.Map" resultType="int">
+		SELECT
+			count(Cash_Flow_Seq)
+		FROM
+			TB_Cash_Flow TF, TB_Customer TC
+		WHERE
+			TF.Customer_Id  = TC.Customer_Id
+		AND
+			TF.Delete_YN 	= 'N'	
+		AND
+			Customer_Status = 2
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCreateDt)">
+		AND date_format(Create_Dt,'%Y/%m/%d')  between  #{searchCreateDtFrom} AND  #{searchCreateDtEnd} 
+		</if>			
+	</select>
+	
+	<select id="selectAllCashFlowList" resultType="com.gms.web.admin.domain.manage.CashFlowVO" parameterType="java.util.Map">
+		SELECT
+			Cash_Flow_Seq         
+		 , TF.Customer_ID  
+		 , Customer_Nm
+		 , Income_Amount    
+		 , Receivable_Amount 		  
+		 , Income_Way		   
+		 , TF.Delete_YN
+		 , TF.Create_ID        
+		 , TF.Create_Dt        
+		 , TF.Update_ID        
+		 , TF.Update_Dt   
+		FROM
+			TB_Cash_Flow TF, TB_Customer TC
+		WHERE
+			TF.Customer_Id  = TC.Customer_Id
+		AND
+			TF.Delete_YN 	= 'N'		
+		AND
+			Customer_Status = 2
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCreateDt)">
+		AND date_format(Create_Dt,'%Y/%m/%d')  between  #{searchCreateDtFrom} AND  #{searchCreateDtEnd} 
+		</if>		
+		ORDER BY TF.Create_Dt DESC 
+		Limit #{startRow}, #{rowPerPage}
+	</select>
+	
 	<select id="selectCashFlow" resultType="com.gms.web.admin.domain.manage.CashFlowVO" parameterType="int">
 		SELECT
 			Cash_Flow_Seq         

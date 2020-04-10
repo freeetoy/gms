@@ -74,9 +74,9 @@ public class LoginServiceImpl implements LoginService{
 				
 				AES256Util aescipher = new AES256Util(PropertyFactory.getProperty("common.crypto.key"));
 				
-				logger.debug("****** getUserInfo. param.getUserPasswd()===*"+param.getUserPasswd());
+				//logger.debug("****** getUserInfo. param.getUserPasswd()===*"+param.getUserPasswd());
 				String rsaEn = aescipher.aesEncode( param.getUserPasswd());
-				logger.debug("****** getUserInfo. param.rsaEn ()===*"+rsaEn);
+				//logger.debug("****** getUserInfo. param.rsaEn ()===*"+rsaEn);
 				param.setUserPasswd(rsaEn  );
 								
 				userInfo = loginMapper.selectUserInfo(param);  //비번까지 검색

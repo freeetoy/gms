@@ -86,7 +86,7 @@ public class CashFlowController {
 	public ModelAndView getCashFlowList(CashFlowVO param) {
 
 		logger.debug("CashFlowController getCashFlowList");
-		logger.debug("CashFlowController currentPage="+param.getCurrentPage());
+		logger.debug("CashFlowController customerId="+param.getCustomerId());
 		
 		ModelAndView mav = new ModelAndView();		
 				
@@ -117,6 +117,13 @@ public class CashFlowController {
 		mav.addObject("lastPageNum", map.get("lastPageNum"));
 		mav.addObject("totalCount", map.get("totalCount"));
 		mav.addObject("rowPerPage", param.getRowPerPage());
+		
+		if(param.getCustomerId() !=null && param.getCustomerId() > 0) {
+			
+			mav.addObject("customerYN", "Y");
+		} else {
+			mav.addObject("customerYN", "N");
+		}
 		
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.cash"));	 		
 		

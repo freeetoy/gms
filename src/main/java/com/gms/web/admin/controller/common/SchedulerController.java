@@ -24,8 +24,7 @@ public class SchedulerController {
 		logger.info("************* ScheduleController scheduleDaily Start *************");
 		int result = scheduleService.registerDailyStatistics();		
 		
-		logger.info("******************* ScheduleController scheduleDaily End*************** ");
-		
+		logger.info("******************* ScheduleController scheduleDaily End*************** ");		
 	}
 	
 	 

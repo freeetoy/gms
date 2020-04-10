@@ -24,8 +24,10 @@ import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.common.web.utils.SessionUtil;
 import com.gms.web.admin.domain.common.LoginUserVO;
 import com.gms.web.admin.domain.manage.OrderVO;
+import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.service.common.LoginService;
 import com.gms.web.admin.service.manage.OrderService;
+import com.gms.web.admin.service.manage.UserService;
 
 
 @Controller
@@ -39,6 +41,9 @@ public class LoginController {
 	
 	@Autowired
 	private LoginService loginService;
+	
+	@Autowired
+	private UserService userService;
 	
 		
 	@RequestMapping(value="/login")
@@ -94,27 +99,43 @@ public class LoginController {
 	*/
 	
 	@RequestMapping(value="/loginAction.do")
-	public String loginAction(Model model,
+	public ModelAndView loginAction(Model model,
 			HttpServletRequest request
 			, HttpServletResponse response
 			, LoginUserVO param) {
 		
 		logger.info("LoginContoller loginAction Start");
 		
-		//ModelAndView mav = new ModelAndView();				
+		ModelAndView mav = new ModelAndView();		
 		
-		LoginUserVO user = loginService.getUserInfo(param);
+		UserVO user = userService.getUserDetails(param.getUserId());
+		String alertMessage = "로그인 되었습니다.";
 		
-		HttpSession session = request.getSession();
+		if(user != null) {
 		
-		if(user!= null) {
-			logger.debug("LoginContoller loginAction userNm "+user.getUserNm());			
-			logger.debug("LoginContoller loginAction userAuthoriy "+user.getUserAuthority());
-			logger.debug("LoginContoller loginAction userPart "+user.getUserPartCd());
-			user.setUserId(param.getUserId());
-			session.setAttribute(LoginUserVO.ATTRIBUTE_NAME, user);		
+			LoginUserVO loginUser = loginService.getUserInfo(param);
 			
-			session.setAttribute("userId", user.getUserId());		
+			HttpSession session = request.getSession();
+			
+			if(loginUser!= null && loginUser.getUserId() != null) {
+				logger.debug("LoginContoller loginAction userNm "+loginUser.getUserNm());			
+				//logger.debug("LoginContoller loginAction userAuthoriy "+user.getUserAuthority());
+				//logger.debug("LoginContoller loginAction userPart "+user.getUserPartCd());
+				loginUser.setUserId(param.getUserId());
+				session.setAttribute(LoginUserVO.ATTRIBUTE_NAME, loginUser);		
+				
+				session.setAttribute("userId", loginUser.getUserId());		
+				
+				RequestUtils.responseWriteException(response, alertMessage, "/gms/start");
+			}else {
+				alertMessage = "비밀번호를 확인해주세요";			
+				
+				RequestUtils.responseWriteException(response, alertMessage, "/login");
+			}
+		}else {
+			alertMessage = "사용자 정보가 없습니다. 아이디를 확인해주세요";			
+			
+			RequestUtils.responseWriteException(response, alertMessage, "/login");
 		}
 			/*
 		
@@ -128,7 +149,8 @@ public class LoginController {
 			RequestUtils.responseWriteException(response, alertMessage, RETURN_LOGINPAGE);
 		}
 		*/
-		return "redirect:/gms/start"; //gms/order/list.do";
+		return null;
+		//return "redirect:/gms/start"; //gms/order/list.do";
 		
 	}
 	@RequestMapping(value="/api/loginAction.do")

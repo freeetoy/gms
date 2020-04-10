@@ -162,7 +162,9 @@ $(function() {
                     <tr>
                       <th>날짜</th>
                       <th>판매건수</th>
-                      <th>판매금액</th>
+                      <th>판매금액(원)</th>
+                      <th>입금액(원)</th>
+                      <th>미수금액(원)</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -171,6 +173,12 @@ $(function() {
                       <td th:text="${row.orderCount}"></td>
                       <td th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
                       <td th:unless="${row.orderAmount> 0 }" th:text="${row.orderAmount}">
+                      </td>
+                      <td th:if="${row.incomeAmount> 0 }" th:text="${#numbers.formatInteger(row.incomeAmount, 3, 'COMMA')}">
+                      <td th:unless="${row.incomeAmount> 0 }" th:text="${row.incomeAmount}">
+                      </td>
+                      <td th:if="${row.receivableAmount> 0 }" th:text="${#numbers.formatInteger(row.receivableAmount, 3, 'COMMA')}">
+                      <td th:unless="${row.receivableAmount> 0 }" th:text="${row.receivableAmount}">
                       </td>                      
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( statCustomerList )}">

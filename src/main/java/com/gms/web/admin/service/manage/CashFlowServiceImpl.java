@@ -95,8 +95,12 @@ public class CashFlowServiceImpl implements CashFlowService {
 				
 		}
 		
-		int sCount = cashMapper.selectCashFlowCount(map);
+		int sCount = 0;
 		
+		if(param.getCustomerId() != null && param.getCustomerId() > 0)
+			sCount = cashMapper.selectCashFlowCount(map);
+		else
+			sCount = cashMapper.selectAllCashFlowCount(map);
 		//int lastPage = (int)(Math.ceil(userCount/ROW_PER_PAGE));
 		int lastPage = (int)((double)sCount/ROW_PER_PAGE+0.95);
 		
@@ -120,10 +124,12 @@ public class CashFlowServiceImpl implements CashFlowService {
 		//수정 end
 		Map<String, Object> resutlMap = new HashMap<String, Object>();
 		
-		List<CashFlowVO> cashList = cashMapper.selectCashFlowList(map);		
-		logger.debug("****** getCashFlowList *****start===*");	
-		logger.debug("****** getCashFlowList *****currentPage="+currentPage);	
-		logger.debug("****** getCashFlowList *****lastPage="+lastPage);	
+		List<CashFlowVO> cashList = null;
+		if(param.getCustomerId() != null  && param.getCustomerId() > 0)
+			cashList = cashMapper.selectCashFlowList(map);	
+		else
+			cashList = cashMapper.selectAllCashFlowList(map);	
+		
 		
 		resutlMap.put("list",  cashList);
 		resutlMap.put("searchCreateDt",  searchCreateDt);

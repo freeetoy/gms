@@ -302,8 +302,9 @@ $(function() {
                     </tr>
                   -->
                     <tr>
-                      <th>순번</th>
+                      <th>순번</th>                      
                       <th>등록일</th>
+                      <th th:if="${customerYN=='N'}" >거래처</th>
                       <th>미수금</th>
                       <th>입금</th>
                       <th>입금방법</th>                      
@@ -315,6 +316,7 @@ $(function() {
                   	<tr th:if="${not #lists.isEmpty( list )}" th:each="row : ${list}"  style="font-size:14px;">
                       <td th:text="${totalCount-((currentPage-1) * rowPerPage) - list.indexOf(row)}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
+                      <th th:if="${customerYN=='N' }" th:text="${row.customerNm}" >거래처</th>
                       <th th:if="${row.receivableAmount> 999 }"  th:text="${#numbers.formatInteger(row.receivableAmount, 3, 'COMMA')}"></th> 
                       <th th:unless="${row.receivableAmount> 999 }"  th:text="${row.receivableAmount}"></th>                     
                       <th th:if="${row.incomeAmount> 999 }" th:text="${#numbers.formatInteger(row.incomeAmount, 3, 'COMMA')}"></th>
