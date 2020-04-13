@@ -327,11 +327,11 @@ $(function() {
                       </td>
                       <td> 
                       <a class="btn_select_process btn btn-info btn-xs" th:cashFlowSeq="${row.cashFlowSeq}" data-toggle="modal" data-target="#modal-default"  href="#"><i class="fas fa-check-circle"></i>수정 </a>
-                      <a class="btn btn-danger btn-xs" href="#" th:onclick="fn_delete([[ ${row.cashFlowSeq} ]])">
+                      <!---->   <a class="btn btn-danger btn-xs" href="#" th:onclick="fn_delete([[ ${row.cashFlowSeq} ]])"> 
                               <i class="fas fa-trash">
                               </i>
                               Delete
-                          </a>                          
+                          </a>                        
                       </td>
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( list )}">

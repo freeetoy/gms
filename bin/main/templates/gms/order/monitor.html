@@ -171,6 +171,7 @@ $(document).ready(function(){
                       <td th:text="${row.productNm}"></td>
                       <td th:text="${row.bottleCapa}"></td>
                       <th th:text="${row.bottleWorkCdNm}"></th>                      
+                      <td th:text="|${row.bottleWorkNm}(${row.bottleWorkId})|"></td>      
                       <td th:text="${#calendars.format( row.bottleWorkDt, 'yyyy-MM-dd' )}"></td> 
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( bottleList )}">

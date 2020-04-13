@@ -119,7 +119,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, WorkReportVO params) {
 
-		logger.debug("WorkReportController getWorkReportList");
+		logger.debug("WorkReportController getWorkReportListAll");
 		
 		RequestUtils.initUserPrgmInfo(request, params);				
 		
@@ -127,7 +127,7 @@ public class WorkReportController {
 		
 		params.setUserId(params.getCreateId());		
 		
-		logger.debug("WorkReportController getWorkReportList User_id= "+ params.getUserId());
+		//logger.debug("WorkReportController getWorkReportListAll User_id= "+ params.getUserId());
 		
 		/*
 		LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);
@@ -145,9 +145,7 @@ public class WorkReportController {
 		
 		if(params.getSearchUserId() == null && userList.size() > 0) params.setSearchUserId(userList.get(0).getUserId());
 		
-		List<WorkReportViewVO> workList = workService.getWorkReportListAll(params);
-		
-		logger.debug("WorkReportController getWorkReportList workList.size="+workList.size());
+		List<WorkReportViewVO> workList = workService.getWorkReportListAll(params);		
 		
 		mav.addObject("workList", workList);	
 		mav.addObject("searchDt", params.getSearchDt());	
@@ -222,13 +220,13 @@ public class WorkReportController {
 		
 		int result =0;
 		try {	
-			
+			/*
 			WorkReportVO work = new WorkReportVO();
 			
 			//work.setOrderId(params.getOrderId());
 			//work.setBottlesIds(params.getBottleIds());
 			//work.setBottleWorkCd(params.getBottleWorkCd());
-			
+			*/
 			result = workService.registerWorkReportNoOrder(params);					
 
 			//mav.setViewName("/gms/mypage/assign");			
@@ -367,8 +365,7 @@ public class WorkReportController {
 				RequestUtils.responseWriteException(response, alertMessage, "/gms/report/list.do");
 			
 		}
-		return null;
-		
+		return null;		
 	}
 	
 }

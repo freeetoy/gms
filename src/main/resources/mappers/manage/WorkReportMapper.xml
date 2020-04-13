@@ -286,19 +286,22 @@
 	</select>
 	
 	<select id="selectWorkReportListAll" resultType="com.gms.web.admin.domain.manage.WorkBottleVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
-		SELECT Product_Count,Work_Report_Seq, AA.Customer_ID,Customer_nm  , AA.Product_ID  ,Product_NM , AA.Product_Price_Seq ,Product_Capa    
-		,Bottle_work_Cd, CD_NM Bottle_work_Cd_NM, AA.Order_Id, Order_Total_Amount,AA.Product_Price
+		SELECT Product_Count,Work_Report_Seq, AA.Customer_ID,Customer_nm  
+			, AA.Product_ID  ,Product_NM , AA.Product_Price_Seq ,Product_Capa    
+			, Bottle_work_Cd, CD_NM Bottle_work_Cd_NM
+			, AA.Order_Id, Order_Total_Amount,AA.Product_Price
 		FROM TB_CODE TC, TB_Customer TS, tb_product TP, tb_product_price TPP, (
-			SELECT Count(TB.Product_Price_Seq) Product_Count, TB.Work_Report_Seq, TB.Customer_ID, TB.Product_ID, TB.Product_Price_Seq, Bottle_work_Cd,Product_Price, Order_Id
-			FROM tb_work_bottle TB, tb_work_report TW
-			WHERE tb.Work_Report_Seq  = tw.Work_Report_Seq
-			AND User_id = #{searchUserId}
-			AND Bottle_WorK_CD in ('0308','0309', '0310')
-			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
-			AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
-			</if>
-			group by TB.Work_Report_Seq, TB.Customer_ID  , TB.Product_ID   , TB.Product_Price_Seq   ,Bottle_work_Cd
-		) AA left join TB_Order TR on AA.Order_Id = TR.Order_Id
+				SELECT Count(TB.Product_Price_Seq) Product_Count, 
+				TB.Work_Report_Seq, TB.Customer_ID, TB.Product_ID, TB.Product_Price_Seq, Bottle_work_Cd,Product_Price, Order_Id
+				FROM TB_Work_Bottle TB, TB_Work_Report TW
+				WHERE TB.Work_Report_Seq  = TW.Work_Report_Seq
+				AND User_id = #{searchUserId}
+				AND Bottle_WorK_CD in ('0308','0309', '0310')
+				<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
+				AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
+				</if>
+				Group By TB.Work_Report_Seq, TB.Customer_ID  , TB.Product_ID   , TB.Product_Price_Seq   ,Bottle_work_Cd
+			) AA Left Join TB_Order TR on AA.Order_Id = TR.Order_Id
 		WHERE AA.Bottle_Work_Cd = TC.CD_ID
 		AND AA.Customer_ID 		= TS.Customer_ID
 		AND AA.Product_ID 		= TP.Product_ID
@@ -461,7 +464,8 @@
 					, Product_Nm
 					, TP.Product_Capa Bottle_Capa
 					, TWB.Bottle_Work_CD
-					, USER_ID Bottle_Work_ID
+					, TWB.Create_ID Bottle_Work_ID
+					, User_Nm Bottle_Work_Nm
 					, TWB.Customer_ID
 					, TW.Order_ID
 					, TWB.Bottle_Type
@@ -472,7 +476,7 @@
 					, TW.UPDATE_DT
 					, CD_NM Bottle_Work_CD_NM
 				FROM
-					TB_Work_Bottle TWB,TB_Work_Report TW, TB_CODE TC, TB_Product TG, TB_Product_Price TP
+					TB_Work_Bottle TWB,TB_Work_Report TW, TB_CODE TC, TB_Product TG, TB_Product_Price TP, TB_User TU
 				WHERE
 					TWB.Work_Report_Seq = TW.Work_Report_Seq
 				AND 
@@ -483,6 +487,8 @@
 					TWB.Product_ID = TP.Product_Id
 				AND
 					TWB.Product_Price_Seq = TP.Product_Price_Seq
+				AND	
+					TW.CREATE_ID= TU.User_ID
 			) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID	
 		) C
 		WHERE 1 = 1
@@ -558,7 +564,8 @@
 					, Product_Nm
 					, TP.Product_Capa Bottle_Capa
 					, TWB.Bottle_Work_CD
-					, USER_ID Bottle_Work_ID
+					, TWB.Create_ID Bottle_Work_ID
+					, User_Nm Bottle_Work_Nm
 					, TWB.Customer_ID
 					, TW.Order_ID
 					, TWB.Bottle_Type
@@ -569,7 +576,7 @@
 					, TW.UPDATE_DT
 					, CD_NM Bottle_Work_CD_NM
 				FROM
-					TB_Work_Bottle TWB,TB_Work_Report TW, TB_CODE TC, TB_Product TG, TB_Product_Price TP
+					TB_Work_Bottle TWB,TB_Work_Report TW, TB_CODE TC, TB_Product TG, TB_Product_Price TP, TB_User TU
 				WHERE
 					TWB.Work_Report_Seq = TW.Work_Report_Seq
 				AND 
@@ -582,9 +589,11 @@
 					TWB.Product_ID = TP.Product_Id
 				AND
 					TWB.Product_Price_Seq = TP.Product_Price_Seq
+				AND	
+					TW.CREATE_ID= TU.User_ID
 				<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchWorkCd)">
-			AND TWB.Bottle_Work_CD =  #{searchWorkCd}
-			</if>	
+				AND TWB.Bottle_Work_CD =  #{searchWorkCd}
+				</if>	
 			) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID	
 		) C
 		WHERE 1 = 1								

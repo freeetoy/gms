@@ -383,13 +383,12 @@ public class BottleController {
 		
 		ModelAndView mav = new ModelAndView();
 		RequestUtils.initUserPrgmInfo(request, params);
-		
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.bottle"));
 		int result = 0;
+		
 		try {
 			//임시
 			params.setMemberCompSeq(1);
-			
+			mav.addObject("menuId", PropertyFactory.getProperty("common.menu.bottle"));
 			//ID 중복체크
 			
 			result = bottleService.registerBottle(params);
@@ -465,10 +464,6 @@ public class BottleController {
 		logger.info("BottleContoller modifyBottle");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
-						
-		//logger.debug("BottleContoller searchChargeDt "+ params.getSearchChargeDt());
-		//logger.debug("BottleContoller searchGasId "+ params.getSearchGasId());
-		//logger.debug("BottleContoller searchBottleId "+ params.getSearchBottleId());
 		
 		String searchChargetDt = params.getSearchChargeDt();	
 		
@@ -490,8 +485,7 @@ public class BottleController {
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.bottle"));
 		
 		String searchProductId = "";
-		if(params.getSearchProductId() != null ) searchProductId = params.getSearchProductId();
-		
+		if(params.getSearchProductId() != null ) searchProductId = params.getSearchProductId();		
 		
 		try {
 						
@@ -796,8 +790,7 @@ public class BottleController {
 			if(searchChargetDt != null && searchChargetDt.length() > 20) {
 				
 				//logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
-				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
-				
+				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;				
 				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
 				
 				params.setSearchChargeDtFrom(searchChargeDtFrom);

@@ -43,9 +43,7 @@ public class BottleServiceImpl implements BottleService {
 	
 	@Override
 	public Map<String,Object> getBottleList(BottleVO param) {
-		logger.debug("****** getBottleList *****start===*");
-		
-		
+		logger.debug("****** getBottleList *****start===*");		
 		logger.debug("****** getBottleList *****param.getSearchBottleId===*" + param.getSearchBottleId());
 		logger.debug("****** getBottleList *****param.getSearchWorkCd===*" + param.getSearchWorkCd());
 		
@@ -158,8 +156,7 @@ public class BottleServiceImpl implements BottleService {
 	
 	@Override
 	public List<BottleVO> getBottleListToExcel(BottleVO param) {
-		logger.debug("****** getBottleListToExcel *****start===*");		
-		
+		logger.debug("****** getBottleListToExcel *****start===*");				
 		logger.debug("****** getBottleListToExcel *****param.getMenuType===*" + param.getMenuType());		
 		
 		Map<String, Object> map = new HashMap<String, Object>();			
@@ -468,7 +465,6 @@ public class BottleServiceImpl implements BottleService {
 		
 		return result;
 	}
-
 	
 	
 	@Override

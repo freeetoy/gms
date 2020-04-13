@@ -88,7 +88,7 @@
 		AND
 			Delete_YN 	= 'N'
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCreateDt)">
-		AND date_format(Create_Dt,'%Y/%m/%d')  between  #{searchCreateDtFrom} AND  #{searchCreateDtEnd} 
+		AND date_format(Create_Dt,'%Y/%m/%d  %H')  between  #{searchCreateDtFrom} AND  #{searchCreateDtEnd} 
 		</if>			
 	</select>
 	
@@ -102,7 +102,7 @@
 		AND
 			Delete_YN 	= 'N'		
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCreateDt)">
-		AND date_format(Create_Dt,'%Y/%m/%d')  between  #{searchCreateDtFrom} AND  #{searchCreateDtEnd} 
+		AND date_format(Create_Dt,'%Y/%m/%d  %H')  between  #{searchCreateDtFrom} AND  #{searchCreateDtEnd} 
 		</if>		
 		ORDER BY Create_Dt DESC 
 		Limit #{startRow}, #{rowPerPage}
@@ -120,7 +120,7 @@
 		AND
 			Customer_Status = 2
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCreateDt)">
-		AND date_format(Create_Dt,'%Y/%m/%d')  between  #{searchCreateDtFrom} AND  #{searchCreateDtEnd} 
+		AND date_format(TF.Create_Dt,'%Y/%m/%d  %H')  between  #{searchCreateDtFrom} AND  #{searchCreateDtEnd} 
 		</if>			
 	</select>
 	
@@ -146,7 +146,7 @@
 		AND
 			Customer_Status = 2
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCreateDt)">
-		AND date_format(Create_Dt,'%Y/%m/%d')  between  #{searchCreateDtFrom} AND  #{searchCreateDtEnd} 
+		AND date_format(TF.Create_Dt,'%Y/%m/%d %H')  between  #{searchCreateDtFrom} AND  #{searchCreateDtEnd} 
 		</if>		
 		ORDER BY TF.Create_Dt DESC 
 		Limit #{startRow}, #{rowPerPage}

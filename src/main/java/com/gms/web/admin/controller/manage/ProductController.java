@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,13 +84,12 @@ public class ProductController {
 		
 		logger.debug("ProductContoller registerProduct");
 		try {
-			//임시
-			
+	/*			
 			logger.debug("ProductContoller registerProductgetGasId ==="+req.getParameter("gasId"));
 			logger.debug("ProductContoller registerProduct getPrductNm ==="+req.getParameter("productNm"));
 			logger.debug("ProductContoller registerProduct productPrice_0 ==="+req.getParameter("productPrice_0"));
 			logger.debug("ProductContoller registerProduct priceCount ==="+req.getParameter("priceCount"));
-			
+	*/		
 			int priceCount  = Integer.parseInt(req.getParameter("priceCount"));
 			ProductVO params = new ProductVO();			
 			
@@ -101,8 +101,7 @@ public class ProductController {
 			if(req.getParameter("gasId").equals("0")) params.setGasId(0);
 			else params.setGasId(Integer.parseInt(req.getParameter("gasId")));
 			params.setMemberCompSeq(1);
-			//int productId = productService.registerProduct(params);
-			logger.debug("ProductContoller registerProduct params.getGasId()d ==="+params.getGasId());
+			//int productId = productService.registerProduct(params);			
 			
 			ProductPriceVO[] priceVo = new ProductPriceVO[priceCount] ;			
 			
@@ -121,8 +120,7 @@ public class ProductController {
 			result = productService.registerProduct(params, priceVo);
 			
 			if (result == false) {
-				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
-				
+				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달				
 			}	
 			
 		} catch (DataAccessException e) {
@@ -140,25 +138,29 @@ public class ProductController {
 	public String updateProductForm(ProductVO params, Model model) {
 		logger.debug("ProductContoller updateProduct");
 		
-		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.product"));
-		
 		try {
 
 			// 가스 정보 불러오기
 			List<GasVO> gasList = gasService.getGasList();
 			model.addAttribute("gasList", gasList);
-						
-			logger.debug("******params.getProductId()()) *****===*"+params.getProductId());
 			//Product 정보
 			ProductVO productVo = productService.getProductDetails(params.getProductId());			
 			model.addAttribute("product", productVo);
 			
 			//ProductPrice 정보
 			List<ProductPriceVO> productPriceList = productService.getProductPriceList(params.getProductId());
-			logger.debug("******getProductPriceList*****= size==*"+productPriceList.size());			
-			logger.debug("******getProductPriceList*****= getProductCapa==*"+productPriceList.get(0).getProductCapa());
 			
+			StringBuffer productPriceSeqs = new StringBuffer();
+			
+			for(int i=0 ; i< productPriceList.size() ; i++) {
+				productPriceSeqs .append(productPriceList.get(i).getProductPriceSeq().toString());
+				productPriceSeqs .append(",");
+				
+			}
+			model.addAttribute("productPriceSeqs", productPriceSeqs.toString());	
 			model.addAttribute("productPriceList", productPriceList);			
+			
+			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.product"));
 			
 		} catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -175,13 +177,12 @@ public class ProductController {
 	public String modifyProduct(HttpServletRequest req) {
 		logger.debug("ProductContoller modifyProduct");
 		try {
-			//임시
-			
+	/*		
 			logger.debug("ProductContoller modifyProduct getGasId ==="+req.getParameter("gasId"));
 			logger.debug("ProductContoller modifyProduct getPrductNm ==="+req.getParameter("productNm"));
 			logger.debug("ProductContoller modifyProduct productPrice_0 ==="+req.getParameter("productPrice_0"));
 			logger.debug("ProductContoller modifyProduct priceCount ==="+req.getParameter("priceCount"));
-			
+	*/		
 			int priceCount  = Integer.parseInt(req.getParameter("priceCount"));
 			ProductVO params = new ProductVO();		
 			
@@ -196,35 +197,43 @@ public class ProductController {
 			params.setMemberCompSeq(1);
 			//int productId = productService.registerProduct(params);
 			
-			logger.debug("ProductContoller registerProduct params.getGasId()d ==="+params.getGasId());
+			//ProductPrice 정보
+			List<ProductPriceVO> productPriceList = productService.getProductPriceList(params.getProductId());
+			Integer lastPriceSeqInt = productPriceList.get(productPriceList.size()-1).getProductPriceSeq();
+			int lastPriceSeq = lastPriceSeqInt.intValue();			
 			
 			ProductPriceVO[] priceVo = new ProductPriceVO[priceCount] ;
 						
-			int lastPriceSeq=0;
-			for(int i =0 ; i < priceCount ; i++ ) {
+			int listIndex=0;
+			int Max_Product_Count = 11 ;
+			//int lastPriceSeq=0;
+			for(int i =0 ; i < Max_Product_Count ; i++ ) {
 				ProductPriceVO priceVo1 = new ProductPriceVO();
 				result = false;
-			
+				
 				RequestUtils.initUserPrgmInfo(req, priceVo1);
 				
-				if(req.getParameter("productPriceSeq_"+i)!=null) {
+				if(req.getParameter("productPriceSeq_"+i) != null) {
+					//logger.debug("ProductContoller registerProduct req.getParameter(\"productPriceSeq_\"+i)==="+req.getParameter("productPriceSeq_"+i));
 				//priceVo1.setProductId(Integer.valueOf(productId));
 					priceVo1.setProductId(Integer.parseInt(req.getParameter("productId")));					
 					priceVo1.setProductPriceSeq(Integer.parseInt(req.getParameter("productPriceSeq_"+i)));				
 					priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));
 					priceVo1.setProductCapa(req.getParameter("productCapa_"+i));
 					
-					priceVo[i] = priceVo1;		
+					priceVo[listIndex++] = priceVo1;		
 					
-					lastPriceSeq = Integer.parseInt(req.getParameter("productPriceSeq_"+i));
+					//lastPriceSeq = Integer.parseInt(req.getParameter("productPriceSeq_"+i));
 				}else {
-					priceVo1.setProductId(Integer.parseInt(req.getParameter("productId")));			
-					priceVo1.setProductPriceSeq(++lastPriceSeq);	
-					priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));
-					priceVo1.setProductCapa(req.getParameter("productCapa_"+i));
-					priceVo1.setCreateId(params.getCreateId());
-					
-					priceVo[i] = priceVo1;
+					if(req.getParameter("productPrice_"+i) !=null) {
+						priceVo1.setProductId(Integer.parseInt(req.getParameter("productId")));			
+						priceVo1.setProductPriceSeq(++lastPriceSeq);	
+						priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));
+						priceVo1.setProductCapa(req.getParameter("productCapa_"+i));
+						priceVo1.setCreateId(params.getCreateId());
+						
+						priceVo[listIndex++] = priceVo1;
+					}
 				}
 			}
 			
@@ -249,8 +258,6 @@ public class ProductController {
 	@RequestMapping(value = "/gms/product/delete.do")
 	public String deleteProduct(@RequestParam(value = "productId", required = false) Integer productId, Model model) {
 
-		logger.debug("******deleteProduct params.getProductId()()) *****===*"+productId);
-		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.product"));
 		
 		try { 
@@ -270,33 +277,30 @@ public class ProductController {
 		} catch (Exception e) {
 			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();
-		}
-		
+		}		
 		
 		return "redirect:/gms/product/list.do";
 	}
 	
 	
 	@RequestMapping(value = "/gms/product/modifyPrice.do")
-	public String modifyProductPriceStatus(Integer productId, Integer productPriceSeq, String productStatus,Model model) {
+	public String modifyProductPriceStatus(HttpServletRequest request
+			, HttpServletResponse response,
+			ProductPriceVO params, Model model) {
 		
-		ProductPriceVO params = new ProductPriceVO();
-		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.product"));
-
-		logger.debug("******modifyProductPriceStatus params.getProductId()()) *****===*"+productId);
-		logger.debug("******modifyProductPriceStatus params.productPriceSeq()()) *****===*"+productPriceSeq);
+		RequestUtils.initUserPrgmInfo(request, params);
 		
-		try { 
-			//임시6
-			params.setProductId(productId);
-			params.setProductPriceSeq(productPriceSeq);
-			params.setProductStatus(productStatus);
+		//ProductPriceVO params = new ProductPriceVO();
+		
+		
+		try { 			
 			
 			boolean result = productService.modifyProductPriceStatus(params);
 			
 			if (result == false) {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			}
+			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.product"));
 			
 			List<ProductTotalVO> productList = productService.getProductTotalList();
 			model.addAttribute("productList", productList);

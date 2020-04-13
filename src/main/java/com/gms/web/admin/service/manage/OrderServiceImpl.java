@@ -49,8 +49,6 @@ public class OrderServiceImpl implements OrderService {
 	public Map<String, Object> getOrderList(OrderVO param) {
 		logger.debug("****** getOrderList *****start===*");		
 		
-		logger.debug("****** getOrderList *****param.getRowPerPage===*" + param.getRowPerPage());
-		
 		int currentPage = param.getCurrentPage();
 		int ROW_PER_PAGE = param.getRowPerPage();
 		
@@ -751,7 +749,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	@Transactional
 	public int registerOrderProducts(List<OrderProductVO> orderProduct) {
-		logger.debug("****** registerOrderProduct.getOrderI()) *****===*");
+		logger.debug("****** registerOrderProduct.statr");
 		int result = 0;
 		result =  orderMapper.insertOrderProducts(orderProduct);		
 		//if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());

@@ -71,13 +71,17 @@ public class CashFlowController {
 		RequestUtils.initUserPrgmInfo(request, param);		
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.cash"));
 		
+		Integer customerId=0;
+		if(param.getCustomerId()!=null && param.getCustomerId() > 0)
+			customerId=param.getCustomerId();
+		
 		int result = 0;
 		//TODO 판매완료된 상품 주문 수정 안되게 처리
 		
 		result = cashService.deleteCashFlow(param);
 		if(result > 0){
 			String alertMessage = "삭제되었습니다.";
-			RequestUtils.responseWriteException(response, alertMessage, "/gms/cash/list.do?currentPage="+param.getCurrentPage()+"&customerId="+param.getCustomerId()+"&searchCreateDt="+param.getSearchCreateDt() );
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/cash/list.do?currentPage="+param.getCurrentPage()+"&customerId="+customerId+"&searchCreateDt="+param.getSearchCreateDt() );
 		}
 		return null;
 	}
@@ -86,14 +90,14 @@ public class CashFlowController {
 	public ModelAndView getCashFlowList(CashFlowVO param) {
 
 		logger.debug("CashFlowController getCashFlowList");
-		logger.debug("CashFlowController customerId="+param.getCustomerId());
 		
 		ModelAndView mav = new ModelAndView();		
 				
 		Map<String, Object> map = cashService.getCashFlowList(param);
 		
 		mav.addObject("list", map.get("list"));		
-		mav.addObject("customerId", param.getCustomerId());	
+		if(param.getCustomerId()!=null && param.getCustomerId() >0)
+			mav.addObject("customerId", param.getCustomerId());	
 	
 		String searchCreateDt = param.getSearchCreateDt();	
 		mav.addObject("searchCreateDt", param.getSearchCreateDt());		

@@ -289,10 +289,11 @@ public class ProductServiceImpl implements ProductService {
 
 		// 정보 등록
 		int result = 0;
-		logger.info("****** modifyProductPriceStatus.getProductId()()) *****===*"+param.getProductId());
-		logger.debug("****** modifyProductPriceStatus.getProductPriceSeq()()) *****===*"+param.getProductPriceSeq());
 		
 		result = productMapper.updateProductPriceStatus(param);
+		if(param.getProductPriceSeq() == 1 && param.getProductStatus().equals("0")) {
+			result = productMapper.deleteProductStatus(param);
+		}
 		if (result > 0) {
 			successFlag = true;
 		}

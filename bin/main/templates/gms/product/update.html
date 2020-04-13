@@ -15,7 +15,7 @@ function validationOfForm(form) {
         /* TEXT */    console.log(gasId.options[gasId.selectedIndex].text);
 
    // }
-	alert("gasId=="+gasId.value);
+	//alert("gasId=="+gasId.value);
 	form
 	var result = (
 			   isValid(form.productNm, "상품명", null, null)
@@ -60,45 +60,11 @@ function callAjax(ajaxInfo){
 	return dfd.promise();
 }
 
-/*
-var fn_modifyGas = function(gasId){
 
-	var ajaxInfo ={
-		type:"POST",
-		url:"/gms/gas/detail.do",
-		data:{
-			gasId : gasId
-		},
-		dataType: "json",
-	};
-	
-	ajax = callAjax(ajaxInfo);
-	
-	ajax.done(function(data){
-		console.log(data);
-	
-		console.log("####gasCd---"+data.gasCd);		
-		
-		$("#gasId").val(data.gasId);
-		$("#gasNm").val(data.gasNm);
-		$("#gasCd").val(data.gasCd);
-		//document.form1.gasNm1.value=data.gasNm;
-			
-		if(data.result == "fail"){
-			alert("가스가 존재하지 않습니다");			
-			return;
-		}
-		
-	});
-
-};
-*/
 
 $(document).ready(function(){ 
 
-	
-	var counter = [[${productPriceList.size()}]]-1;
-	
+	var counter = [[${productPriceList.size()}]]-1;	
 	
 	$("#addrow").on("click", function () {
         counter++;
@@ -110,7 +76,6 @@ $(document).ready(function(){
           return false;
 
         }
-     
         var newRow = $("<tr>");
         var cols = "";
 
@@ -119,18 +84,15 @@ $(document).ready(function(){
 		cols += '</td><td>';
 		cols += '<input type="text" class="form-control" id="productCapa_'+ counter + '" name="productCapa_'+ counter + '" placeholder="상품용량">';
         cols += '</td><td>';
-        cols += ' <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" value="삭제" />';
+        cols += ' <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" value="삭제" /> ';
         cols += '</td>';
 
-        cols +='</tr>';
-        
+        cols +='</tr>';        
 
         newRow.append(cols);
         
-        console.log("newRow=="+newRow);
         $("#priceCount").val(counter+1);
         $("table.doc-list").append(newRow);
-
      
     });
 
@@ -145,7 +107,7 @@ $(document).ready(function(){
           return false;
         }
      
-        var newRow = $("<tr>");
+        var newRow = $("<tr id='+mod_counter+'>");
         var cols = "";
 
         cols += '<td style="padding-left:0px;">';
@@ -216,6 +178,7 @@ $(document).ready(function(){
               <input type="hidden" id="priceCount" name="priceCount" th:value="${productPriceList.size()}">
               <input type="hidden" id="productId" name="productId" th:value="${product.productId}">
               <input type="hidden" id="deleteProductPriceSeq" name="deleteProductPriceSeq" value="">
+              <input type="hidden" id="productPriceSeqs" name="productPriceSeqs" th:value="${productPriceSeqs}">
                 <table class="table table-hover">
                   <thead>
                       <th class="card-footer">상품명</th>
@@ -261,7 +224,7 @@ $(document).ready(function(){
                        </td>   
                        <td>
                        <input type="button" class="btn btn-default btn-success" id="addrow" th:if="${productPriceList.indexOf(row)==0}" selected value="추가" />
-                       <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" th:unless="${productPriceList.indexOf(row)==0}" selected value="삭제" />
+                       <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" th:unless="${productPriceList.indexOf(row)==0}" selected value="삭제" /> 
                        </td>
                        </tr>
                      </table>

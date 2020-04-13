@@ -95,9 +95,8 @@ public class ApiServiceImpl implements ApiService {
 			param.setCustomerId(customer.getCustomerId());
 		
 		}else {
-			if(bottleList.size() > 0 ) param.setCustomerId(bottleList.get(0).getCustomerId());
-		}
-		
+			//if(bottleList.size() > 0 ) param.setCustomerId(bottleList.get(0).getCustomerId());
+		}		
 		
 		param.setUserId(param.getCreateId());
 		

@@ -20,8 +20,7 @@ public class ExcelDownloadServiceImpl implements ExcelDownloadService {
 	
 	@Override
 	public void download(BottleVO bottleVo, ResultRowDataHandler resultRowDataHandler) {
-		// TODO Auto-generated method stub
-		
+				
 		BottleVO result = bottleMapper.selectBottleDetail(bottleVo.getBottleId());
 		resultRowDataHandler.open(result);
 		resultRowDataHandler.handleResult((ResultContext<? extends BottleVO>) result);

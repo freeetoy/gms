@@ -90,9 +90,8 @@ public class CashFlowServiceImpl implements CashFlowService {
 			searchCreateDtEnd = searchCreateDt.substring(13, searchCreateDt.length()) ;
 			
 			map.put("searchCreateDt", searchCreateDt);	
-			map.put("searchCreateDtFrom", searchCreateDtFrom);	
-			map.put("searchCreateDtEnd", searchCreateDtEnd);	
-				
+			map.put("searchCreateDtFrom", searchCreateDtFrom+" 00");	
+			map.put("searchCreateDtEnd", searchCreateDtEnd+ " 23");					
 		}
 		
 		int sCount = 0;
@@ -102,6 +101,9 @@ public class CashFlowServiceImpl implements CashFlowService {
 		else
 			sCount = cashMapper.selectAllCashFlowCount(map);
 		//int lastPage = (int)(Math.ceil(userCount/ROW_PER_PAGE));
+		
+		//logger.debug("CashFlowService getCashFlowList sCount =="+sCount);
+		
 		int lastPage = (int)((double)sCount/ROW_PER_PAGE+0.95);
 		
 		if(currentPage >= (lastPage-4)) {
@@ -128,8 +130,7 @@ public class CashFlowServiceImpl implements CashFlowService {
 		if(param.getCustomerId() != null  && param.getCustomerId() > 0)
 			cashList = cashMapper.selectCashFlowList(map);	
 		else
-			cashList = cashMapper.selectAllCashFlowList(map);	
-		
+			cashList = cashMapper.selectAllCashFlowList(map);			
 		
 		resutlMap.put("list",  cashList);
 		resutlMap.put("searchCreateDt",  searchCreateDt);
@@ -150,6 +151,14 @@ public class CashFlowServiceImpl implements CashFlowService {
 
 	@Override
 	public int deleteCashFlow(CashFlowVO param) {
+		
+		int result=0;
+		
+		CashFlowVO cashFlow = cashMapper.selectCashFlow(param);	
+				
+		cashFlow.setIncomeAmount(param.getIncomeAmount() - cashFlow.getIncomeAmount());
+		
+		result = modifyWorkReceivedAmount(cashFlow);
 		
 		return cashMapper.deleteCashFlow(param);
 	}

@@ -31,6 +31,8 @@ public interface ProductMapper {
 	
 	public int updateProductPriceStatus(ProductPriceVO param);
 
+	public int deleteProductStatus(ProductPriceVO param);
+	
 	public int deleteProduct(Integer productId);
 	
 	public int deleteProductPrice(Integer productId);

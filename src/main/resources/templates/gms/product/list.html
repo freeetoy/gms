@@ -9,9 +9,13 @@
 	// end of function
 	
 	var fn_modifyProduct = function(productId, productPriceSeq, productStatus){
-		console.log(productId+"=="+productPriceSeq+"=="+productStatus);            
+		console.log(productId+"=="+productPriceSeq+"=="+productStatus);        
+		var strPriceSeq1 = "하위 모든 상품에 적용이 됩니다."
 		var strMessage= "삭제하시겠습니까?";
 		if(productStatus==1) strMessage = "판매중지하시겠습니까?";
+		if(productPriceSeq==1){
+			strMessage = strPriceSeq1 + strMessage;
+		}
 		if(confirm(strMessage)){	
 			
 			var form = document.createElement("form");
@@ -53,7 +57,6 @@
 		
 		return dfd.promise();
 	}
-	
 	
 
 </script>
@@ -112,12 +115,14 @@
                       <th th:if="${row.productPriceSeq == 1}" th:rowspan="${row.productPriceCount}" valign="top">
                       <a th:href="@{/gms/product/update.do( productId=${row.productId} )}" th:text="${row.ProductNm}"></a>
                       </th>
-                      <th th:text="${row.productCapa}"></th>
+                      <th th:if="${row.productPriceSeq == 1}" th:text="|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${row.productCapa}|">
+                      <th th:unless="${row.productPriceSeq == 1}" th:text="${row.productCapa}">
+                      </th>
                       <td th:text="${#numbers.formatInteger(row.productPrice, 3, 'COMMA')}"></td>
                       <td th:text="${row.CreateId}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
                       <td th:if="${session.LoginUser.userAuthority=='99'}" > 
-                      <a class="btn btn-danger btn-xs" href="#"  th:if="${row.productOrderCount==0}"  th:onclick="fn_modifyProduct([[ ${row.productId} ]],[[ ${row.productPriceSeq} ]], 0)"><i class="fas fa-trash"></i>삭제</a>
+                      <a class="btn btn-danger btn-xs" href="#"  th:if="${row.productOrderCount==0}"  th:onclick="fn_modifyProduct([[ ${row.productId} ]],[[ ${row.productPriceSeq} ]], 0)"><i class="fas fa-trash"></i>상품삭제</a>
                       <a class="btn btn-success btn-xs" href="#"  th:unless="${row.productOrderCount==0}"  th:onclick="fn_modifyProduct([[ ${row.productId} ]],[[ ${row.productPriceSeq} ]],1)"><i class="fas fa-ban"></i>판매중지</a>
                       </td>
                     </tr>
