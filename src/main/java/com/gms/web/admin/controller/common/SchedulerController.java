@@ -28,7 +28,7 @@ public class SchedulerController {
 	}
 	
 	 
-	@Scheduled(cron="0 30 12 1 * *")
+	@Scheduled(cron="0 30 06 1 * *")
 	private void scheduleMonthly() { 
 		logger.info("************* ScheduleController scheduleMonthly Start *************");
 		int result = scheduleService.registerMonthlyStatistics();	

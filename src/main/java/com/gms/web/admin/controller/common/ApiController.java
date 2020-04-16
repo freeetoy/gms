@@ -51,8 +51,7 @@ public class ApiController {
 		workReport.setCustomerNm(customerNm);		
 		workReport.setPhoneFlag(phoneCall);
 		workReport.setCreateId(userId);				
-		workReport.setUpdateId(userId);
-		
+		workReport.setUpdateId(userId);		
 		
 		if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.come"))) {
 			logger.debug("입고 start");
@@ -95,7 +94,10 @@ public class ApiController {
 			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0303"));
 			result = apiService.registerWorkReportForChangeCd(workReport);
 		}
-		return "success";
+		if(result > 0)
+			return "success";
+		else
+			return "fail";
 		//return null;
 	}
 

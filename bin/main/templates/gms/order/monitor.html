@@ -155,7 +155,8 @@ $(document).ready(function(){
                       <th>거래처</th>
                       <th>상품</th>
                       <th>용량</th>
-                      <th>작업</th>                      
+                      <th>작업</th>    
+                      <th>작업자</th>                  
                       <th>작업일</th>
                     </tr>
                   </thead>
@@ -172,7 +173,7 @@ $(document).ready(function(){
                       <td th:text="${row.bottleCapa}"></td>
                       <th th:text="${row.bottleWorkCdNm}"></th>                      
                       <td th:text="|${row.bottleWorkNm}(${row.bottleWorkId})|"></td>      
-                      <td th:text="${#calendars.format( row.bottleWorkDt, 'yyyy-MM-dd' )}"></td> 
+                      <td th:text="${#calendars.format( row.bottleWorkDt, 'yyyy-MM-dd HH:mm' )}"></td> 
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( bottleList )}">
 						<td colspan="8">조회된 결과가 없습니다.</td>

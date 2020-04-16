@@ -29,6 +29,8 @@ import com.gms.web.admin.service.manage.WorkReportService;
 public class ApiServiceImpl implements ApiService {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
+	
+	private final int CUSOTMER_NOT_EXIST = -3;
 
 	@Autowired
 	private WorkReportService workService;
@@ -44,7 +46,6 @@ public class ApiServiceImpl implements ApiService {
 	
 	@Override
 	public int registerWorkReportForSale(WorkReportVO param) {
-		// TODO Auto-generated method stub
 		
 		int result = 0;	
 		
@@ -57,7 +58,7 @@ public class ApiServiceImpl implements ApiService {
 			result = workService.registerWorkReportNoOrder(param);
 			
 		}else {
-			return result;
+			return CUSOTMER_NOT_EXIST;
 		}		
 				
 		return result;
@@ -90,9 +91,13 @@ public class ApiServiceImpl implements ApiService {
 				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0310")) ){
 		
 			//Customer 정보가져
-			CustomerVO customer = getCustomer(param.getCustomerNm());				
-			bottle.setCustomerId(customer.getCustomerId());
-			param.setCustomerId(customer.getCustomerId());
+			CustomerVO customer = getCustomer(param.getCustomerNm());		
+			if(customer !=null) {
+				bottle.setCustomerId(customer.getCustomerId());
+				param.setCustomerId(customer.getCustomerId());
+			}else {
+				return CUSOTMER_NOT_EXIST;
+			}
 		
 		}else {
 			//if(bottleList.size() > 0 ) param.setCustomerId(bottleList.get(0).getCustomerId());
@@ -124,7 +129,9 @@ public class ApiServiceImpl implements ApiService {
 			param.setCustomerId(customer.getCustomerId());
 			
 			result = workService.registerWorkNoBottle(param);		
-		}		
+		}else {
+			return CUSOTMER_NOT_EXIST;
+		}
 				
 		return result;
 	}
@@ -165,7 +172,9 @@ public class ApiServiceImpl implements ApiService {
 			}			
 			
 			result = cashService.registerCashFlow(param);		
-		}		
+		}else {
+			return CUSOTMER_NOT_EXIST;
+		}
 				
 		return result;
 	}

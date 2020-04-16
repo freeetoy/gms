@@ -185,17 +185,15 @@ public class WorkReportServiceImpl implements WorkReportService {
 				if((temp.getWorkReportSeq() - workBottle.getWorkReportSeq())==0) {
 					
 					temp.setCustomerId(workBottle.getCustomerId());
-					temp.setCustomerNm(workBottle.getCustomerNm());
-					
-					logger.debug("WorkReportServiceImpl getWorkReportList1 workBottle.getBottleWorkCd()= "+ workBottle.getBottleWorkCd());
+					temp.setCustomerNm(workBottle.getCustomerNm());					
 					
 					// 회수
 					if(workBottle.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0310"))) {
-						logger.debug("WorkReportServiceImpl getWorkReportList1 back workBottle.getProductId= "+ workBottle.getProductId());
+						//logger.debug("WorkReportServiceImpl getWorkReportList1 back workBottle.getProductId= "+ workBottle.getProductId());
 						temp.getBackBottles().add(workBottle);
 						
 					}else {
-						logger.debug("WorkReportServiceImpl getWorkReportList sales workBottle.getProductId= "+ workBottle.getProductId());
+						//logger.debug("WorkReportServiceImpl getWorkReportList sales workBottle.getProductId= "+ workBottle.getProductId());
 						temp.getSalesBottles().add(workBottle);
 					}
 					
@@ -206,7 +204,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 				}
 			}
 		}
-		logger.debug("WorkReportServiceImpl getWorkReportListAll viewList.size= "+ viewList.size());
+		//logger.debug("WorkReportServiceImpl getWorkReportListAll viewList.size= "+ viewList.size());
 		int totalAmount=0;
 		for(int i=0;i<viewList.size() ; i++) {
 			totalAmount = 0;

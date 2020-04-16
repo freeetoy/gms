@@ -677,15 +677,15 @@ $(document).ready(function(){
 			        </option>					        				
                  </select>
               </div>    
-              <div class="col-3">
+              <div class="col-1">
                 <button class="btn btn-navbar" type="button"><i class="fas fa-search"></i></button>           
               </div>  
                        
               <!-- >div class="col-1">
                		
               </div-->
-              <div class="col-2">
-              	<a class="btn btn-outline-primary btn-sm" href="/gms/order/write.do"><i class="far fa-edit"></i>주문등록</a>
+              <div align=right class="col-4">
+              	<a class="btn btn-outline-primary btn-sm" href="/gms/order/write.do"><i class="far fa-edit"></i>주문등록</a>&nbsp;
               		<a th:href="@{/gms/order/excelDownload.do( searchCustomerNm=${searchCustomerNm},searchOrderDt= ${searchOrderDt}  )}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>      
               	<!-- a href="/gms/order/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm"><i class="far fa-edit"></i>주문등록</button></a>
               	<a th:href="@{/gms/order/excelDownload.do( searchCustomerNm=${searchCustomerNm},searchOrderDt= ${searchOrderDt}  )}"><button type="button" class="btn btn-primary btn-sm float-righ"><i class="fas fa-download"></i>엑 셀</button></a> -->

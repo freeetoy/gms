@@ -85,7 +85,7 @@ public class StatisticsBottleController {
 		//검색어 셋팅
 		mav.addObject("searchStatDt", searchStatDt);		
 		
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_order"));	 		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_bottle"));	 		
 		
 		mav.setViewName("gms/statistics/bottle/daily");
 		
@@ -133,7 +133,7 @@ public class StatisticsBottleController {
 		//검색어 셋팅
 		mav.addObject("searchStatDt", searchStatDt);			
 		
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_order"));	 		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_bottle"));	 		
 		
 		mav.setViewName("gms/statistics/bottle/monthly");
 		

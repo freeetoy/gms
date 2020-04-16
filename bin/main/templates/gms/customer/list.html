@@ -149,20 +149,23 @@
 	              <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
 	               <input type="text" id="searchCustomerNm" name="searchCustomerNm" class="form-control" placeholder="search" th:value="${searchCustomerNm}">
 	           </div>               
-	           <div class="col-4">
+	           <div class="col-1">
 	                
 	                <a class="btn btn-navbar" href="#" onclick="javascript:goSearch();">
 	            		<i class="fas fa-search"></i></a>
 	          		</button>
 	           </form>
               </div>
+             <div align=right class="col-5">
+              		<a class="btn btn-outline-primary btn-sm" href="/gms/customer/write.do"><i class="far fa-edit"></i>거래처등록</a>&nbsp;
+              		<a th:href="@{/gms/customer/excelDownload.do( searchCustomerNm=${searchCustomerNm}  )}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>               
+              </div>
+              <!-- 
+              <div class="col-2">
+               		<a href="/gms/customer/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm"><i class="far fa-edit"></i>등록</button></a> &nbsp;
              
-              <div class="col-1">
-               		<a href="/gms/customer/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm"><i class="far fa-edit"></i>등록</button></a>
-              </div>
-              <div class="col-1">
               	<a th:href="@{/gms/customer/excelDownload.do( searchCustomerNm=${searchCustomerNm}  )}"><button type="button" class="btn  btn-primary btn-sm float-righ"><i class="far fa-file-excel"></i> 엑셀받기</button></a>
-              </div>
+              </div> -->
          </div>
         <div class="row">	
 	        <div class="col-12">

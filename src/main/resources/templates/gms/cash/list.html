@@ -152,7 +152,7 @@ $(function() {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>입금 & 미수금 목록</h1>
+            <h1>수금 현황</h1>
           </div>
           
         </div>
@@ -315,7 +315,7 @@ $(function() {
                   <tbody>
                   	<tr th:if="${not #lists.isEmpty( list )}" th:each="row : ${list}"  style="font-size:14px;">
                       <td th:text="${totalCount-((currentPage-1) * rowPerPage) - list.indexOf(row)}"></td>
-                      <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
+                      <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd HH:mm' )}"></td>
                       <th th:if="${customerYN=='N' }" th:text="${row.customerNm}" >거래처</th>
                       <th th:if="${row.receivableAmount> 999 }"  th:text="${#numbers.formatInteger(row.receivableAmount, 3, 'COMMA')}"></th> 
                       <th th:unless="${row.receivableAmount> 999 }"  th:text="${row.receivableAmount}"></th>                     

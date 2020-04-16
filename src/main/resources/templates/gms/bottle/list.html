@@ -996,7 +996,7 @@ $(document).ready(function(){
 			        </option>					        				
                  </select>
               </div>                   
-              <div class="col-2">
+              <div class="col-1">
                 <button class="btn btn-navbar" type="button">
 		            <i class="fas fa-search"></i>
 		          </button>
@@ -1005,8 +1005,8 @@ $(document).ready(function(){
               <!-- div class="col-1">
                		<a href="/gms/bottle/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">용기 등록</button></a>
               </div-->
-              <div class="col-2">
-              		<a class="btn btn-outline-primary btn-sm" href="/gms/bottle/write.do"><i class="far fa-edit"></i>용기등록</a>
+              <div align=right class="col-3">
+              		<a class="btn btn-outline-primary btn-sm" href="/gms/bottle/write.do"><i class="far fa-edit"></i>용기등록</a>&nbsp;
               		<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchProductId= ${searchProductId} ,searchChargeDt=${searchChargeDt},searchWorkCd=${searchWorkCd},menuType=1 )}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>               
               </div>
          </div>
