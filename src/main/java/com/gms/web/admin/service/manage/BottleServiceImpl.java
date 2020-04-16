@@ -166,6 +166,11 @@ public class BottleServiceImpl implements BottleService {
 			logger.debug("****** getBottleListToExcel *****searchGasId===*"+param.getSearchGasId());
 		}
 		
+		if(param.getSearchBottleId() != null) {
+			map.put("searchBottleId", param.getSearchBottleId());
+			logger.debug("****** getBottleListToExcel *****searchGasId===*"+param.getSearchBottleId());
+		}
+		
 		if(param.getSearchProductId() != null  ) {			
 			map.put("searchProductId", param.getSearchProductId());
 		}

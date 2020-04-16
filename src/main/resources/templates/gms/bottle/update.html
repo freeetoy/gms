@@ -301,10 +301,23 @@ var goList = function(){
                       <th><input type="text" class="form-control" id="bottleChargePrss" name="bottleChargePrss" th:value="${bottle.bottleChargePrss}"></th>
                     </tr>
                     <tr>
-                      <th class="card-footer">용기 소유</th>
-                      <th>             
-                      	<input type="radio" name="bottleOwnYn" id="bottleOwnYn" value="N" checked=""> 자사                                   
-                      	<input type="radio" name="bottleOwnYn" id="bottleOwnYn" value="Y"> 타사     
+                      <th th:text="${bottle.ownCustomerId}" class="card-footer">용기 소유</th>
+                      <th>
+						<select id="ownCustomerId" name="ownCustomerId" class="form-control">
+                          <option value="0">소유대리점</option>				    
+					        <option th:each="row : ${agencyList}"
+					                th:text="${row.customerNm}"
+					                th:value="${row.customerId}"
+					                th:if="${#strings.equals(bottle.ownCustomerId,row.customerId)}" selected>	
+					        </option>	
+					        <option th:each="row : ${agencyList}"
+					                th:text="${row.customerNm}"
+					                th:value="${row.customerId}"
+					                th:unless="${#strings.equals(bottle.ownCustomerId,row.customerId)}">						               
+					        </option>					
+                        </select>      
+                      	<!-- <input type="radio" name="bottleOwnYn" id="bottleOwnYn" value="N" checked=""> 자사                                   
+                      	<input type="radio" name="bottleOwnYn" id="bottleOwnYn" value="Y"> 타사      -->
 					  </th>   
                     </tr>                   
                     

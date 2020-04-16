@@ -16,7 +16,8 @@
 		<result property="bottleChargeDt"	column="Bottle_Charge_Dt"	/>
 		<result property="bottleVolumn"		column="Bottle_Volumn"		/>
 		<result property="bottleChargePrss"	column="Bottle_Charge_Prss"	/>
-		<result property="bottleOwnYn"		column="Bottle_Own_YN"	/>	
+		<result property="bottleOwnYn"		column="Bottle_Own_YN"		/>	
+		<result property="ownCustomerId"	column="Own_Customer_ID"	/>	
 		<result property="bottleWorkCd"		column="Bottle_Work_CD"		/>
 		<result property="bottleWorkCdNM"	column="Bottle_Work_CD_NM"	/>
 		<result property="bottleWorkId"		column="Bottle_Work_ID"		/>	
@@ -49,6 +50,7 @@
 		<result property="bottleVolumn"			column="Bottle_Volumn"		/>
 		<result property="bottleChargePrss"		column="Bottle_Charge_Prss"	/>
 		<result property="bottleOwnYn"			column="Bottle_Own_YN"		/>	
+		<result property="ownCustomerId"		column="Own_Customer_ID"	/>	
 		<result property="bottleWorkCd"			column="Bottle_Work_CD"		/>
 		<result property="bottleWorkCdNm"		column="Bottle_Work_CD_NM"	/>
 		<result property="bottleWorkId"			column="Bottle_Work_ID"		/>	
@@ -80,6 +82,7 @@
 		, Bottle_Volumn
 		, Bottle_Charge_Prss	
 		, Bottle_Own_YN	
+		, Own_Customer_ID	
 		, Bottle_Work_CD
 		, Bottle_Work_ID
 		, Customer_ID
@@ -110,6 +113,7 @@
 		, Bottle_Volumn
 		, Bottle_Charge_Prss	
 		, Bottle_Own_YN	
+		, Own_Customer_ID	
 		, Bottle_Work_CD
 		, Bottle_Work_ID
 		, TB.Customer_ID
@@ -141,6 +145,7 @@
 		, Bottle_Volumn
 		, Bottle_Charge_Prss	
 		, Bottle_Own_YN	
+		, Own_Customer_ID	
 		, Bottle_Work_CD
 		, Bottle_Work_ID
 		, TB.Customer_ID
@@ -173,6 +178,7 @@
 			, #{bottleVolumn}
 			, #{bottleChargePrss}
 			, #{bottleOwnYn}
+			, #{ownCustomerId}
 			, #{bottleWorkCd}
 			, #{bottleWorkId}
 			, #{customerId}
@@ -208,6 +214,7 @@
 			, #{item.bottleVolumn}
 			, #{item.bottleChargePrss}
 			, #{item.bottleOwnYn}
+			, #{item.ownCustomerId}
 			, #{item.bottleWorkCd}
 			, #{item.bottleWorkId}
 			, #{item.customerId}
@@ -269,6 +276,7 @@
 			, Bottle_Volumn		= #{bottleVolumn}
 			, Bottle_Charge_Prss= #{bottleChargePrss}
 			, Bottle_Own_YN		= #{bottleOwnYn}
+			, Own_Customer_ID	= #{ownCustomerId}
 			, UPDATE_ID 		= #{updateId}
 			, UPDATE_DT 		= NOW()
 		WHERE
@@ -463,7 +471,7 @@
 			AND TB.Bottle_Work_CD = TC.CD_ID	
 			AND TB.Product_ID = TG.Product_Id
 		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID														
-		ORDER BY Bottle_Work_DT DESC,Bottle_BarCd DESC 
+		ORDER BY Bottle_Work_DT DESC
 		Limit #{startRow}, #{rowPerPage}
 	</select>
 	

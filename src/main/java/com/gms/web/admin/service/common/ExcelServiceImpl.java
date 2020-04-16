@@ -37,6 +37,7 @@ import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
+import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.ProductTotalVO;
 import com.gms.web.admin.service.manage.BottleService;
@@ -66,6 +67,8 @@ public class ExcelServiceImpl implements ExcelService {
         List<BottleVO> list = new ArrayList<BottleVO>();
         
         List<BottleVO> bottlelist = bottleService.getBottleListAll();
+        
+        List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList("");
         
         int result = 0;
         int updateCount = 0;
@@ -176,10 +179,19 @@ public class ExcelServiceImpl implements ExcelService {
 	                		bottle.setBottleCreateDt(date);
                 		}
                 	}
-                	else if(j == 10) {
+                	else if(j == 10) {		// 거래처명
+                		if(colValue != null && colValue.length() > 0) {
+                			for(int k=0; k < customerList.size() ; k++) {
+                				CustomerSimpleVO customer =customerList.get(k);
+                				if(colValue.equals(customer.getCustomerNm())) 
+									bottle.setCustomerId(customer.getCustomerId());
+                			}
+                		}
+                	/*
                 		CustomerVO customer = customerService.getCustomerDetailsByNm(colValue) ;
                 		if(customer != null &&  customer.getCustomerId()!=null)
-                			bottle.setCustomerId(customerService.getCustomerDetailsByNm(colValue).getCustomerId());
+                			bottle.setCustomerId(customer.getCustomerId());
+                	*/
                 	}
                 	else if(j == 11) {                		
                 		
@@ -258,7 +270,7 @@ public class ExcelServiceImpl implements ExcelService {
             
             logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
             
-        } catch (org.apache.poi.poifs.filesystem.OfficeXmlFileException e) {
+        } catch (org.apache.poi.openxml4j.exceptions.OLE2NotOfficeXmlFileException e) {
         	try {
             	
         		FileInputStream excelFIS = (FileInputStream)(excelFile.getInputStream());
@@ -368,9 +380,18 @@ public class ExcelServiceImpl implements ExcelService {
                     		}
                     	}
                     	else if(j == 10) {
+                    		if(colValue != null && colValue.length() > 0) {
+                    			for(int k=0; k < customerList.size() ; k++) {
+                    				CustomerSimpleVO customer =customerList.get(k);
+                    				if(colValue.equals(customer.getCustomerNm())) 
+    									bottle.setCustomerId(customer.getCustomerId());
+                    			}
+                    		}
+                    		/*
                     		CustomerVO customer = customerService.getCustomerDetailsByNm(colValue) ;
                     		if(customer != null &&  customer.getCustomerId()!=null)
                     			bottle.setCustomerId(customerService.getCustomerDetailsByNm(colValue).getCustomerId());
+                    			*/
                     	}
                     	else if(j == 11) {                		
                     		
@@ -424,8 +445,9 @@ public class ExcelServiceImpl implements ExcelService {
     	                
     	                bottle.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
     	                bottle.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
-    	              
+    	                //logger.debug("$$$$$$$$$$$$$$ ExcelService bottle.getBottleid "+ bottle.getBottleId());
     	                for(int k=0 ; k < bottlelist.size() ; k++) {
+    	                	
     	                	if(bottle.getBottleId().equals(bottlelist.get(k).getBottleId())) {
     	                		isRegisteFlag = false;
     	                		result = bottleService.modifyBottle(bottle);

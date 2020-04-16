@@ -358,5 +358,10 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerMapper.searchCustomerSimpleListString(customerNm);
 	}
 
+	@Override
+	public List<CustomerSimpleVO> getAgencyCustomerList() {
+		return customerMapper.selectAgencyCustomerList();
+	}
+
 
 }

@@ -27,6 +27,7 @@ import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.common.CodeVO;
 import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
+import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.GasVO;
 import com.gms.web.admin.domain.manage.ProductPriceVO;
@@ -361,6 +362,10 @@ public class BottleController {
 		// 상품 정보 불러오기
 		List<ProductVO> productList = productService.getGasProductList();
 		model.addAttribute("productList", productList);		
+		
+		// 대리점 정보 불러오기
+		List<CustomerSimpleVO> agencyList = customerService.getAgencyCustomerList();
+		model.addAttribute("agencyList", agencyList);
 					
 		return "gms/bottle/write";
 	}
@@ -445,6 +450,10 @@ public class BottleController {
 			// 용기 이력 정보 불러오기
 			List<BottleHistoryVO> historyList = bottleService.selectBottleHistoryList(params.getBottleId());
 			model.addAttribute("historyList", historyList);	
+			
+			// 대리점 정보 불러오기
+			List<CustomerSimpleVO> agencyList = customerService.getAgencyCustomerList();
+			model.addAttribute("agencyList", agencyList);
 			
 			model.addAttribute("bottle", bottle);
 			model.addAttribute("currentPage", params.getCurrentPage());

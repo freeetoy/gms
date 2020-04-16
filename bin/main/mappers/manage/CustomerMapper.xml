@@ -390,6 +390,18 @@
 		ORDER BY Customer_Nm Asc 
 	</select>
 	
+	<select id="selectAgencyCustomerList" resultType="com.gms.web.admin.domain.manage.CustomerSimpleVO">
+		SELECT
+			CUSTOMER_ID, Customer_NM
+		FROM
+			TB_CUSTOMER A
+		WHERE
+			Customer_Status != '0'
+		AND 
+			Agency_YN = 'Y'
+		ORDER BY Customer_Nm Asc 
+	</select>
+	
 	<select id="selectCustomerPriceListAll" resultType="com.gms.web.admin.domain.manage.CustomerPriceVO" >
 		SELECT
 			<include refid="InsertCustomerPriceColumns" />

@@ -182,9 +182,8 @@ public class ExcelDownloadController {
 				    sheet.autoSizeColumn(i);
 			    }
 			   
-			    //용기	바코드/RFID	가스	품명	가스용량	용기체적	충전용량	충전기한	충전압력	제조일	거래처	작업		소유	
+			    //용기	바코드/RFID	가스	품명	용기체적	가스용량		충전용량	충전기한	충전압력	제조일	거래처	작업		소유	
 	            //0		1			2	3		4		5		6		7		8		9	10		11		12
-		
 			    // 데이터 부분 생성
 			    for(BottleVO vo : bottleList) {
 			    	int k=0;
@@ -205,13 +204,13 @@ public class ExcelDownloadController {
 			        cell.setCellStyle(bodyStyle);
 			        cell.setCellValue(vo.getProductNm());
 			        
-			        cell = row.createCell(k++);;
-			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue(vo.getBottleCapa());
-			        
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
 			        cell.setCellValue(vo.getBottleVolumn());
+			        
+			        cell = row.createCell(k++);;
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleCapa());
 			        
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
@@ -266,7 +265,7 @@ public class ExcelDownloadController {
 	
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel");
-		    response.setHeader("Content-Disposition", "attachment;filename=용기_"+DateUtils.getDate()+".xls");	
+		    response.setHeader("Content-Disposition", "attachment;filename=Bottle_"+DateUtils.getDate()+".xls");	
 	
 		    // 엑셀 출력
 		    wb.write(response.getOutputStream());
@@ -367,7 +366,7 @@ public class ExcelDownloadController {
 		 			
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel");
-		    response.setHeader("Content-Disposition", "attachment;filename=주문_"+DateUtils.getDate()+".xls");	
+		    response.setHeader("Content-Disposition", "attachment;filename=Order_"+DateUtils.getDate()+".xls");	
 	
 		    // 엑셀 출력
 		    wb.write(response.getOutputStream());
@@ -482,7 +481,7 @@ public class ExcelDownloadController {
 		 			
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("application/vnd.ms-excel");
-		    response.setHeader("Content-Disposition", "attachment;filename=거래처_"+DateUtils.getDate()+".xls");	
+		    response.setHeader("Content-Disposition", "attachment;filename=Customer_"+DateUtils.getDate()+".xls");	
 	
 		    // 엑셀 출력
 		    wb.write(response.getOutputStream());

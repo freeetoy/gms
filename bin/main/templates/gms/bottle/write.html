@@ -275,9 +275,17 @@ $(document).ready(function(){
                     </tr>
                     <tr>
                       <th class="card-footer">용기 소유</th>
-                      <th>             
-                      	<input type="radio" name="bottleOwnYn" id="bottleOwnYn" value="N" checked=""> 자사                                   
-                      	<input type="radio" name="bottleOwnYn" id="bottleOwnYn" value="Y"> 타사     
+                      <th>      
+                      	<select id="ownCustomerId" name="ownCustomerId" class="form-control">
+                          <option value="0">소유거래처</option>				    
+					        <option th:each="row : ${agencyList}"
+					                th:text="${row.customerNm}"
+					                th:value="${row.customerId}"
+					               >
+					        </option>					
+                        </select>       
+                      	<!-- <input type="radio" name="bottleOwnYn" id="bottleOwnYn" value="N" checked=""> 자사                                   
+                      	<input type="radio" name="bottleOwnYn" id="bottleOwnYn" value="Y"> 타사      -->
 					  </th>   
                     </tr>                   
                     
