@@ -66,7 +66,7 @@ public class StatisticsCustomerController {
 			params.setSearchStatDtEnd(searchStatDtEnd);			
 		}else {						
 			
-			searchStatDtFrom = DateUtils.getNextDate(-30,"yyyy/MM/dd");
+			searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");
 			logger.debug("****** getStatisticsCustomerDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
 			
 			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
@@ -121,7 +121,7 @@ public class StatisticsCustomerController {
 			params.setSearchStatDtEnd(searchStatDtEnd);			
 		}else {						
 			
-			searchStatDtFrom = DateUtils.getNextDate(-365,"yyyy/MM");
+			searchStatDtFrom = DateUtils.getNextDate(-366,"yyyy/MM");
 			logger.debug("****** getMonthlylStatisticsCustomerList else *****getSearchStatDtFrom===*"+searchStatDtFrom);
 			
 			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM");
@@ -174,7 +174,7 @@ public class StatisticsCustomerController {
 				params.setSearchStatDtEnd(searchStatDtEnd);			
 			}else {						
 					
-				searchStatDtFrom = DateUtils.getNextDate(-30,"yyyy/MM/dd");		
+				searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");		
 				searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");	
 				
 				params.setSearchStatDtFrom(searchStatDtFrom);

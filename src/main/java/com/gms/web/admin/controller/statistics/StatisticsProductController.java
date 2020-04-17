@@ -65,7 +65,7 @@ public class StatisticsProductController {
 			params.setSearchStatDtEnd(searchStatDtEnd);			
 		}else {						
 			
-			searchStatDtFrom = DateUtils.getNextDate(-30,"yyyy/MM/dd");
+			searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");
 			logger.debug("****** getStatisticsProductDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
 			
 			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
@@ -121,7 +121,7 @@ public class StatisticsProductController {
 			params.setSearchStatDtEnd(searchStatDtEnd);			
 		}else {						
 			
-			searchStatDtFrom = DateUtils.getNextDate(-365,"yyyy/MM");
+			searchStatDtFrom = DateUtils.getNextDate(-366,"yyyy/MM");
 			logger.debug("****** getMonthlylStatisticsProductList else *****getSearchStatDtFrom===*"+searchStatDtFrom);
 			
 			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM");
@@ -174,7 +174,7 @@ public class StatisticsProductController {
 				params.setSearchStatDtEnd(searchStatDtEnd);			
 			}else {						
 					
-				searchStatDtFrom = DateUtils.getNextDate(-30,"yyyy/MM/dd");
+				searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");
 				logger.debug("****** getStatisticsBottleDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
 		
 				searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");

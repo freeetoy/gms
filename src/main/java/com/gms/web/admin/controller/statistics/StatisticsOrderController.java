@@ -65,7 +65,7 @@ public class StatisticsOrderController {
 			params.setSearchStatDtEnd(searchStatDtEnd);			
 		}else {						
 			
-			searchStatDtFrom = DateUtils.getNextDate(-30,"yyyy/MM/dd");
+			searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");
 			logger.debug("****** getStatisticsOrderDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
 			
 			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
@@ -115,7 +115,7 @@ public class StatisticsOrderController {
 			params.setSearchStatDtEnd(searchStatDtEnd);			
 		}else {						
 			
-			searchStatDtFrom = DateUtils.getNextDate(-365,"yyyy/MM/dd");
+			searchStatDtFrom = DateUtils.getNextDate(-366,"yyyy/MM/dd");
 			logger.debug("****** getStatisticsOrderMonthly *****getSearchStatDtFrom===*"+searchStatDtFrom);
 			
 			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
@@ -162,7 +162,7 @@ public class StatisticsOrderController {
 				params.setSearchStatDtEnd(searchStatDtEnd);			
 			}else {						
 					
-				searchStatDtFrom = DateUtils.getNextDate(-30,"yyyy/MM/dd");
+				searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");
 				logger.debug("****** getStatisticsBottleDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
 		
 				searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
@@ -292,7 +292,7 @@ public class StatisticsOrderController {
 			params.setSearchStatDtEnd(searchStatDtEnd);			
 		}else {						
 			
-			searchStatDtFrom = DateUtils.getNextDate(-30,"yyyy/MM/dd");
+			searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");
 			logger.debug("****** getStatisticsSalesDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
 			
 			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
@@ -342,7 +342,7 @@ public class StatisticsOrderController {
 			params.setSearchStatDtEnd(searchStatDtEnd);			
 		}else {						
 			
-			searchStatDtFrom = DateUtils.getNextDate(-365,"yyyy/MM/dd");
+			searchStatDtFrom = DateUtils.getNextDate(-366,"yyyy/MM/dd");
 			logger.debug("****** getStatisticsSalesMonthly *****getSearchStatDtFrom===*"+searchStatDtFrom);
 			
 			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
@@ -389,7 +389,7 @@ public class StatisticsOrderController {
 				params.setSearchStatDtEnd(searchStatDtEnd);			
 			}else {						
 					
-				searchStatDtFrom = DateUtils.getNextDate(-30,"yyyy/MM/dd");
+				searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");
 				logger.debug("****** excelDownloadSalesStatistics else *****getSearchStatDtFrom===*"+searchStatDtFrom);
 		
 				searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
