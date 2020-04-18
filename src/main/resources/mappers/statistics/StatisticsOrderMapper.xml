@@ -141,8 +141,7 @@
 		INSERT INTO TB_Monthly_Stat_Sales(
 			<include refid="StatisticsSalesColumns" />
 		)		
-		SELECT LEFT(Stat_Dt,7), 
-			SUM(Order_Total_Count)    
+		SELECT LEFT(Stat_Dt,7) 
 			 , SUM(Sales_Count) 	 
 			 , SUM(Sales_Amount)    
 			 , SUM(Rental_Count) 	 
