@@ -23,7 +23,7 @@ public interface StatisticsOrderMapper {
 	
 	public List<StatisticsSalesVO> selectMontlylStatisticsSalesList(Map<String, Object> map);	
 	
-	public int inserDailyStatisticsSales();
+	public int insertDailyStatisticsSales();
 	
-	public int inserMonthlyStatisticsSales();
+	public int insertMonthlyStatisticsSales();
 }

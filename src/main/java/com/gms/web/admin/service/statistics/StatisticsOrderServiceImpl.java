@@ -137,12 +137,12 @@ public class StatisticsOrderServiceImpl implements StatisticsOrderService {
 
 	@Override
 	public int registerDailyStatisticsSales() {
-		return statMapper.inserDailyStatisticsSales();
+		return statMapper.insertDailyStatisticsSales();
 	}
 
 	@Override
 	public int registerMonthlyStatisticsSales() {
-		return statMapper.inserMonthlyStatisticsSales();
+		return statMapper.insertMonthlyStatisticsSales();
 	}
 
 }

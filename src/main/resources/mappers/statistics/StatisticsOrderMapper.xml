@@ -117,7 +117,7 @@
 	
 	
 	
-	<insert id="inserDailyStatisticsSales">
+	<insert id="insertDailyStatisticsSales">
 		INSERT INTO TB_Daily_Stat_Sales(
 			<include refid="StatisticsSalesColumns" />
 		) 
@@ -137,7 +137,7 @@
 		) B
 	</insert>	
 	
-	<insert id="inserMonthlyStatisticSales">
+	<insert id="insertMonthlyStatisticsSales">
 		INSERT INTO TB_Monthly_Stat_Sales(
 			<include refid="StatisticsSalesColumns" />
 		)		
