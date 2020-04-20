@@ -41,7 +41,7 @@
 	 -->
 	 <select id="selectECount" resultType="com.gms.web.admin.domain.manage.ECountVO">		
 		SELECT 
-			WR.Customer_ID,Customer_NM, WB.Product_ID, PT.Product_Nm, PP.Product_Capa, User_Nm Sales_Nm, 
+			WR.Customer_ID,Customer_NM, WB.Product_ID, PP.ECount_CD, PT.Product_Nm, PP.Product_Capa, User_Nm Sales_Nm, 
 			WB.Order_Count, OP.Order_Amount/OP.Order_Count Product_Price, WB.Order_Count*Product_Price Supply_Price,WB.Order_Count*Product_Price*0.1 VAT
 		FROM 
 			(

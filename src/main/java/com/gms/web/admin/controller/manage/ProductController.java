@@ -113,6 +113,7 @@ public class ProductController {
 				//priceVo1.setProductId(Integer.valueOf(productId));
 				priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));
 				priceVo1.setProductCapa(req.getParameter("productCapa_"+i));
+				priceVo1.setECountCd(req.getParameter("eCountCd_"+i));
 				
 				priceVo[i] = priceVo1;			
 			}
@@ -220,6 +221,7 @@ public class ProductController {
 					priceVo1.setProductPriceSeq(Integer.parseInt(req.getParameter("productPriceSeq_"+i)));				
 					priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));
 					priceVo1.setProductCapa(req.getParameter("productCapa_"+i));
+					priceVo1.setECountCd(req.getParameter("eCountCd_"+i));
 					
 					priceVo[listIndex++] = priceVo1;		
 					
@@ -230,6 +232,7 @@ public class ProductController {
 						priceVo1.setProductPriceSeq(++lastPriceSeq);	
 						priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));
 						priceVo1.setProductCapa(req.getParameter("productCapa_"+i));
+						priceVo1.setECountCd(req.getParameter("eCountCd"+i));
 						priceVo1.setCreateId(params.getCreateId());
 						
 						priceVo[listIndex++] = priceVo1;
@@ -289,9 +292,6 @@ public class ProductController {
 			ProductPriceVO params, Model model) {
 		
 		RequestUtils.initUserPrgmInfo(request, params);
-		
-		//ProductPriceVO params = new ProductPriceVO();
-		
 		
 		try { 			
 			
@@ -353,8 +353,7 @@ public class ProductController {
 	
 	@RequestMapping(value = "/gms/product/priceList.do")
 	@ResponseBody
-	public List<ProductPriceVO> getProductPriceList(@RequestParam(value = "productId", required = false) Integer productId, Model model)	{
-		
+	public List<ProductPriceVO> getProductPriceList(@RequestParam(value = "productId", required = false) Integer productId, Model model)	{		
 		
 		List<ProductPriceVO> productPriceList =  productService.getProductPriceList(productId);
 		

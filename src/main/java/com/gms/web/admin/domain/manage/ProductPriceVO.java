@@ -28,4 +28,7 @@ public class ProductPriceVO extends AbstractVO implements Serializable {
 	
 	/**Prodcut_Status */
 	private String productStatus;
+	
+	/**ECount_CD */
+	private String eCountCd;
 }

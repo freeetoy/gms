@@ -137,7 +137,8 @@ public class ECountController {
 		        //품목코드	
 		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getProductId());
+		        cell.setCellValue(vo.getECountCd());
+		        //cell.setCellValue(vo.getProductId());
 		        
 		        //품목명	
 		        cell = row.createCell(k++);
@@ -196,19 +197,21 @@ public class ECountController {
 	
 		    }	
 		    // width 자동조절
- 			for (int x = 0; x < sheet.getRow(1).getPhysicalNumberOfCells(); x++) {
- 				sheet.autoSizeColumn(x);
- 				int width = sheet.getColumnWidth(x);
- 				int minWidth = list.get(x).getBytes().length * 450;
- 				int maxWidth = 18000;
- 				if (minWidth > width) {
- 					sheet.setColumnWidth(x, minWidth);
- 				} else if (width > maxWidth) {
- 					sheet.setColumnWidth(x, maxWidth);
- 				} else {
- 					sheet.setColumnWidth(x, width + 2000);
- 				}
- 			}
+		    if(eList.size() > 0) {
+	 			for (int x = 0; x < sheet.getRow(1).getPhysicalNumberOfCells(); x++) {
+	 				sheet.autoSizeColumn(x);
+	 				int width = sheet.getColumnWidth(x);
+	 				int minWidth = list.get(x).getBytes().length * 450;
+	 				int maxWidth = 18000;
+	 				if (minWidth > width) {
+	 					sheet.setColumnWidth(x, minWidth);
+	 				} else if (width > maxWidth) {
+	 					sheet.setColumnWidth(x, maxWidth);
+	 				} else {
+	 					sheet.setColumnWidth(x, width + 2000);
+	 				}
+	 			}
+		    }
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel");
 		    response.setHeader("Content-Disposition", "attachment;filename=Ecount"+DateUtils.getDate()+".xls");	

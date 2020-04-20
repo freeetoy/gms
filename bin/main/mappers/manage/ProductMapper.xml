@@ -26,7 +26,7 @@
 		,Product_Nm
 		,Gas_ID
 		,Product_Status
-		,Member_Comp_Seq 
+		,Member_Comp_Seq 		
 		,Create_ID 
 		,Create_Dt 
 		,Update_ID 
@@ -38,6 +38,7 @@
 		,Product_Price
 		,Product_Capa
 		,product_Status
+		,ECount_CD 
 		,Create_ID 
 		,Create_Dt 
 		,Update_ID 
@@ -83,6 +84,7 @@
 			, #{productPrice}
 			, #{productCapa}
 			, IFNULL(#{productStatus}, '2')
+			, #{eCountCd}
 			, #{createId}			
 			, NOW()
 			, NULL
@@ -154,6 +156,7 @@
 		SET
 			  Product_Price 	= #{productPrice}
 			, product_Capa 		= #{productCapa}
+			, ECount_CD 		= #{eCountCD}
 			, UPDATE_ID 		= #{updateId}
 			, UPDATE_DT 		= NOW()
 		WHERE
@@ -243,7 +246,7 @@
 	
 	<select id="selectProductTotalList" resultType="com.gms.web.admin.domain.manage.ProductTotalVO">
 		SELECT
-			p.Product_ID, Product_Nm, Gas_ID, pp.Product_Status, Member_Comp_Seq,Product_Price_Seq, Product_Price, Product_Capa, C.productPriceCount,
+			p.Product_ID, Product_Nm, Gas_ID, pp.Product_Status, Member_Comp_Seq,Product_Price_Seq, Product_Price, Product_Capa, ECount_CD,C.productPriceCount,
 			(
 				SELECT COUNT(o.Product_Price_Seq) 
 				FROM TB_Order_Product o 

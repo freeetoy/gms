@@ -19,10 +19,10 @@ public class SchedulerController {
 	@Autowired
 	private SchedulerService scheduleService;
 	
-	@Scheduled(cron="0 00 21 * * *")
+	@Scheduled(cron="0 00 06 * * *")
 	private void scheduleDaily() { 
 		
-		//Daiyl 통계 데이타 등록
+		//Daiyl 통계 데이타 등록@Scheduled(cron="0 00 21 * * *")
 		//statOrderService.
 		logger.info("************* ScheduleController scheduleDaily Start *************");
 		String now = DateUtils.getDate();

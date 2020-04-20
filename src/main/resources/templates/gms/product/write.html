@@ -65,6 +65,8 @@ $(document).ready(function(){
         cols += '<input type="text" class="form-control" id="productPrice_'+ counter + '" name="productPrice_'+ counter + '" placeholder="상품가격">';        
 		cols += '</td><td>';
 		cols += '<input type="text" class="form-control" id="productCapa_'+ counter + '" name="productCapa_'+ counter + '" placeholder="상품용량">';
+		cols += '</td><td>';
+		cols += '<input type="text" class="form-control" id="eCountCd_'+ counter + '" name="eCountCd_'+ counter + '" placeholder="ECount코드">';
         cols += '</td><td>';
         cols += ' <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" value="삭제" />';
         cols += '</td>';
@@ -158,13 +160,13 @@ $(document).ready(function(){
     <section class="content">   
         
         <div class="row">
-          <div class="col-8">
+          <div class="col-10">
             <div class="card">
              
               
              <!-- general form elements -->                        
               <!-- /.card-header -->
-              <div class="col-8">
+              <div class="col-10">
               <form class="form-horizontal" th:action="@{/gms/product/register.do}" th:object="${product}" method="post" onsubmit="return validationOfForm(this)">
               <input type="hidden" id="priceCount" name="priceCount" value="1">
                 <table class="table table-hover">
@@ -203,6 +205,9 @@ $(document).ready(function(){
                        </td>
                        <td> 
                          <input type="text" class="form-control" id="productCapa_0" name="productCapa_0" placeholder="상품용량">
+                       </td> 
+                       <td> 
+                         <input type="text" class="form-control" id="eCountCd_0" name="eCountCd_0" placeholder="Ecount코드">
                        </td>   
                        <td>
                        <input type="button" class="btn btn-default btn-success" id="addrow" value="추가" />

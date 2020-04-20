@@ -32,6 +32,8 @@ public class ECountVO {
 	
 	private Integer productId;
 	
+	private String eCountCd;	//ECount품목코드
+	
 	private String productNm;
 	
 	private String productCapa; // 규격

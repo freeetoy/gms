@@ -103,6 +103,7 @@
                       <th>상품명</th>
                       <th>용량</th>
                       <th>상품가격</th>
+                      <th>ECount코드</th>
                       <th>등록자</th>
                       <th>등록일</th>
                       <th th:if="${session.LoginUser.userAuthority=='99'}" >관리</th>
@@ -119,6 +120,7 @@
                       <th th:unless="${row.productPriceSeq == 1}" th:text="${row.productCapa}">
                       </th>
                       <td th:text="${#numbers.formatInteger(row.productPrice, 3, 'COMMA')}"></td>
+                      <td th:text="${row.eCountCd}"></td>
                       <td th:text="${row.CreateId}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
                       <td th:if="${session.LoginUser.userAuthority=='99'}" > 
@@ -127,7 +129,7 @@
                       </td>
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( productList )}">
-						<td colspan="7">조회된 결과가 없습니다.</td>
+						<td colspan="8">조회된 결과가 없습니다.</td>
 					</tr>
 					
                   </tbody>

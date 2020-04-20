@@ -48,6 +48,7 @@ public class ProductTotalVO extends AbstractVO  implements Serializable {
 	/** ORDER_COUNT     */
 	private int productOrderCount = 0;
 	
-	
+	/** ECount_CD     */
+	private int eCountCd;
 	
 }
