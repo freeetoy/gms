@@ -39,7 +39,7 @@
 			TD.Sales_ID= TU.User_ID
 	</select>
 	 -->
-	 <select id="selectECount" resultType="com.gms.web.admin.domain.manage.ECountVO">		
+	 <select id="selectECount" resultType="com.gms.web.admin.domain.manage.ECountVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO" >		
 		SELECT 
 			WR.Customer_ID,Customer_NM, WB.Product_ID, PP.ECount_CD, PT.Product_Nm, PP.Product_Capa, User_Nm Sales_Nm, 
 			WB.Order_Count, OP.Order_Amount/OP.Order_Count Product_Price, WB.Order_Count*Product_Price Supply_Price,WB.Order_Count*Product_Price*0.1 VAT
@@ -48,7 +48,7 @@
 				SELECT count(Work_Seq) Order_Count,Work_Report_Seq,Product_ID, Product_Price_Seq,Create_ID
 				FROM TB_Work_Bottle 
 				WHERE Bottle_Work_Cd in ('0308','0309')
-				AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(curdate(),'%Y/%m/%d')
+				AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  #{searchDt}
 				Group By Work_Report_Seq,Product_ID, Product_Price_Seq ,Create_ID
 			) WB,TB_Work_Report WR ,TB_Order_Product OP,TB_Product PT, TB_Product_Price PP, TB_Customer TC, TB_User TU
 		WHERE 

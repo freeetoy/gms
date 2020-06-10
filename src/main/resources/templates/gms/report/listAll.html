@@ -523,6 +523,27 @@ $(document).ready(function(){
               scrollbars: 'true'
           });
     });
+ 
+ 
+    $(".btn_ecount").click(function()  
+    {
+ 	   var searchDt = $('#searchDt').val();
+ 	   console.log("searchDt=="+searchDt);
+ 	   var form = document.createElement("form");
+		form.setAttribute("charset","UTF-8");
+		form.setAttribute("method","post");
+		form.setAttribute("action","/gms/excelDownloadEcount.do");			
+	    
+		var hiddenField = document.createElement("input");
+      	hiddenField.setAttribute("type", "hidden");
+      	hiddenField.setAttribute("name", "searchDt");
+      	hiddenField.setAttribute("value", searchDt);
+      	form.appendChild(hiddenField);   
+      
+      	document.body.appendChild(form);
+        
+        form.submit();		
+    });
 });
 	
 </script>
@@ -798,8 +819,7 @@ $(document).ready(function(){
                       <th>수금액</th>
                     </tr>
                   </thead>
-                  <tbody>
-                 
+                  <tbody>                 
                   	<tr th:if="${not #lists.isEmpty( workList )}" th:each="row : ${workList}" style="font-size:13px;">
                       <td th:text="${workList.indexOf(row)+1}"></td>
                       <td th:text="${row.CustomerNm}"></td>
@@ -820,11 +840,10 @@ $(document).ready(function(){
                       <td th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
                       <td th:unless="${row.orderAmount> 0 }" th:text="${row.orderAmount}">
                       <td th:if="${row.receivedAmount> 0 }" th:text="${#numbers.formatInteger(row.receivedAmount, 3, 'COMMA')}">
-		     		  <td th:unless="${row.receivedAmount> 0 }" th:text="${row.receivedAmount}"></td>
-		     		                  
+		     		  <td th:unless="${row.receivedAmount> 0 }" th:text="${row.receivedAmount}"></td>		     		                  
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( workList )}">
-						<td colspan="8">조회된 결과가 없습니다.</td>
+						<td colspan="6">조회된 결과가 없습니다.</td>
 					</tr>		
 										  
                   </tbody>					
@@ -842,7 +861,9 @@ $(document).ready(function(){
         		<a class="btn_select_process2 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-check-circle"></i> 단품판매</a>
         	</div>
         	<div class="col-9">
-         		<a th:href="@{/gms/excelDownloadEcount.do}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> ECount엑셀받기</button></a>         	
+        	<a class="btn_ecount btn btn-primary btn-sm float-right"   th:userId="${session.userId}"  href="#" >
+                              <i class="fas fa-file-excel"></i>ECount엑셀받기</a>
+         		<!-- <a th:href="@{/gms/excelDownloadEcount.do}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> ECount엑셀받기</button></a>     -->     	
         	</div>
         </div>
       </div><!-- /.container-fluid -->

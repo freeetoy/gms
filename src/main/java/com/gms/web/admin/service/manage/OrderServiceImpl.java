@@ -114,8 +114,6 @@ public class OrderServiceImpl implements OrderService {
 		
 		List<OrderVO> orderList = orderMapper.selectOrderList(map);
 		
-		logger.debug("****** getOrderList.lastPageNum *****===*"+lastPageNum);
-		logger.debug("****** getOrderList.startPageNum *****===*"+startPageNum);
 		resutlMap.put("list",  orderList);
 		
 		resutlMap.put("currentPage", currentPage);
@@ -705,8 +703,7 @@ public class OrderServiceImpl implements OrderService {
 				searchOrderDtEnd = searchOrderDt.substring(13, searchOrderDt.length()) ;
 				
 				params.setSearchOrderDtFrom(searchOrderDtFrom);
-				params.setSearchOrderDtEnd(searchOrderDtEnd);
-				
+				params.setSearchOrderDtEnd(searchOrderDtEnd);				
 			}			
 			
 			result = orderMapper.updateOrderProcessCd(params);			

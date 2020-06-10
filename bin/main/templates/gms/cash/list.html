@@ -311,16 +311,14 @@ $(function() {
                       <th>관리</th>                      
                     </tr>
                   </thead>
-                  
-                  <tbody>
                   	<tr th:if="${not #lists.isEmpty( list )}" th:each="row : ${list}"  style="font-size:14px;">
                       <td th:text="${totalCount-((currentPage-1) * rowPerPage) - list.indexOf(row)}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd HH:mm' )}"></td>
                       <th th:if="${customerYN=='N' }" th:text="${row.customerNm}" >거래처</th>
-                      <th th:if="${row.receivableAmount> 999 }"  th:text="${#numbers.formatInteger(row.receivableAmount, 3, 'COMMA')}"></th> 
-                      <th th:unless="${row.receivableAmount> 999 }"  th:text="${row.receivableAmount}"></th>                     
-                      <th th:if="${row.incomeAmount> 999 }" th:text="${#numbers.formatInteger(row.incomeAmount, 3, 'COMMA')}"></th>
-                      <th th:unless="${row.incomeAmount> 999 }" th:text="${row.incomeAmount}"></th>
+                      <td th:if="${row.receivableAmount> 999 }"  th:text="${#numbers.formatInteger(row.receivableAmount, 3, 'COMMA')}"></td> 
+                      <td th:unless="${row.receivableAmount> 999 }"  th:text="${row.receivableAmount}"></td>                     
+                      <td th:if="${row.incomeAmount> 999 }" th:text="${#numbers.formatInteger(row.incomeAmount, 3, 'COMMA')}"></td>
+                      <td th:unless="${row.incomeAmount> 999 }" th:text="${row.incomeAmount}"></td>
                       <td th:if="${row.incomeWay=='CASH'}">현금
                       <td th:if="${row.incomeWay=='CARD'}">카드        
                       <td th:if="${row.incomeWay==''}">                 
@@ -337,8 +335,7 @@ $(function() {
                     <tr th:unless="${not #lists.isEmpty( list )}">
 						<td colspan="8">조회된 결과가 없습니다.</td>
 					</tr>						
-                  </tbody>
-					
+                  
                 </table>
               </div>
               <!-- /.card-body -->

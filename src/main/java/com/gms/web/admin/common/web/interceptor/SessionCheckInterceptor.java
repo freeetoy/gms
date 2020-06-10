@@ -26,7 +26,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
 		//log.debug("preHandle!!");
 		String requestURI = request.getRequestURI().trim();
 		
-		log.debug("requestURI : " + requestURI);
+		log.info("requestURI : " + requestURI);
         
 		HttpSession session = request.getSession(false);
         

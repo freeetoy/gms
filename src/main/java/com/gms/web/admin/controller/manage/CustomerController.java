@@ -379,7 +379,8 @@ public class CustomerController {
 	
 	@RequestMapping(value = "/api/carList.do")
 	@ResponseBody
-	public List<CustomerSimpleVO> getCarList()	{	
+	public List<CustomerSimpleVO> getCarList()	{
+		logger.info("CustomerContoller getCarList");
 				
 		List<CustomerSimpleVO> customerList = customerService.getCarSimpleList();
 		return customerList;
@@ -390,6 +391,8 @@ public class CustomerController {
 	@ResponseBody
 	public List<CustomerSimpleVO> getCustomerAllList()	{	
 				
+		logger.info("CustomerContoller getCustomerAllList");
+		
 		List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList("");
 		return customerList;
 		//return null;
@@ -397,6 +400,8 @@ public class CustomerController {
 	@RequestMapping(value = "/api/customerAllList1.do")
 	@ResponseBody
 	public String getCustomerListString(@RequestParam(value = "searchCustomerNm", required = false) String searchCustomerNm)	{	
+		
+		logger.info("CustomerContoller getCustomerListString");
 						
 		String customerList = customerService.searchCustomerSimpleListString(searchCustomerNm);
 		

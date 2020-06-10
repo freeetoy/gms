@@ -185,12 +185,12 @@ $(document).ready(function(){
     
     function init_add_storage(counter) {
     	// body...
-    		$('#productId_' + counter).change( function(){
-    			var select_pumname = $('#productId_' + counter).val();
+   		$('#productId_' + counter).change( function(){
+   			var select_pumname = $('#productId_' + counter).val();
 
-    			init_storage_list(select_pumname,counter,'ins');
-    		});
-    	}
+   			init_storage_list(select_pumname,counter,'ins');
+   		});
+   	}
     
  // 입력된 내용을 작성한다.
     $("#save").on("click", function () {
@@ -257,16 +257,12 @@ $(document).ready(function(){
 		 });
 
 	} 
-
-    
-    
     
     $('select[name=customerId]').change(function() {
 		
 			$('#customerId1').val($(this).val());
 			
-			console.log("customerId change ="+totalCount); 
-			
+			console.log("customerId change ="+totalCount); 			
 			
 			$.ajax({
 				url: '/gms/price/customerList.do',

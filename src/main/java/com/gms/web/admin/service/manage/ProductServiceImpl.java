@@ -107,7 +107,7 @@ public class ProductServiceImpl implements ProductService {
 	public boolean deleteProduct(Integer productId) {
 		ProductVO product = productMapper.selectProductDetail(productId);
 		
-		logger.info("****** deleteProduct.productId *****===*"+productId);
+		logger.debug("****** deleteProduct.productId *****===*"+productId);
 		logger.debug("****** product.productId()*****===*"+product.getProductId());
 		
 		if (product == null || "0".equals(product.getProductStatus())) {
@@ -150,13 +150,13 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<ProductPriceVO> getProductPriceList(Integer productId) {
-		logger.info("****** getProductPriceList *****===*");
+		logger.debug("****** getProductPriceList *****===*");
 		return productMapper.selectProductPriceList(productId);
 	}
 
 	@Override
 	public List<ProductTotalVO> getProductTotalList() {
-		logger.info("****** getProductTotalList *****===*");
+		logger.debug("****** getProductTotalList *****===*");
 		return productMapper.selectProductTotalList();
 	}
 
@@ -199,7 +199,7 @@ public class ProductServiceImpl implements ProductService {
 		// 가스정보 등록
 		int result = 0;
 		
-		logger.info("****** Start registerProduct param.getProductId()()) *****===*"+param.getProductId());
+		logger.debug("****** Start registerProduct param.getProductId()()) *****===*"+param.getProductId());
 		if (param.getProductId() == null) {
 			
 			productId = getProductId();
@@ -326,6 +326,11 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<ProductPriceSimpleVO> getNoGasProductPriceList() {
 		return productMapper.selectNoGasProductPriceList();
+	}
+
+	@Override
+	public List<ProductPriceSimpleVO> getGasProductPriceList() {
+		return productMapper.selectGasProductPriceList();
 	}
 	
 }

@@ -580,7 +580,7 @@
 		FROM
 			TB_Bottle TB, TB_CODE TC, TB_Product TG
 		WHERE
-			Bottle_Work_CD in ('0308' , '0309')
+			Bottle_Work_CD in ('0308' , '0309', '0310')
 		AND
 			TB.Delete_YN = 'N'			
 		AND Customer_id = #{customerId}

@@ -30,8 +30,7 @@ public class ProductTotalVO extends AbstractVO  implements Serializable {
 	private Integer memberCompSeq;
 	
 	/** Product_Price_Seq */
-	private Integer productPriceSeq;
-	
+	private Integer productPriceSeq;	
 	
 	/** Product_Price 	*/    
 	private int productPrice;
@@ -49,6 +48,6 @@ public class ProductTotalVO extends AbstractVO  implements Serializable {
 	private int productOrderCount = 0;
 	
 	/** ECount_CD     */
-	private int eCountCd;
+	private String eCountCd;
 	
 }

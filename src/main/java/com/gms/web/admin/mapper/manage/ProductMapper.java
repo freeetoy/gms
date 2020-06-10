@@ -60,4 +60,6 @@ public interface ProductMapper {
 	public List<ProductVO> selectNoGasProductList();
 	
 	public List<ProductPriceSimpleVO> selectNoGasProductPriceList();
+	
+	public List<ProductPriceSimpleVO> selectGasProductPriceList();
 }

@@ -191,5 +191,11 @@ public class ApiServiceImpl implements ApiService {
 		}
 	}
 
+	@Override
+	public int registerWorkReportGasAndBottle(WorkReportVO param) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }

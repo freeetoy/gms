@@ -149,8 +149,7 @@ public class WorkReportController {
 		
 		mav.addObject("workList", workList);	
 		mav.addObject("searchDt", params.getSearchDt());	
-		mav.addObject("searchUserId", params.getSearchUserId());	
-		
+		mav.addObject("searchUserId", params.getSearchUserId());			
 				
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.diary"));	 	
 		
@@ -291,8 +290,7 @@ public class WorkReportController {
 					"/gms/mypage/assign.do");
 		}
 		return null;
-		//return "redirect:/gms/mypage/assign.do";
-		
+		//return "redirect:/gms/mypage/assign.do";		
 	}
 		
 	@RequestMapping(value = "/gms/report/print.do")

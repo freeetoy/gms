@@ -160,4 +160,31 @@ public class ApiController {
 		
 		return apiService.getCustomerSimpleBottleList(customerNm);
 	}
+	
+	
+	
+	@RequestMapping(value = "/api/controlGasAndBottle.do")
+	@ResponseBody
+	public String manageGasAndBottle(String userId, String bottles, String customerNm, String bottleType, String bottleWorkCd )	{	
+				
+		logger.info("userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
+				
+		int result = 0;
+		boolean phoneCall = true;
+		
+		WorkReportVO workReport = new WorkReportVO();	
+		
+		workReport.setBottleType(bottleType);
+		workReport.setBottlesIds(bottles);		//BottleBarCd 모음
+		workReport.setCustomerNm(customerNm);		
+		workReport.setPhoneFlag(phoneCall);
+		workReport.setCreateId(userId);				
+		workReport.setUpdateId(userId);		
+		
+		
+		
+		if(result > 0) 		return "success";
+		else return "fail";
+		//return null;
+	}
 }

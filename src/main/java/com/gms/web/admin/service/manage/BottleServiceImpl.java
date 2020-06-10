@@ -68,7 +68,7 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchGasId() != null) {
 			map.put("searchGasId", param.getSearchGasId());
-			logger.debug("****** getBottleList *****searchGasId===*"+param.getSearchGasId());
+			//logger.debug("****** getBottleList *****searchGasId===*"+param.getSearchGasId());
 		}
 		
 
@@ -81,23 +81,23 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchChargeDt() != null) {
 			map.put("searchChargeDt", param.getSearchChargeDt());
-			logger.debug("****** getBottleList *****getSearchChargeDt===*"+param.getSearchChargeDt());
+			//logger.debug("****** getBottleList *****getSearchChargeDt===*"+param.getSearchChargeDt());
 		}		
 		
 		if(param.getSearchChargeDtFrom() != null) {
 			map.put("searchChargeDtFrom", param.getSearchChargeDtFrom());
-			logger.debug("****** getBottleList *****getSearchChargeDtFrom===*"+param.getSearchChargeDtFrom());
+			//logger.debug("****** getBottleList *****getSearchChargeDtFrom===*"+param.getSearchChargeDtFrom());
 		}
 		
 		if(param.getSearchChargeDtEnd() != null) {
 			map.put("searchChargeDtEnd", param.getSearchChargeDtEnd());
-			logger.debug("****** getBottleList *****getSearchChargeDtEnd===*"+param.getSearchChargeDtEnd());
+			//logger.debug("****** getBottleList *****getSearchChargeDtEnd===*"+param.getSearchChargeDtEnd());
 		}
 		
 		if(param.getSearchSalesYn() != null) {
 			map.put("searchSalesYn", param.getSearchSalesYn());
 			map.put("bottleWorkCd", param.getBottleWorkCd());
-			logger.debug("****** getBottleList *****getSearchSalesYn===*"+param.getSearchSalesYn());
+			//logger.debug("****** getBottleList *****getSearchSalesYn===*"+param.getSearchSalesYn());
 		}		
 	
 		int bottleCount = bottleMapper.selectBottleCount(map);
@@ -139,10 +139,6 @@ public class BottleServiceImpl implements BottleService {
 		resutlMap.put("lastPageNum", lastPageNum);
 		resutlMap.put("totalCount", bottleCount);
 		
-		logger.debug("BottleService startPageNum "+ startPageNum);
-		logger.debug("BottleService lastPageNum "+ lastPageNum);
-		logger.debug("BottleService lastPage "+ lastPage);		
-		
 		return resutlMap;
 	}
 	
@@ -163,12 +159,12 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchGasId() != null) {
 			map.put("searchGasId", param.getSearchGasId());
-			logger.debug("****** getBottleListToExcel *****searchGasId===*"+param.getSearchGasId());
+			//logger.debug("****** getBottleListToExcel *****searchGasId===*"+param.getSearchGasId());
 		}
 		
 		if(param.getSearchBottleId() != null) {
 			map.put("searchBottleId", param.getSearchBottleId());
-			logger.debug("****** getBottleListToExcel *****searchGasId===*"+param.getSearchBottleId());
+			//logger.debug("****** getBottleListToExcel *****searchGasId===*"+param.getSearchBottleId());
 		}
 		
 		if(param.getSearchProductId() != null  ) {			
@@ -181,20 +177,20 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchChargeDt() != null) {
 			map.put("searchChargeDt", param.getSearchChargeDt());
-			logger.debug("****** getBottleListToExcel *****getSearchChargeDt===*"+param.getSearchChargeDt());
+			//logger.debug("****** getBottleListToExcel *****getSearchChargeDt===*"+param.getSearchChargeDt());
 		}else {
 			if(param.getMenuType()==2) {		// 용기충전
 				// Date 로 구하기
 			    SimpleDateFormat fm1 = new SimpleDateFormat("yyyy/MM/dd");
 			    String fromDate = fm1.format(new Date());
-			    logger.debug("현재시간 년월일 = " + fromDate);
+			    //logger.debug("현재시간 년월일 = " + fromDate);
 
 			    Calendar cal = Calendar.getInstance();;
 			    cal.setTime(new Date());
 			    cal.add(Calendar.DAY_OF_YEAR, 7); // 하루를 더한다.
 			    	    
 			    String endDate = fm1.format(cal.getTime());
-			    logger.debug("현재시간 년월일 = " + endDate);
+			    //logger.debug("현재시간 년월일 = " + endDate);
 			    
 			    String searchChargeDt = fromDate+" - "+endDate;
 			    
@@ -208,24 +204,22 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchChargeDtFrom() != null) {
 			map.put("searchChargeDtFrom", param.getSearchChargeDtFrom());
-			logger.debug("****** getBottleListToExcel *****getSearchChargeDtFrom===*"+param.getSearchChargeDtFrom());
+			//logger.debug("****** getBottleListToExcel *****getSearchChargeDtFrom===*"+param.getSearchChargeDtFrom());
 		}
 		
 		if(param.getSearchChargeDtEnd() != null) {
 			map.put("searchChargeDtEnd", param.getSearchChargeDtEnd());
-			logger.debug("****** getBottleListToExcel *****getSearchChargeDtEnd===*"+param.getSearchChargeDtEnd());
+			//logger.debug("****** getBottleListToExcel *****getSearchChargeDtEnd===*"+param.getSearchChargeDtEnd());
 		}
 		
 		if(param.getSearchSalesYn() != null) {
 			map.put("searchSalesYn", param.getSearchSalesYn());
 			map.put("bottleWorkCd", param.getBottleWorkCd());
-			logger.debug("****** getBottleListToExcel *****getSearchSalesYn===*"+param.getSearchSalesYn());
+			//logger.debug("****** getBottleListToExcel *****getSearchSalesYn===*"+param.getSearchSalesYn());
 		}
 		
 		if(param.getMenuType()==3 || param.getMenuType()==4) {			//용기 판매/대여 메뉴
-			//param.setSearchSalesYn("Y");
-			//map.put("searchSalesYn", param.getSearchSalesYn());
-			//map.put("bottleWorkCd", param.getBottleWorkCd());
+			
 			if(param.getMenuType()==3 )
 				map.put("searchWorkCd", PropertyFactory.getProperty("common.bottle.status.0308"));
 			else
@@ -383,13 +377,7 @@ public class BottleServiceImpl implements BottleService {
 	public int changeBottlesWorkCd(BottleVO param) {
 		// TODO Auto-generated method stub
 		int result = 0;
-		
-		logger.debug("BottleServiceImpl getBottlesId "+ param.getBottleIds());
-		logger.debug("BottleServiceImpl bottleWorkdId "+ param.getBottleWorkId());
-		logger.debug("BottleServiceImpl bottleWorkCd "+ param.getBottleWorkCd());
-		logger.debug("BottleServiceImpl customerId "+ param.getCustomerId());
-		logger.debug("BottleServiceImpl bottleType "+ param.getBottleType());
-		
+
 		try {		
 			List<String> list = null;
 			
@@ -555,12 +543,6 @@ public class BottleServiceImpl implements BottleService {
 	public int changeBottlesWorkCdOnly(BottleVO param) {
 
 		int result = 0;
-		
-		logger.debug("BottleServiceImpl changeBottlesWorkCdOnly getBottlesId "+ param.getBottleIds());
-		logger.debug("BottleServiceImpl changeBottlesWorkCdOnly bottleWorkdId "+ param.getBottleWorkId());
-		logger.debug("BottleServiceImpl changeBottlesWorkCdOnly bottleWorkCd "+ param.getBottleWorkCd());
-		logger.debug("BottleServiceImpl changeBottlesWorkCdOnly customerId "+ param.getCustomerId());
-		logger.debug("BottleServiceImpl changeBottlesWorkCdOnly bottleType "+ param.getBottleType());
 		
 		try {		
 			List<String> list = null;

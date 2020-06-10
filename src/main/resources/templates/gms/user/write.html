@@ -106,12 +106,43 @@ var goWrite = function(){
 		return;
 	}
 	
+	var userPhone = $("#userPhone").val();
+	if(userPhone=="" || userPhone == null){
+		alert("연략처를 입력해 주세요.");
+		$("#userPhone").focus();
+		isOkay = false;
+		return;
+	}
+	
+	var userPasswd = $("#userPasswd").val();
+	if(userPasswd=="" || userPasswd == null){
+		alert("비밀번호를 입력해 주세요.");
+		$("#userPasswd").focus();
+		isOkay = false;
+		return;
+	}
+	
+	var userPasswdCfd = $("#userPasswdCfd").val();
+	if(userPasswdCfd=="" || userPasswdCfd == null){
+		alert("비밀번호확인을 입력해 주세요.");
+		$("#userPasswdCfd").focus();
+		isOkay = false;
+		return;
+	}
+	
+	if(userPasswd != userPasswdCfd){
+		alert("비밀번호와 비밀번호확인이 일치하지 않습니다.");
+		$("#userPasswdCfd").focus();
+		isOkay = false;
+		return;
+	}
+	/*
 	var result = (
 			   isValid(userPhone, "연락처", null, null)
 			&& isValid(userPasswd, "비밀번호", null, "password")
 			&& isValid(userPasswdCfd, "비밀번호확인", null, "password")
 	);
-	
+	*/
 	if ( result === false ) {
 		return;	
 	}

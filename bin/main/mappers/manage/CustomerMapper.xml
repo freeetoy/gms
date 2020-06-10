@@ -18,6 +18,7 @@
 		<result property="customerStatus"		column="Customer_Status"	/>		
 		<result property="carYn"				column="Car_YN"				/>	
 		<result property="agencyYn"				column="Agency_YN"			/>		
+		<result property="eCountCd"				column="ECount_CD"			/>		
 		<result property="createId"				column="CREATE_ID"		/>
 		<result property="createDt"				column="CREATED_DT"		/>
 		<result property="updateId"				column="UPDATE_ID"		/>		
@@ -54,6 +55,7 @@
 		, Customer_Status
 		, Car_Yn
 		, Agency_Yn
+		, ECount_CD
 		, CREATE_ID	
 		, CREATE_DT	
 		, UPDATE_ID	
@@ -75,6 +77,7 @@
 		, Customer_Status
 		, Car_YN
 		, Agency_Yn
+		, ECount_CD
 		, A.CREATE_ID	
 		, A.CREATE_DT	
 		, A.UPDATE_ID	
@@ -107,6 +110,7 @@
 			, '2'
 			, #{carYn}
 			, #{agencyYn}
+			, #{eCountCd}
 			, #{createId}			
 			, NOW()
 			, NULL
@@ -133,6 +137,7 @@
 			, '2'
 			, #{item.carYn}
 			, #{item.agencyYn}
+			, #{item.eCountCd}
 			, #{item.createId}			
 			, NOW()
 			, NULL
@@ -226,6 +231,7 @@
 			, Sales_ID				= #{salesId}
 			, Car_YN				= #{carYn}
 			, Agency_YN				= #{agencyYn}
+			, ECount_CD				= #{eCountCd}
 			, UPDATE_ID				= #{updateId}
 			, UPDATE_DT				= NOW()
 		WHERE
@@ -411,7 +417,8 @@
 	
 	<update id="updateCustomerPrice" parameterType="com.gms.web.admin.domain.manage.CustomerPriceVO">
 		UPDATE TB_CUSTOMER_PRODUCT_PRICE	
-		SET Product_Price = #{productPrice}
+		SET 
+			Product_Price = #{productPrice}
 		WHERE
 			CUSTOMER_ID = #{customerId}
 		AND

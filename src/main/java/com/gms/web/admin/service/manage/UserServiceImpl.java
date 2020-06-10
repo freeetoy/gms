@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.AES256Util;
-import com.gms.web.admin.common.utils.CryptoUtils;
 import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.mapper.manage.UserMapper;
 
@@ -63,10 +62,6 @@ public class UserServiceImpl implements UserService {
 			
 			String strPassword = param.getUserPasswd();
 			
-			logger.debug("****** modifyUser()()) *****===*"+strPassword);
-			logger.debug("****** modifyUser()()) *****===*"+aescipher.aesEncode( strPassword));
-			
-			
 			param.setUserPasswd(aescipher.aesEncode( strPassword) );
 	
 		}catch(Exception e) {
@@ -91,7 +86,8 @@ public class UserServiceImpl implements UserService {
 			//user.setUserPasswd(CryptoUtils.decryptAES256(user.getUserPasswd(),  PropertyFactory.getProperty("common.crypto.key")) );
 			//logger.debug("****** getUserDetails. start user.getUserPasswd()===*"+user.getUserPasswd());
 			AES256Util aescipher = new AES256Util(PropertyFactory.getProperty("common.crypto.key"));
-			String rsaEn = aescipher.aesEncode( user.getUserPasswd());
+			//String rsaEn = aescipher.aesEncode( user.getUserPasswd());
+			String rsaEn = aescipher.aesDecode( user.getUserPasswd());
 			//logger.debug("****** getUserInfo. param.rsaEn ()===*"+rsaEn);
 			user.setUserPasswd(rsaEn  );
 			//logger.debug("****** getUserDetails. user.getUserPasswd()===*"+user.getUserPasswd());
@@ -121,13 +117,7 @@ public class UserServiceImpl implements UserService {
 		
 		return true;
 	}
-/*
-	@Override
-	public int getUserCount() {
-		logger.info("****** getUserCount *****===*");
-		return userMapper.selectUserCount();
-	}
-	*/
+
 	@Override
 	public Map<String, Object> checkUserIdDuplicate(UserVO param) {
 		// 중복체크
@@ -144,34 +134,9 @@ public class UserServiceImpl implements UserService {
 		
 		return result;
 	}
-/*
-	@Override
-	public int getUserCount(String searchUserNm) {
-		logger.info("****** getUserCount ***searchUserNm**===*"  +searchUserNm);
-		return userMapper.selectUserCount(searchUserNm);
-	}
-	
 
-	@Override
-	public List<UserVO> getUserList(Criteria cri) {
-		logger.info("****** getUserList *****start===*"+cri.getRowStart());
-		logger.info("****** getUserList *****end ===*"+cri.getRowEnd());
-		return userMapper.selectUserList(cri);
-	}
-
-	@Override
-	public List<UserVO> getUserList(Criteria cri, String searchUserNm) {
-		logger.info("****** getUserList *****===*");
-		return userMapper.selectUserList(cri, searchUserNm);
-	}
-*/
 	@Override
 	public Map<String , Object> getUserList(UserVO param) {
-		logger.info("****** getUserList *****start===*");
-		
-		
-		logger.debug("****** getUserList *****param.getSearchUserNm===*" + param.getSearchUserNm());
-		logger.debug("****** getUserList *****param.getRowPerPage===*" + param.getRowPerPage());
 		
 		int currentPage = param.getCurrentPage();
 		int ROW_PER_PAGE = param.getRowPerPage();
@@ -197,16 +162,11 @@ public class UserServiceImpl implements UserService {
 			map.put("userPartCd", param.getUserPartCd());
 			logger.debug("****** getUserList *****userPartCd===*"+param.getUserPartCd());
 		}
-		logger.debug("****** getUserList *****currentPage===*"+currentPage);		
 		
 		int userCount = userMapper.selectUserCount(map);
 		
-		logger.debug("****** getUserList.userCount *****===*"+userCount);
-		
 		//int lastPage = (int)(Math.ceil(userCount/ROW_PER_PAGE));
 		int lastPage = (int)((double)userCount/ROW_PER_PAGE+0.95);
-		
-		logger.debug("****** getUserList.lastPage *****===*"+lastPage);
 		
 		if(currentPage >= (lastPage-4)) {
 			lastPageNum = lastPage;
@@ -214,7 +174,7 @@ public class UserServiceImpl implements UserService {
 		
 		//수정 Start
 		int pages = (userCount == 0) ? 1 : (int) ((userCount - 1) / ROW_PER_PAGE) + 1; // * 정수형이기때문에 소숫점은 표시안됨
-		logger.debug("****** getCustomerList *****param.pages===*" + pages);
+		
         int blocks;
         int block;
         blocks = (int) Math.ceil(1.0 * pages / ROW_PER_PAGE); // *소숫점 반올림

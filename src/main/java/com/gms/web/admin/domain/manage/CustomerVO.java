@@ -62,4 +62,6 @@ public class CustomerVO extends AbstractSearchVO implements Serializable {
 	/** 거래처명 검색	 */
 	private String searchCustomerNm;
 	
+	/**ECount_CD */
+	private String eCountCd;
 }

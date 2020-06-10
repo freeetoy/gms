@@ -394,4 +394,14 @@ public class ProductController {
 		return productList;
 		//return null;
 	}
+	
+	@RequestMapping(value = "/api/gasProductPriceList.do")
+	@ResponseBody
+	public List<ProductPriceSimpleVO> getProductPriceListOfGas(Model model)	{	
+		
+		List<ProductPriceSimpleVO> productList = productService.getGasProductPriceList();
+		model.addAttribute("productList", productList);
+		
+		return productList;
+	}
 }
