@@ -98,12 +98,14 @@
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover">
                   <thead>
-                    <tr>
+                    <tr >
                       <th>순번</th>
                       <th>상품명</th>
                       <th>용량</th>
-                      <th>상품가격</th>
-                      <th>ECount코드</th>
+                      <th>대여가격</th>
+                      <th>대여ECount</th>
+                      <th>판매가격</th>
+                      <th>판매ECount</th>
                       <th>등록자</th>
                       <th>등록일</th>
                       <th th:if="${session.LoginUser.userAuthority=='99'}" >관리</th>
@@ -121,6 +123,8 @@
                       </th>
                       <td th:text="${#numbers.formatInteger(row.productPrice, 3, 'COMMA')}"></td>
                       <td th:text="${row.eCountCd}"></td>
+                      <td th:text="${#numbers.formatInteger(row.productBottlePrice, 3, 'COMMA')}"></td>
+                      <td th:text="${row.eCountCdS}"></td>
                       <td th:text="${row.CreateId}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
                       <td th:if="${session.LoginUser.userAuthority=='99'}" > 

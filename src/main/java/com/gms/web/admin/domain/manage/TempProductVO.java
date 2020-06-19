@@ -16,6 +16,9 @@ public class TempProductVO {
 	/** Product_Price 	*/    
 	private int productPrice;	
 	
+	/** Product_Bottle_Price 	*/    
+	private int productBottlePrice;	
+	
 	/** Order_ID			*/
 	private Integer orderId;
 	
@@ -25,4 +28,6 @@ public class TempProductVO {
 	/* Order_Bottle_Seq*/
 	private Integer orderBottleSeq;
 
+	/** Bottle_Sale_YN 	*/
+	private String bottleSaleYn;	
 }

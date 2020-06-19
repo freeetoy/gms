@@ -295,7 +295,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public int registerCustomerPrices(List<CustomerPriceVO> param) {
 		int result = 0;	
 		
-		result = customerMapper.deleteCustomerPrices(param);
+		//result = customerMapper.deleteCustomerPrices(param);
 		
 		result = customerMapper.insertCustomerPrices(param);
 				
@@ -330,7 +330,12 @@ public class CustomerServiceImpl implements CustomerService {
 		// TODO Auto-generated method stub
 		return customerMapper.deleteCustomerPrices(param);
 	}
-
+	
+	@Override
+	public int modifyCustomerBottleCount(CustomerVO param) {
+		return customerMapper.updateCustomerBottleCount(param);
+	}
+	
 	@Override
 	public List<CustomerPriceVO> getCustomerPriceListAll() {
 		// TODO Auto-generated method stub
@@ -362,6 +367,8 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<CustomerSimpleVO> getAgencyCustomerList() {
 		return customerMapper.selectAgencyCustomerList();
 	}
+
+	
 
 
 }

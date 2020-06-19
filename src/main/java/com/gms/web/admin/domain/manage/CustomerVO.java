@@ -64,4 +64,7 @@ public class CustomerVO extends AbstractSearchVO implements Serializable {
 	
 	/**ECount_CD */
 	private String eCountCd;
+	
+	/**Bottle_Own_Count */
+	private int bottleOwnCount;
 }

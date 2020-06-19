@@ -25,6 +25,9 @@ public class CustomerPriceVO extends AbstractVO implements Serializable {
 	/** Product_Price 	*/    
 	private int productPrice;
 	
+	/** Product_Bottle_Price 	*/    
+	private int productBottlePrice;
+	
 	/** 거래처명 검색	 */
 	private String searchCustomerNm;
 	

@@ -135,7 +135,7 @@
 		 , Order_Count   
 		 , Order_Product_ETC
 		 , Bottle_Change_YN 
-		 , Bottle_Sale_YN 
+		 , A.Bottle_Sale_YN 
 		 , Order_Amount 
 		 , Bottle_ID    
 		 , GAS_ID 
@@ -513,11 +513,11 @@
 		FROM
 			TB_Product b ,TB_Product_Price C,
 			TB_Order_Product A Left Join (
-					SELECT Count(Work_Seq) Registered_Count,Product_ID, Product_Price_Seq 
+					SELECT Count(Work_Seq) Registered_Count,Product_ID, Product_Price_Seq  ,TB.Bottle_Sale_YN
 					FROM TB_Work_Bottle TB,TB_Work_Report TW 
 					WHERE TB.Work_Report_Seq = TW.Work_Report_Seq AND Order_Id = #{orderId}	
-					Group By Product_ID, Product_Price_Seq 
-			) TW on (A.Product_ID = TW.product_id and A.Product_Price_Seq = TW.Product_Price_Seq)
+					Group By Product_ID, Product_Price_Seq  ,TB.Bottle_Sale_YN
+			) TW on (A.Product_ID = TW.product_id AND A.Product_Price_Seq = TW.Product_Price_Seq AND A.Bottle_Sale_YN = TW.Bottle_Sale_YN)
 		WHERE
 			Order_ID = #{orderId}	
 		AND A.Product_ID = B.Product_ID
@@ -539,7 +539,7 @@
 			 , Bottle_Change_YN 
 			 , Bottle_Sale_YN 
 			 , Order_Amount 
-			 , a.Bottle_ID    
+			 , A.Bottle_ID    
 			 , GAS_ID 
 			 , Order_Bottle_Seq
 			 , A.Create_ID        

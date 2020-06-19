@@ -45,7 +45,8 @@
 		<result property="productCount"			column="Product_Count"			/>
 		<result property="orderId"				column="Order_ID"				/>
 		<result property="orderTotalAmount"		column="Order_Total_Amount"		/>
-		<result property="createId"				column="CREATE_ID"				/>
+		<result property="bottleSaleYn"			column="Bottle_Sale_YN"		/>
+		<result property="createId"				column="CREATE_ID"				/>		
 		<result property="createDt"				column="CREATE_DT"				/>
 		<result property="updateId"				column="UPDATE_ID"				/>		
 		<result property="updateDt"				column="UPDATE_DT"				/>	
@@ -108,6 +109,7 @@
 		 , Product_Price_Seq   
 		 , Product_Price
 		 , Bottle_Type
+		 , Bottle_Sale_YN
 		 , Create_ID        
 		 , Create_Dt        
 		 , Update_ID        
@@ -150,6 +152,7 @@
 			, #{productPriceSeq}
 			, #{productPrice}
 			, #{bottleType}
+			, #{bottleSaleYn}
 			, #{createId}			
 			, NOW()
 			, NULL
@@ -174,6 +177,7 @@
 			, #{item.productPriceSeq}
 			, #{item.productPrice}
 			, #{item.bottleType}
+			, #{item.bottleSaleYn}
 			, #{item.createId}			
 			, NOW()
 			, NULL
@@ -186,10 +190,10 @@
 		UPDATE TB_Work_Report
 		SET
 			Order_Id			= #{orderId}
-			, Work_Product_NM		= #{workProductNm}
+			, Work_Product_NM	= #{workProductNm}
 			, Work_Product_Capa	= #{workProductCapa}
-			, UPDATE_ID 			= #{updateId}
-			, UPDATE_DT 			= NOW()
+			, UPDATE_ID 		= #{updateId}
+			, UPDATE_DT 		= NOW()
 		WHERE
 			Work_Report_Seq = #{workReportSeq}
 	</update>
@@ -238,7 +242,7 @@
 		WHERE
 			User_id = #{userId}
 		AND 
-			WorK_CD in ('0308','0309', '0310')
+			WorK_CD in ('0308','0309', '0310','0311' ,'0312','0320')
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
 		AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
 		</if>
@@ -255,7 +259,7 @@
 		WHERE
 			User_id = #{searchUserId}
 		AND 
-			WorK_CD in ('0308','0309', '0310','0312')
+			WorK_CD in ('0308','0309', '0310','0311' ,'0312','0320')
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
 		AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
 		</if>
@@ -271,7 +275,7 @@
 			FROM tb_work_bottle TB, tb_work_report TW
 			WHERE tb.Work_Report_Seq  = tw.Work_Report_Seq
 			AND User_id = #{userId}
-			AND Bottle_WorK_CD in ('0308','0309', '0310')
+			AND Bottle_WorK_CD in ('0308','0309', '0310','0311' ,'0312')
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
 			AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
 			</if>
@@ -289,14 +293,14 @@
 		SELECT Product_Count,Work_Report_Seq, AA.Customer_ID,Customer_nm  
 			, AA.Product_ID  ,Product_NM , AA.Product_Price_Seq ,Product_Capa    
 			, Bottle_work_Cd, CD_NM Bottle_work_Cd_NM
-			, AA.Order_Id, Order_Total_Amount,AA.Product_Price
+			, AA.Order_Id, Order_Total_Amount,AA.Product_Price, AA.Bottle_Sale_YN
 		FROM TB_CODE TC, TB_Customer TS, tb_product TP, tb_product_price TPP, (
 				SELECT Count(TB.Product_Price_Seq) Product_Count, 
-				TB.Work_Report_Seq, TB.Customer_ID, TB.Product_ID, TB.Product_Price_Seq, Bottle_work_Cd,Product_Price, Order_Id
+				TB.Work_Report_Seq, TB.Customer_ID, TB.Product_ID, TB.Product_Price_Seq, Bottle_work_Cd,Product_Price, Order_Id, Bottle_Sale_YN
 				FROM TB_Work_Bottle TB, TB_Work_Report TW
 				WHERE TB.Work_Report_Seq  = TW.Work_Report_Seq
 				AND User_id = #{searchUserId}
-				AND Bottle_WorK_CD in ('0308','0309', '0310')
+				AND Bottle_WorK_CD in ('0308','0309', '0310', '0311', '0312')
 				<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
 				AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
 				</if>
@@ -620,7 +624,7 @@
 	
 	<select id="selectWorkBottleListAndCountOfOrder" resultType="com.gms.web.admin.domain.manage.WorkBottleRegisterVO" parameterType="int">			
 			SELECT
-				count(Work_Seq) Registered_Count,Product_ID, Product_Price_Seq
+				count(Work_Seq) Registered_Count,Product_ID, Product_Price_Seq, Bottle_Sale_YN
 			FROM
 				TB_Work_Bottle TB,TB_Work_Report TW
 			WHERE						
@@ -629,6 +633,6 @@
 				Order_Id = #{orderId}		
 			AND
 				Bottle_Work_CD in ('0308','0309')
-			Group By Product_ID, Product_Price_Seq 
+			Group By Product_ID, Product_Price_Seq ,Bottle_Sale_YN
 	</select>
 </mapper>

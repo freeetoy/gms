@@ -111,9 +111,11 @@ public class ProductController {
 				RequestUtils.initUserPrgmInfo(req, priceVo1);
 				
 				//priceVo1.setProductId(Integer.valueOf(productId));
-				priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));
 				priceVo1.setProductCapa(req.getParameter("productCapa_"+i));
+				priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));				
 				priceVo1.setECountCd(req.getParameter("eCountCd_"+i));
+				priceVo1.setProductBottlePrice(Integer.parseInt(req.getParameter("productBottlePrice_"+i)));				
+				priceVo1.setECountCdS(req.getParameter("eCountCdS_"+i));
 				
 				priceVo[i] = priceVo1;			
 			}
@@ -218,10 +220,12 @@ public class ProductController {
 					//logger.debug("ProductContoller registerProduct req.getParameter(\"productPriceSeq_\"+i)==="+req.getParameter("productPriceSeq_"+i));
 				//priceVo1.setProductId(Integer.valueOf(productId));
 					priceVo1.setProductId(Integer.parseInt(req.getParameter("productId")));					
-					priceVo1.setProductPriceSeq(Integer.parseInt(req.getParameter("productPriceSeq_"+i)));				
-					priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));
+					priceVo1.setProductPriceSeq(Integer.parseInt(req.getParameter("productPriceSeq_"+i)));		
 					priceVo1.setProductCapa(req.getParameter("productCapa_"+i));
+					priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));					
 					priceVo1.setECountCd(req.getParameter("eCountCd_"+i));
+					priceVo1.setProductBottlePrice(Integer.parseInt(req.getParameter("productBottlePrice_"+i)));				
+					priceVo1.setECountCdS(req.getParameter("eCountCdS_"+i));
 					
 					priceVo[listIndex++] = priceVo1;		
 					
@@ -230,9 +234,11 @@ public class ProductController {
 					if(req.getParameter("productPrice_"+i) !=null) {
 						priceVo1.setProductId(Integer.parseInt(req.getParameter("productId")));			
 						priceVo1.setProductPriceSeq(++lastPriceSeq);	
-						priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));
 						priceVo1.setProductCapa(req.getParameter("productCapa_"+i));
+						priceVo1.setProductPrice(Integer.parseInt(req.getParameter("productPrice_"+i)));						
 						priceVo1.setECountCd(req.getParameter("eCountCd"+i));
+						priceVo1.setProductBottlePrice(Integer.parseInt(req.getParameter("productBottlePrice_"+i)));						
+						priceVo1.setECountCdS(req.getParameter("eCountCdS"+i));
 						priceVo1.setCreateId(params.getCreateId());
 						
 						priceVo[listIndex++] = priceVo1;

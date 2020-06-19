@@ -3,20 +3,21 @@
 <mapper namespace="com.gms.web.admin.mapper.manage.ProductMapper">
 
 	<resultMap id="ProductTotalMap" type="com.gms.web.admin.domain.manage.ProductTotalVO" >
-		<result property="productId"			column="Product_ID"			/>
-		<result property="productNm"			column="Product_Nm"			/>	
-		<result property="gasId"				column="Gas_ID"				/>
-		<result property="productStatus"		column="Product_Status"		/>	
-		<result property="memberCompSeq"		column="Member_Comp_Seq"	/>	
-		<result property="productPriceSeq"		column="product_Price_Seq"	/>			
-		<result property="productPrice"			column="Product_Price"		/>	
-		<result property="productCapa"			column="product_Capa"		/>	
-		<result property="productPriceCount"	column="productPriceCount"	/>		
-		<result property="productOrderCount"	column="productOrderCount"	/>		
-		<result property="createId"				column="CREATE_ID"			/>
-		<result property="createDt"				column="CREATED_DT"			/>
-		<result property="updateId"				column="UPDATE_ID"			/>		
-		<result property="updateDt"				column="UPDATE_DT"			/>
+		<result property="productId"			column="Product_ID"				/>
+		<result property="productNm"			column="Product_Nm"				/>	
+		<result property="gasId"				column="Gas_ID"					/>
+		<result property="productStatus"		column="Product_Status"			/>	
+		<result property="memberCompSeq"		column="Member_Comp_Seq"		/>	
+		<result property="productPriceSeq"		column="product_Price_Seq"		/>			
+		<result property="productPrice"			column="Product_Price"			/>	
+		<result property="productBottlePrice"	column="Product_Bottle_Price"	/>	
+		<result property="productCapa"			column="product_Capa"			/>	
+		<result property="productPriceCount"	column="productPriceCount"		/>		
+		<result property="productOrderCount"	column="productOrderCount"		/>		
+		<result property="createId"				column="CREATE_ID"				/>
+		<result property="createDt"				column="CREATED_DT"				/>
+		<result property="updateId"				column="UPDATE_ID"				/>			
+		<result property="updateDt"				column="UPDATE_DT"				/>
 	</resultMap>
 	
 	
@@ -36,9 +37,11 @@
 		Product_ID
 		,Product_Price_Seq
 		,Product_Price
+		,Product_Bottle_Price
 		,Product_Capa
 		,product_Status
 		,ECount_CD 
+		,ECount_CDS 
 		,Create_ID 
 		,Create_Dt 
 		,Update_ID 
@@ -82,9 +85,11 @@
 			#{productId}
 			, #{productPriceSeq}
 			, #{productPrice}
+			, #{productBottlePrice}
 			, #{productCapa}
 			, IFNULL(#{productStatus}, '2')
 			, #{eCountCd}
+			, #{eCountCdS}
 			, #{createId}			
 			, NOW()
 			, NULL
@@ -101,6 +106,7 @@
 			Member_Comp_Seq,
 			Product_Price_Seq, 
 			Product_Price, 
+			Product_Bottle_Price,
 			Product_Capa
 		FROM
 			TB_Product p, TB_Product_Price pp
@@ -154,11 +160,13 @@
 	<update id="updateProductPrice" parameterType="com.gms.web.admin.domain.manage.ProductPriceVO">
 		UPDATE TB_Product_Price
 		SET
-			  Product_Price 	= #{productPrice}
-			, product_Capa 		= #{productCapa}
-			, ECount_CD 		= #{eCountCD}
-			, UPDATE_ID 		= #{updateId}
-			, UPDATE_DT 		= NOW()
+			  Product_Price 		= #{productPrice}
+			, Product_Bottle_Price 	= #{productBottlePrice}
+			, product_Capa 			= #{productCapa}
+			, ECount_CD 			= #{eCountCd}
+			, ECount_CDS 			= #{eCountCdS}
+			, UPDATE_ID 			= #{updateId}
+			, UPDATE_DT 			= NOW()
 		WHERE
 			Product_ID = #{productId}
 		AND 
@@ -246,7 +254,7 @@
 	
 	<select id="selectProductTotalList" resultType="com.gms.web.admin.domain.manage.ProductTotalVO">
 		SELECT
-			p.Product_ID, Product_Nm, Gas_ID, pp.Product_Status, Member_Comp_Seq,Product_Price_Seq, Product_Price, Product_Capa, ECount_CD,C.productPriceCount,
+			p.Product_ID, Product_Nm, Gas_ID, pp.Product_Status, Member_Comp_Seq,Product_Price_Seq, Product_Price, Product_Bottle_Price, Product_Capa, ECount_CD,ECount_CDS,C.productPriceCount,
 			(
 				SELECT COUNT(o.Product_Price_Seq) 
 				FROM TB_Order_Product o 
@@ -272,7 +280,7 @@
 	</select>
 		
 	<select id="selectCustomerProductTotalList" parameterType="integer" resultType="com.gms.web.admin.domain.manage.ProductTotalVO">
-		SELECT p.Product_ID, pseq Product_Price_Seq,ta.price Product_Price, Product_Nm, Gas_ID, pp.Product_Status, Member_Comp_Seq, Product_Capa,
+		SELECT p.Product_ID, pseq Product_Price_Seq,ta.price Product_Price,  Product_Nm, Gas_ID, pp.Product_Status, Member_Comp_Seq, Product_Capa,
 			p.Create_ID, p.Create_Dt, p.Update_ID, p.Update_Dt
 		FROM (
 			SELECT DISTINCT a.product_id pid, a.product_price_seq pseq , a.product_price price
@@ -295,7 +303,6 @@
 		AND ta.pseq = pp.Product_Price_Seq
 		AND p.Product_Status != '0'
 		AND pp.Product_Status != '0'
-
 	</select>
 	
 	
@@ -307,6 +314,7 @@
 			, Member_Comp_Seq
 			, Product_Price_Seq
 			, Product_Price 
+			, Product_Bottle_Price
 			, Product_Capa
 			, p.Create_ID, p.Create_Dt, p.Update_ID, p.Update_Dt
 		FROM TB_Product p, TB_Product_Price pp 
@@ -325,7 +333,9 @@
 			, Member_Comp_Seq
 			, pp.Product_Price_Seq
 			, pp.Product_Price 
+			, pp.Product_Bottle_Price 
 			, IFNULL(tc.Product_Price,0) Customer_Product_Price
+			, IFNULL(tc.Product_Bottle_Price,0) Customer_Bottle_Price
 			, Product_Capa
 			, p.Create_ID, p.Create_Dt, p.Update_ID, p.Update_Dt
 		FROM TB_Product p, TB_Product_Price pp Left Join TB_Customer_Product_Price tc on (pp.Product_ID = tc.Product_ID AND pp.Product_Price_Seq = tc.Product_Price_Seq  AND Customer_Id = #{customerId}	)
@@ -356,8 +366,8 @@
 
 	<select id="selectGasProductList"  resultType="com.gms.web.admin.domain.manage.ProductVO">
 		SELECT
-			Product_ID	,Product_Nm		,A.Gas_ID	,Product_Status		,A.Member_Comp_Seq 			
-			,A.Create_ID 	,A.Create_Dt	,A.Update_ID 	,A.Update_Dt 
+			Product_ID, Product_Nm, A.Gas_ID, Product_Status, A.Member_Comp_Seq,		
+			A.Create_ID, A.Create_Dt, A.Update_ID, A.Update_Dt 
 		FROM
 			TB_Product A, TB_GAS B
 		WHERE

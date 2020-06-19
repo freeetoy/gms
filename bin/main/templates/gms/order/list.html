@@ -232,9 +232,12 @@ $(document).ready(function(){
 						$("table.mod-doc-list").append(newRow);
 
 						for(var i=0;i<data.orderProduct.length;i++){
-							if(data.orderProduct[i].salesCount <=0) var newRow1 = $("<tr style='color: blue'>"); 
-							else var newRow1 = $("<tr >");
-				        	var cols1 = "";	
+							var newRow1 = $("<tr >");
+							if(data.orderProduct[i].salesCount <=0) newRow1 = $("<tr style='color: blue'>"); 
+							
+							console.log("saleCount =="+data.orderProduct[i].salesCount);
+				        	
+							var cols1 = "";	
 				        	cols1 += '<th>'+data.orderProduct[i].productNm+'</th>';
 				        	if(data.orderProduct[i].productCapa==null) cols1 += '<th></th>';
 				        	else cols1 += '<th>'+data.orderProduct[i].productCapa+'</th>';				        	
@@ -249,7 +252,6 @@ $(document).ready(function(){
 				        	newRow1.append(cols1);
 					        $("table.mod-doc-list").append(newRow1);
 					        
-					        newRow1 = "";
 				        }     
 					}
 			       })

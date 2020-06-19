@@ -826,7 +826,8 @@ $(document).ready(function(){
                       <td >
                       	<table>     
                       	<tr>
-                      		<td th:if="${not #lists.isEmpty(row.salesBottles )}" th:each="row1 : ${row.salesBottles}"  th:text="${row1.productNm} + ' ' + ${row1.productCapa}+ ' ' + ${row1.productCount}">
+                      		<td th:if="${not #lists.isEmpty(row.salesBottles )}" th:each="row1 : ${row.salesBottles}"  th:text="${row1.productNm} + ' ' + ${row1.productCapa}+ ' ' + ${row1.productCount} + ' (' + ${row1.bottleWorkCdNm} + ')' ">
+
                       	</tr>
                       	</table>
                       </td>

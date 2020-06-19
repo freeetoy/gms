@@ -243,10 +243,11 @@ public class OrderServiceImpl implements OrderService {
 					|| orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.03"))) {
 			
 				// 거래처 상품별 단가 정보 가져오기
-				//List<CustomerPriceExtVO> customerPriceList = customerService.getCustomerPriceList(params.getCustomerId());			
+				List<CustomerPriceExtVO> customerPriceList = customerService.getCustomerPriceList(params.getCustomerId());			
 				
-				// 거래처 상품별 단가 정보 가져오기
-				List<ProductTotalVO> productPriceList = productService.getCustomerProductTotalList(params.getCustomerId());						
+				// 상품별 단가 정보 가져오기
+				List<ProductTotalVO> productPriceList = productService.getProductTotalList();
+				//List<ProductTotalVO> productPriceList = productService.getCustomerProductTotalList(params.getCustomerId());						
 				
 				for(int i =0 ; i < productCount ; i++ ) {
 					
@@ -276,21 +277,40 @@ public class OrderServiceImpl implements OrderService {
 						tempProduct = productPriceList.get(k);
 						
 						if(productId == tempProduct.getProductId() && productPriceSeq == tempProduct.getProductPriceSeq()) {
-							logger.debug("OrderService registerOrder productId== "+ productId);
-							logger.debug("OrderService registerOrder productPriceList productPriceSeq== "+ productPriceSeq);
+							
 							if(tempProduct.getGasId()!=null && tempProduct.getGasId() > 0) bottleFlag = true;
 							
 							if(i==0) {
 								orderProductNm = tempProduct.getProductNm();
 								orderProductCapa = tempProduct.getProductCapa();
 							}
-							
-							orderAmount = tempProduct.getProductPrice() *orderCount;	
+							if(bottleSaleYn.equals("Y"))
+								orderAmount = tempProduct.getProductBottlePrice() *orderCount;	
+							else
+								orderAmount = tempProduct.getProductPrice() *orderCount;	
 							logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
 							productVo.setOrderAmount(orderAmount);
 							orderTotalAmount += orderAmount;								
 						}
 					}			
+						
+					for(int k=0;k<customerPriceList.size();k++) {
+						orderAmount = 0;
+						CustomerPriceExtVO customerPrice = customerPriceList.get(k);
+						
+						if(productId == customerPrice.getProductId() && productPriceSeq == customerPrice.getProductPriceSeq()) {
+							
+							//if(tempProduct.getGasId()!=null && tempProduct.getGasId() > 0) bottleFlag = true;									
+							
+							if(bottleSaleYn.equals("Y"))
+								orderAmount = customerPrice.getProductBottlePrice() *orderCount;	
+							else
+								orderAmount = customerPrice.getProductPrice() *orderCount;	
+							logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
+							productVo.setOrderAmount(orderAmount);
+							orderTotalAmount += orderAmount;								
+						}
+					}
 					
 					productVo.setOrderId(params.getOrderId());
 					productVo.setOrderProductSeq(i+1);
@@ -467,8 +487,7 @@ public class OrderServiceImpl implements OrderService {
 					bottleChangeYn = "N";
 					bottleSaleYn = "N";
 					boolean bottleFlag = false;
-					int requestIndex = i;
-					
+					int requestIndex = i;					
 					
 					if(request.getParameter("productId_"+i) != null) {
 						requestIndex = i;

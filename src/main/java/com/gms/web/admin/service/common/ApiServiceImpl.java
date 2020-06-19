@@ -44,6 +44,8 @@ public class ApiServiceImpl implements ApiService {
 	@Autowired
 	private CashFlowService cashService;
 	
+	
+	
 	@Override
 	public int registerWorkReportForSale(WorkReportVO param) {
 		
@@ -55,7 +57,8 @@ public class ApiServiceImpl implements ApiService {
 		if(customer!=null) {
 			param.setCustomerId(customer.getCustomerId());
 
-			result = workService.registerWorkReportNoOrder(param);
+			result = workService.registerWorkReportNoOrder(param);			
+			
 			
 		}else {
 			return CUSOTMER_NOT_EXIST;
@@ -85,10 +88,12 @@ public class ApiServiceImpl implements ApiService {
 		
 		List<BottleVO> bottleList = bottleService.getBottleDetails(bottle);
 		
-		if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0301") ) 
+		if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0301") ) 				
 				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0306"))
 				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0307") ) 
-				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0310")) ){
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0310")) 
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freeback")) 
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback")) ){
 		
 			//Customer 정보가져
 			CustomerVO customer = getCustomer(param.getCustomerNm());		

@@ -389,7 +389,31 @@
 	
 	<select id="selectBottleDetailForBarCd" parameterType="String" resultType="com.gms.web.admin.domain.manage.BottleVO">
 		SELECT
-			<include refid="BottleSelectColumns" />
+			Bottle_ID
+			, Bottle_BarCd
+			, TB.Product_ID
+			, TB.Product_Price_Seq
+			, TB.Gas_ID	
+			, Gas_CD
+			, Product_Nm
+			, Bottle_Capa
+			, Charge_Capa
+			, Bottle_Create_Dt	
+			, Bottle_Charge_Dt	
+			, Bottle_Volumn
+			, Bottle_Charge_Prss	
+			, Bottle_Own_YN	
+			, Own_Customer_ID	
+			, Bottle_Work_CD
+			, Bottle_Work_ID
+			, TB.Customer_ID
+			, TB.Member_Comp_Seq	
+			, Order_ID
+			, Order_Product_Seq	
+			, Bottle_Type
+			, Bottle_Work_DT
+			, CD_NM Bottle_Work_CD_NM
+			, DateDiff(Bottle_Charge_Dt, now()) menuType
 		FROM
 			TB_Bottle TB, TB_CODE TC, TB_Product TG
 		WHERE

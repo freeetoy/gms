@@ -195,27 +195,27 @@ public class ExcelServiceImpl implements ExcelService {
                 	}
                 	else if(j == 11) {                		
                 		
-                		if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.come")))
+                		if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.come")))
                 			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
-                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.vacuum")))
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.vacuum")))
                 			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0302"));
-                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.hole")))
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.hole")))
                 			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0303"));
-                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.chargeDt")))
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.chargeDt")))
                 			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0304"));
-                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.charge")))
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.charge")))
                 			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0305"));
-                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.out")))
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.out")))
                 			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0306"));
-                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.incar")))
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.incar")))
                 			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0307"));
-                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.sales")))
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.sales")))
                 			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
-                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.rental")))
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.rental")))
                 			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
-                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.back")))
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.back")))
                 			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0310"));
-                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.discard")))
+                		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.discard")))
                 			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0399"));
                 		else	
                 			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0388"));
@@ -395,27 +395,27 @@ public class ExcelServiceImpl implements ExcelService {
                     	}
                     	else if(j == 11) {                		
                     		
-                    		if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.come")))
+                    		if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.come")))
                     			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
-                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.vacuum")))
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.vacuum")))
                     			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0302"));
-                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.hole")))
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.hole")))
                     			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0303"));
-                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.chargeDt")))
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.chargeDt")))
                     			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0304"));
-                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.charge")))
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.charge")))
                     			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0305"));
-                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.out")))
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.out")))
                     			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0306"));
-                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.incar")))
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.incar")))
                     			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0307"));
-                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.sales")))
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.sales")))
                     			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
-                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.rental")))
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.rental")))
                     			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
-                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.back")))
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.back")))
                     			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0310"));
-                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.discard")))
+                    		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.discard")))
                     			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0399"));
                     		else	
                     			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0388"));
@@ -717,8 +717,8 @@ public class ExcelServiceImpl implements ExcelService {
             // 첫번째 시트 불러오기
             XSSFSheet sheet = workbook.getSheetAt(0);
             
-            //int COLUMN_COUNT = 144;
-            int COLUMN_COUNT = productService.getProductPriceCount();
+            int COLUMN_COUNT = 27;
+            //int COLUMN_COUNT = productService.getProductPriceCount();
             if(COLUMN_COUNT <= 0) COLUMN_COUNT = 144;
             int insertCount = 0;
             StringBuffer sb = new StringBuffer();
@@ -732,7 +732,8 @@ public class ExcelServiceImpl implements ExcelService {
             // 상품정보 가져옴
         	XSSFRow row1 = sheet.getRow(0);
         	  
-        	for(int j=3; j< COLUMN_COUNT; j++) {
+        	// 상품 가져오기
+        	for(int j=3; j< COLUMN_COUNT/2; j++) {
         		
         		isRegisteFlag = true;
         		XSSFCell cell = row1.getCell(j);
@@ -892,11 +893,16 @@ public class ExcelServiceImpl implements ExcelService {
                 int productPrice = 0;
                 String customerNm ="";
             	String businessRegId="";            	
-            	
+            	int productCheck = 0;
+            	CustomerPriceVO customerPrice = null;
                 for(int j=0; j< COLUMN_COUNT; j++) {
-                	CustomerPriceVO customerPrice = new CustomerPriceVO();
                 	
-                	RequestUtils.initUserPrgmInfo(request, customerPrice);
+                	if(j%2==1) {
+                		customerPrice = new CustomerPriceVO();
+                		RequestUtils.initUserPrgmInfo(request, customerPrice);
+                	}
+                	
+                			
                 	productPrice = 0;
                 	XSSFCell cell = row.getCell(j);
                 
@@ -954,36 +960,60 @@ public class ExcelServiceImpl implements ExcelService {
                 	
 					if(j>2 && colValue.length() > 0) {
 						
-						ProductTotalVO productTotal = productList.get(j-3);
+						ProductTotalVO productTotal = productList.get(productCheck);
 						logger.debug("&& ExcelSerive uploadExcelFile getProductNm j =="+j+"=="+ productTotal.getProductNm());
-						logger.debug("&& ExcelSerive uploadExcelFile getProductCapa j =="+j+"=="+ productTotal.getProductCapa());					
+						logger.debug("&& ExcelSerive uploadExcelFile getProductCapa j =="+j+"=="+ productTotal.getProductCapa());	
+						
+						
+						if(j%2==1) {
+							customerPrice.setProductId(productTotal.getProductId());
+							customerPrice.setProductPriceSeq(productTotal.getProductPriceSeq());
+							customerPrice.setProductPrice(productPrice);        
+						}
+						else
+							customerPrice.setProductBottlePrice(productPrice);  
 					
-						customerPrice.setProductId(productTotal.getProductId());
-						customerPrice.setProductPriceSeq(productTotal.getProductPriceSeq());
-						customerPrice.setProductPrice(productPrice);        
-					
-						if(customer != null &&  customer.getCustomerId() > 0 ) {
+						if(j%2==0) {
 							customerPrice.setCustomerId(customer.getCustomerId());
-							 for(int k=0;k<cPriceList.size();k++) {
-			                	if(customerPrice.getCustomerId() == cPriceList.get(k).getCustomerId() 
-			                			&& customerPrice.getProductId() == cPriceList.get(k).getProductId()
-			                			&& customerPrice.getProductPriceSeq() == cPriceList.get(k).getProductPriceSeq()) {
-			                		
-			                		result = customerService.modifyCustomerPrice(customerPrice);
-			                		isRegisteFlag = false;
-			                	}                 		
-			                }
-							
-							logger.debug("&& ExcelSerive uploadExcelFile customerId j =="+j+"=="+ customerPrice.getCustomerId());
-							if(isRegisteFlag) {
-								list.add(customerPrice);
-								insertCount++;
-								if(list.size()%500==0) {
-									result = customerService.registerCustomerPrices(list);
-									list.clear();
-								}
+							productCheck++;
+							if(customer != null &&  customer.getCustomerId() > 0 ) {
 								
-							}
+								logger.debug("&& ExcelSerive uploadExcelFile customerPrice.getCustomerId() j =="+ customerPrice.getCustomerId());
+								logger.debug("&& ExcelSerive uploadExcelFile customerPrice.getProductId() j =="+ customerPrice.getProductId());
+								logger.debug("&& ExcelSerive uploadExcelFile customerPrice.getProductPriceSeq() j =="+ customerPrice.getProductPriceSeq());	
+								
+								for(int k=0;k<cPriceList.size();k++) {
+									logger.debug("*** ExcelSerive uploadExcelFile cPriceList.get(k).getProductId() j =="+ cPriceList.get(k).getProductId());
+									logger.debug("*** ExcelSerive uploadExcelFile cPriceList.get(k).getProductPriceSeq() j =="+ cPriceList.get(k).getProductPriceSeq());	
+									logger.debug("*** ExcelSerive uploadExcelFile cPriceList.get(k).getCustomerId() j =="+ cPriceList.get(k).getCustomerId());
+									
+									logger.debug("========= ExcelSerive uploadExcelFile getCustomerId() =="+ (customerPrice.getCustomerId() - cPriceList.get(k).getCustomerId()) );
+									logger.debug("*** ExcelSerive uploadExcelFile getProductId()  =="+ (customerPrice.getProductId() - cPriceList.get(k).getProductId()) );
+									logger.debug("*** ExcelSerive uploadExcelFile getProductPriceSeq()  =="+ (customerPrice.getProductPriceSeq() - cPriceList.get(k).getProductPriceSeq()) );
+									
+				                	if(customerPrice.getCustomerId()- cPriceList.get(k).getCustomerId() ==0 
+				                			&& customerPrice.getProductId() - cPriceList.get(k).getProductId() ==0
+				                			&& customerPrice.getProductPriceSeq() - cPriceList.get(k).getProductPriceSeq() == 0) {
+
+				                		logger.debug("*** ExcelSerive uploadExcelFile modifyCustomerPrice !!!! --------------");
+										
+				                		result = customerService.modifyCustomerPrice(customerPrice);
+				                		isRegisteFlag = false;
+				                	}                 		
+				                }
+								
+								
+								if(isRegisteFlag) {
+									list.add(customerPrice);
+									insertCount++;
+									customerPrice = null;
+									if(list.size()%500==0) {
+										result = customerService.registerCustomerPrices(list);
+										list.clear();
+									}
+									
+								}
+							}	// if(j%2==0) end 
 						}
 						
 					}                	

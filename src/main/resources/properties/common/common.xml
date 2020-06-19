@@ -73,24 +73,28 @@
 	<entry key="common.bottle.status.0308">0308</entry>		<!-- 판매 -->
 	<entry key="common.bottle.status.0309">0309</entry>		<!-- 대여 -->
 	<entry key="common.bottle.status.0310">0310</entry> 	<!-- 회수 -->
-	<entry key="common.bottle.status.0311">0311</entry> 	<!-- 기타 -->
-	<entry key="common.bottle.status.0312">0312</entry> 	<!-- 입금 -->
+	<entry key="common.bottle.status.freeback">0311</entry> 	<!-- 무료회수 -->
+	<entry key="common.bottle.status.buyback">0312</entry> 	<!-- 매입 -->
+	<entry key="common.bottle.status.0311">0320</entry> 	<!-- 기타 -->
+	<entry key="common.bottle.status.0312">0330</entry> 	<!-- 입금 -->
 	<entry key="common.bottle.status.0399">0399</entry>		<!-- 폐기 -->
 	<entry key="common.bottle.status.0388">0388</entry> 	<!-- 신규 -->
 	
 	
-	<entry key="common.bottle.status.come">입고</entry>		<!-- 입고 -->
-	<entry key="common.bottle.status.vacuum">진공배기</entry>		<!-- 진공배기 -->
-	<entry key="common.bottle.status.hole">누출확인</entry> 	<!-- 누출확인 -->
-	<entry key="common.bottle.status.chargeDt">충전기한확인</entry>	 	<!-- 충전기한 확인 -->
-	<entry key="common.bottle.status.charge">충전</entry>		<!-- 충전 -->
-	<entry key="common.bottle.status.out">출고</entry>		<!-- 출고 -->
-	<entry key="common.bottle.status.incar">상차</entry>		<!-- 상차-  -->
-	<entry key="common.bottle.status.sales">판매</entry>		<!-- 판매 -->
-	<entry key="common.bottle.status.rental">대여</entry>		<!-- 대여 -->
-	<entry key="common.bottle.status.back">회수</entry> 	<!-- 회수 -->
-	<entry key="common.bottle.status.discard">폐기</entry>		<!-- 폐기 -->
-	<entry key="common.bottle.status.new">신규</entry> 	<!-- 신규 -->
+	<entry key="common.bottle.status.title.come">입고</entry>				<!-- 입고 -->
+	<entry key="common.bottle.status.title.vacuum">진공배기</entry>		<!-- 진공배기 -->
+	<entry key="common.bottle.status.title.hole">누출확인</entry> 			<!-- 누출확인 -->
+	<entry key="common.bottle.status.title.chargeDt">충전기한확인</entry>	<!-- 충전기한 확인 -->
+	<entry key="common.bottle.status.title.charge">충전</entry>			<!-- 충전 -->
+	<entry key="common.bottle.status.title.out">출고</entry>				<!-- 출고 -->
+	<entry key="common.bottle.status.title.incar">상차</entry>			<!-- 상차-  -->
+	<entry key="common.bottle.status.title.sales">판매</entry>			<!-- 판매 -->
+	<entry key="common.bottle.status.title.rental">대여</entry>			<!-- 대여 -->
+	<entry key="common.bottle.status.title.back">회수</entry> 			<!-- 회수 -->
+	<entry key="common.bottle.status.title.freeback">무료회수</entry> 		<!-- 무료회수 -->
+	<entry key="common.bottle.status.title.buyback">매입</entry> 			<!-- 매입 -->
+	<entry key="common.bottle.status.title.discard">폐기</entry>			<!-- 폐기 -->
+	<entry key="common.bottle.status.title.new">신규</entry> 				<!-- 신규 -->
 	
 	
 	<entry key="common.code.order.type">0100</entry>

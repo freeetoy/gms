@@ -14,8 +14,6 @@ function validationOfForm(form) {
         /* VALUE */   console.log(gasId.value);
         /* TEXT */    console.log(gasId.options[gasId.selectedIndex].text);
 
-   // }
-	//alert("gasId=="+gasId.value);
 	form
 	var result = (
 			   isValid(form.productNm, "상품명", null, null)
@@ -29,7 +27,6 @@ function validationOfForm(form) {
 // end of function
 
 
-
 //Ajax공통 호출
 function callAjax(ajaxInfo){
 	var dfd = $.Deferred();
@@ -39,8 +36,6 @@ function callAjax(ajaxInfo){
 	
 	return dfd.promise();
 }
-
-
 
 
 $(document).ready(function(){ 
@@ -58,15 +53,19 @@ $(document).ready(function(){
 
         }
      
-        var newRow = $("<tr>");
+        var newRow = $("<tr  style='font-size:14px;''>");
         var cols = "";
 
         cols += '<td style="padding-left:0px;">';
-        cols += '<input type="text" class="form-control" id="productPrice_'+ counter + '" name="productPrice_'+ counter + '" placeholder="상품가격">';        
+        cols += '<input type="text" class="form-control" id="productCapa_'+ counter + '" name="productCapa_'+ counter + '" placeholder="상품용량">';
 		cols += '</td><td>';
-		cols += '<input type="text" class="form-control" id="productCapa_'+ counter + '" name="productCapa_'+ counter + '" placeholder="상품용량">';
-		cols += '</td><td>';
-		cols += '<input type="text" class="form-control" id="eCountCd_'+ counter + '" name="eCountCd_'+ counter + '" placeholder="ECount코드">';
+		cols += '<input type="text" class="form-control" id="productPrice_'+ counter + '" name="productPrice_'+ counter + '" placeholder="대여가격">';        
+		cols += '</td><td>';		
+		cols += '<input type="text" class="form-control" id="eCountCd_'+ counter + '" name="eCountCd_'+ counter + '" placeholder="대여ECount">';
+        cols += '</td><td>';
+        cols += '<input type="text" class="form-control" id="productBottlePrice_'+ counter + '" name="productBottlePrice_'+ counter + '" placeholder="판매가격">';        
+		cols += '</td><td>';		
+		cols += '<input type="text" class="form-control" id="eCountCdS_'+ counter + '" name="eCountCdS_'+ counter + '" placeholder="판매ECount">';
         cols += '</td><td>';
         cols += ' <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" value="삭제" />';
         cols += '</td>';
@@ -84,45 +83,6 @@ $(document).ready(function(){
     //수정시 row 추가
      var mod_counter = 0;
     
-    $("table.mod-doc-list").on("click", ".ibtnAddMod", function (event) {
-         
-        console.log("추가 클릭");
-        mod_counter++;
-
-        console.log("추가 mod_counter:" + mod_counter);
-        
-        if (mod_counter > 11){
-
-          alert('더 이상 추가 할수 없습니다.');
-          return false;
-
-        }
-     
-        var newRow = $("<tr>");
-        var cols = "";
-
-        cols += '<td style="padding-left:0px;">';
-        cols += '<select class="form-control" id="mod_sel_pumname_' + mod_counter +  '" name="mod_sel_pumname_' + mod_counter + '" style="width:160px"></select>';      
-        cols += '</td><td>';
-        cols += ' <select class="form-control" id="mod_sel_storage_' + mod_counter + '" name="mod_sel_storage_' + mod_counter + '" style="width:160px"></select> ';
-        cols += '</td><td>';
-        cols += ' <input type="text" id="mod_order_cnt_' + mod_counter + '" name="mod_order_cnt_' + mod_counter + '" style="width:80px;height:35px;">';                     
-        cols += '</td><td>';
-        cols += '<input type="text" id="mod_order_etc_' + mod_counter + '" name="mod_order_etc_' + mod_counter + '" style="width:80px;height:35px;">';
-        cols += '</td><td>';
-        cols += ' <input type="button" class="ibtnDelMod btn btn-md btn-danger" id="addrow" value="삭제" />';
-        cols += '</td>';
-        cols +='</tr>';
-
-        newRow.append(cols);
-        $("table.mod-doc-list").append(newRow);
-
-        init_mod(mod_counter);
-
-        init_mod_storage(mod_counter);
-    });
-    
-    
     // row 삭제
 
 
@@ -131,8 +91,6 @@ $(document).ready(function(){
         counter -= 1
         $("#priceCount").val(counter+1);
     });
-
-
 
 
     $("table.mod-doc-list").on("click", ".ibtnDelMod", function (event) {
@@ -191,23 +149,32 @@ $(document).ready(function(){
                   </thead>
                 </table>        
                 <div class="form-group">
-                   <label class="control-label col-8">상품정보</label>
-                   <div class="col-md-10 col-sm-10 col-xs-12">
+                   <label class="control-label col-10">상품정보</label>
+                   <div class="col-md-12 col-sm-10 col-xs-12">
                        <table id="myTable" class="table doc-list">
-                       <tr>
-                         <td>상품가격</td>
-                         <td>상품용량</td>
+                       <tr style="font-size:14px;">
+                       	 <td>상품용량</td>
+                         <td>대여가격</td>
+                         <td>대여ECount</td>
+                         <td>판매가격</td>
+                         <td>판매ECount</td>
                          <td></td>
                        </tr>
-                       <tr>
-                       <td  style="padding-left: 0px;">                                           
-                         <input type="text" class="form-control" id="productPrice_0" name="productPrice_0" placeholder="상품가격">
-                       </td>
-                       <td> 
+                       <tr style="font-size:14px;">
+                       <td  style="padding-left:0px;"> 
                          <input type="text" class="form-control" id="productCapa_0" name="productCapa_0" placeholder="상품용량">
                        </td> 
+                       <td >                                           
+                         <input type="text" class="form-control" id="productPrice_0" name="productPrice_0" placeholder="대여가격">
+                       </td>                       
                        <td> 
-                         <input type="text" class="form-control" id="eCountCd_0" name="eCountCd_0" placeholder="ECount코드">
+                         <input type="text" class="form-control" id="eCountCd_0" name="eCountCd_0" placeholder="대여ECount코드">
+                       </td>   
+                       <td  style="padding-left: 0px;">                                           
+                         <input type="text" class="form-control" id="productBottlePrice_0" name="productBottlePrice_0" placeholder="판매가격">
+                       </td>                       
+                       <td style="font-size:13px;"> 
+                         <input type="text" class="form-control" id="eCountCdS_0" name="eCountCdS_0" placeholder="판매ECount코드">
                        </td>   
                        <td>
                        <input type="button" class="btn btn-default btn-success" id="addrow" value="추가" />

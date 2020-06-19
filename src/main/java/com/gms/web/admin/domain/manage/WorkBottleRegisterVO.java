@@ -21,4 +21,7 @@ public class WorkBottleRegisterVO implements Serializable {
 	
 	/** Registered_Count      	*/
 	private int registeredCount;	
+	
+	/** Bottle_Sale_YN 	*/
+	private String bottleSaleYn;	
 }

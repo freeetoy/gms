@@ -291,12 +291,10 @@ public class CustomerController {
 			, HttpServletResponse response
 			, Model model) {
 		
-		logger.info("CustomerContoller registerCustomerPrice");			
-		
-		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));		
+		logger.info("CustomerContoller registerCustomerPrice");	
 		
 		try {
-			
+			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));		
 			int priceCount  = Integer.parseInt(request.getParameter("priceCount"));
 			
 			boolean result=false;
@@ -318,9 +316,9 @@ public class CustomerController {
 				priceVo.setProductId(Integer.parseInt(request.getParameter("productId_"+i)));
 				priceVo.setProductPriceSeq(Integer.parseInt(request.getParameter("productPriceSeq_"+i)));
 				priceVo.setProductPrice(Integer.parseInt(request.getParameter("productPrice_"+i)));
+				priceVo.setProductBottlePrice(Integer.parseInt(request.getParameter("productBottlePrice_"+i)));
 					
-				customerPrice[i] = priceVo;
-				
+				customerPrice[i] = priceVo;				
 			}
 			
 			result = customerService.registerCustomerPrice(customerPrice);

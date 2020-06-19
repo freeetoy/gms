@@ -27,29 +27,7 @@ function validationOfForm(form) {
 	}
 }
 // end of function
-/*
-var fn_deleteGas = function(gasId){
-	               		
-	if(confirm("삭제하시겠습니까?")){	
-		
-		var form = document.createElement("form");
-		form.setAttribute("charset","UTF-8");
-		form.setAttribute("method","post");
-		form.setAttribute("action","/gms/gas/delete.do");
-		
-		var hiddenField = document.createElement("input");
-        hiddenField.setAttribute("type", "hidden");
-        hiddenField.setAttribute("name", "gasId");
-        hiddenField.setAttribute("value", gasId);
 
-        form.appendChild(hiddenField);
-        
-        document.body.appendChild(form);
-
-        form.submit();			
-	}                  		
-}
-*/
 //Ajax공통 호출
 function callAjax(ajaxInfo){
 	var dfd = $.Deferred();
@@ -80,11 +58,15 @@ $(document).ready(function(){
         var cols = "";
 
         cols += '<td style="padding-left:0px;">';
-        cols += '<input type="text" class="form-control" id="productPrice_'+ counter + '" name="productPrice_'+ counter + '" placeholder="상품가격">';        
+        cols += '<input type="text" class="form-control" id="productCapa_'+ counter + '" name="productCapa_'+ counter + '" placeholder="상품용량">';
 		cols += '</td><td>';
-		cols += '<input type="text" class="form-control" id="productCapa_'+ counter + '" name="productCapa_'+ counter + '" placeholder="상품용량">';
-		cols += '</td><td>';
-		cols += '<input type="text" class="form-control" id="eCountCd_'+ counter + '" name="eCountCd_'+ counter + '" placeholder="ECount코드">';
+        cols += '<input type="text" class="form-control" id="productPrice_'+ counter + '" name="productPrice_'+ counter + '" placeholder="대여가격">';        
+		cols += '</td><td>';		
+		cols += '<input type="text" class="form-control" id="eCountCd_'+ counter + '" name="eCountCd_'+ counter + '" placeholder="ECount">';
+        cols += '</td><td>';
+        cols += '<input type="text" class="form-control" id="productBottlePrice_'+ counter + '" name="productBottlePrice_'+ counter + '" placeholder="판매가격">';        
+		cols += '</td><td>';		
+		cols += '<input type="text" class="form-control" id="eCountCdS_'+ counter + '" name="eCountCdS_'+ counter + '" placeholder="판매ECount">';
         cols += '</td><td>';
         cols += ' <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" value="삭제" /> ';
         cols += '</td>';
@@ -101,38 +83,7 @@ $(document).ready(function(){
     //수정시 row 추가
 
      var mod_counter = 0;
-    $("table.mod-doc-list").on("click", ".ibtnAddMod", function (event) {
-
-        mod_counter++;       
-        if (mod_counter > 11){
-          alert('더 이상 추가 할수 없습니다.');
-          return false;
-        }
-     
-        var newRow = $("<tr id='+mod_counter+'>");
-        var cols = "";
-
-        cols += '<td style="padding-left:0px;">';
-        cols += '<select class="form-control" id="mod_sel_pumname_' + mod_counter +  '" name="mod_sel_pumname_' + mod_counter + '" style="width:160px"></select>';      
-        cols += '</td><td>';
-        cols += ' <select class="form-control" id="mod_sel_storage_' + mod_counter + '" name="mod_sel_storage_' + mod_counter + '" style="width:160px"></select> ';
-        cols += '</td><td>';
-        cols += ' <input type="text" id="mod_order_cnt_' + mod_counter + '" name="mod_order_cnt_' + mod_counter + '" style="width:80px;height:35px;">';                     
-        cols += '</td><td>';
-        cols += '<input type="text" id="mod_order_etc_' + mod_counter + '" name="mod_order_etc_' + mod_counter + '" style="width:80px;height:35px;">';
-        cols += '</td><td>';
-        cols += ' <input type="button" class="ibtnDelMod btn btn-md btn-danger" id="addrow" value="삭제" />';
-        cols += '</td>';
-        cols +='</tr>';
-
-        newRow.append(cols);
-        $("table.mod-doc-list").append(newRow);
-
-        init_mod(mod_counter);
-
-        init_mod_storage(mod_counter);
-
-    });
+    
     
     
     // row 삭제
@@ -208,29 +159,38 @@ $(document).ready(function(){
                   </thead>
                 </table>        
                 <div class="form-group">
-                   <label class="control-label col-8">상품정보</label>
-                   <div class="col-md-10 col-sm-10 col-xs-12">
+                   <label class="control-label col-10">상품정보</label>
+                   <div class="col-md-12 col-sm-10 col-xs-12">
                        <table id="myTable" class="table doc-list">
-                       <tr>
-                         <td>상품가격</td>
+                       <tr>                         
                          <td>상품용량</td>
+                         <td>대여가격</td>
+                         <td>대여ECount</td>
+                         <td>판매가격</td>
+                         <td>판매ECount</td>
                          <td></td>
                        </tr>
                        <tr th:if="${not #lists.isEmpty( productPriceList )}" th:each="row : ${productPriceList}" >
                			<input type="hidden" th:id="'productPriceSeq_'+${productPriceList.indexOf(row)}" th:name="'productPriceSeq_'+${productPriceList.indexOf(row)}" th:value="${row.productPriceSeq}">
-                       <td style="padding-left: 0px;">                                           
-                         <input type="text" class="form-control" th:id="'productPrice_'+${productPriceList.indexOf(row)}" th:name="'productPrice_'+${productPriceList.indexOf(row)}" th:value="${row.productPrice}">
-                       </td>
-                       <td> 
-                         <input type="text" class="form-control" th:id="'productCapa_'+${productPriceList.indexOf(row)}" th:name="'productCapa_'+${productPriceList.indexOf(row)}" th:value="${row.productCapa}">
-                       </td>  
-                       <td> 
-                         <input type="text" class="form-control" th:id="'eCountCd_'+${productPriceList.indexOf(row)}" th:name="'eCountCd_'+${productPriceList.indexOf(row)}" th:value="${row.eCountCd}">
-                       </td>   
-                       <td>
-                       <input type="button" class="btn btn-default btn-success" id="addrow" th:if="${productPriceList.indexOf(row)==0}" selected value="추가" />
-                       <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" th:unless="${productPriceList.indexOf(row)==0}" selected value="삭제" /> 
-                       </td>
+	                       <td> 
+	                         <input type="text" class="form-control" th:id="'productCapa_'+${productPriceList.indexOf(row)}" th:name="'productCapa_'+${productPriceList.indexOf(row)}" th:value="${row.productCapa}">
+	                       </td>  
+	                       <td style="padding-left: 0px;">                                           
+	                         <input type="text" class="form-control" th:id="'productPrice_'+${productPriceList.indexOf(row)}" th:name="'productPrice_'+${productPriceList.indexOf(row)}" th:value="${row.productPrice}">
+	                       </td>	                       
+	                       <td> 
+	                         <input type="text" class="form-control" th:id="'eCountCd_'+${productPriceList.indexOf(row)}" th:name="'eCountCd_'+${productPriceList.indexOf(row)}" th:value="${row.eCountCd}">
+	                       </td>   
+	                       <td style="padding-left: 0px;">                                           
+	                         <input type="text" class="form-control" th:id="'productBottlePrice_'+${productPriceList.indexOf(row)}" th:name="'productBottlePrice_'+${productPriceList.indexOf(row)}" th:value="${row.productBottlePrice}">
+	                       </td>	                       
+	                       <td> 
+	                         <input type="text" class="form-control" th:id="'eCountCdS_'+${productPriceList.indexOf(row)}" th:name="'eCountCdS_'+${productPriceList.indexOf(row)}" th:value="${row.eCountCdS}">
+	                       </td>   
+	                       <td>
+	                       <input type="button" class="btn btn-default btn-success" id="addrow" th:if="${productPriceList.indexOf(row)==0}" selected value="추가" />
+	                       <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" th:unless="${productPriceList.indexOf(row)==0}" selected value="삭제" /> 
+	                       </td>
                        </tr>
                      </table>
                      </div>
