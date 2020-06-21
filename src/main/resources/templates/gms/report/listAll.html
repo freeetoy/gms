@@ -410,8 +410,7 @@ $(document).ready(function(){
           default:
             break;
 
-       }           
-       console.log("bottleWorkCd ="+bottleWorkCd);	       
+       }                       
       
 		if(confirm(msg)){
 			
@@ -454,13 +453,11 @@ $(document).ready(function(){
 		var msg = '판매를 하시겠습니까?';       
        	var bottleWorkCd = '0308';
        	customerId= $("#customerId1").val();
-       	console.log("customerId ="+customerId);	       
+       	   
        	productId= $("#productId").val();
        	productPriceSeq= $("#productPriceSeq").val();       	
     	productCount= $("#productCount").val();
-       	console.log("productId ="+productId);	    
-       	console.log("productPriceSeq ="+productPriceSeq);	    
-       	console.log("productCount ="+productCount);	
+       	
        	if(customerId ==0){
     	   alert("거래처를 선택해주세요");
     	   return;
@@ -863,7 +860,7 @@ $(document).ready(function(){
         	</div>
         	<div class="col-9">
         	<a class="btn_ecount btn btn-primary btn-sm float-right"   th:userId="${session.userId}"  href="#" >
-                              <i class="fas fa-file-excel"></i>ECount엑셀받기</a>
+                              <i class="fas fa-file-excel"></i> ECount엑셀받기</a>
          		<!-- <a th:href="@{/gms/excelDownloadEcount.do}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> ECount엑셀받기</button></a>     -->     	
         	</div>
         </div>

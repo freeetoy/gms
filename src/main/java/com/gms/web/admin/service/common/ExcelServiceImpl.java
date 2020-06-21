@@ -39,6 +39,8 @@ import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
+import com.gms.web.admin.domain.manage.OrderProductVO;
+import com.gms.web.admin.domain.manage.ProductPriceSimpleVO;
 import com.gms.web.admin.domain.manage.ProductTotalVO;
 import com.gms.web.admin.service.manage.BottleService;
 import com.gms.web.admin.service.manage.CustomerService;
@@ -717,7 +719,7 @@ public class ExcelServiceImpl implements ExcelService {
             // 첫번째 시트 불러오기
             XSSFSheet sheet = workbook.getSheetAt(0);
             
-            int COLUMN_COUNT = 27;
+            int COLUMN_COUNT = 267;
             //int COLUMN_COUNT = productService.getProductPriceCount();
             if(COLUMN_COUNT <= 0) COLUMN_COUNT = 144;
             int insertCount = 0;
@@ -727,13 +729,14 @@ public class ExcelServiceImpl implements ExcelService {
             List<ProductTotalVO> productList = productService.getProductTotalList();
             
             List<String> strlist = null;
+            List<ProductPriceSimpleVO> simpleList = new ArrayList<ProductPriceSimpleVO>();
             Map<String, Object> map = new HashMap<String, Object>();
             
             // 상품정보 가져옴
         	XSSFRow row1 = sheet.getRow(0);
         	  
         	// 상품 가져오기
-        	for(int j=3; j< COLUMN_COUNT/2; j++) {
+        	for(int j=3; j< COLUMN_COUNT; j++) {
         		
         		isRegisteFlag = true;
         		XSSFCell cell = row1.getCell(j);
@@ -767,21 +770,41 @@ public class ExcelServiceImpl implements ExcelService {
         		} 
         		
         		//strProductPrice = cell.getRichStringCellValue().getString();
-        		
-        		strlist = StringUtils.makeForeach(strProductPrice, "_"); 	
-        		/*
-        		logger.debug("ExcelSerive uploadExcelFile strProductPrice =="+j+"=="+ strProductPrice);
-        		logger.debug("ExcelSerive uploadExcelFile strlist.size() =="+j+"=="+ strlist.size());
-        		for(int k=0;k<strlist.size();k++) {
-        			logger.debug("ExcelSerive uploadExcelFile starlist =="+k+"=="+ strlist.get(k).toString());
+        		logger.debug(" *** ExcelSerive uploadExcelFile strProductPrice=="+j+ "== "+ strProductPrice);  
+        		if(strProductPrice.length() > 1) {
+	        		strlist = StringUtils.makeForeach(strProductPrice, "_"); 	
+	        		ProductPriceSimpleVO simpleProduct = new ProductPriceSimpleVO();
+	        		simpleProduct.setProductNm(strlist.get(0));
+	        		if(strlist.size()> 1)
+	        			simpleProduct.setProductCapa(strlist.get(1));
+	        		else
+	        			simpleProduct.setProductCapa(" ");
+	        		
+	        		for(int k=0;k < productList.size() ; k++) {
+	        			if(strlist.size() > 1 && simpleProduct.getProductNm().equals(productList.get(k).getProductNm()) && simpleProduct.getProductCapa().equals(productList.get(k).getProductCapa()) ) {
+	        				simpleProduct.setProductId(productList.get(k).getProductId());
+	        				simpleProduct.setProductPriceSeq(productList.get(k).getProductPriceSeq());
+	        			}else if(strlist.size() == 1 && simpleProduct.getProductNm().equals(productList.get(k).getProductNm()) ) {
+	        				simpleProduct.setProductId(productList.get(k).getProductId());
+	        				simpleProduct.setProductPriceSeq(productList.get(k).getProductPriceSeq());   				
+	        			}
+	        				
+	        		}
+	        		
+	        		simpleList.add(simpleProduct);
         		}
-        		*/
-        		String key = Integer.toString(j-3);
-        		map.put(key, strlist);
         	}
-            
-            for(int i=1; i<sheet.getLastRowNum() + 1; i++) {
-            	logger.debug("ExcelSerive uploadExcelFile i=1 ==");
+        	/*
+        	for(int i=0;i<simpleList.size();i++) {
+        		ProductPriceSimpleVO simpleProduct = simpleList.get(i);
+        		//if(productInfo !=null) {
+	        		logger.debug("^^^^  ExcelSerive uploadExcelFile simpleProuct.getProductNm==-"+simpleProduct.getProductNm());
+					logger.debug("*** ExcelSerive uploadExcelFile productInfo.getProductId==-"+simpleProduct.getProductId());
+					logger.debug("*** ExcelSerive uploadExcelFile productInfo.getProductPriceSeq=-"+simpleProduct.getProductPriceSeq());
+        		//}
+        	}
+        	*/
+            for(int i=1; i<sheet.getLastRowNum() + 1; i++) {            	
             	
             	CustomerVO customer = null;
             	CustomerVO tempcustomer = new CustomerVO();            	
@@ -900,8 +923,7 @@ public class ExcelServiceImpl implements ExcelService {
                 	if(j%2==1) {
                 		customerPrice = new CustomerPriceVO();
                 		RequestUtils.initUserPrgmInfo(request, customerPrice);
-                	}
-                	
+                	}                	
                 			
                 	productPrice = 0;
                 	XSSFCell cell = row.getCell(j);
@@ -943,10 +965,7 @@ public class ExcelServiceImpl implements ExcelService {
                 	else if(j==1) businessRegId = colValue;
                 	
                 	if(j==2) {
-                		logger.debug("ExcelSerive uploadExcelFile customerNm j =="+j+"=="+ customerNm);                	
-                		logger.debug("ExcelSerive uploadExcelFile businessRegId j =="+j+"=="+ businessRegId);
-
-	                	tempcustomer.setCustomerNm(customerNm);
+                		tempcustomer.setCustomerNm(customerNm);
 	                	tempcustomer.setBusinessRegId(businessRegId);
 	                	
                 		customer = customerService.getCustomerDetailsByNmBusi(tempcustomer);
@@ -958,38 +977,29 @@ public class ExcelServiceImpl implements ExcelService {
                 		}                	
                 	}
                 	
-					if(j>2 && colValue.length() > 0) {
-						
-						ProductTotalVO productTotal = productList.get(productCheck);
-						logger.debug("&& ExcelSerive uploadExcelFile getProductNm j =="+j+"=="+ productTotal.getProductNm());
-						logger.debug("&& ExcelSerive uploadExcelFile getProductCapa j =="+j+"=="+ productTotal.getProductCapa());	
-						
-						
-						if(j%2==1) {
-							customerPrice.setProductId(productTotal.getProductId());
-							customerPrice.setProductPriceSeq(productTotal.getProductPriceSeq());
+					if(j>2 && colValue.length() > 0) {						
+
+						if(j%2==1) {						
+							customerPrice = new CustomerPriceVO();
 							customerPrice.setProductPrice(productPrice);        
 						}
 						else
 							customerPrice.setProductBottlePrice(productPrice);  
 					
+						ProductPriceSimpleVO simpleProduct = simpleList.get(productCheck);
+						if(simpleProduct != null) {
+							customerPrice.setProductId(simpleProduct.getProductId());
+							customerPrice.setProductPriceSeq(simpleProduct.getProductPriceSeq());
+						}
+						
 						if(j%2==0) {
 							customerPrice.setCustomerId(customer.getCustomerId());
+							
 							productCheck++;
 							if(customer != null &&  customer.getCustomerId() > 0 ) {
+								isRegisteFlag = true;
 								
-								logger.debug("&& ExcelSerive uploadExcelFile customerPrice.getCustomerId() j =="+ customerPrice.getCustomerId());
-								logger.debug("&& ExcelSerive uploadExcelFile customerPrice.getProductId() j =="+ customerPrice.getProductId());
-								logger.debug("&& ExcelSerive uploadExcelFile customerPrice.getProductPriceSeq() j =="+ customerPrice.getProductPriceSeq());	
-								
-								for(int k=0;k<cPriceList.size();k++) {
-									logger.debug("*** ExcelSerive uploadExcelFile cPriceList.get(k).getProductId() j =="+ cPriceList.get(k).getProductId());
-									logger.debug("*** ExcelSerive uploadExcelFile cPriceList.get(k).getProductPriceSeq() j =="+ cPriceList.get(k).getProductPriceSeq());	
-									logger.debug("*** ExcelSerive uploadExcelFile cPriceList.get(k).getCustomerId() j =="+ cPriceList.get(k).getCustomerId());
-									
-									logger.debug("========= ExcelSerive uploadExcelFile getCustomerId() =="+ (customerPrice.getCustomerId() - cPriceList.get(k).getCustomerId()) );
-									logger.debug("*** ExcelSerive uploadExcelFile getProductId()  =="+ (customerPrice.getProductId() - cPriceList.get(k).getProductId()) );
-									logger.debug("*** ExcelSerive uploadExcelFile getProductPriceSeq()  =="+ (customerPrice.getProductPriceSeq() - cPriceList.get(k).getProductPriceSeq()) );
+								for(int k=0;k<cPriceList.size();k++) {									
 									
 				                	if(customerPrice.getCustomerId()- cPriceList.get(k).getCustomerId() ==0 
 				                			&& customerPrice.getProductId() - cPriceList.get(k).getProductId() ==0

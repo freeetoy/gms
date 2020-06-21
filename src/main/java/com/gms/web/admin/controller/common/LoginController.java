@@ -119,8 +119,7 @@ public class LoginController {
 			
 			if(loginUser!= null && loginUser.getUserId() != null) {
 				logger.debug("LoginContoller loginAction userNm "+loginUser.getUserNm());			
-				//logger.debug("LoginContoller loginAction userAuthoriy "+user.getUserAuthority());
-				//logger.debug("LoginContoller loginAction userPart "+user.getUserPartCd());
+				
 				loginUser.setUserId(param.getUserId());
 				session.setAttribute(LoginUserVO.ATTRIBUTE_NAME, loginUser);		
 				

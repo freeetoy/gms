@@ -35,8 +35,8 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
         boolean isAuthChk = false;
         String forwardUrl = "gms/login";
         
-        LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);
-       
+        LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);       
+        
         if(sessionInfo != null) {  
             
             userId 		= StringUtils.defaultString(sessionInfo.getUserId());
@@ -74,7 +74,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		log.debug("afterCompletion!!");
+		//log.debug("afterCompletion!!");
 	}
 
 }

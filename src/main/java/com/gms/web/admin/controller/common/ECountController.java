@@ -96,7 +96,7 @@ public class ECountController {
 		        //거래처코드
 		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getCustomerId().toString());
+		        cell.setCellValue(vo.getCustomerId());
 		        
 		        //거래처명
 		        cell = row.createCell(k++);;
@@ -141,7 +141,10 @@ public class ECountController {
 		        //품목코드	
 		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getECountCd());
+		        if(vo.getBottleSaleYn().equals("Y"))
+		        	cell.setCellValue(vo.getECountCdS());
+		        else
+		        	cell.setCellValue(vo.getECountCd());
 		        //cell.setCellValue(vo.getProductId());
 		        
 		        //품목명	
