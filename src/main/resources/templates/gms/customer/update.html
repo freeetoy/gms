@@ -236,6 +236,14 @@ var goDelete = function(){
 					    </select>	                      
 						</th>   
                     </tr>    
+                    <tr>                                   
+                      <th class="card-footer">소유용기수</th>
+                      <th th:text="${customer.bottleOwnCount}"></th>
+                    </tr>
+                    <tr>                                   
+                      <th class="card-footer">대여용기수</th>
+                      <th th:text="${customer.bottleRentCount}"></th>
+                    </tr>
                   </thead>                              
                 </table>
               </div>

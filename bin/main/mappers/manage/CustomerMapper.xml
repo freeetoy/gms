@@ -20,6 +20,7 @@
 		<result property="agencyYn"				column="Agency_YN"			/>		
 		<result property="eCountCd"				column="ECount_CD"			/>	
 		<result property="bottleOwnCount"		column="Bottle_Own_Count"	/>	
+		<result property="bottleRentCount"		column="Bottle_Rent_Count"	/>	
 		<result property="createId"				column="CREATE_ID"		/>
 		<result property="createDt"				column="CREATED_DT"		/>
 		<result property="updateId"				column="UPDATE_ID"		/>		
@@ -59,6 +60,7 @@
 		, Agency_Yn
 		, ECount_CD
 		, Bottle_Own_Count
+		, Bottle_Rent_Count
 		, CREATE_ID	
 		, CREATE_DT	
 		, UPDATE_ID	
@@ -82,6 +84,7 @@
 		, Agency_Yn
 		, ECount_CD
 		, Bottle_Own_Count
+		, Bottle_Rent_Count
 		, A.CREATE_ID	
 		, A.CREATE_DT	
 		, A.UPDATE_ID	
@@ -117,6 +120,7 @@
 			, #{agencyYn}
 			, #{eCountCd}
 			, #{bottleOwnCount}
+			, #{bottleRentCount}
 			, #{createId}			
 			, NOW()
 			, NULL
@@ -145,6 +149,7 @@
 			, #{item.agencyYn}
 			, #{item.eCountCd}
 			, #{item.bottleOwnCount}
+			, #{item.bottleRentCount}
 			, #{item.createId}			
 			, NOW()
 			, NULL
@@ -278,6 +283,16 @@
 		UPDATE TB_CUSTOMER
 		SET
 			  Bottle_Own_Count	= Bottle_Own_Count + #{bottleOwnCount}			
+			, UPDATE_ID			= #{updateId}
+			, UPDATE_DT			= NOW()
+		WHERE
+			CUSTOMER_ID = #{customerId}
+	</update>
+	
+	<update id="updateCustomerBottleRentCount" parameterType="com.gms.web.admin.domain.manage.CustomerVO">
+		UPDATE TB_CUSTOMER
+		SET
+			  Bottle_Rent_Count	= Bottle_Rent_Count + #{bottleRentCount}			
 			, UPDATE_ID			= #{updateId}
 			, UPDATE_DT			= NOW()
 		WHERE

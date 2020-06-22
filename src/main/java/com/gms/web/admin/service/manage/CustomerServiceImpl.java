@@ -337,6 +337,11 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 	
 	@Override
+	public int modifyCustomerBottleRentCount(CustomerVO param) {
+		return customerMapper.updateCustomerBottleRentCount(param);
+	}
+	
+	@Override
 	public List<CustomerPriceVO> getCustomerPriceListAll() {
 		// TODO Auto-generated method stub
 		return customerMapper.selectCustomerPriceListAll();

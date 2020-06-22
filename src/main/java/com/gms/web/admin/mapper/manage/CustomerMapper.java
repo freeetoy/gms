@@ -44,6 +44,8 @@ public interface CustomerMapper {
 	public int deleteCustomer(CustomerVO param);	
 	
 	public int updateCustomerBottleCount(CustomerVO param);
+	
+	public int updateCustomerBottleRentCount(CustomerVO param);
 		
 	public int insertCustomerPrice(CustomerPriceVO param);
 	

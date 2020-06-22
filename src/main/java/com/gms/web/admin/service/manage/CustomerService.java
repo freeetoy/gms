@@ -45,6 +45,8 @@ public interface CustomerService {
 	public int deleteCustomer(CustomerVO param);
 	
 	public int modifyCustomerBottleCount(CustomerVO param);
+	
+	public int modifyCustomerBottleRentCount(CustomerVO param);
 
 	public Map<String, Object> checkBusinessRegIdDuplicate(CustomerVO param);
 	

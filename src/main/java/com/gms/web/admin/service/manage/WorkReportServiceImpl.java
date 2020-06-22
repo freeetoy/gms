@@ -632,6 +632,14 @@ public class WorkReportServiceImpl implements WorkReportService {
 				customer.setBottleOwnCount(bottleList.size());
 				
 				result = customerService.modifyCustomerBottleCount(customer);
+			}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0309")) ) {
+				
+				CustomerVO customer = new CustomerVO();
+				customer.setCustomerId(param.getCustomerId());
+				customer.setUpdateId(param.getCreateId());
+				customer.setBottleRentCount(bottleList.size());
+				
+				result = customerService.modifyCustomerBottleRentCount(customer);
 			}
 			/// End of Order & Bottle			
 			// Start Work_Report , Work_Bottle
@@ -887,6 +895,14 @@ public class WorkReportServiceImpl implements WorkReportService {
 					customer.setBottleOwnCount(bottleList.size());
 					
 					result = customerService.modifyCustomerBottleCount(customer);
+				}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0309")) ) {
+					
+					CustomerVO customer = new CustomerVO();
+					customer.setCustomerId(param.getCustomerId());
+					customer.setUpdateId(param.getCreateId());
+					customer.setBottleRentCount(bottleList.size());
+					
+					result = customerService.modifyCustomerBottleRentCount(customer);
 				}
 				
 				if(registerFlag) {
@@ -1003,6 +1019,13 @@ public class WorkReportServiceImpl implements WorkReportService {
 				customer.setBottleOwnCount(bottleList.size()*-1);
 				
 				result = customerService.modifyCustomerBottleCount(customer);
+			}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0310")) ){
+				CustomerVO customer = new CustomerVO();
+				customer.setCustomerId(param.getCustomerId());
+				customer.setUpdateId(param.getCreateId());
+				customer.setBottleRentCount(bottleList.size()*-1);
+				
+				result = customerService.modifyCustomerBottleRentCount(customer);
 			}
 			
 			if(insertFlag) {
