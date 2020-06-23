@@ -127,7 +127,7 @@
 	<entry key="excel.stat.order.title">날짜,주문건수,주문금액,취소주문,회수요청,점검요청,기타요청</entry>
 	<entry key="excel.stat.sales.title">날짜,판매건수,판매금액,대여건수,대여금액</entry>
 	<entry key="excel.stat.bottle.title">날짜,입고,충전,판매,회수</entry>
-	<entry key="excel.stat.product.title">날짜,판매건수,판매금액</entry>
+	<entry key="excel.stat.product.title">날짜,판매건수,판매금액,대여건수,대여금액</entry>
 	<entry key="excel.stat.customer.title">날짜,판매건수,판매금액</entry>
 	
 </properties>

@@ -20,11 +20,17 @@ public class StatisticsProductVO extends AbstractVO implements Serializable {
 	/**Stat_Dt      */
 	private String statDt;
 	
-	/**Order_Count  */
-	private int orderCount;
+	/**Sale_Count  */
+	private int saleCount;
 	
-	/**Order_Amount */
-	private int orderAmount;
+	/**Sale_Amount */
+	private int saleAmount;
+	
+	/**Rent_Count  */
+	private int rentCount;
+	
+	/**Rent_Amount */
+	private int rentAmount;
 	
 	private Integer searchProductId;
 	

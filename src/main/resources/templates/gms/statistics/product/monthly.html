@@ -109,7 +109,7 @@ $(function() {
 	        </div>
         </div>
         <div class="row">
-          <div class="col-8">
+          <div class="col-10">
           <div class="card card-primary">
               <div class="card-header p-0 pt-1">
                 <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
@@ -134,18 +134,23 @@ $(function() {
                       <th>날짜</th>
                       <th>판매건수</th>
                       <th>판매금액</th>
+                      <th>대여건수</th>
+                      <th>대여금액</th>
                     </tr>
                   </thead>
                   <tbody>
                   	<tr th:if="${not #lists.isEmpty( statProductList )}" th:each="row : ${statProductList}" style="font-size:14px;">
                       <td th:text="${row.statDt}"></td>
-                      <td th:text="${row.orderCount}"></td>
-                      <td th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
-                      <td th:unless="${row.orderAmount> 0 }" th:text="${row.orderAmount}">
+                      <td th:text="${row.saleCount}"></td>
+                      <td th:if="${row.saleAmount> 0 }" th:text="${#numbers.formatInteger(row.saleAmount, 3, 'COMMA')}">
+                      <td th:unless="${row.saleAmount> 0 }" th:text="${row.saleAmount}">
+                      <td th:text="${row.rentCount}"></td>
+                      <td th:if="${row.rentAmount> 0 }" th:text="${#numbers.formatInteger(row.rentAmount, 3, 'COMMA')}">
+                      <td th:unless="${row.rentAmount> 0 }" th:text="${row.rentAmount}">
                       </td>                      
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( statProductList )}">
-						<td colspan="3">조회된 결과가 없습니다.</td>
+						<td colspan="5">조회된 결과가 없습니다.</td>
 					</tr>
 					
                   </tbody>

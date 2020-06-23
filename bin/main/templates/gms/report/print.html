@@ -108,7 +108,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 
 	  <tr th:if="${not #lists.isEmpty( workList )}" th:each="row : ${workList}" height="40">     
 		<td class="tl_dot" style="border-top-style:none" align="center" th:text="${workList.indexOf(row)+1}" >상차</td>
-		<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.CustomerNm}"></td>
+		<td class="tl_dot" style="border-top-style:none" align="left" th:text="${row.CustomerNm}"></td>
 		<td class="tl_dot" style="border-top-style:none" align="left" >
 			<table>     
               	<tr>
@@ -123,10 +123,10 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 	           	</tr>
            	</table>
 		</td>
-		<td class="tl_dot" style="border-top-style:none" align="center" th:if="${row.orderAmount> 999 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">	</td>
-		<td class="tl_dot" style="border-top-style:none" align="center" th:unless="${row.orderAmount> 999 }" th:text="${row.orderAmount}">	</td>			
-		<td class="tl_dot" style="border-top-style:none" align="center" th:if="${row.receivedAmount > 999}" th:text="${#numbers.formatInteger(row.receivedAmount, 3, 'COMMA')}">	</td>
-		<td class="tl_dot" style="border-top-style:none" align="center" th:unless="${row.receivedAmount > 999}" th:text="${row.receivedAmount}"></td>
+		<td class="tl_dot" style="border-top-style:none" align="right" th:if="${row.orderAmount> 999 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">	</td>
+		<td class="tl_dot" style="border-top-style:none" align="right" th:unless="${row.orderAmount> 999 }" th:text="${row.orderAmount}">	</td>			
+		<td class="tl_dot" style="border-top-style:none" align="right" th:if="${row.receivedAmount > 999}" th:text="${#numbers.formatInteger(row.receivedAmount, 3, 'COMMA')}">	</td>
+		<td class="tl_dot" style="border-top-style:none" align="right" th:unless="${row.receivedAmount > 999}" th:text="${row.receivedAmount}"></td>
 		<td class="tl_dot" style="border-top-style:none: border-right-style: solid;border-right-width: 1px;" align="center"></td>		
 	  </tr>
 

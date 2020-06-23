@@ -246,12 +246,19 @@ public class StatisticsProductController {
 		        
 		        cell = row.createCell(1);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getOrderCount());
+		        cell.setCellValue(vo.getSaleCount());
 		        
 		        cell = row.createCell(2);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getOrderAmount());	        
+		        cell.setCellValue(vo.getSaleAmount());	        
 		       
+		        cell = row.createCell(1);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getRentCount());
+		        
+		        cell = row.createCell(2);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getRentAmount());	  
 		    }	
 	
 		    // 컨텐츠 타입과 파일명 지정

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.BottleVO;
@@ -177,7 +178,20 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public OrderVO getLastOrderForCustomer(Integer customerId) {
-		return orderMapper.selectLastOrderForCustomer(customerId);	
+		OrderVO orderInfo = orderMapper.selectLastOrderForCustomer(customerId);	
+		//return null;
+		String today = DateUtils.getDate("YYYY/mm/dd");
+		//logger.debug("WorkReportServiceImpl getLastOrderForCustomer today =" + today);		
+		if( orderInfo != null) {
+			if(orderInfo.getOrderProcessCd().equals(PropertyFactory.getProperty("common.code.order.process.04"))) {
+				if(DateUtils.convertDateFormat(orderInfo.getUpdateDt(),"YYYY/mm/dd").equals(today) ) return orderInfo;
+				else orderInfo = null;
+			}
+		}				
+		else orderInfo = null;
+		
+		return orderInfo;
+		//return orderMapper.selectLastOrderForCustomer(customerId);	
 	}
 	
 	
