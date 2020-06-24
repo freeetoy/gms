@@ -231,6 +231,10 @@ public class StatisticsBottleController {
 		        
 		        cell = row.createCell(4);
 		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getBottleRentalCount());
+		        
+		        cell = row.createCell(5);
+		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleBackCount());
 		    }	
 	
@@ -323,16 +327,24 @@ public class StatisticsBottleController {
 		        cell = row.createCell(0);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getStatDt());
+		        
 		        cell = row.createCell(1);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleInputCount());
+		        
 		        cell = row.createCell(2);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleChargeCount());
+		        
 		        cell = row.createCell(3);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleSalesCount());
+		        
 		        cell = row.createCell(4);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getBottleRentalCount());
+		        
+		        cell = row.createCell(5);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleBackCount());
 		        

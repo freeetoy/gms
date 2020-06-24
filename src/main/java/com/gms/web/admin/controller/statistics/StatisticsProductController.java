@@ -1,8 +1,5 @@
 package com.gms.web.admin.controller.statistics;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +23,6 @@ import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.common.utils.ExcelStyle;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.manage.ProductVO;
-import com.gms.web.admin.domain.statistics.StatisticsOrderVO;
 import com.gms.web.admin.domain.statistics.StatisticsProductVO;
 import com.gms.web.admin.service.manage.ProductService;
 import com.gms.web.admin.service.statistics.StatisticsProductService;
@@ -173,11 +169,17 @@ public class StatisticsProductController {
 				params.setSearchStatDtFrom(searchStatDtFrom);
 				params.setSearchStatDtEnd(searchStatDtEnd);			
 			}else {						
-					
-				searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");
-				logger.debug("****** getStatisticsBottleDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
-		
 				searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
+				
+				if(params.getPeriodType()==1) {	
+					searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");					
+				}else {
+					searchStatDtFrom = DateUtils.getNextDate(-366,"yyyy/MM/dd");
+					searchStatDtFrom = searchStatDtFrom.substring(0,7);
+					searchStatDtEnd = searchStatDtEnd.substring(0,7);
+				}
+				logger.debug("****** getStatisticsBottleDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
+				
 				logger.debug("****** getStatisticsBottleDaily else *****getSearchStatDtEnd===*"+searchStatDtEnd);
 		
 				
@@ -198,10 +200,10 @@ public class StatisticsProductController {
 			String fileName="StatisticProduct_"+sheetName;
 			if(params.getPeriodType()==1) {
 				statProductList = statService.getDailylStatisticsProductList(params);
-				fileName +="Daily_"+DateUtils.getDate()+".xls";
+				fileName +="Daily_"+DateUtils.getDate();
 			}else {
 				statProductList = statService.getMontlylStatisticsProductList(params);
-				fileName +="Monthly_"+DateUtils.getDate()+".xls";
+				fileName +="Monthly_"+DateUtils.getDate();
 			}
 		    // 워크북 생성
 	
@@ -252,18 +254,19 @@ public class StatisticsProductController {
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getSaleAmount());	        
 		       
-		        cell = row.createCell(1);
+		        cell = row.createCell(3);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getRentCount());
 		        
-		        cell = row.createCell(2);
+		        cell = row.createCell(4);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getRentAmount());	  
 		    }	
 	
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel");    
-		    response.setHeader("Content-Disposition", "attachment;filename="+fileName);	
+		    //response.setHeader("Content-Disposition", "attachment;filename="+fileName);	
+		    response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes(),"ISO8859_1") + ".xls");
 	
 		    // 엑셀 출력
 		    wb.write(response.getOutputStream());

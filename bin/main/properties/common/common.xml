@@ -124,10 +124,10 @@
 	<entry key="excel.customer.title">거래처명,거래처주소,거래처사업자등록번호,거래처전화,대표자,업태,종목,이메일</entry>
 	<entry key="excel.ecount.title">일자,순번,거래처코드,거래처명,담당자,출하창고,거래유형,통화,환율,수금내역,비고,품목코드,품목명,규격,수량,단가,외화금액,공급가액,부가세,적요,단가(VAT포함),생산전표생성,Ecount</entry>
 	
-	<entry key="excel.stat.order.title">날짜,주문건수,주문금액,취소주문,회수요청,점검요청,기타요청</entry>
+	<entry key="excel.stat.order.title">날짜,주문건수,주문금액,완료건수,완료금액,취소주문,회수요청,점검요청,기타요청</entry>
 	<entry key="excel.stat.sales.title">날짜,판매건수,판매금액,대여건수,대여금액</entry>
-	<entry key="excel.stat.bottle.title">날짜,입고,충전,판매,회수</entry>
+	<entry key="excel.stat.bottle.title">날짜,입고,충전,판매,대여,회수</entry>
 	<entry key="excel.stat.product.title">날짜,판매건수,판매금액,대여건수,대여금액</entry>
-	<entry key="excel.stat.customer.title">날짜,판매건수,판매금액</entry>
+	<entry key="excel.stat.customer.title">날짜,판매건수,판매금액,입금액,미수금액</entry>
 	
 </properties>

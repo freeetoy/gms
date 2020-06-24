@@ -238,17 +238,25 @@ public class StatisticsOrderController {
 		        
 		        cell = row.createCell(3);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getOrderCancelCount());
+		        cell.setCellValue(vo.getOrderCompletedCount());
 		        
 		        cell = row.createCell(4);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getOrderRetrievedCount());
+		        cell.setCellValue(vo.getOrderCompletedAmount());
 		        
 		        cell = row.createCell(5);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getOrderCheckCount());
+		        cell.setCellValue(vo.getOrderCancelCount());
 		        
 		        cell = row.createCell(6);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getOrderRetrievedCount());
+		        
+		        cell = row.createCell(7);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getOrderCheckCount());
+		        
+		        cell = row.createCell(8);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getOrderEtcCount());
 		    }	

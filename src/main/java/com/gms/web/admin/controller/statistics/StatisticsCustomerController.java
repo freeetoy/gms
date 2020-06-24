@@ -192,13 +192,13 @@ public class StatisticsCustomerController {
 			
 			List<StatisticsCustomerVO> statCustomerList = null;
 			
-			String fileName="Statistic_";
+			String fileName="Statistic_"+sheetName;
 			if(params.getPeriodType()==1) {
 				statCustomerList = statService.getDailylStatisticsCustomerList(params);
-				fileName +="Daily_"+DateUtils.getDate()+".xls";
+				fileName +="Daily_"+DateUtils.getDate();
 			}else {
 				statCustomerList = statService.getMontlylStatisticsCustomerList(params);
-				fileName +="Monthly_"+DateUtils.getDate()+".xls";
+				fileName +="Monthly_"+DateUtils.getDate();
 			}
 		    // 워크북 생성
 	
@@ -248,12 +248,21 @@ public class StatisticsCustomerController {
 		        cell = row.createCell(2);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getOrderAmount());	        
+		        
+		        cell = row.createCell(3);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getIncomeAmount());
+		        
+		        cell = row.createCell(4);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getReceivableAmount());	  
 		       
 		    }	
 	
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel"); 
-		    response.setHeader("Content-Disposition", "attachment;filename="+fileName);	
+		    //response.setHeader("Content-Disposition", "attachment;filename="+fileName);	
+		    response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes(),"ISO8859_1") + ".xls");
 	
 		    // 엑셀 출력
 		    wb.write(response.getOutputStream());
