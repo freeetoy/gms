@@ -67,8 +67,7 @@ public class CalendarController {
                 		startH = "13:00:00";
                 	}    	                	                	
                 	//sObject.put("start", DateUtils.convertDateFormat(temp.getScheduleStartDt(),"yyyy-MM-dd")+"T"+startH);
-                	sObject.put("start", temp.getScheduleStartDt()+"T"+startH);
-                	
+                	sObject.put("start", temp.getScheduleStartDt()+"T"+startH);                	
                 }
                 
                 if(!temp.getScheduleStartDt().equals(temp.getScheduleEndDt())) {
@@ -85,8 +84,7 @@ public class CalendarController {
 		
 			obj.put("item", jArray);			
 			model.addAttribute("list", obj);
-			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.calendar"));
-			
+			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.calendar"));			
 			 
 		}catch(Exception e) {
 			
@@ -103,8 +101,7 @@ public class CalendarController {
 		List<ScheduleVO> scheduleList = scheduleService.getScheduleList();		
 		
         return scheduleList;
-    }
-	
+    }	
 	
 	
 }

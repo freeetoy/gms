@@ -68,8 +68,7 @@ public class ScheduleController {
 		
 		ModelAndView mav = new ModelAndView();			
 		
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.vacation"));	 
-		
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.vacation"));		
 		
 		mav.setViewName("gms/schedule/write");
 		return mav;
@@ -93,13 +92,11 @@ public class ScheduleController {
 			user = SessionUtil.getSessionInfo(request);
 			params.setUserNm(user.getUserNm());
 		}else {
-			logger.info("ScheduleController registerSchedule session is null ");
-			
+			logger.info("ScheduleController registerSchedule session is null ");			
 		}
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.vacation"));		
 		
-		logger.debug("ScheduleController registerSchedule params.getScheduleStartDt() " + params.getScheduleStartDt());
-		
+		logger.debug("ScheduleController registerSchedule params.getScheduleStartDt() " + params.getScheduleStartDt());		
 		logger.debug("ScheduleController registerSchedule params.getScheduleEndDt() " + params.getScheduleEndDt());
 		
 		if(params.getScheduleEndDt()==null) params.setScheduleEndDt(params.getScheduleStartDt());

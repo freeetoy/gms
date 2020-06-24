@@ -48,7 +48,7 @@ public class ExcelUploadController {
 	        //long SIZE_LIMIT = 1024*1024*3;
 	        long fileSize = file.getSize();
         	if(fileSize > SIZE_LIMIT) {
-        		String alertMessage = "파일은 1M 이하로 업로드 해주세요.";
+        		String alertMessage = "파일은 "+SIZE_LIMIT/(1024*1024)+"M 이하로 업로드 해주세요.";
     			RequestUtils.responseWriteException(response, alertMessage,
     					"/gms/bottle/list.do");
     			return null;

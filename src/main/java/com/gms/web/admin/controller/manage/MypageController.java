@@ -50,8 +50,7 @@ public class MypageController {
 
 		logger.info("MypageContoller getAssignList");
 		
-		RequestUtils.initUserPrgmInfo(request, params);		
-		
+		RequestUtils.initUserPrgmInfo(request, params);				
 		
 		ModelAndView mav = new ModelAndView();		
 		
@@ -76,8 +75,7 @@ public class MypageController {
 
 		logger.info("MypageContoller getAssignListPrint");
 		
-		RequestUtils.initUserPrgmInfo(request, params);		
-		
+		RequestUtils.initUserPrgmInfo(request, params);			
 		
 		ModelAndView mav = new ModelAndView();		
 		
@@ -111,8 +109,7 @@ public class MypageController {
 		
 		//RequestUtils.initUserPrgmInfo(request, params);	
 		
-		ModelAndView mav = new ModelAndView();		
-		
+		ModelAndView mav = new ModelAndView();				
 		
 		UserVO user = userService.getUserDetails(loginUser.getUserId());
 			
@@ -160,8 +157,7 @@ public class MypageController {
 
 		logger.info("MypageContoller getAssignList");
 		
-		RequestUtils.initUserPrgmInfo(request, params);		
-		
+		RequestUtils.initUserPrgmInfo(request, params);				
 		
 		ModelAndView mav = new ModelAndView();		
 		
@@ -177,13 +173,10 @@ public class MypageController {
 			mav.addObject("salesId", params.getSalesId());	
 		}else {
 			orderList = orderService.getSalseOrderList(params.getCreateId());
-		}
-		
+		}		
 		
 		List<CustomerVO> carList = customerService.searchCustomerListCar();
-		mav.addObject("carList", carList);	
-		
-		
+		mav.addObject("carList", carList);			
 		
 		mav.addObject("orderList", orderList);	
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.assign"));	 	

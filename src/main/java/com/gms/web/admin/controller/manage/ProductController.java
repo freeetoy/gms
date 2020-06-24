@@ -79,17 +79,11 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value = "/gms/product/register.do", method = RequestMethod.POST)
-	public String registerProduct(HttpServletRequest req) {
-		
+	public String registerProduct(HttpServletRequest req) {		
 		
 		logger.debug("ProductContoller registerProduct");
 		try {
-	/*			
-			logger.debug("ProductContoller registerProductgetGasId ==="+req.getParameter("gasId"));
-			logger.debug("ProductContoller registerProduct getPrductNm ==="+req.getParameter("productNm"));
-			logger.debug("ProductContoller registerProduct productPrice_0 ==="+req.getParameter("productPrice_0"));
-			logger.debug("ProductContoller registerProduct priceCount ==="+req.getParameter("priceCount"));
-	*/		
+	
 			int priceCount  = Integer.parseInt(req.getParameter("priceCount"));
 			ProductVO params = new ProductVO();			
 			
@@ -183,12 +177,7 @@ public class ProductController {
 	public String modifyProduct(HttpServletRequest req) {
 		logger.debug("ProductContoller modifyProduct");
 		try {
-	/*		
-			logger.debug("ProductContoller modifyProduct getGasId ==="+req.getParameter("gasId"));
-			logger.debug("ProductContoller modifyProduct getPrductNm ==="+req.getParameter("productNm"));
-			logger.debug("ProductContoller modifyProduct productPrice_0 ==="+req.getParameter("productPrice_0"));
-			logger.debug("ProductContoller modifyProduct priceCount ==="+req.getParameter("priceCount"));
-	*/		
+		
 			int priceCount  = Integer.parseInt(req.getParameter("priceCount"));
 			ProductVO params = new ProductVO();		
 			
@@ -255,8 +244,7 @@ public class ProductController {
 			result = productService.modifyProduct(params, priceVo);
 			
 			if (result == false) {
-				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
-				
+				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달				
 			}	
 			
 		} catch (DataAccessException e) {
@@ -276,7 +264,6 @@ public class ProductController {
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.product"));
 		
 		try { 
-			//임시
 			
 			boolean result = productService.deleteProduct(productId);
 			if (result == false) {
@@ -328,27 +315,6 @@ public class ProductController {
 		return "redirect:/gms/product/list.do";
 	}
 	
-	/*
-	@RequestMapping(value = "/gms/product/detail.do")
-	public String getProductDetails(@RequestParam(value = "productId", required = false) Integer productId, Model model) {
-
-		if (productId == null || productId < 1) {
-			// TODO => 올바르지 않은 접근이라는 메시지를 전달
-			return "redirect:/gms/product/list.do";
-		}
-
-		ProductVO product = productService.getProductDetails(productId);
-		if (product == null || "Y".equals(product.getDeleteYn())) {
-			// TODO => 존재하지 않는 게시글이거나 이미 삭제된 게시글이라는 메시지를 전달
-			return "redirect:/gms/product/list.do";
-		}
-
-		model.addAttribute("product", product);
-
-		//return "gms/product/list";
-		return null;
-	}
-	*/
 	
 	@RequestMapping(value = "/gms/product/detail.do")
 	@ResponseBody

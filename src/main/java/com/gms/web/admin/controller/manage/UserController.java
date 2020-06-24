@@ -76,8 +76,7 @@ public class UserController {
 			//임시
 			params.setMemberCompSeq(1);
 			
-			//ID 중복체크
-			
+			//ID 중복체크			
 			boolean result = userService.registerUser(params);
 			if (result == false) {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -125,8 +124,7 @@ public class UserController {
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.user"));
 		
 		try {
-			//임시
-			
+			//임시			
 			logger.debug("******params.getUserId()()) *****===*"+params.getUserId());
 			boolean result = userService.modifyUser(params);
 			if (result == false) {
@@ -146,8 +144,7 @@ public class UserController {
 	@RequestMapping(value = "/gms/user/delete.do")
 	public String deleteUser(UserVO params, Model model) {
 
-		logger.info("******deleteUser params.getUserId()()) *****===*"+params.getUserId());
-		logger.debug("******deleteUser params.currentPage) *****===*"+params.getCurrentPage());
+		logger.info("******deleteUser params.getUserId()()) *****===*"+params.getUserId());		
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.user"));
 		
@@ -178,42 +175,7 @@ public class UserController {
 		
 		return "redirect:/gms/user/list.do?currentPage="+params.getCurrentPage();
 	}
-	
-	/*
-	@RequestMapping(value = "/gms/user/delete.do")
-	public String deleteUser(@RequestParam(value = "currentPage", required = false, defaultValue="1") int currentPage, @RequestParam(value = "userId", required = false) String userId, Model model) {
-
-		logger.info("******deleteUser params.getUserId()()) *****===*"+userId);
-		logger.info("******deleteUser params.currentPage) *****===*"+currentPage);
-		try { 
-			//임시
-			
-			boolean result = userService.deleteUser(userId);
-			if (result == false) {
-				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
-			}
-			
-			Map<String, Object> map = userService.getUserList(currentPage);
-			
-			model.addAttribute("userList", map.get("list"));
-			model.addAttribute("currentPage", map.get("currentPage"));
-			model.addAttribute("lastPage", map.get("lastPage"));
-			model.addAttribute("startPageNum", map.get("startPageNum"));
-			model.addAttribute("lastPageNum", map.get("lastPageNum"));
-			model.addAttribute("totalCount", map.get("totalCount"));
-			
-		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
-			e.printStackTrace();
-		}
 		
-		
-		return "redirect:/gms/user/list.do?currentPage="+currentPage;
-	}
-	*/
 		
 	@RequestMapping(value = "/gms/user/detail.do")
 	@ResponseBody

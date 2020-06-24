@@ -201,12 +201,11 @@ public class CustomerController {
 	@RequestMapping(value = "/gms/customer/delete.do", method = RequestMethod.POST)
 	public ModelAndView deleteCustomer(HttpServletRequest request
 			, HttpServletResponse response
-			, CustomerVO param) {
-		
-		ModelAndView mav = new ModelAndView();	
+			, CustomerVO param) {		
 		
 		logger.info("CustomerContoller deleteCustomer");
 		
+		ModelAndView mav = new ModelAndView();	
 		RequestUtils.initUserPrgmInfo(request, param);		
 		
 		String searchCustomerNm = param.getSearchCustomerNm();

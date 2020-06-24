@@ -162,27 +162,7 @@ public class GasController {
 		
 		return "redirect:/gms/gas/list.do";
 	}
-	/*
-	@RequestMapping(value = "/gms/gas/detail.do")
-	public String getGasDetails(@RequestParam(value = "gasId", required = false) Integer gasId, Model model) {
-
-		if (gasId == null || gasId < 1) {
-			// TODO => 올바르지 않은 접근이라는 메시지를 전달
-			return "redirect:/gms/gas/list.do";
-		}
-
-		GasVO gas = gasService.getGasDetails(gasId);
-		if (gas == null || "Y".equals(gas.getDeleteYn())) {
-			// TODO => 존재하지 않는 게시글이거나 이미 삭제된 게시글이라는 메시지를 전달
-			return "redirect:/gms/gas/list.do";
-		}
-
-		model.addAttribute("gas", gas);
-
-		//return "gms/gas/list";
-		return null;
-	}
-	*/
+	
 	
 	@RequestMapping(value = "/gms/gas/detail.do")
 	@ResponseBody
