@@ -221,9 +221,9 @@ public class BottleServiceImpl implements BottleService {
 		if(param.getMenuType()==3 || param.getMenuType()==4) {			//용기 판매/대여 메뉴
 			
 			if(param.getMenuType()==3 )
-				map.put("searchWorkCd", PropertyFactory.getProperty("common.bottle.status.0308"));
+				map.put("searchWorkCd", PropertyFactory.getProperty("common.bottle.status.sale"));
 			else
-				map.put("searchWorkCd", PropertyFactory.getProperty("common.bottle.status.0309"));
+				map.put("searchWorkCd", PropertyFactory.getProperty("common.bottle.status.rent"));
 		}
 		List<BottleVO> bottleList = bottleMapper.selectBottleListToExcel(map);
 		
@@ -290,7 +290,7 @@ public class BottleServiceImpl implements BottleService {
 		param.setBottleCapa(product.getProductCapa());
 		param.setGasId(product.getGasId());		
 		
-		param.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0388"));
+		param.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.new"));
 		param.setBottleWorkId(param.getCreateId());
 		param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
 		//param.setBottleCapa(productPrice1.getProductCapa());
@@ -388,10 +388,10 @@ public class BottleServiceImpl implements BottleService {
 			}				
 			
 			if(param.getBottleType() == null) {
-				if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0305")) 
-						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0306"))
-						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0307")) 
-						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0308")) )
+				if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.charge")) 
+						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.out"))
+						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.incar")) 
+						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale")) )
 					param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Full"));
 				else
 					param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
@@ -554,10 +554,10 @@ public class BottleServiceImpl implements BottleService {
 			}				
 			
 			if(param.getBottleType() == null) {
-				if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0305")) 
-						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0306"))
-						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0307")) 
-						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0308")) )
+				if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.charge")) 
+						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.out"))
+						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.incar")) 
+						|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale")) )
 					param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Full"));
 				else
 					param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Empty"));
@@ -610,10 +610,10 @@ public class BottleServiceImpl implements BottleService {
 	public int changeWorkCdsAndHistory(BottleVO param, List<BottleVO> params) {
 		int result = 0;
 		
-		if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0302")) 
-				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0303")) 
-				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0304")) 
-				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0305")) ) {
+		if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.vacuum")) 
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.hole")) 
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.chargeDt")) 
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.charge")) ) {
 		
 			for(int i = 0 ; i < params.size() ; i++) {
 				params.get(i).setChBottleId(params.get(i).getBottleId());

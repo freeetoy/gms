@@ -88,7 +88,7 @@ public class ExcelDownloadController {
 		    
 		    List<String> list = null;		    
 		    
-		    if(param.getSearchWorkCd() != null  && param.getSearchWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0305"))) {			
+		    if(param.getSearchWorkCd() != null  && param.getSearchWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.charge"))) {			
 			    list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.bottle.charge.title"), ","); 		
 			    
 			    for(int i =0;i<list.size();i++) {

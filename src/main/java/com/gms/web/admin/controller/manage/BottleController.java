@@ -83,7 +83,7 @@ public class BottleController {
 			
 		}
 		
-		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
+		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.come"));
 		
 		Map<String, Object> map = bottleService.getBottleList(params);
 		
@@ -234,7 +234,7 @@ public class BottleController {
 			
 		}		
 		
-		params.setSearchWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));		
+		params.setSearchWorkCd(PropertyFactory.getProperty("common.bottle.status.sale"));		
 		
 		Map<String, Object> map = bottleService.getBottleList(params);
 		
@@ -291,8 +291,8 @@ public class BottleController {
 			
 		}
 		//params.setSearchSalesYn("Y");
-		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
-		params.setSearchWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
+		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.rent"));
+		params.setSearchWorkCd(PropertyFactory.getProperty("common.bottle.status.rent"));
 		//logger.debug("BottleContoller searchSalesYn "+ params.getSearchSalesYn());
 		
 		Map<String, Object> map = bottleService.getBottleList(params);

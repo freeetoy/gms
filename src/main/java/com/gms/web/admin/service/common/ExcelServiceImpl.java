@@ -198,29 +198,29 @@ public class ExcelServiceImpl implements ExcelService {
                 	else if(j == 11) {                		
                 		
                 		if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.come")))
-                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.come"));
                 		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.vacuum")))
-                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0302"));
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.vacuum"));
                 		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.hole")))
-                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0303"));
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.hole"));
                 		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.chargeDt")))
-                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0304"));
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.chargeDt"));
                 		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.charge")))
-                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0305"));
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.charge"));
                 		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.out")))
-                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0306"));
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.out"));
                 		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.incar")))
-                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0307"));
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.incar"));
                 		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.sales")))
-                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.sale"));
                 		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.rental")))
-                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.rent"));
                 		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.back")))
-                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0310"));
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.back"));
                 		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.discard")))
                 			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0399"));
                 		else	
-                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0388"));
+                			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.new"));
                 	}
                 	else if(j == 12) { 
                 		if(colValue.equals("자사")) bottle.setBottleOwnYn("N");
@@ -398,29 +398,29 @@ public class ExcelServiceImpl implements ExcelService {
                     	else if(j == 11) {                		
                     		
                     		if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.come")))
-                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.come"));
                     		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.vacuum")))
-                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0302"));
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.vacuum"));
                     		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.hole")))
-                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0303"));
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.hole"));
                     		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.chargeDt")))
-                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0304"));
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.chargeDt"));
                     		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.charge")))
-                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0305"));
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.charge"));
                     		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.out")))
-                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0306"));
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.out"));
                     		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.incar")))
-                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0307"));
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.incar"));
                     		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.sales")))
-                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.sale"));
                     		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.rental")))
-                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.rent"));
                     		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.back")))
-                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0310"));
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.back"));
                     		else if(colValue.equals(PropertyFactory.getProperty("common.bottle.status.title.discard")))
                     			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0399"));
                     		else	
-                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0388"));
+                    			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.new"));
                     	}
                     	else if(j == 12) { 
                     		if(colValue.equals("자사")) bottle.setBottleOwnYn("N");

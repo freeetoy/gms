@@ -88,10 +88,10 @@ public class ApiServiceImpl implements ApiService {
 		
 		List<BottleVO> bottleList = bottleService.getBottleDetails(bottle);
 		
-		if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0301") ) 				
-				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0306"))
-				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0307") ) 
-				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0310")) 
+		if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.come") ) 				
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.out"))
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.incar") ) 
+				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back")) 
 				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freeback")) 
 				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback")) ){
 		

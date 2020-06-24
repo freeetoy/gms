@@ -114,7 +114,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					logger.debug("WorkReportServiceImpl getWorkReportList1 workBottle.getBottleWorkCd()= "+ workBottle.getBottleWorkCd());
 					
 					// 회수 & 무료회수
-					if(workBottle.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0310"))
+					if(workBottle.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back"))
 							|| workBottle.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freeback"))
 							|| workBottle.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback")) ) {
 						
@@ -198,7 +198,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					temp.setCustomerNm(workBottle.getCustomerNm());					
 					
 					// 회수
-					if(workBottle.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0310"))
+					if(workBottle.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back"))
 							|| workBottle.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freeback"))
 							|| workBottle.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback")) ) {
 						
@@ -353,8 +353,8 @@ public class WorkReportServiceImpl implements WorkReportService {
 					//TODO 2020-06-16 order의 BottleChangeYN 과 판매/대여 비교
 					if(isGo && tempBottle.getProductId() == tempProduct.getProductId() 
 							&& tempBottle.getProductPriceSeq() == tempProduct.getProductPriceSeq() 
-							&& ( (tempProduct.getBottleSaleYn().equals("Y") && param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0308")) )
-									|| (tempProduct.getBottleSaleYn().equals("N") && param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0309")) ) )   ) {
+							&& ( (tempProduct.getBottleSaleYn().equals("Y") && param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale")) )
+									|| (tempProduct.getBottleSaleYn().equals("N") && param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) )   ) {
 
 						// 동일 상품
 						checkBottle++;
@@ -449,7 +449,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					tempOrderProduct1.setOrderId(orderInfo.getOrder().getOrderId());
 					tempOrderProduct1.setBottleId(temp.getBottleId());
 					
-					if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0308"))) {
+					if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale"))) {
 						tempOrderProduct1.setBottleChangeYn("N");
 						tempOrderProduct1.setBottleSaleYn("Y");
 						
@@ -514,7 +514,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					workBottle.setProductPriceSeq(temp.getProductPriceSeq());	
 					workBottle.setProductPrice(tempOrderProduct1.getOrderAmount()); // 상품이 하나이므로
 					workBottle.setWorkSeq(workSeq++);
-					if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0308"))) {
+					if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale"))) {
 						workBottle.setBottleSaleYn("Y");
 					}else
 						workBottle.setBottleSaleYn("N");
@@ -627,7 +627,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 				result = orderService.changeOrderProcessCd(orderInfo.getOrder());
 			}
 			//Customer Bottle_Own_Count 증가
-			if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0308")) ) {
+			if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale")) ) {
 				
 				CustomerVO customer = new CustomerVO();
 				customer.setCustomerId(param.getCustomerId());
@@ -635,7 +635,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 				customer.setBottleOwnCount(bottleList.size());
 				
 				result = customerService.modifyCustomerBottleCount(customer);
-			}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0309")) ) {
+			}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) {
 				
 				CustomerVO customer = new CustomerVO();
 				customer.setCustomerId(param.getCustomerId());
@@ -758,7 +758,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					tempOrderProduct.setProductPriceSeq(tempProductTotal.getProductPriceSeq());
 					tempOrderProduct.setOrderId(orderId);
 					
-					if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0308"))) {
+					if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale"))) {
 						tempOrderProduct.setBottleChangeYn("N");
 						tempOrderProduct.setBottleSaleYn("Y");
 					}else {
@@ -793,7 +793,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 							orderCount++;							
 							
 							orderProductList.get(orderProductSeq-1).setOrderCount(orderCount);
-							if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0309")) ) 
+							if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) 
 								orderProductList.get(orderProductSeq-1).setOrderAmount(orderCount*tempProductTotal.getProductPrice());	
 							else
 								orderProductList.get(orderProductSeq-1).setOrderAmount(orderCount*tempProductTotal.getProductBottlePrice());	
@@ -802,7 +802,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 							orderProductSeq++;
 							orderCount  = 1;
 							tempOrderProduct.setOrderCount(orderCount);
-							if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0309")) ) 
+							if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) 
 								tempOrderProduct.setOrderAmount(tempProductTotal.getProductPrice());	
 							else
 								tempOrderProduct.setOrderAmount(tempProductTotal.getProductBottlePrice());	
@@ -813,7 +813,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					}else {
 						
 						tempOrderProduct.setOrderCount(orderCount);
-						if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0309")) ) 
+						if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) 
 							tempOrderProduct.setOrderAmount(orderCount*tempProductTotal.getProductPrice());			
 						else
 							tempOrderProduct.setOrderAmount(orderCount*tempProductTotal.getProductBottlePrice());	
@@ -833,7 +833,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					workBottle.setProductPriceSeq(tempProductTotal.getProductPriceSeq());						
 					workBottle.setBottleType(param.getBottleType());
 					
-					if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0309")) ) {
+					if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) {
 						workBottle.setProductPrice(tempProductTotal.getProductPrice()); 
 						workBottle.setBottleSaleYn("N");
 					} else {
@@ -890,7 +890,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 				param.setWorkDt(cal.getTime());
 				//param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Full"));
 				
-				if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0308")) ) {
+				if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale")) ) {
 				
 					CustomerVO customer = new CustomerVO();
 					customer.setCustomerId(param.getCustomerId());
@@ -898,7 +898,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					customer.setBottleOwnCount(bottleList.size());
 					
 					result = customerService.modifyCustomerBottleCount(customer);
-				}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0309")) ) {
+				}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) {
 					
 					CustomerVO customer = new CustomerVO();
 					customer.setCustomerId(param.getCustomerId());
@@ -943,7 +943,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 			int workReportSeq = 0;
 			int workSeq = 1;
 			
-			if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0310")) 
+			if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back")) 
 					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freeback"))
 					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback"))) {
 				workReportSeq = getWorkReportSeqForCustomerToday(param);
@@ -1022,7 +1022,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 				customer.setBottleOwnCount(bottleList.size()*-1);
 				
 				result = customerService.modifyCustomerBottleCount(customer);
-			}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.0310")) ){
+			}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back")) ){
 				CustomerVO customer = new CustomerVO();
 				customer.setCustomerId(param.getCustomerId());
 				customer.setUpdateId(param.getCreateId());
@@ -1472,7 +1472,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					workReport.setOrderId(orderTemp.getOrderId());
 					workReport.setWorkProductNm(productTotal.getProductNm());
 					workReport.setWorkProductCapa(productTotal.getProductCapa());
-					workReport.setWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
+					workReport.setWorkCd(PropertyFactory.getProperty("common.bottle.status.sale"));
 					
 					result = workMapper.insertWorkReport(workReport);
 				}
@@ -1500,7 +1500,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					else
 						addWorkBottle.setProductPrice(productTotal.getProductPrice());
 					addWorkBottle.setProductCapa(productTotal.getProductCapa());
-					addWorkBottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
+					addWorkBottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.sale"));
 					addWorkBottle.setBottleSaleYn("N");
 					addWorkBottle.setCreateId(param.getCreateId());
 					addWorkBottle.setUpdateId(param.getCreateId());			
@@ -1613,7 +1613,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 				workReport.setOrderId(orderTemp.getOrderId());
 				workReport.setOrderProductNm(productTotal.getProductNm());
 				workReport.setOrderProductCapa(productTotal.getProductCapa());
-				workReport.setWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));				
+				workReport.setWorkCd(PropertyFactory.getProperty("common.bottle.status.sale"));				
 				
 				//WorkReport 등록
 				if(registerFlag)

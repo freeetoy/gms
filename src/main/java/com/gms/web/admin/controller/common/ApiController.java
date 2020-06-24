@@ -55,33 +55,33 @@ public class ApiController {
 		
 		if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.come"))) {
 			logger.debug("입고 start");
-			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.come"));
 			result = apiService.registerWorkReportForChangeCd(workReport);
 			
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.out"))) {		//출고
-			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0306"));
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.out"));
 			result = apiService.registerWorkReportForChangeCd(workReport);
 			
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.incar"))) {		// 상차
 			
-			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0307"));
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.incar"));
 			result = apiService.registerWorkReportForChangeCd(workReport);
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.charge"))) {		//충전
 			
-			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0305"));
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.charge"));
 			result = apiService.registerWorkReportForChangeCd(workReport);
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.sales"))) {		//판매
 			
-			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));			
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.sale"));			
 			result = apiService.registerWorkReportForSale(workReport);
 			
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.rental"))) {		//대여
 			
-			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0309"));			
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.rent"));			
 			result = apiService.registerWorkReportForSale(workReport);
 			
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.back"))) {			//회수
-			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0310"));
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.back"));
 			result = apiService.registerWorkReportForChangeCd(workReport);
 																	
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.freeback"))) {			//무료회수
@@ -93,14 +93,14 @@ public class ApiController {
 			result = apiService.registerWorkReportForChangeCd(workReport);
 			
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.chargeDt"))) {			//충전기한확인
-			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0304"));
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.chargeDt"));
 			result = apiService.registerWorkReportForChangeCd(workReport);
 			
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.vacuum"))) {			//진공배기
-			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0302"));
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.vacuum"));
 			result = apiService.registerWorkReportForChangeCd(workReport);
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.hole"))) {			//누공확인
-			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0303"));
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.hole"));
 			result = apiService.registerWorkReportForChangeCd(workReport);
 		}
 		if(result > 0)
@@ -128,10 +128,10 @@ public class ApiController {
 		workBottle.setCustomerNm(customerNm);				
 		workBottle.setCreateId(userId);	
 		workBottle.setUpdateId(userId);
-		workBottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0308"));
+		workBottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.sale"));
 		
 		logger.debug("단품판매 start");
-		//workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0301"));
+		//workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.come"));
 		result = apiService.registerWorkReportNoGas(workBottle);			
 		
 		if(result > 0) 		return "success";
@@ -188,9 +188,7 @@ public class ApiController {
 		workReport.setCustomerNm(customerNm);		
 		workReport.setPhoneFlag(phoneCall);
 		workReport.setCreateId(userId);				
-		workReport.setUpdateId(userId);		
-		
-		
+		workReport.setUpdateId(userId);				
 		
 		if(result > 0) 		return "success";
 		else return "fail";
