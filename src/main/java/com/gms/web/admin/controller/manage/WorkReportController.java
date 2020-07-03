@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.common.web.utils.SessionUtil;
 import com.gms.web.admin.domain.common.LoginUserVO;
+import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.OrderBottlesVO;
 import com.gms.web.admin.domain.manage.OrderVO;
@@ -25,6 +27,7 @@ import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.domain.manage.WorkReportViewVO;
+import com.gms.web.admin.service.manage.BottleService;
 import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.manage.UserService;
 import com.gms.web.admin.service.manage.WorkReportService;
@@ -45,6 +48,8 @@ public class WorkReportController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private BottleService bottleService;
 	
 	@RequestMapping(value = "/gms/report/list.do")
 	public ModelAndView getWorkReportList(
@@ -219,15 +224,32 @@ public class WorkReportController {
 		
 		int result =0;
 		try {	
-			/*
-			WorkReportVO work = new WorkReportVO();
 			
-			//work.setOrderId(params.getOrderId());
-			//work.setBottlesIds(params.getBottleIds());
-			//work.setBottleWorkCd(params.getBottleWorkCd());
-			*/
-			result = workService.registerWorkReportNoOrder(params);					
-
+			if(params.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back")) ){
+				List<String> list = null;				
+				BottleVO bottle = new BottleVO();
+				params.setBottleType("E");
+				if(params.getBottlesIds()!=null && params.getBottlesIds().length() > 0) {
+					//bottleIds= request.getParameter("bottleIds");
+					list = StringUtils.makeForeach(params.getBottlesIds(), ","); 		
+					bottle.setBottList(list);
+					bottle.setBottleWorkCd(params.getBottleWorkCd());
+					bottle.setBottleWorkId(params.getCreateId());
+					bottle.setCustomerId(params.getCustomerId());
+					bottle.setUpdateId(params.getCreateId());
+					bottle.setBottleType("E");
+				}			
+				
+				List<BottleVO> bottleList = bottleService.getBottleDetails(bottle);
+				
+				result = workService.registerWorkReportByBottle(params,bottleList);
+				
+				result =  bottleService.changeWorkCdsAndHistory(bottle, bottleList);
+				
+			}else {
+				params.setBottleType("F");
+				result = workService.registerWorkReportNoOrder(params);					
+			}
 			//mav.setViewName("/gms/mypage/assign");			
 		
 		} catch (Exception e) {

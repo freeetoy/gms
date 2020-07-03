@@ -101,6 +101,18 @@
 		, UPDATE_ID	
 		, UPDATE_DT
 	</sql>
+	
+	<sql id="CustomerProduct">
+		 Customer_ID	        
+		, Product_ID	
+		, Product_Price_Seq        
+		, Bottle_Own_Count
+		, Bottle_Rent_Count
+		, CREATE_ID	
+		, CREATE_DT	
+		, UPDATE_ID	
+		, UPDATE_DT
+	</sql>
 	<insert id="insertCustomer" parameterType="com.gms.web.admin.domain.manage.CustomerVO">
 		INSERT INTO TB_CUSTOMER(
 			<include refid="InsertCustomerColumns" />
@@ -480,5 +492,71 @@
 		)
 	</delete>
 		
-
+		
+	<select id="selectCustomerProduct" resultType="com.gms.web.admin.domain.manage.CustomerProductVO" parameterType="com.gms.web.admin.domain.manage.CustomerProductVO">
+		SELECT
+			<include refid="CustomerProduct" />
+		FROM
+			TB_CUSTOMER_PRODUCT
+		WHERE
+			CUSTOMER_ID = #{customerId}
+		AND
+			Product_ID =  #{productId}
+		AND
+			 Product_Price_Seq = #{productPriceSeq}			
+	</select>
+	
+	<select id="selectCustomerProductList" resultType="com.gms.web.admin.domain.manage.CustomerProductVO" parameterType="Integer">
+		SELECT a.Product_ID, b.Product_Nm, a.Product_Price_Seq, c.Product_Capa, Bottle_Own_Count, Bottle_Rent_Count
+		FROM 
+			TB_CUSTOMER_PRODUCT a, TB_PRODUCT b, TB_PRODUCT_PRICE c
+		WHERE a.Customer_ID = #{customerId}
+		AND   a.Product_ID = b.Product_ID
+		AND   b.Product_ID = c.Product_ID
+		AND   a.Product_Price_Seq = c.Product_Price_Seq			
+	</select>
+	
+	<insert id="insertCustomerProduct" parameterType="com.gms.web.admin.domain.manage.CustomerProductVO">
+		INSERT INTO TB_CUSTOMER_PRODUCT(
+			<include refid="CustomerProduct" />
+		) VALUES (
+			 #{customerId}
+			, #{productId}
+			, #{productPriceSeq}
+			, #{bottleOwnCount}
+			, #{bottleRentCount}
+			, #{createId}			
+			, NOW()
+			, NULL
+			, NOW()
+		)
+	</insert>
+	
+	<update id="updateCustomerProductOwnCount" parameterType="com.gms.web.admin.domain.manage.CustomerProductVO">
+		UPDATE TB_CUSTOMER_PRODUCT
+		SET
+			  Bottle_Own_Count	= Bottle_Own_Count + #{bottleOwnCount}			
+			, UPDATE_ID			= #{updateId}
+			, UPDATE_DT			= NOW()
+		WHERE
+			CUSTOMER_ID = #{customerId}
+		AND
+			Product_ID =  #{productId}
+		AND
+			 Product_Price_Seq = #{productPriceSeq}
+	</update>
+	
+	<update id="updateCustomerProductRentCount" parameterType="com.gms.web.admin.domain.manage.CustomerProductVO">
+		UPDATE TB_CUSTOMER_PRODUCT
+		SET
+			  Bottle_Rent_Count	= Bottle_Rent_Count + #{bottleRentCount}			
+			, UPDATE_ID			= #{updateId}
+			, UPDATE_DT			= NOW()
+		WHERE
+			CUSTOMER_ID = #{customerId}
+		AND
+			Product_ID =  #{productId}
+		AND
+			 Product_Price_Seq = #{productPriceSeq}
+	</update>
 </mapper>

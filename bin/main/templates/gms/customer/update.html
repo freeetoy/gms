@@ -237,12 +237,24 @@ var goDelete = function(){
 						</th>   
                     </tr>    
                     <tr>                                   
-                      <th class="card-footer">소유용기수</th>
-                      <th th:text="${customer.bottleOwnCount}"></th>
+                      <th class="card-footer">소유용기</th>
+                      <td>
+                      	<table>     
+                      	<tr th:if="${not #lists.isEmpty(ownBottleList )}" th:each="row : ${ownBottleList}">
+                      		<td   th:text="${row.productNm} + ' ' + ${row.productCapa}+ ' '+ ' (' + ${row.bottleOwnCount} + ')' ">
+                      	</tr>
+                      	</table>
+                      </td>
                     </tr>
                     <tr>                                   
-                      <th class="card-footer">대여용기수</th>
-                      <th th:text="${customer.bottleRentCount}"></th>
+                      <th class="card-footer">대여용기</th>
+                      <td>
+                      <table>     
+                      	<tr th:if="${not #lists.isEmpty(rentBottleList )}" th:each="row1 : ${rentBottleList}">
+                      		<td   th:text="${row1.productNm} + ' ' + ${row1.productCapa}+ ' '+ ' (' + ${row1.bottleRentCount} + ')' ">
+                      	</tr>
+                      	</table>
+                      </td>
                     </tr>
                   </thead>                              
                 </table>

@@ -164,6 +164,7 @@ public class ApiServiceImpl implements ApiService {
 				workReport.setCreateId(param.getCreateId());
 				workReport.setUserId(param.getCreateId());
 				workReport.setReceivedAmount(param.getIncomeAmount());
+				workReport.setIncomeWay(param.getIncomeWay());
 				workReport.setWorkCd(PropertyFactory.getProperty("common.bottle.status.0312"));
 				
 				workService.registerWorkReportOnly(workReport);
@@ -171,6 +172,7 @@ public class ApiServiceImpl implements ApiService {
 			}else {
 				workReport.setUpdateId(param.getCreateId());
 				workReport.setReceivedAmount(param.getIncomeAmount());
+				workReport.setIncomeWay(param.getIncomeWay());
 				workReport.setWorkReportSeq(workReportSeq);
 				
 				result = workService.modifyWorkReportReceivedAmount(workReport);

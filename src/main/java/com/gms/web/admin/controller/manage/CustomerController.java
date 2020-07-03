@@ -1,5 +1,6 @@
 package com.gms.web.admin.controller.manage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +23,11 @@ import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
+import com.gms.web.admin.domain.manage.CustomerProductVO;
 import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.UserVO;
+import com.gms.web.admin.domain.manage.WorkReportViewVO;
 import com.gms.web.admin.service.manage.BottleService;
 import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.manage.ProductService;
@@ -150,7 +153,28 @@ public class CustomerController {
 			param.setUserPartCd(PropertyFactory.getProperty("common.user.SALES"));
 			
 			Map<String, Object> map = userService.getUserList(param);
-			model.addAttribute("userList", map.get("list"));
+			model.addAttribute("userList", map.get("list"));			
+			
+			//Customer_Product 목록
+			List<CustomerProductVO> productList = customerService.getCustomerProductList(customerId);
+			
+			List<CustomerProductVO> ownBottleList = new ArrayList<CustomerProductVO>();
+			List<CustomerProductVO> rentBottleList = new ArrayList<CustomerProductVO>();
+			
+			for(int i =0 ; i < productList.size() ; i++) {
+				CustomerProductVO customerProduct = productList.get(i);
+				
+				if(customerProduct.getBottleOwnCount() > 0) {
+					ownBottleList.add(customerProduct);
+				}
+				if(customerProduct.getBottleRentCount() > 0) {
+					rentBottleList.add(customerProduct);
+				}
+			}
+			model.addAttribute("ownBottleList", ownBottleList);	
+			model.addAttribute("rentBottleList", rentBottleList);	
+			
+			model.addAttribute("bottleList", bottleService.getCustomerBottleList(customerId));	
 			
 			model.addAttribute("bottleList", bottleService.getCustomerBottleList(customerId));			
 		}

@@ -719,9 +719,9 @@ public class ExcelServiceImpl implements ExcelService {
             // 첫번째 시트 불러오기
             XSSFSheet sheet = workbook.getSheetAt(0);
             
-            int COLUMN_COUNT = 267;
+            int COLUMN_COUNT = 281;
             //int COLUMN_COUNT = productService.getProductPriceCount();
-            if(COLUMN_COUNT <= 0) COLUMN_COUNT = 144;
+            if(COLUMN_COUNT <= 0) COLUMN_COUNT = 281;
             int insertCount = 0;
             StringBuffer sb = new StringBuffer();
             String strProductPrice="";
@@ -770,8 +770,8 @@ public class ExcelServiceImpl implements ExcelService {
         		} 
         		
         		//strProductPrice = cell.getRichStringCellValue().getString();
-        		logger.debug(" *** ExcelSerive uploadExcelFile strProductPrice=="+j+ "== "+ strProductPrice);  
-        		if(strProductPrice.length() > 1) {
+        		//logger.debug(" *** ExcelSerive uploadExcelFile strProductPrice=="+j+ "== "+ strProductPrice);  
+        		if(strProductPrice.length() >= 1) {
 	        		strlist = StringUtils.makeForeach(strProductPrice, "_"); 	
 	        		ProductPriceSimpleVO simpleProduct = new ProductPriceSimpleVO();
 	        		simpleProduct.setProductNm(strlist.get(0));
@@ -780,11 +780,27 @@ public class ExcelServiceImpl implements ExcelService {
 	        		else
 	        			simpleProduct.setProductCapa(" ");
 	        		
-	        		for(int k=0;k < productList.size() ; k++) {
-	        			if(strlist.size() > 1 && simpleProduct.getProductNm().equals(productList.get(k).getProductNm()) && simpleProduct.getProductCapa().equals(productList.get(k).getProductCapa()) ) {
+	        		//logger.debug(" *** ExcelSerive uploadExcelFile strlist.get(0) "+ strlist.get(0));  
+	        		//logger.debug(" *** ExcelSerive uploadExcelFile simpleProduct.getProductNm() "+ simpleProduct.getProductNm()); 
+	        		//logger.debug(" *** ExcelSerive uploadExcelFile simpleProduct.getProductCapa() "+ simpleProduct.getProductCapa());
+	        		
+					for(int k=0;k < productList.size() ; k++) {
+						
+	        			if(strlist.size() > 1 && simpleProduct.getProductNm().equals(productList.get(k).getProductNm()) 
+	        					&& simpleProduct.getProductCapa().equals(productList.get(k).getProductCapa()) ) {
+	        				//logger.debug(" ******** ExcelSerive uploadExcelFile simpleProduct.getProductCapa() "+ simpleProduct.getProductCapa());
+	        				/*
+	        				if(strlist.get(0).equals("대한의료용산화에틸렌20%")) {
+	        					logger.debug(" *** ExcelSerive uploadExcelFile strlist.get(0) "+ strlist.get(0)); 
+	        					logger.debug(" *** ExcelSerive uploadExcelFile strlist.get(1) "+ strlist.get(1));  
+	        					logger.debug(" *** ExcelSerive uploadExcelFile productList.get(k).getProductNm()"+ productList.get(k).getProductNm());  
+	        					logger.debug(" *** ExcelSerive uploadExcelFile productList.get(k).getProductCapa() "+ productList.get(k).getProductCapa());  
+	        				}*/
 	        				simpleProduct.setProductId(productList.get(k).getProductId());
 	        				simpleProduct.setProductPriceSeq(productList.get(k).getProductPriceSeq());
 	        			}else if(strlist.size() == 1 && simpleProduct.getProductNm().equals(productList.get(k).getProductNm()) ) {
+	        				
+	        				logger.debug(" *** ExcelSerive uploadExcelFile else if *********** strlist.get(0) "+ strlist.get(0));  
 	        				simpleProduct.setProductId(productList.get(k).getProductId());
 	        				simpleProduct.setProductPriceSeq(productList.get(k).getProductPriceSeq());   				
 	        			}
@@ -793,14 +809,14 @@ public class ExcelServiceImpl implements ExcelService {
 	        		
 	        		simpleList.add(simpleProduct);
         		}
-        	}
-        	/*
+        	}/*
+        	logger.debug("^^^^  ExcelSerive uploadExcelFile simpleProuctsize==-"+simpleList.size());
         	for(int i=0;i<simpleList.size();i++) {
         		ProductPriceSimpleVO simpleProduct = simpleList.get(i);
         		//if(productInfo !=null) {
 	        		logger.debug("^^^^  ExcelSerive uploadExcelFile simpleProuct.getProductNm==-"+simpleProduct.getProductNm());
-					logger.debug("*** ExcelSerive uploadExcelFile productInfo.getProductId==-"+simpleProduct.getProductId());
-					logger.debug("*** ExcelSerive uploadExcelFile productInfo.getProductPriceSeq=-"+simpleProduct.getProductPriceSeq());
+					logger.debug("*** ExcelSerive uploadExcelFile productInfo.getProductId=="+simpleProduct.getProductId());
+					logger.debug("*** ExcelSerive uploadExcelFile productInfo.getProductPriceSeq="+simpleProduct.getProductPriceSeq());
         		//}
         	}
         	*/
@@ -918,6 +934,8 @@ public class ExcelServiceImpl implements ExcelService {
             	String businessRegId="";            	
             	int productCheck = 0;
             	CustomerPriceVO customerPrice = null;
+            	ProductPriceSimpleVO simpleProduct = null;
+            	
                 for(int j=0; j< COLUMN_COUNT; j++) {
                 	
                 	if(j%2==1) {
@@ -958,8 +976,8 @@ public class ExcelServiceImpl implements ExcelService {
 	                    default:
 	                        colValue = "";
                     }
-                	
-                	logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ productPrice);
+                	if(productPrice > 0)
+                		logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ productPrice);
                 	
                 	if(j == 0) customerNm = colValue;
                 	else if(j==1) businessRegId = colValue;
@@ -977,54 +995,100 @@ public class ExcelServiceImpl implements ExcelService {
                 		}                	
                 	}
                 	
-					if(j>2 && colValue.length() > 0) {						
-
+					if(j>2 && customer !=null) {						
+						
 						if(j%2==1) {						
 							customerPrice = new CustomerPriceVO();
 							customerPrice.setProductPrice(productPrice);        
+							simpleProduct = simpleList.get(productCheck++);
 						}
 						else
 							customerPrice.setProductBottlePrice(productPrice);  
-					
-						ProductPriceSimpleVO simpleProduct = simpleList.get(productCheck);
+											
 						if(simpleProduct != null) {
 							customerPrice.setProductId(simpleProduct.getProductId());
 							customerPrice.setProductPriceSeq(simpleProduct.getProductPriceSeq());
 						}
-						
+						//logger.debug("ExcelSerive uploadExcelFile j =="+j);
+						//logger.debug("---- ExcelSerive uploadExcelFile ----"+simpleProduct.getProductNm()+"--"+simpleProduct.getProductCapa());
+						//logger.debug("----- ExcelSerive uploadExcelFile ----"+customerPrice.getProductPrice());
+
 						if(j%2==0) {
+							
 							customerPrice.setCustomerId(customer.getCustomerId());
 							
-							productCheck++;
 							if(customer != null &&  customer.getCustomerId() > 0 ) {
 								isRegisteFlag = true;
-								
+								//logger.debug("*** ExcelSerive uploadExcelFile customer ----"+customer.getCustomerNm());
 								for(int k=0;k<cPriceList.size();k++) {									
 									
 				                	if(customerPrice.getCustomerId()- cPriceList.get(k).getCustomerId() ==0 
+				                			&& customerPrice.getProductId() >0 
+				                			&& cPriceList.get(k).getProductId() > 0
 				                			&& customerPrice.getProductId() - cPriceList.get(k).getProductId() ==0
 				                			&& customerPrice.getProductPriceSeq() - cPriceList.get(k).getProductPriceSeq() == 0) {
 
-				                		logger.debug("*** ExcelSerive uploadExcelFile modifyCustomerPrice !!!! --------------");
-										
-				                		result = customerService.modifyCustomerPrice(customerPrice);
-				                		isRegisteFlag = false;
+				                		if(customerPrice.getProductPrice() > 0 || customerPrice.getProductBottlePrice() > 0) {
+					                		logger.debug("*** ExcelSerive uploadExcelFile modifyCustomerPrice !!!! --------------");
+											
+					                		result = customerService.modifyCustomerPrice(customerPrice);
+					                		isRegisteFlag = false;
+					                		
+					                		//O2(의료용)_35의 경우 O2(의료용)_40 동일하게 처리
+					                		if(customerPrice.getProductId()==Integer.getInteger(PropertyFactory.getProperty("o2.medical.productId"))
+					                				&& customerPrice.getProductPriceSeq()==Integer.getInteger(PropertyFactory.getProperty("o2.medical.35.productPriceSeq")) ) {
+					                			
+					                			CustomerPriceVO customerPrice40 = new CustomerPriceVO();
+					                			
+					                			customerPrice40.setProductId(customerPrice.getProductId());
+					                			customerPrice40.setCustomerId(customerPrice.getCustomerId());
+					                			customerPrice40.setCreateDt(customerPrice.getCreateDt());
+					                			customerPrice40.setCreateId(customerPrice.getCreateId());
+					                			customerPrice40.setProductPrice(customerPrice.getProductPrice());
+					                			customerPrice40.setProductBottlePrice(customerPrice.getProductBottlePrice());
+					                			customerPrice40.setProductPriceSeq(Integer.getInteger(PropertyFactory.getProperty("o2.medical.40.productPriceSeq")));
+					                			
+					                			result = customerService.modifyCustomerPrice(customerPrice40);
+					                			
+					                		}
+				                		}
 				                	}                 		
 				                }
-								
+								//logger.debug("*** ExcelSerive uploadExcelFile isRegisteFlag ----"+isRegisteFlag);
 								
 								if(isRegisteFlag) {
-									list.add(customerPrice);
-									insertCount++;
-									customerPrice = null;
-									if(list.size()%500==0) {
-										result = customerService.registerCustomerPrices(list);
-										list.clear();
+									if(customerPrice.getProductPrice() > 0 || customerPrice.getProductBottlePrice() > 0) {
+										list.add(customerPrice);
+										insertCount++;
+										if(customerPrice.getProductId()==Integer.getInteger(PropertyFactory.getProperty("o2.medical.productId"))
+				                				&& customerPrice.getProductPriceSeq()==Integer.getInteger(PropertyFactory.getProperty("o2.medical.35.productPriceSeq")) ) {
+				                			
+				                			CustomerPriceVO customerPrice40 = new CustomerPriceVO();
+				                			
+				                			customerPrice40.setProductId(customerPrice.getProductId());
+				                			customerPrice40.setCustomerId(customerPrice.getCustomerId());
+				                			customerPrice40.setCreateDt(customerPrice.getCreateDt());
+				                			customerPrice40.setCreateId(customerPrice.getCreateId());
+				                			customerPrice40.setProductPrice(customerPrice.getProductPrice());
+				                			customerPrice40.setProductBottlePrice(customerPrice.getProductBottlePrice());
+				                			customerPrice40.setProductPriceSeq(Integer.getInteger(PropertyFactory.getProperty("o2.medical.40.productPriceSeq")));
+				                			
+				                			list.add(customerPrice40);
+				                			insertCount++;				                			
+				                		}
+										
+										customerPrice = null;
+										if(list.size() > 0 && list.size()%500==0) {
+											result = customerService.registerCustomerPrices(list);
+											list.clear();
+										}				
 									}
-									
 								}
-							}	// if(j%2==0) end 
-						}
+							}else {								
+								
+								logger.debug("*** ExcelSerive uploadExcelFile customer null= "+customerNm);
+							}
+						}// if(j%2==0) end 
 						
 					}                	
                 }
@@ -1041,7 +1105,8 @@ public class ExcelServiceImpl implements ExcelService {
             }
             */
             if(list.size() > 0) result = customerService.registerCustomerPrices(list);
-            logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+" insertCount="+insertCount);
+            else result = 1;
+            logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+" insertCount="+insertCount+"==not insert =="+sb.toString());
             
 	    } catch (DataAccessException e) {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달

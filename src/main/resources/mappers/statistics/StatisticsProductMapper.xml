@@ -42,7 +42,7 @@
 		INSERT INTO TB_Daily_Stat_Product(
 			<include refid="StatisticsProductColumns" />
 		) 
-		SELECT A.product_id,A.Stat_Dt,Sale_Count,Sale_Count,Sale_Amount,Rent_Count,Rent_Amount
+		SELECT A.product_id,A.Stat_Dt,Sale_Count,Sale_Amount,Rent_Count,Rent_Amount,'admin',now()
 		FROM 
 		(
 			SELECT tb.Product_ID, DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') Stat_Dt,IFNULL(Order_Count,0) Sale_Count, IFNULL(Order_Amount,0) Sale_Amount,'admin', NOW()

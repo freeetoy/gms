@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
+import com.gms.web.admin.domain.manage.CustomerProductVO;
 import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.mapper.manage.CustomerMapper;
@@ -371,6 +372,31 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public List<CustomerSimpleVO> getAgencyCustomerList() {
 		return customerMapper.selectAgencyCustomerList();
+	}
+
+	@Override
+	public int registerCustomerProduct(CustomerProductVO param) {
+		return customerMapper.insertCustomerProduct(param);
+	}
+
+	@Override
+	public int modifyCustomerProductOwnCount(CustomerProductVO param) {
+		return customerMapper.updateCustomerProductOwnCount(param);
+	}
+
+	@Override
+	public int modifyCustomerProductRentCount(CustomerProductVO param) {
+		return customerMapper.updateCustomerProductRentCount(param);
+	}
+
+	@Override
+	public CustomerProductVO getCustomerProduct(CustomerProductVO param) {
+		return customerMapper.selectCustomerProduct(param);
+	}
+
+	@Override
+	public List<CustomerProductVO> getCustomerProductList(Integer customerId) {
+		return customerMapper.selectCustomerProductList(customerId);
 	}
 
 	

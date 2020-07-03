@@ -123,9 +123,8 @@ $(document).ready(function(){
 	}
   
 	 var bottlesIds = "";
-   $(".btn_select_process1").click(function()  
-	{
-		
+   	$(".btn_select_process1").click(function()  
+	{		
 		$("table.mod-doc-list1").find('tr').remove();			
 		
 		var newRowlist1 = $("<tr>");	
@@ -139,8 +138,11 @@ $(document).ready(function(){
 		colslist1 += '</tr>';
 		
 		newRowlist1.append(colslist1);
-		$("table.mod-doc-list1").append(newRowlist1);
+		$("table.mod-doc-list1").append(newRowlist1);		
 		
+		$("#btn_process_6").hide();
+		$("#btn_process_5").show();
+		$("#btn_process_8").show();
 		var ajaxInfo ={
 			type:"POST",
 			url:"/gms/common/customerList.do",			
@@ -153,15 +155,57 @@ $(document).ready(function(){
 			
 			for(i=0; i< data.length;i++) {
 				$('#customerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')					
-			}			
-				
+			}							
 		})
 	       .fail(function(){
 		  console.log("fail");
 		});
-	
+		
+		
    });
-   
+   	
+   	$(".btn_select_process3").click(function()  
+	{		
+		$("table.mod-doc-list1").find('tr').remove();			
+				
+			var newRowlist1 = $("<tr>");	
+			var colslist1 = "";
+			
+			colslist1 += '<td>용기코드</td>';
+			colslist1 += '<td>용기바코드</td>';
+			colslist1 += '<td>가스</td>';
+			colslist1 += '<td>용량</td>';
+			colslist1 += '<td>충전기한</td>';
+			colslist1 += '</tr>';
+				
+			newRowlist1.append(colslist1);
+			$("table.mod-doc-list1").append(newRowlist1);			
+
+			$("#btn_process_5").hide();
+			$("#btn_process_8").hide();
+			$("#btn_process_6").show();
+			
+			var ajaxInfo ={
+				type:"POST",
+				url:"/gms/common/customerList.do",			
+				dataType: "json",
+			};
+					
+			ajax = callAjax(ajaxInfo);
+				
+			ajax.done(function(data){
+					
+				for(i=0; i< data.length;i++) {
+					$('#customerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')					
+				}							
+			})
+			.fail(function(){
+			console.log("fail");
+		});
+				
+		
+	});
+
    $(".btn_select_process2").click(function()  
 	{		
 		var ajaxInfo ={
@@ -235,8 +279,7 @@ $(document).ready(function(){
    
    
    $("#btn_search").click(function()  
-	{
-	
+	{	
 	 	var strCustomerNm = $("#strCustomerNm").val();
 	
 	 	$("table.mod-doc-list1").find('tr').remove();			
@@ -640,8 +683,8 @@ $(document).ready(function(){
 											<button type="button" id="btn_process_5" class="btn btn-info btn btn_process_check">판매</button>
 											
 											<button type="button" id="btn_process_8" class="btn btn-info btn btn_process_check">대여</button>
-											<!--<button type="button" id="btn_process_6" class="btn btn-info btn btn_process_check">회수</button>
-											<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">기타</button>-->
+											<button type="button" id="btn_process_6" class="btn btn-info btn btn_process_check">회수</button>
+											<!--<button type="button" id="btn_process_7" class="btn btn-info btn btn_process_check">기타</button>-->
 										</div>
 										</tr>										
 									</table>
@@ -759,6 +802,8 @@ $(document).ready(function(){
 		</div>
 		</div>
 		<!-- /.modal -->
+		
+		
     	
         <div class="row">
             <div class="col-1">
@@ -822,23 +867,23 @@ $(document).ready(function(){
                       <td th:text="${row.CustomerNm}"></td>
                       <td >
                       	<table>     
-                      	<tr>
-                      		<td th:if="${not #lists.isEmpty(row.salesBottles )}" th:each="row1 : ${row.salesBottles}"  th:text="${row1.productNm} + ' ' + ${row1.productCapa}+ ' ' + ${row1.productCount} + ' (' + ${row1.bottleWorkCdNm} + ')' ">
+                      	<tr th:if="${not #lists.isEmpty(row.salesBottles )}" th:each="row1 : ${row.salesBottles}"  >
+                      		<td th:text="${row1.productNm} + ' ' + ${row1.productCapa}+ ' ' + ${row1.productCount} + ' (' + ${row1.bottleWorkCdNm} + ')' ">
 
                       	</tr>
                       	</table>
                       </td>
                       <td>
                     	<table>     
-                      	<tr  >
-                      		<td th:if="${not #lists.isEmpty(row.backBottles )}" th:each="row2 : ${row.backBottles}" th:text="${row2.productNm} + ' ' + ${row2.productCapa}+ ' ' + ${row2.productCount}">
+                      	<tr th:if="${not #lists.isEmpty(row.backBottles )}" th:each="row2 : ${row.backBottles}" >
+                      		<td  th:text="${row2.productNm} + ' ' + ${row2.productCapa}+ ' ' + ${row2.productCount}">
                       	</tr>
                       	</table>
                       </td>
                       <td th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
                       <td th:unless="${row.orderAmount> 0 }" th:text="${row.orderAmount}">
-                      <td th:if="${row.receivedAmount> 0 }" th:text="${#numbers.formatInteger(row.receivedAmount, 3, 'COMMA')}">
-		     		  <td th:unless="${row.receivedAmount> 0 }" th:text="${row.receivedAmount}"></td>		     		                  
+                      <td th:if="${row.receivedAmount> 0 }" th:text="${#numbers.formatInteger(row.receivedAmount, 3, 'COMMA')} + ' (' + ${row.incomeWay} + ')'">
+		     		  <td th:unless="${row.receivedAmount> 0 }" th:text="${row.receivedAmount} + ' (' + ${row.incomeWay} + ')' "></td>		     		                  
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( workList )}">
 						<td colspan="6">조회된 결과가 없습니다.</td>
@@ -854,11 +899,12 @@ $(document).ready(function(){
         </div>    
         <!-- /.row -->
         <div class="row">	
-        	<div class="col-3">
+        	<div class="col-4">
         		<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 가스 판매&납품</a>
         		<a class="btn_select_process2 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-check-circle"></i> 단품판매</a>
+        		<a class="btn_select_process3 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 회수</a>
         	</div>
-        	<div class="col-9">
+        	<div class="col-8">
         	<a class="btn_ecount btn btn-primary btn-sm float-right"   th:userId="${session.userId}"  href="#" >
                               <i class="fas fa-file-excel"></i> ECount엑셀받기</a>
          		<!-- <a th:href="@{/gms/excelDownloadEcount.do}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> ECount엑셀받기</button></a>     -->     	

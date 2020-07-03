@@ -49,6 +49,12 @@ public class WorkReportVO extends AbstractVO implements Serializable {
 	/**Received_Amount     */
 	private int receivedAmount;
 	
+	/** Income_Way		*/  
+	/** CASH
+	 *  CARD
+	 */
+	private String incomeWay;
+	
 	/** 삭제여부  Bottle_Type */
 	/** E 공병, F 실병 */
 	private String bottleType;

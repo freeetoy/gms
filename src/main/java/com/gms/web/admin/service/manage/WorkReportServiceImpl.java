@@ -18,6 +18,7 @@ import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.manage.BottleVO;
+import com.gms.web.admin.domain.manage.CustomerProductVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.OrderBottleVO;
 import com.gms.web.admin.domain.manage.OrderExtVO;
@@ -170,6 +171,10 @@ public class WorkReportServiceImpl implements WorkReportService {
 			WorkReportViewVO temp = new WorkReportViewVO();
 			temp.setWorkReportSeq(reportList.get(i).getWorkReportSeq());
 			temp.setReceivedAmount(reportList.get(i).getReceivedAmount());
+			if(reportList.get(i).getIncomeWay()!=null && reportList.get(i).getIncomeWay().equals("CASH")) 
+				temp.setIncomeWay("현금");
+			else if(reportList.get(i).getIncomeWay()!=null && reportList.get(i).getIncomeWay().equals("CARD")) 
+				temp.setIncomeWay("카드");
 			temp.setCustomerNm(reportList.get(i).getCustomerNm());
 			List<WorkBottleVO> tempBottle = new ArrayList<WorkBottleVO>();
 			List<WorkBottleVO> tempBottle1 = new ArrayList<WorkBottleVO>();
@@ -632,7 +637,9 @@ public class WorkReportServiceImpl implements WorkReportService {
 				CustomerVO customer = new CustomerVO();
 				customer.setCustomerId(param.getCustomerId());
 				customer.setUpdateId(param.getCreateId());
-				customer.setBottleOwnCount(bottleList.size());
+				customer.setBottleOwnCount(workBottleList.size());
+				
+				result = changeCustomerProduct(workBottleList);	//Customer_Product 등록
 				
 				result = customerService.modifyCustomerBottleCount(customer);
 			}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) {
@@ -640,7 +647,9 @@ public class WorkReportServiceImpl implements WorkReportService {
 				CustomerVO customer = new CustomerVO();
 				customer.setCustomerId(param.getCustomerId());
 				customer.setUpdateId(param.getCreateId());
-				customer.setBottleRentCount(bottleList.size());
+				customer.setBottleRentCount(workBottleList.size());
+				
+				result = changeCustomerProduct(workBottleList);	//Customer_Product 등록
 				
 				result = customerService.modifyCustomerBottleRentCount(customer);
 			}
@@ -895,16 +904,18 @@ public class WorkReportServiceImpl implements WorkReportService {
 					CustomerVO customer = new CustomerVO();
 					customer.setCustomerId(param.getCustomerId());
 					customer.setUpdateId(param.getCreateId());
-					customer.setBottleOwnCount(bottleList.size());
+					customer.setBottleOwnCount(workBottleList.size());
 					
+					result = changeCustomerProduct(workBottleList);	//Customer_Product 등록
 					result = customerService.modifyCustomerBottleCount(customer);
 				}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) {
 					
 					CustomerVO customer = new CustomerVO();
 					customer.setCustomerId(param.getCustomerId());
 					customer.setUpdateId(param.getCreateId());
-					customer.setBottleRentCount(bottleList.size());
+					customer.setBottleRentCount(workBottleList.size());
 					
+					result = changeCustomerProduct(workBottleList);	//Customer_Product 등록
 					result = customerService.modifyCustomerBottleRentCount(customer);
 				}
 				
@@ -1019,14 +1030,18 @@ public class WorkReportServiceImpl implements WorkReportService {
 				CustomerVO customer = new CustomerVO();
 				customer.setCustomerId(param.getCustomerId());
 				customer.setUpdateId(param.getCreateId());
-				customer.setBottleOwnCount(bottleList.size()*-1);
+				customer.setBottleOwnCount(workBottleList.size()*-1);
+				
+				result = changeCustomerProduct(workBottleList);	//Customer_Product 등록
 				
 				result = customerService.modifyCustomerBottleCount(customer);
 			}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back")) ){
 				CustomerVO customer = new CustomerVO();
 				customer.setCustomerId(param.getCustomerId());
 				customer.setUpdateId(param.getCreateId());
-				customer.setBottleRentCount(bottleList.size()*-1);
+				customer.setBottleRentCount(workBottleList.size()*-1);
+				
+				result = changeCustomerProduct(workBottleList);	//Customer_Product 등록
 				
 				result = customerService.modifyCustomerBottleRentCount(customer);
 			}
@@ -1671,4 +1686,70 @@ public class WorkReportServiceImpl implements WorkReportService {
 	}
 	
 
+	private int changeCustomerProduct(List<WorkBottleVO> param) {
+		int result = 0;
+		
+		// 거래처별 상품별 등록 여부 확인
+		for(int i=0 ; i < param.size() ; i++) {
+			
+			if(param.get(i).getGasId()!= null && param.get(i).getGasId() > 0) {	// 용기만 해당
+				CustomerProductVO temp = new CustomerProductVO();
+				temp.setCustomerId(param.get(i).getCustomerId());
+				temp.setProductId(param.get(i).getProductId());
+				temp.setProductPriceSeq(param.get(i).getProductPriceSeq());
+				temp.setCreateId(param.get(i).getCreateId());
+				
+				CustomerProductVO customerProduct = customerService.getCustomerProduct(temp);
+				
+				if(customerProduct != null) {
+					
+					if(param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale"))) {
+						customerProduct.setBottleOwnCount(1);
+						
+					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent"))) {
+						
+						customerProduct.setBottleRentCount(1);
+					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back"))) {
+						
+						customerProduct.setBottleRentCount(-1);
+					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freeback"))
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback")) ) {
+						customerProduct.setBottleOwnCount(-1);
+					}
+					
+					
+					if(param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale"))
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freeback"))
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback")) ) {
+						result = customerService.modifyCustomerProductOwnCount(customerProduct);
+						
+					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent"))
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back"))) {
+						result = customerService.modifyCustomerProductRentCount(customerProduct);
+					}
+					
+				}else {
+					customerProduct = temp;		
+					
+					if(param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale"))) {
+						customerProduct.setBottleOwnCount(1);
+						
+					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent"))) {
+						
+						customerProduct.setBottleRentCount(1);
+					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back"))) {
+						
+						customerProduct.setBottleRentCount(-1);
+					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freeback"))
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback")) ) {
+						customerProduct.setBottleOwnCount(-1);
+					}
+					
+					result = customerService.registerCustomerProduct(customerProduct);
+					
+				}
+			} //if(param.get(i).getGasId()!= null && param.get(i).getGasId() > 0)  end
+		}
+		return result;
+	}
 }

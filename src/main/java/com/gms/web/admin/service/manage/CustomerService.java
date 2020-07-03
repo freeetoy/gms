@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
+import com.gms.web.admin.domain.manage.CustomerProductVO;
 import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 
@@ -63,4 +64,14 @@ public interface CustomerService {
 	public List<CustomerPriceVO>  getCustomerPriceListAll();
 	
 	public int modifyCustomerPrice(CustomerPriceVO param);
+	
+	public CustomerProductVO getCustomerProduct(CustomerProductVO param);
+	
+	public List<CustomerProductVO> getCustomerProductList(Integer customerId);
+	
+	public int registerCustomerProduct(CustomerProductVO param);	
+	
+	public int modifyCustomerProductOwnCount(CustomerProductVO param);
+	
+	public int modifyCustomerProductRentCount(CustomerProductVO param);
 }

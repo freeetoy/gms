@@ -54,6 +54,7 @@ public class CashFlowServiceImpl implements CashFlowService {
 		
 		workReport.setUpdateId(param.getCreateId());
 		workReport.setReceivedAmount(param.getIncomeAmount());
+		workReport.setIncomeWay(param.getIncomeWay());
 		workReport.setWorkReportSeq(workReportSeq);
 		
 		return workService.modifyWorkReportReceivedAmount(workReport);

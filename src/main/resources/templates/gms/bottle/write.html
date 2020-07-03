@@ -13,8 +13,6 @@ $(document).ready(function(){
 		}
 	});
 	
-	
-	
 });
 // 리스트 페이지 이동
 var goList = function(){
@@ -163,9 +161,7 @@ $(document).ready(function(){
 	});
 	
 	function initCapa(productId){
-	      
-		console.log(productId);      
-		
+	     
 		$.ajax({
 			url: '/gms/product/priceList.do',
 			type: 'POST',
@@ -175,22 +171,17 @@ $(document).ready(function(){
 		 })
 		.done(function(data){	           
 		  
-			console.log(data);     
-			
-	    	var i=0;
-			
+	    	var i=0;			
+	    	$('#productPriceSeq').find('option').remove(); 
 			for(i=0; i< data.length;i++) {
-				console.log(data[i]);      
+				
 				$('#productPriceSeq').append('<option value='+data[i].productPriceSeq+'>'+data[i].productCapa+'</option>')				
 			}			
 		})
 		.fail(function(){
 			console.log("fail");
 		 });
-
-	} 
-
-	
+	} 	
 });
 
 </script>

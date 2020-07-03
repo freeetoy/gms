@@ -111,15 +111,15 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 		<td class="tl_dot" style="border-top-style:none" align="left" th:text="${row.CustomerNm}"></td>
 		<td class="tl_dot" style="border-top-style:none" align="left" >
 			<table>     
-              	<tr>
-              		<td th:if="${not #lists.isEmpty(row.salesBottles )}" th:each="row1 : ${row.salesBottles}"  th:text="${row1.productNm} + ' ' + ${row1.productCapa}+ ' ' + ${row1.productCount} + ' (' + ${row1.bottleWorkCdNm} + ')' ">
+              	<tr th:if="${not #lists.isEmpty(row.salesBottles )}" th:each="row1 : ${row.salesBottles}"  >
+              		<td th:text="${row1.productNm} + ' ' + ${row1.productCapa}+ ' ' + ${row1.productCount} + ' (' + ${row1.bottleWorkCdNm} + ')' ">
               	</tr>
              </table>
          </td>
 		<td class="tl_dot" style="border-top-style:none" align="left" >
 			<table>     
-	           	<tr  >
-	           		<td th:if="${not #lists.isEmpty(row.backBottles )}" th:each="row2 : ${row.backBottles}" th:text="${row2.productNm} + ' ' + ${row2.productCapa}+ ' ' + ${row2.productCount}">
+	           	<tr  th:if="${not #lists.isEmpty(row.backBottles )}" th:each="row2 : ${row.backBottles}" >
+	           		<td th:text="${row2.productNm} + ' ' + ${row2.productCapa}+ ' ' + ${row2.productCount}">
 	           	</tr>
            	</table>
 		</td>

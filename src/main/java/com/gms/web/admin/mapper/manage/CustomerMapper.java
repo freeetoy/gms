@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
+import com.gms.web.admin.domain.manage.CustomerProductVO;
 import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 
@@ -70,5 +71,14 @@ public interface CustomerMapper {
 	public int updateCustomerPrice(CustomerPriceVO param);
 	
 	public CustomerVO selectCustomerCar(String userId) ;
-
+	
+	public CustomerProductVO selectCustomerProduct(CustomerProductVO param) ;
+	
+	public List<CustomerProductVO> selectCustomerProductList(Integer customerId);
+	
+	public int insertCustomerProduct(CustomerProductVO param);
+	
+	public int updateCustomerProductOwnCount(CustomerProductVO param);
+	
+	public int updateCustomerProductRentCount(CustomerProductVO param);
 }

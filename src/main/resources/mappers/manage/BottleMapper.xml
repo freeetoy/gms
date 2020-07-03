@@ -615,7 +615,7 @@
 	
 	<select id="selectSimpleCustomerBottleList" resultType="com.gms.web.admin.domain.manage.SimpleBottleVO" parameterType="Integer">		
 		SELECT
-			Bottle_Id, Bottle_BarCd, Product_Nm, Bottle_Capa
+			'' Bottle_Id, '' Bottle_BarCd, Product_Nm, concat(Bottle_Capa,'-',count(Bottle_Id)) Bottle_Capa
 			,(SELECT Sum(Receivable_Amount) - Sum(Income_Amount)
 				FROM TB_Cash_Flow WHERE  Customer_id = TB.Customer_Id) Receivable_Amount
 		FROM
@@ -628,6 +628,6 @@
 			Customer_Id = #{customerId}
 		AND
 			TB.Product_Id = TP.Product_Id
-		
+		group by Product_Nm, Bottle_Capa
 	</select>
 </mapper>

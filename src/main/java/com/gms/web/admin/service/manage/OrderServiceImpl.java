@@ -235,6 +235,7 @@ public class OrderServiceImpl implements OrderService {
 			String orderTypeCd = params.getOrderTypeCd();
 						
 			int orderAmount = 0;
+			int deleteAmount = 0;
 			int orderTotalAmount = 0;
 			
 			Integer productId =0;
@@ -304,7 +305,7 @@ public class OrderServiceImpl implements OrderService {
 								orderAmount = tempProduct.getProductPrice() *orderCount;	
 							logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
 							productVo.setOrderAmount(orderAmount);
-							orderTotalAmount += orderAmount;								
+												
 						}
 					}			
 						
@@ -322,7 +323,7 @@ public class OrderServiceImpl implements OrderService {
 								orderAmount = customerPrice.getProductPrice() *orderCount;	
 							logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
 							productVo.setOrderAmount(orderAmount);
-							orderTotalAmount += orderAmount;								
+												
 						}
 					}
 					
@@ -371,6 +372,10 @@ public class OrderServiceImpl implements OrderService {
 				
 				params.setOrderProductNm(orderProductNm);
 				params.setOrderProductCapa(orderProductCapa);
+				orderTotalAmount = 0;
+				for(int j=0;j<orderProduct.size();j++) {
+					orderTotalAmount  += orderProduct.get(j).getOrderAmount()*orderProduct.get(j).getOrderCount();		
+				}
 				params.setOrderTotalAmount(orderTotalAmount);
 			}
 			//
