@@ -174,9 +174,7 @@ public class CustomerController {
 			model.addAttribute("ownBottleList", ownBottleList);	
 			model.addAttribute("rentBottleList", rentBottleList);	
 			
-			model.addAttribute("bottleList", bottleService.getCustomerBottleList(customerId));	
-			
-			model.addAttribute("bottleList", bottleService.getCustomerBottleList(customerId));			
+			model.addAttribute("bottleList", bottleService.getCustomerBottleList(customerId));		
 		}
 		
 		return "gms/customer/update";

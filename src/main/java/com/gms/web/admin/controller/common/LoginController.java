@@ -99,7 +99,7 @@ public class LoginController {
 	*/
 	
 	@RequestMapping(value="/loginAction.do")
-	public ModelAndView loginAction(Model model,
+	public String loginAction(Model model,
 			HttpServletRequest request
 			, HttpServletResponse response
 			, LoginUserVO param) {
@@ -125,31 +125,22 @@ public class LoginController {
 				
 				session.setAttribute("userId", loginUser.getUserId());		
 				
-				RequestUtils.responseWriteException(response, alertMessage, "/gms/start");
+				//RequestUtils.responseWriteException(response, alertMessage, "/gms/start");
 			}else {
 				alertMessage = "비밀번호를 확인해주세요";			
 				
-				RequestUtils.responseWriteException(response, alertMessage, "/login");
+				//RequestUtils.responseWriteException(response, alertMessage, "/login");
+				return "redirect:/login";
 			}
 		}else {
 			alertMessage = "사용자 정보가 없습니다. 아이디를 확인해주세요";			
 			
-			RequestUtils.responseWriteException(response, alertMessage, "/login");
+			//RequestUtils.responseWriteException(response, alertMessage, "/login");
+			return "redirect:/login"; //gms/order/list.do";
 		}
-			/*
 		
-		if(user != null && user.getUserId() != null){
-			String alertMessage = "로그인 되었습니다.";
-			session.setAttribute(LoginUserVO.ATTRIBUTE_NAME, user);		
-			
-			RequestUtils.responseWriteException(response, alertMessage, "/gms/order/list.do");
-		}else {
-			String alertMessage = user.getErrorMessage();
-			RequestUtils.responseWriteException(response, alertMessage, RETURN_LOGINPAGE);
-		}
-		*/
-		return null;
-		//return "redirect:/gms/start"; //gms/order/list.do";
+		//return null;
+		return "redirect:/gms/start"; //gms/order/list.do";
 		
 	}
 	@RequestMapping(value="/api/loginAction.do")

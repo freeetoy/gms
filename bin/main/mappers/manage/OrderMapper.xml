@@ -629,4 +629,13 @@
 			Order_ID = #{orderId}
 	</select>
 	
+	<select id="selectOrderTodayOfCustomer" resultType="com.gms.web.admin.domain.manage.OrderVO" parameterType="Integer">		
+		SELECT
+			<include refid="OrderColumns" />
+		FROM
+			TB_Order
+		WHERE
+			Customer_ID = #{customerId}
+		AND date_format(Create_Dt,'%Y/%m/%d') = date_format(now(),'%Y/%m/%d') 
+	</select>
 </mapper>

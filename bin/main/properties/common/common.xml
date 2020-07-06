@@ -40,8 +40,7 @@
 	<entry key="common.menu.diary">diary</entry>
 	<entry key="common.menu.vacation">vacation</entry>
 	<entry key="common.menu.self">self</entry>
-	<entry key="common.menu.cash">cash</entry>
-	
+	<entry key="common.menu.cash">cash</entry>	
 
 	<entry key="common.user.SALES">01</entry>
 	
@@ -53,13 +52,11 @@
 	
 	<entry key="Schedule.Type.Private">1</entry>
 	<entry key="Schedule.Type.Public">2</entry>
-	<entry key="Schedule.Type.Holiday">3</entry>
-	
+	<entry key="Schedule.Type.Holiday">3</entry>	
 	
 	<entry key="Schedule.vacation.All">1</entry>
 	<entry key="Schedule.vacation.AM">2</entry>
-	<entry key="Schedule.vacation.PM">3</entry>
-	
+	<entry key="Schedule.vacation.PM">3</entry>	
 	
 	<!-- 코드  정의 -->	
 	<entry key="common.bottle.status">0300</entry>
@@ -98,18 +95,18 @@
 	
 	
 	<entry key="common.code.order.type">0100</entry>
-	<entry key="common.code.order.type.01">0101</entry>
-	<entry key="common.code.order.type.02">0102</entry>
-	<entry key="common.code.order.type.03">0103</entry>
-	<entry key="common.code.order.type.04">0104</entry>
-	<entry key="common.code.order.type.05">0105</entry>
-	<entry key="common.code.order.type.06">0106</entry>
+	<entry key="common.code.order.type.order">0101</entry>
+	<entry key="common.code.order.type.cancel">0102</entry>
+	<entry key="common.code.order.type.auto">0103</entry>
+	<entry key="common.code.order.type.back">0104</entry>
+	<entry key="common.code.order.type.check">0105</entry>
+	<entry key="common.code.order.type.etc">0106</entry>
 	
 	<entry key="common.code.order.process">0200</entry>
-	<entry key="common.code.order.process.01">0210</entry>		<!-- 주문접수 -->
+	<entry key="common.code.order.process.receive">0210</entry>		<!-- 주문접수 -->
 	<entry key="common.code.order.process.02">0220</entry>		<!-- 주문접수완료 -->
 	<entry key="common.code.order.process.03">0230</entry>		<!-- 생산완료 -->
-	<entry key="common.code.order.process.04">0240</entry>		<!-- 납품완료 -->
+	<entry key="common.code.order.process.delivery">0240</entry>		<!-- 납품완료 -->
 	<entry key="common.code.order.process.05">0250</entry>		<!-- 판매완료 -->
 	<entry key="common.code.order.process.06">0260</entry>		<!-- 거래명세서완료 -->
 	<entry key="common.code.order.process.07">0270</entry>		<!-- 세금계산서완료 -->

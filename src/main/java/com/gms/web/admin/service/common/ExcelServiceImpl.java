@@ -1035,8 +1035,7 @@ public class ExcelServiceImpl implements ExcelService {
 					                		isRegisteFlag = false;
 					                		
 					                		//O2(의료용)_35의 경우 O2(의료용)_40 동일하게 처리
-					                		if(customerPrice.getProductId()==Integer.getInteger(PropertyFactory.getProperty("o2.medical.productId"))
-					                				&& customerPrice.getProductPriceSeq()==Integer.getInteger(PropertyFactory.getProperty("o2.medical.35.productPriceSeq")) ) {
+					                		if(customerPrice.getProductId()==1	&& customerPrice.getProductPriceSeq()==6) {
 					                			
 					                			CustomerPriceVO customerPrice40 = new CustomerPriceVO();
 					                			
@@ -1046,7 +1045,7 @@ public class ExcelServiceImpl implements ExcelService {
 					                			customerPrice40.setCreateId(customerPrice.getCreateId());
 					                			customerPrice40.setProductPrice(customerPrice.getProductPrice());
 					                			customerPrice40.setProductBottlePrice(customerPrice.getProductBottlePrice());
-					                			customerPrice40.setProductPriceSeq(Integer.getInteger(PropertyFactory.getProperty("o2.medical.40.productPriceSeq")));
+					                			customerPrice40.setProductPriceSeq(7);
 					                			
 					                			result = customerService.modifyCustomerPrice(customerPrice40);
 					                			
@@ -1060,9 +1059,9 @@ public class ExcelServiceImpl implements ExcelService {
 									if(customerPrice.getProductPrice() > 0 || customerPrice.getProductBottlePrice() > 0) {
 										list.add(customerPrice);
 										insertCount++;
-										if(customerPrice.getProductId()==Integer.getInteger(PropertyFactory.getProperty("o2.medical.productId"))
-				                				&& customerPrice.getProductPriceSeq()==Integer.getInteger(PropertyFactory.getProperty("o2.medical.35.productPriceSeq")) ) {
-				                			
+										//logger.debug("*** ExcelSerive uploadExcelFile customerPrice.getProductId() -"+customerPrice.getProductId()+" ProductSeq ="+customerPrice.getProductPriceSeq());
+										if(customerPrice.getProductId()==1 && customerPrice.getProductPriceSeq()==6 ) {
+											//logger.debug("*** ExcelSerive uploadExcelFile O2의료용 35-40 --------------");
 				                			CustomerPriceVO customerPrice40 = new CustomerPriceVO();
 				                			
 				                			customerPrice40.setProductId(customerPrice.getProductId());
@@ -1071,7 +1070,7 @@ public class ExcelServiceImpl implements ExcelService {
 				                			customerPrice40.setCreateId(customerPrice.getCreateId());
 				                			customerPrice40.setProductPrice(customerPrice.getProductPrice());
 				                			customerPrice40.setProductBottlePrice(customerPrice.getProductBottlePrice());
-				                			customerPrice40.setProductPriceSeq(Integer.getInteger(PropertyFactory.getProperty("o2.medical.40.productPriceSeq")));
+				                			customerPrice40.setProductPriceSeq(7);
 				                			
 				                			list.add(customerPrice40);
 				                			insertCount++;				                			

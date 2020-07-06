@@ -882,8 +882,8 @@ $(document).ready(function(){
                       </td>
                       <td th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
                       <td th:unless="${row.orderAmount> 0 }" th:text="${row.orderAmount}">
-                      <td th:if="${row.receivedAmount> 0 }" th:text="${#numbers.formatInteger(row.receivedAmount, 3, 'COMMA')} + ' (' + ${row.incomeWay} + ')'">
-		     		  <td th:unless="${row.receivedAmount> 0 }" th:text="${row.receivedAmount} + ' (' + ${row.incomeWay} + ')' "></td>		     		                  
+                      <td th:if="${row.receivedAmount> 0 }" th:text="${#numbers.formatInteger(row.receivedAmount, 3, 'COMMA')} + ${row.incomeWay} ">
+		     		  <td th:unless="${row.receivedAmount> 0 }" th:text="${row.receivedAmount} +  ${row.incomeWay} "></td>		     		                  
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( workList )}">
 						<td colspan="6">조회된 결과가 없습니다.</td>
@@ -910,7 +910,12 @@ $(document).ready(function(){
          		<!-- <a th:href="@{/gms/excelDownloadEcount.do}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> ECount엑셀받기</button></a>     -->     	
         	</div>
         </div>
+        <div class="row">
+        <div class="col-12"><Br>
+        </div>
+        </div>
       </div><!-- /.container-fluid -->
+      
     </section>
     <!-- /.content -->
   </div>

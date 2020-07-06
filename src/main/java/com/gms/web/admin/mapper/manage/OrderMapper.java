@@ -75,4 +75,6 @@ public interface OrderMapper {
 	public int deleteOrderBottles(Integer orderId);
 
 	public List<OrderBottleVO> selectOrderBottleList(Integer orderId);	
+	
+	public OrderVO selectOrderTodayOfCustomer(Integer custoerId);	
 }

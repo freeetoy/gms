@@ -33,7 +33,7 @@
 		from 
 		(	SELECT count(bottle_id) input_count 
 			FROM TB_Bottle 
-			WHERE delete_yn='N' AND bottle_work_cd ='0301' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')= DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) a,
+			WHERE delete_yn='N' AND bottle_work_cd ='0388' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')= DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) a,
 		(	SELECT count(bottle_id) charge_count 
 			FROM TB_Bottle 
 			WHERE delete_yn='N' AND bottle_work_cd ='0305' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) b,

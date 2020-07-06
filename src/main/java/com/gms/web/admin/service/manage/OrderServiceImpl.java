@@ -180,11 +180,12 @@ public class OrderServiceImpl implements OrderService {
 	public OrderVO getLastOrderForCustomer(Integer customerId) {
 		OrderVO orderInfo = orderMapper.selectLastOrderForCustomer(customerId);	
 		//return null;
-		String today = DateUtils.getDate("YYYY/mm/dd");
+		String today = DateUtils.getDate("YYYY/MM/dd");
 		//logger.debug("WorkReportServiceImpl getLastOrderForCustomer today =" + today);		
 		if( orderInfo != null) {
-			if(orderInfo.getOrderProcessCd().equals(PropertyFactory.getProperty("common.code.order.process.04"))) {
-				if(DateUtils.convertDateFormat(orderInfo.getUpdateDt(),"YYYY/mm/dd").equals(today) ) return orderInfo;
+			logger.debug("WorkReportServiceImpl getLastOrderForCustomer orderInfo.getUpdateDt() =" + DateUtils.convertDateFormat(orderInfo.getUpdateDt(),"YYYY/MM/dd") );	
+			if(orderInfo.getOrderProcessCd().equals(PropertyFactory.getProperty("common.code.order.process.delivery"))) {
+				if(DateUtils.convertDateFormat(orderInfo.getUpdateDt(),"YYYY/MM/dd").equals(today) ) return orderInfo;
 				else orderInfo = null;
 			}
 		}				
@@ -254,8 +255,8 @@ public class OrderServiceImpl implements OrderService {
 			
 			params.setSalesId(customer.getSalesId());
 		
-			if(orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.01")) ||  orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.02"))
-					|| orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.03"))) {
+			if(orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.order")) ||  orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.cancel"))
+					|| orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.auto"))) {
 			
 				// 거래처 상품별 단가 정보 가져오기
 				List<CustomerPriceExtVO> customerPriceList = customerService.getCustomerPriceList(params.getCustomerId());			
@@ -380,7 +381,7 @@ public class OrderServiceImpl implements OrderService {
 			}
 			//
 			
-			params.setOrderProcessCd(PropertyFactory.getProperty("common.code.order.process.01"));
+			params.setOrderProcessCd(PropertyFactory.getProperty("common.code.order.process.receive"));
 		
 			result =  orderMapper.insertOrder(params);	
 		
@@ -488,8 +489,8 @@ public class OrderServiceImpl implements OrderService {
 			params.setSalesId(customer.getSalesId());
 			params.setUpdateId(params.getCreateId());
 			
-			if(orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.01")) ||  orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.02"))
-					|| orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.03"))) {
+			if(orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.order")) ||  orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.cancel"))
+					|| orderTypeCd.equals(PropertyFactory.getProperty("common.code.order.type.auto"))) {
 				
 				// 상품별 단가 정보 가져오기
 				List<ProductTotalVO> productPriceList = productService.getCustomerProductTotalList(params.getCustomerId());
@@ -627,7 +628,7 @@ public class OrderServiceImpl implements OrderService {
 				params.setOrderTotalAmount(orderTotalAmount);
 			}
 			//			
-			params.setOrderProcessCd(PropertyFactory.getProperty("common.code.order.process.01"));
+			params.setOrderProcessCd(PropertyFactory.getProperty("common.code.order.process.receive"));
 		
 			result =  orderMapper.updateOrder(params);	
 		
@@ -698,7 +699,7 @@ public class OrderServiceImpl implements OrderService {
 				OrderVOreturn  order = new OrderVO();
 				
 				order.setOrderId(param.getOrderId());
-				order.setOrderProcessCd(PropertyFactory.getProperty("common.code.order.process.04"));
+				order.setOrderProcessCd(PropertyFactory.getProperty("common.code.order.process.delivery"));
 				order.setUpdateId(param.getUpdateId());
 				
 				return orderMapper.updateOrderProcessCd(order);
@@ -904,6 +905,11 @@ public class OrderServiceImpl implements OrderService {
 
 	private  List<OrderBottleVO> getOrderBottleList(Integer orderId){
 		return orderMapper.selectOrderBottleList(orderId);	
+	}
+
+	@Override
+	public OrderVO getTodayOrderForCustomer(Integer customerId) {
+		return orderMapper.selectOrderTodayOfCustomer(customerId);
 	}
 	
 	

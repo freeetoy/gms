@@ -76,5 +76,7 @@ public interface OrderService {
 
 	public int deleteOrder(OrderVO param);
 
-	public int deleteOrderProduct(OrderProductVO param);
+	public int deleteOrderProduct(OrderProductVO param);	
+	
+	public OrderVO getTodayOrderForCustomer(Integer customerId) ;
 }

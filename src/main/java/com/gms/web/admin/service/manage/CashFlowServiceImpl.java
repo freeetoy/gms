@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.gms.web.admin.domain.manage.CashFlowVO;
 import com.gms.web.admin.domain.manage.CashSumVO;
+import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.mapper.manage.CashFlowMapper;
 
@@ -25,8 +26,22 @@ public class CashFlowServiceImpl implements CashFlowService {
 	@Autowired
 	private WorkReportService workService;
 	
+	@Autowired
+	private OrderService orderService;
+	
 	@Override
 	public int registerCashFlow(CashFlowVO param) {
+		
+		OrderVO order = orderService.getTodayOrderForCustomer (param.getCustomerId());
+		
+		int orderAmount = 0;
+		if(order !=null) {
+			orderAmount = order.getOrderTotalAmount();			
+		}
+		int receivableAmount = param.getReceivableAmount()+orderAmount;		
+		
+		param.setReceivableAmount(receivableAmount);
+		
 		return cashMapper.insertCashFlow(param);
 	}
 
