@@ -3,6 +3,7 @@ package com.gms.web.admin.service.manage;
 import java.util.List;
 import java.util.Map;
 
+import com.gms.web.admin.domain.manage.CustomerBottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.CustomerProductVO;
@@ -74,4 +75,11 @@ public interface CustomerService {
 	public int modifyCustomerProductOwnCount(CustomerProductVO param);
 	
 	public int modifyCustomerProductRentCount(CustomerProductVO param);
+	
+	public int registerCustomerBottle(CustomerBottleVO param);	
+	
+	public int registerCustomerBottles(List<CustomerBottleVO> param);	
+	
+	public List<CustomerBottleVO> getCustomerBottleList(Integer customerId);
+	
 }

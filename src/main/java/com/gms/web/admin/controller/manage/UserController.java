@@ -191,6 +191,15 @@ public class UserController {
 		return result;
 	}
 	
+	@RequestMapping(value = "/gms/user/salesList.do")
+	@ResponseBody
+	public List<UserVO> getSalesList()	{
+		
+		UserVO user = new UserVO();
+		
+		return userService.getUserListPart(user); 
+	}
+	
 	
 	@RequestMapping(value = "/gms/user/userIdCheck.do")
 	@ResponseBody

@@ -21,12 +21,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.web.utils.RequestUtils;
+import com.gms.web.admin.domain.manage.CustomerBottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.CustomerProductVO;
 import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.UserVO;
+import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportViewVO;
 import com.gms.web.admin.service.manage.BottleService;
 import com.gms.web.admin.service.manage.CustomerService;
@@ -361,6 +363,80 @@ public class CustomerController {
 	}
 	
 	
+	@RequestMapping(value = "/gms/cbottle/write.do")
+	public ModelAndView openCustomerBottleWrite(@RequestParam(value = "searchCustomerNm", required = false) String searchCustomerNm, Model model) {
+		
+		ModelAndView mav = new ModelAndView();
+		//model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer.price"));
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.customer.price"));	
+		
+		Map<String, Object> map = customerService.searchCustomerList(searchCustomerNm);
+		//model.addAttribute("customerList", map.get("list"));
+		mav.addObject("customerList", map.get("list"));	
+		//model.addAttribute("productList", productService.getProductList());		
+					
+		UserVO user = new UserVO();
+		user.setUserPartCd(PropertyFactory.getProperty("common.user.part.sales"));
+		Map<String, Object> map1 = userService.getUserList(user);
+		mav.addObject("userList", map1.get("list"));
+			
+		
+		mav.setViewName("gms/cbottle/write");
+		return mav;
+	}
+	
+	
+	@RequestMapping(value = "/gms/cbottle/register.do", method = RequestMethod.POST)
+	public String registerCustomerBottle(HttpServletRequest request
+			, HttpServletResponse response
+			, Model model) {
+		
+		logger.info("CustomerContoller registerCustomerBottle");	
+		
+		try {
+			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));		
+			int priceCount  = Integer.parseInt(request.getParameter("priceCount"));
+			
+			int result=0;
+
+			logger.debug("CustomerContoller registerCustomerPrice request.getParameter(\"customerId1\"== "+ request.getParameter("customerId1"));
+			
+			//result = customerService.deleteCustomerPrice(Integer.parseInt(request.getParameter("customerId1")));
+			//CustomerBottleVO[] customerBottle = new CustomerBottleVO[priceCount];
+
+			List<CustomerBottleVO> cBottleList = new ArrayList<CustomerBottleVO>();	
+			
+			for(int i =0 ; i < priceCount ; i++ ) {
+				
+				CustomerBottleVO cBottle = new CustomerBottleVO();
+				
+				RequestUtils.initUserPrgmInfo(request, cBottle);					
+				
+				cBottle.setCustomerId(Integer.parseInt(request.getParameter("customerId1")));
+				cBottle.setProductId(Integer.parseInt(request.getParameter("productId_"+i)));
+				cBottle.setProductPriceSeq(Integer.parseInt(request.getParameter("productPriceSeq_"+i)));
+				cBottle.setRentCount(Integer.parseInt(request.getParameter("rentCount_"+i)));
+				cBottle.setBackCount(Integer.parseInt(request.getParameter("backCount_"+i)));
+				cBottle.setSalesId(request.getParameter("salesId_"+i));
+				
+				cBottleList.add(cBottle);				
+			}
+			
+			result = customerService.registerCustomerBottles(cBottleList);
+			//ID 중복체크			
+			
+		} catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+	
+		return "redirect:/gms/cbottle/write.do";
+		//return null;
+	}
+	
 	@RequestMapping(value = "/gms/price/customerList.do")
 	@ResponseBody
 	public List<CustomerPriceExtVO> getCustomerProductPriceList(@RequestParam(value = "customerId", required = false) Integer customerId, Model model)	{	
@@ -416,9 +492,10 @@ public class CustomerController {
 		return customerList;
 		//return null;
 	}
+	
 	@RequestMapping(value = "/api/customerAllList1.do")
 	@ResponseBody
-	public String getCustomerListString(@RequestParam(value = "searchCustomerNm", required = false) String searchCustomerNm)	{	
+	public String getCustomerListString(@RequestParam(value = "searchCustomerNm", required = false)  String searchCustomerNm)	{	
 		
 		logger.info("CustomerContoller getCustomerListString");
 						
@@ -426,6 +503,14 @@ public class CustomerController {
 		
 		return customerList;
 		//return null;
+	}
+	
+	@RequestMapping(value = "/gms/cbottle/cBottleList.do")
+	@ResponseBody
+	public List<CustomerBottleVO> getCustomerBottleList(@RequestParam(value = "customerId", required = false) Integer customerId)	{			
+						
+		return customerService.getCustomerBottleList(customerId);
+
 	}
 	
 }

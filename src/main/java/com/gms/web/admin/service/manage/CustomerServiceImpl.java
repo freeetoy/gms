@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gms.web.admin.domain.manage.CustomerBottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.CustomerProductVO;
@@ -399,7 +400,20 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerMapper.selectCustomerProductList(customerId);
 	}
 
-	
+	@Override
+	public int registerCustomerBottle(CustomerBottleVO param) {
+		return customerMapper.insertCustomerBottle(param);
+	}
+
+	@Override
+	public int registerCustomerBottles(List<CustomerBottleVO> param) {
+		return customerMapper.insertCustomerBottles(param);
+	}
+
+	@Override
+	public List<CustomerBottleVO> getCustomerBottleList(Integer customerId) {
+		return customerMapper.selectCustomerBottleList(customerId);
+	}	
 
 
 }

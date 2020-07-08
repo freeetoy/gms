@@ -10,4 +10,6 @@ public interface ExcelService {
 	public int uploadCustomerExcelFile(MultipartHttpServletRequest request, MultipartFile excelFile);
 	
 	public int uploadCustomerPriceExcelFile(MultipartHttpServletRequest request, MultipartFile excelFile);
+	
+	public int uploadCustomerBottleExcelFile(MultipartHttpServletRequest request, MultipartFile excelFile);
 }

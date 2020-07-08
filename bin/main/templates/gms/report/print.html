@@ -127,7 +127,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 		<td class="tl_dot" style="border-top-style:none" align="right" th:unless="${row.orderAmount> 999 }" th:text="${row.orderAmount}">	</td>			
 		<td class="tl_dot" style="border-top-style:none" align="right" th:if="${row.receivedAmount > 999}" th:text="${#numbers.formatInteger(row.receivedAmount, 3, 'COMMA')}">	</td>
 		<td class="tl_dot" style="border-top-style:none" align="right" th:unless="${row.receivedAmount > 999}" th:text="${row.receivedAmount}"></td>
-		<td class="tl_dot" style="border-top-style:none: border-right-style: solid;border-right-width: 1px;" align="center"></td>		
+		<td class="tl_dot" style="border-top-style:none: border-right-style: solid;border-right-width: 1px;" align="center" th:text="${row.incomeWay}"></td>		
 	  </tr>
 
 	  <tr height="40" th:each="seq : ${#numbers.sequence(1,20-workList.size())}"> 
@@ -143,15 +143,16 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
  </table>
 
 
-</div>
+</div><!-- 
 	<p></p>
 	<br>
-<input type="button" onclick="pagePrintPreview()" value="프린트하기"> <input type="button" value="닫기" onclick="window.close();">
 
+<input type="button" onclick="pagePrintPreview()" value="프린트하기"> <input type="button" value="닫기" onclick="window.close();">
+ -->
 <script type="text/javascript">
-function pagePrintPreview(){
+//function pagePrintPreview(){
 
 	window.print();
-} 
+//} 
 </script>
 </th:block>

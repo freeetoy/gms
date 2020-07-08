@@ -113,6 +113,21 @@
 		, UPDATE_ID	
 		, UPDATE_DT
 	</sql>
+	
+	<sql id="CustomerBottle">
+		Customer_ID	        
+		, Product_ID	
+		, Product_Price_Seq        
+		, Rent_Count
+		, Back_Count
+		, Inventory_Count
+		, Sales_ID
+		, CREATE_ID	
+		, CREATE_DT	
+		, UPDATE_ID	
+		, UPDATE_DT
+	</sql>
+	
 	<insert id="insertCustomer" parameterType="com.gms.web.admin.domain.manage.CustomerVO">
 		INSERT INTO TB_CUSTOMER(
 			<include refid="InsertCustomerColumns" />
@@ -185,8 +200,7 @@
 			, NOW()
 		)
 	</insert>
-	
-	
+		
 	<insert id="insertCustomerPrices" parameterType="java.util.List">
 		INSERT INTO TB_CUSTOMER_PRODUCT_PRICE(
 			<include refid="InsertCustomerPriceColumns" />
@@ -206,6 +220,44 @@
 		</foreach>
 	</insert>
 	
+	<insert id="insertCustomerBottle" parameterType="com.gms.web.admin.domain.manage.CustomerBottleVO">
+		INSERT INTO TB_CUSTOMER_Bottle(
+			<include refid="CustomerBottle" />
+		) VALUES (
+			 #{customerId}
+			, #{productId}
+			, #{productPriceSeq}
+			, #{rentCount}
+			, #{backCount}
+			, #{inventoryCount}
+			, #{salesId}
+			, #{createId}			
+			, NOW()
+			, NULL
+			, NOW()
+		)
+	</insert> 
+	
+	<insert id="insertCustomerBottles" parameterType="java.util.List">
+		INSERT INTO TB_CUSTOMER_Bottle(
+			<include refid="CustomerBottle" />
+		) VALUES 
+		<foreach collection="list" item="item" separator=" , ">
+		(
+			 #{item.customerId}
+			, #{item.productId}
+			, #{item.productPriceSeq}
+			, #{item.rentCount}
+			, #{item.backCount}
+			, #{item.inventoryCount}
+			, #{item.salesId}
+			, #{item.createId}			
+			, NOW()
+			, NULL
+			, NOW()
+		)
+		</foreach>
+	</insert> 
 	
 	<select id="selectCustomerDetail" parameterType="Integer" resultType="com.gms.web.admin.domain.manage.CustomerVO">
 		SELECT
@@ -239,8 +291,7 @@
 		AND
 			CUSTOMER_NM = #{customerNm}
 		AND 
-			Business_Reg_ID = #{businessRegId}
-		
+			Business_Reg_ID = #{businessRegId}		
 	</select>
 
 	<update id="updateCustomer" parameterType="com.gms.web.admin.domain.manage.CustomerVO">
@@ -559,4 +610,19 @@
 		AND
 			 Product_Price_Seq = #{productPriceSeq}
 	</update>
+	
+	
+	<select id="selectCustomerBottleList" parameterType="Integer" resultType="com.gms.web.admin.domain.manage.CustomerBottleVO">
+		SELECT
+			CB.Product_ID,Product_Nm,CB.Product_Price_Seq, Product_Capa,Sum(Rent_Count)-sum(Back_Count) Inventory_Count
+		FROM
+			TB_CUSTOMER_BOTTLE CB, TB_Product TP, TB_Product_Price PP
+		WHERE
+			CUSTOMER_Id = #{customerId}
+		AND 
+			CB.Product_ID = TP.Product_ID
+		AND CB.Product_Price_Seq = PP.Product_Price_Seq
+		AND TP.Product_ID = PP.Product_ID
+		Group By Product_ID,Product_Price_Seq
+	</select>
 </mapper>

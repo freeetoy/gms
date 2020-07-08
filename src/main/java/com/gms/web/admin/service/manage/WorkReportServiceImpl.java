@@ -608,7 +608,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 						
 						int leftCount  = tempOrderProduct11.getOrderCount()-tempRegisteredBottle.getRegisteredCount();
 						
-						logger.debug("WorkReportServiceImpl registerWorkReportForOrder  leftCount=" + leftCount );
+						//logger.debug("WorkReportServiceImpl registerWorkReportForOrder  leftCount=" + leftCount );
 						if(leftCount <= 0) {
 							leftCount = 0;
 							ZeroCount++;
@@ -795,8 +795,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					tempOrderBottle.setCreateId(param.getCreateId());
 					tempOrderBottle.setUpdateId(param.getCreateId());	
 					
-					//orderProduct 
-					
+					//orderProduct 					
 					if(i > 0 ) {
 						BottleVO tempBottle1 = bottleList.get(i-1);
 						
@@ -910,11 +909,14 @@ public class WorkReportServiceImpl implements WorkReportService {
 				order.setOrderProductNm(orderProductNm);
 				order.setOrderProductCapa(orderProductCapa);
 				
+				//logger.debug("WorkReportServiceImpl registerWorkReportNoOrder workBottleList.size() =" + workBottleList.size());
+				
 				for(int k=0; k < workBottleList.size() ; k++) { 
-					orderTotalAmount += workBottleList.get(k).getOrderTotalAmount();
+					orderTotalAmount += workBottleList.get(k).getProductPrice();
+					//logger.debug("WorkReportServiceImpl registerWorkReportNoOrder workBottleList.get(k).getProductPrice() =" + workBottleList.get(k).getProductPrice());
 				}
 				order.setOrderTotalAmount(orderTotalAmount);
-				
+				//logger.debug("WorkReportServiceImpl registerWorkReportNoOrder orderTotalAmount =" + orderTotalAmount);
 				//TB_Order 등록				
 				// TB_Order_Product			등록
 				result  = orderService.registerOrderAndProduct(order, orderProductList);
