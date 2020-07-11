@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.common.web.utils.RequestUtils;
+import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerBottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
@@ -130,6 +132,7 @@ public class CustomerController {
 			,Model model) {
 
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));		
+		model.addAttribute("customerId", customerId);
 		model.addAttribute("searchCustomerNm", request.getParameter("searchCustomerNm"));
 		if(request.getParameter("currentPage")!=null)
 			model.addAttribute("currentPage",request.getParameter("currentPage"));
@@ -166,17 +169,59 @@ public class CustomerController {
 			for(int i =0 ; i < productList.size() ; i++) {
 				CustomerProductVO customerProduct = productList.get(i);
 				
-				if(customerProduct.getBottleOwnCount() > 0) {
+				if(customerProduct.getBottleOwnCount() != 0) {
 					ownBottleList.add(customerProduct);
 				}
-				if(customerProduct.getBottleRentCount() > 0) {
+				if(customerProduct.getBottleRentCount() != 0) {
 					rentBottleList.add(customerProduct);
 				}
 			}
 			model.addAttribute("ownBottleList", ownBottleList);	
-			model.addAttribute("rentBottleList", rentBottleList);	
+			model.addAttribute("rentBottleList", rentBottleList);				
 			
-			model.addAttribute("bottleList", bottleService.getCustomerBottleList(customerId));		
+			BottleVO bottle = new BottleVO();
+			bottle.setCustomerId(customerId);
+			//bottle.
+			String searchChargeDt = request.getParameter("searchChargeDt");				
+			String searchChargeDtFrom = null;
+			String searchChargeDtEnd = null;
+			boolean firstFlag = false;		
+			
+			if(searchChargeDt != null && searchChargeDt.length() > 20) {
+				searchChargeDtFrom = searchChargeDt.substring(0, 10) ;				
+				searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;				
+				
+			}else {
+				firstFlag = true;
+				searchChargeDtFrom = DateUtils.getDate("yyyy/MM/dd");				
+				searchChargeDtEnd = DateUtils.getDate("yyyy/MM/dd");
+				
+				searchChargeDt = searchChargeDtFrom+" - "+searchChargeDtEnd;
+				
+				bottle.setSearchChargeDt(searchChargeDt);				
+			}
+			bottle.setSearchChargeDtFrom(searchChargeDtFrom);
+			bottle.setSearchChargeDtEnd(searchChargeDtEnd);
+			
+			model.addAttribute("searchChargeDt",searchChargeDt);
+			
+			List<BottleVO> bottleList = bottleService.getCustomerBottleListDate(bottle);
+			if(bottleList.size()==0 && firstFlag) {
+				BottleVO recentBottle = bottleService.getCustomerBottleRecent(customerId);
+				if(recentBottle !=null) {
+					bottle.setSearchChargeDtFrom(DateUtils.convertDateFormat(recentBottle.getUpdateDt(),"yyyy/MM/dd"));
+					bottle.setSearchChargeDtEnd(DateUtils.convertDateFormat(recentBottle.getUpdateDt(),"yyyy/MM/dd"));		
+					
+					searchChargeDt = DateUtils.convertDateFormat(recentBottle.getUpdateDt(),"yyyy/MM/dd")+" - "+DateUtils.convertDateFormat(recentBottle.getUpdateDt(),"yyyy/MM/dd");
+					bottle.setSearchChargeDt(searchChargeDt); 
+					
+					bottleList = bottleService.getCustomerBottleListDate(bottle);
+					model.addAttribute("searchChargeDt",searchChargeDt);
+					
+				}
+			}
+			
+			model.addAttribute("bottleList", bottleList);		
 		}
 		
 		return "gms/customer/update";
@@ -377,9 +422,9 @@ public class CustomerController {
 					
 		UserVO user = new UserVO();
 		user.setUserPartCd(PropertyFactory.getProperty("common.user.part.sales"));
-		Map<String, Object> map1 = userService.getUserList(user);
-		mav.addObject("userList", map1.get("list"));
-			
+		List<UserVO> userList = userService.getUserListPart(user) ;
+		//Map<String, Object> map1 = userService.getUserList(user);
+		mav.addObject("userList", userList);			
 		
 		mav.setViewName("gms/cbottle/write");
 		return mav;

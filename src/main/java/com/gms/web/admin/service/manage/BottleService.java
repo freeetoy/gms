@@ -18,6 +18,10 @@ public interface BottleService {
 	
 	public List<BottleVO> getCustomerBottleList(Integer customerId);
 	
+	public List<BottleVO> getCustomerBottleListDate(BottleVO param);
+	
+	public BottleVO getCustomerBottleRecent(Integer customerId);
+	
 	public List<SimpleBottleVO> getCustomerSimpleBottleList(Integer customerId) ;
 	
 	public BottleVO getBottleDetail(String bottleId) ;
@@ -57,6 +61,4 @@ public interface BottleService {
 	public Map<String, Object> checkBottleIdDuplicate(BottleVO param);
 	
 	public List<BottleHistoryVO> selectBottleHistoryList(String bottleId);
-	
-	
 }

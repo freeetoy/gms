@@ -242,6 +242,7 @@ public class WorkReportController {
 				
 				List<BottleVO> bottleList = bottleService.getBottleDetails(bottle);
 				
+				params.setUserId(params.getCreateId());
 				result = workService.registerWorkReportByBottle(params,bottleList);
 				
 				result =  bottleService.changeWorkCdsAndHistory(bottle, bottleList);

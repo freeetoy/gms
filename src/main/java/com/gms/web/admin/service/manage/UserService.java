@@ -28,4 +28,6 @@ public interface UserService {
 	
 	
 	public List<UserVO> getUserListPart(UserVO param);
+	
+	public UserVO getUserOfName(String userNm);
 }

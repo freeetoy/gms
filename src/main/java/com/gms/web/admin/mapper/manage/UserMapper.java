@@ -20,6 +20,8 @@ public interface UserMapper {
 	public int insertUser(UserVO param);
 
 	public UserVO selectUserDetail(String userId) ;
+	
+	public UserVO selectUserofName(String userNm) ;
 
 	public int updateUser(UserVO param);
 

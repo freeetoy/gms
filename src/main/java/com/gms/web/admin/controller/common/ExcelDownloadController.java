@@ -495,5 +495,146 @@ public class ExcelDownloadController {
 			e.printStackTrace();
 		}
 	}
+   
+   
+   @RequestMapping(value = "/gms/customer/excelDownloadBottle.do")
+   public void excelDownloadCustomerBottle(HttpServletResponse response,BottleVO param){
+	// 게시판 목록조회
+
+	   try {
+		   // 가스 정보 불러오기
+		   	BottleVO bottle = new BottleVO();
+			bottle.setCustomerId(param.getCustomerId());
+			//bottle.
+			String searchChargeDt = param.getSearchChargeDt();	
+			
+			String searchChargeDtFrom = null;
+			String searchChargeDtEnd = null;
+					
+			if(searchChargeDt != null && searchChargeDt.length() > 20) {
+				
+				//logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
+				searchChargeDtFrom = searchChargeDt.substring(0, 10) ;
+				
+				searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;
+				
+				bottle.setSearchChargeDtFrom(searchChargeDtFrom);
+				bottle.setSearchChargeDtEnd(searchChargeDtEnd);
+				
+			}else {
+				
+				searchChargeDtFrom = DateUtils.getDate("yyyy/MM/dd");				
+				searchChargeDtEnd = DateUtils.getDate("yyyy/MM/dd");
+				
+				bottle.setSearchChargeDt(searchChargeDtFrom+" - "+searchChargeDtEnd);
+				bottle.setSearchChargeDtFrom(searchChargeDtFrom);
+				bottle.setSearchChargeDtEnd(searchChargeDtEnd);
+			}
+			
+			List<BottleVO> bottleList = bottleService.getCustomerBottleListDate(bottle);	
+		    // 워크북 생성
+	
+		    Workbook wb = new HSSFWorkbook();
+		    Sheet sheet = (Sheet) wb.createSheet("거래처");
+		    Row row = null;
+		    Cell cell = null;
+	
+		    int rowNo = 0;
+		    
+		    // 테이블 헤더용 스타일
+		    CellStyle headStyle = wb.createCellStyle();
+	
+		    headStyle= ExcelStyle.getHeadStyle(headStyle);
+	
+		    // 데이터용 경계 스타일 테두리만 지정
+		    CellStyle bodyStyle = wb.createCellStyle();
+		    
+		    bodyStyle= ExcelStyle.getBodyStyle(bodyStyle);
+		   
+		   
+		    row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
+		   
+		    // 헤더 생성
+		    List<String> list = null;		    
+		    list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.customer.bottle.title"), ","); 		
+		    
+		    for(int i =0;i<list.size();i++) {		    
+			    cell = row.createCell(i);
+			    cell.setCellStyle(headStyle);
+			    cell.setCellValue(list.get(i));		    
+		    }
+		    
+		  //용기,바코드/RFID, 품명,가스용량,구분,타입,날짜
+		    //0		1		2	3	 4	 5	6	
+		    // 데이터 부분 생성
+		    int i = 1;
+		    
+		    for(BottleVO vo : bottleList) {
+		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);		        
+		        
+		        cell = row.createCell(0);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getBottleId());
+		        
+		        cell = row.createCell(1);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getBottleBarCd());
+		        
+		        cell = row.createCell(2);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getProductNm());
+		        
+		        cell = row.createCell(3);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getBottleCapa());
+		        
+		        cell = row.createCell(4);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getBottleWorkCdNm());
+		        
+		        cell = row.createCell(5);
+		        cell.setCellStyle(bodyStyle);
+		        if(vo.getBottleType().equals("E"))
+		        	cell.setCellValue("공병");
+		        else
+		        	cell.setCellValue("실병");
+		        
+		        cell = row.createCell(6);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(DateUtils.convertDateFormat(vo.getUpdateDt(),"yyyy-MM-dd"));
+	
+		    }	
+	
+		 // width 자동조절
+ 			for (int x = 0; x < sheet.getRow(1).getPhysicalNumberOfCells(); x++) {
+ 				sheet.autoSizeColumn(x);
+ 				int width = sheet.getColumnWidth(x);
+ 				int minWidth = list.get(x).getBytes().length * 450;
+ 				int maxWidth = 18000;
+ 				if (minWidth > width) {
+ 					sheet.setColumnWidth(x, minWidth);
+ 				} else if (width > maxWidth) {
+ 					sheet.setColumnWidth(x, maxWidth);
+ 				} else {
+ 					sheet.setColumnWidth(x, width + 2000);
+ 				}
+ 			}
+		 			
+		    // 컨텐츠 타입과 파일명 지정
+		    response.setContentType("application/vnd.ms-excel");
+		    response.setHeader("Content-Disposition", "attachment;filename=CustomerBottle_"+DateUtils.getDate()+".xls");	
+	
+		    // 엑셀 출력
+		    wb.write(response.getOutputStream());
+		    wb.close();
+		    
+	   } catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+	}
 
 }

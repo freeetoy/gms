@@ -133,6 +133,34 @@ var goDelete = function(){
 	}              
 }
 
+var getBottle = function(){
+
+	var form = $("#mainForm");	
+	
+	form.submit();
+}
+
+
+$(function() {
+
+	  $('input[name="searchChargeDt"]').daterangepicker({
+	      autoUpdateInput: false,
+	      startDate: new Date(),
+	      language: "kr",
+	      locale: {
+	          cancelLabel: 'Clear'
+	      }	  	
+	  });
+
+	  $('input[name="searchChargeDt"]').on('apply.daterangepicker', function(ev, picker) {
+	      $(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+	  });
+
+	  $('input[name="searchChargeDt"]').on('cancel.daterangepicker', function(ev, picker) {
+	      $(this).val('');
+	  });
+
+	});	
 </script>
 
    <div class="content-wrapper">
@@ -272,38 +300,70 @@ var goDelete = function(){
              </div>                          
               <!-- /.card-header -->
               <div class="col-md-8">
-            <table class="table table-hover">
-	         </table>
+            	<table class="table table-hover">
+	         	</table>
             </div>
             
 			<div class="col-md-8">
-              <div class="card">    
-            	<table class="table table-hover">	         	
-	         		<thead>
-                    <tr>
-                      <th>용기코드</th>
-                      <th>용기바코드</th>
-                      <th>가스</th>
-                      <th>용량</th>
-                      <th>구분</th>
-                      <th>타입</th>
-                      <th>날짜</th>
-                    </tr>
-                  	</thead>
-                  	<tbody>
-                  	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}">
-                      <td th:text="${row.bottleId}"></td>
-                      <td th:text="${row.bottleBarCd}"></td>                     
-                      <td th:text="${row.productNm}"></td>
-                      <td th:text="${row.bottleCapa}"></td>
-                      <td th:text="${row.bottleWorkCdNm}"></td>
-                      <td th:if="${row.bottleType=='E'}" th:text="공병"></td>
-                      <td th:unless="${row.bottleType=='E'}" th:text="실병"></td>
-                      <td th:text="${#calendars.format( row.updateDt, 'yyyy-MM-dd' )}"></td>
-                    </tr>
-                  	</tbody>
-               	</table>   
-               </div>
+				<div class="row">        	
+	            <div class="col-1">
+	            	<label>날짜</label>                 		
+	            </div>               
+	            <div class="col-4">
+	              <form id="mainForm" name="mainForm"  method="post" action="/gms/customer/update.do">
+	              	<input type="hidden" id="customerId" name="customerId" th:value="${customer.customerId}">
+                	<input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
+                	<input type="hidden" id="searchCustomerNm" name="searchCustomerNm" th:value="${searchCustomerNm}">	
+	               <input type="text" class="form-control" name="searchChargeDt" th:value="${searchChargeDt}"/>			
+	            </div>               
+	            <div class="col-5">     
+	            	<button class="btn btn-navbar" type="button" onclick="javascript:getBottle()" >
+		            <i class="fas fa-search"></i>
+		          </button>          
+		          </form>
+	            </div>
+	            <div class="col-2">     
+	            	<a th:href="@{/gms/customer/excelDownloadBottle.do(searchChargeDt=${searchChargeDt},customerId=${customer.customerId} )}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>   
+		           
+		          </button>          
+		          </form>
+	            </div>
+	         </div>
+	         <div class="col-md-8">
+            	<table class="table table-hover">
+	         	</table>
+            </div>
+	         <div class="col-md-8">
+				<div class="row">    
+				</div>
+				</div>
+	              <div class="card">    
+	            	<table class="table table-hover">	         	
+		         		<thead>
+	                    <tr>
+	                      <th>용기코드</th>
+	                      <th>용기바코드</th>
+	                      <th>품명</th>
+	                      <th>용량</th>
+	                      <th>구분</th>
+	                      <th>타입</th>
+	                      <th>날짜</th>
+	                    </tr>
+	                  	</thead>
+	                  	<tbody>
+	                  	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}">
+	                      <td th:text="${row.bottleId}"></td>
+	                      <td th:text="${row.bottleBarCd}"></td>                     
+	                      <td th:text="${row.productNm}"></td>
+	                      <td th:text="${row.bottleCapa}"></td>
+	                      <td th:text="${row.bottleWorkCdNm}"></td>
+	                      <td th:if="${row.bottleType=='E'}" th:text="공병"></td>
+	                      <td th:unless="${row.bottleType=='E'}" th:text="실병"></td>
+	                      <td th:text="${#calendars.format( row.updateDt, 'yyyy-MM-dd' )}"></td>
+	                    </tr>
+	                  	</tbody>
+	               	</table>   
+	               </div>
             </div>
            
           	<!-- /.col-12 -->

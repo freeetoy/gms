@@ -76,6 +76,49 @@ public class ExcelUploadController {
 		
     }
 	
+	@RequestMapping(value = "/uploadExcelFileGMS", method = RequestMethod.POST)	
+    public ModelAndView uploadExcelFileGMS(MultipartHttpServletRequest request
+    		, HttpServletResponse response) {
+		
+		MultipartFile file = null;
+		int result = 0;
+		try {
+        
+	        Iterator<String> iterator = request.getFileNames();
+	        if(iterator.hasNext()) {
+	            file = request.getFile(iterator.next());
+	        }
+	        //long SIZE_LIMIT = 1024*1024*3;
+	        long fileSize = file.getSize();
+        	if(fileSize > SIZE_LIMIT) {
+        		String alertMessage = "파일은 "+SIZE_LIMIT/(1024*1024)+"M 이하로 업로드 해주세요.";
+    			RequestUtils.responseWriteException(response, alertMessage,
+    					"/gms/bottle/list.do");
+    			return null;
+        	}
+        	logger.debug("$$$$$$$$$$$$$$ ExcelService fileSize "+ fileSize);
+        	
+	        result = excelService.uploadBottleExcelFileGMS(request, file);	        
+	      
+	        //model.addAttribute("gaslist", gaslist);
+	        
+	        logger.debug("ExcelUploadContoller result "+ result);
+		} catch (Exception e) {
+            e.printStackTrace();
+            String alertMessage = "엑셀 등록하는데 오류가 발생하였습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/bottle/list.do");
+            return null;
+        }
+		if(result > 0){
+			String alertMessage = "엑셀 등록하였습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/bottle/list.do");
+		}
+		return null;
+		
+    }
+	
 	
 	@RequestMapping(value = "/gms/customer/uploadExcelFile", method = RequestMethod.POST)	
     public ModelAndView uploadExcelFileCustomer(MultipartHttpServletRequest request

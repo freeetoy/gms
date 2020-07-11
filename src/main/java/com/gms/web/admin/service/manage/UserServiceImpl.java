@@ -211,4 +211,11 @@ public class UserServiceImpl implements UserService {
 		param.setUserPartCd(PropertyFactory.getProperty("common.user.part.sales"));
 		return userMapper.selectUserListPart(param);
 	}
+
+	@Override
+	public UserVO getUserOfName(String userNm) {
+		
+		return userMapper.selectUserofName(userNm);
+		
+	}
 }

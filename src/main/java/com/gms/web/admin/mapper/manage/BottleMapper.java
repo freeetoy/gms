@@ -20,6 +20,10 @@ public interface BottleMapper {
 	
 	public List<BottleVO> selectCustomerBottleList(Integer customerId);	
 	
+	public List<BottleVO> selectCustomerBottleListDate(BottleVO param);	
+	
+	public BottleVO selectCustomerBottleRecent(Integer customerId);	
+	
 	public List<SimpleBottleVO> selectSimpleCustomerBottleList(Integer customerId);	
 	
 	public BottleVO selectBottleDetail(String bottleId) ;

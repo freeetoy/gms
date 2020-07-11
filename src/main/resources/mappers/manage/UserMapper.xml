@@ -67,6 +67,17 @@
 		AND
 			USER_ID = #{userId}
 	</select>
+	
+	<select id="selectUserOfName" parameterType="String" resultType="com.gms.web.admin.domain.manage.UserVO">
+		SELECT
+			<include refid="UserColumns" />
+		FROM
+			TB_USER
+		WHERE
+			delete_yn = 'N'
+		AND
+			User_Nm = #{userNm}
+	</select>
 
 	<update id="updateUser" parameterType="com.gms.web.admin.domain.manage.UserVO">
 		UPDATE TB_USER

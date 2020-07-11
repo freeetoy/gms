@@ -237,6 +237,11 @@ public class BottleServiceImpl implements BottleService {
 	}
 	
 	@Override
+	public List<BottleVO> getCustomerBottleListDate(BottleVO param) {
+		return bottleMapper.selectCustomerBottleListDate(param);	
+	}
+	
+	@Override
 	public List<SimpleBottleVO> getCustomerSimpleBottleList(Integer customerId) {
 		return bottleMapper.selectSimpleCustomerBottleList(customerId);	
 	}
@@ -627,6 +632,13 @@ public class BottleServiceImpl implements BottleService {
 		if(result > 0 ) result = bottleMapper.insertBottleHistorys(params);
 		
 		return result;
+	}
+
+
+
+	@Override
+	public BottleVO getCustomerBottleRecent(Integer customerId) {
+		return bottleMapper.selectCustomerBottleRecent(customerId);
 	}
 	
 

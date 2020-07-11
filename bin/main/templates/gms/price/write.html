@@ -40,13 +40,10 @@ $(document).ready(function(){
 		//alert("addrow");
 		counter++;
 		totalCount++;
-		console.log("1counter=="+counter); 
-		console.log("1 totalCount=="+totalCount); 
-		if (counter > 11){
 
+		if (counter > 20){
 		  alert('더 이상 추가 할수 없습니다.');
 		  return false;
-
 		}
 
 		var newRow = $("<tr>");
@@ -57,9 +54,9 @@ $(document).ready(function(){
 		cols += '</td><td>';
 		cols += ' <select class="form-control" id="productPriceSeq_' + counter + '" name="productPriceSeq_' + counter + '" style="width:100px"><option value=0>옵션</option></select> ';
 		cols += '</td><td>';
-		cols += ' <input type="text" class="form-control" id="productPrice_' + counter + '" name="productPrice_' + counter + '" " placeholder="가격">';
+		cols += ' <input type="text" class="form-control" id="productPrice_' + counter + '" name="productPrice_' + counter + '" " placeholder="대여가격">';
 		cols += '</td><td>';
-		cols += ' <input type="text" class="form-control" id="productBottlePrice_' + counter + '" name="productBottlePrice_' + counter + '" " placeholder="가격">';
+		cols += ' <input type="text" class="form-control" id="productBottlePrice_' + counter + '" name="productBottlePrice_' + counter + '" " placeholder="판매가격">';
 		cols += '</td><td>';  
 		cols += ' <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" value="삭제" />';
 		cols += '</td>';
@@ -282,8 +279,8 @@ $(document).ready(function(){
 			        
 			       	cols += '<td>상품</td>';
 					cols += '<td>용량</td>';
-					cols += '<td>가격</td>';
-					cols += '<td>판매가격</td>';
+					cols += '<td>대여가격</td>';
+					cols += '<td>판매(용기+가스)가격</td>';
 					cols += '<td></td></tr>';
 
 			        newRow.append(cols);
@@ -511,8 +508,8 @@ $(document).ready(function(){
 	                       <tr>
 	                         <td>상품</td>
 	                         <td>용량</td>
-	                         <td>가격</td>
-	                         <td>판매가격</td>
+	                         <td>대여가격</td>
+	                         <td>판매(용기+가스)가격</td>
 	                         <td></td>
 	                       </tr>
 	                       <tr>
@@ -527,7 +524,7 @@ $(document).ready(function(){
 							    </select>	 	                        
 	                       </td>   
 	                       <td> 
-	                         <input type="text" class="form-control" id="productPrice_0" name="productPrice_0" placeholder="가격">
+	                         <input type="text" class="form-control" id="productPrice_0" name="productPrice_0" placeholder="대여가격">
 	                       </td> 
 	                       <td> 
 	                         <input type="text" class="form-control" id="productBottlePrice_0" name="productBottlePrice_0" placeholder="판매가격">

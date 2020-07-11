@@ -27,6 +27,7 @@
 	<entry key="common.menu.boottle.rental">rental</entry>
 	<entry key="common.menu.customer">customer</entry>
 	<entry key="common.menu.customer.price">price</entry>
+	<entry key="common.menu.customer.cbottle">cbottle</entry>
 	<entry key="common.menu.gas">gas</entry>
 	<entry key="common.menu.product">product</entry>
 	<entry key="common.menu.stat_order">sorder</entry>
@@ -120,6 +121,7 @@
 	<entry key="excel.order.title">순번,거래처명,상품명,용량,접수자,상태,요청일자,접수일</entry>
 	<entry key="excel.customer.title">거래처명,거래처주소,거래처사업자등록번호,거래처전화,대표자,업태,종목,이메일</entry>
 	<entry key="excel.ecount.title">일자,순번,거래처코드,거래처명,담당자,출하창고,거래유형,통화,환율,수금내역,비고,품목코드,품목명,규격,수량,단가,외화금액,공급가액,부가세,적요,단가(VAT포함),생산전표생성,Ecount</entry>
+	<entry key="excel.customer.bottle.title">용기,바코드/RFID,품명,가스용량,구분,타입,날짜</entry>
 	
 	<entry key="excel.stat.order.title">날짜,주문건수,주문금액,완료건수,완료금액,취소주문,회수요청,점검요청,기타요청</entry>
 	<entry key="excel.stat.sales.title">날짜,판매건수,판매금액,대여건수,대여금액</entry>

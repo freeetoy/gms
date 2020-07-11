@@ -251,6 +251,12 @@ function doExcelUploadProcess(){
    		*/
 	form1.submit();
 }
+
+function doExcelUploadProcess1(){
+	   		
+	form2.submit();
+}
+	
 	
 	
 $(document).ready(function(){	
@@ -936,6 +942,58 @@ $(document).ready(function(){
 		</div>
 		</div>
 		<!-- /.modal -->
+		
+		 <!--  process modat1 start -->  
+		<div class="modal modal-info fade" id="process-modal3">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+		             	<h4 class="modal-title">엑셀파일 등록</h4>
+		              	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                <span aria-hidden="true">&times;</span>
+		              	</button>
+		            </div>
+		
+					<div class="modal-body">
+					<div class="clearfix"></div>
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12" >
+							<div class="x_panel">
+								
+								<div class="x_content">
+								<br />
+								<div  class="card-body">
+								<form id="form2" name="form1" method="post" action="/uploadExcelFileGMS"enctype="multipart/form-data">					              
+									<table id="myTable" class="table order-info">
+									<thead>
+										<tr>
+											<td class="card-footer">파일선택</td>
+											<td  colspan=4><input type="file" id="fileInput" name="fileInput"> </td>
+											<td> <div id="result"></td>
+										</tr>										
+									</thead>
+									</table>								
+													
+									</form>
+									<div class="ln_solid"></div>
+														
+									<div class="modal-footer justify-content-between">
+						              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						              <a class="btn btn-info btn-sm" href="#" onclick="javascript:doExcelUploadProcess1();"><i class="fas fa-pencil-alt"></i>엑셀업로드</a>
+						            </div>
+									<div id="test_char">
+									
+									</div>
+								</div>
+							</div> <!-- X_content end -->
+						</div>
+					</div> <!-- /.x_panel end -->
+				</div> <!-- / .col -->
+			</div>
+		</div> <!-- / . modal body -->
+		</div>
+		</div>
+		<!-- /.modal -->
       
       
         <div class="row">        	
@@ -1112,11 +1170,18 @@ $(document).ready(function(){
 			<div th:if="${session.LoginUser.userAuthority=='99'}" class="col-2" align='right'>
 				 <a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i>용기변경</a> 
             	<a class="btn_select_process2 btn btn-primary btn-sm"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-upload"></i>엑셀등록</a>
+            	
 			<div th:unless="${session.LoginUser.userAuthority=='99'}" class="col-2" align='right'>
-			</div>
-			
 		</div>
-        
+		<div th:if="${session.LoginUser.userAuthority=='99'}"  class="row">		
+         	<div class="col-12">
+         	<br>
+         	<a class="btn_select_process3 btn btn-primary btn-sm"  data-toggle="modal" data-target="#process-modal3" href="#"><i class="fas fa-upload"></i>엑셀등록(구)</a>
+         	
+         	</div>
+         </div>	
+		</div>
+        <br>
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->

@@ -310,10 +310,15 @@
 			, UPDATE_ID 		= #{updateId}
 			, UPDATE_DT 		= NOW()
 		WHERE
-			Bottle_ID in
+			(Bottle_ID in
 			<foreach collection="bottList" item="item" index="index" open="(" separator="," close=")">
 				#{item} 
 			</foreach>
+			 or Bottle_BarCd in
+			 <foreach collection="bottList" item="item" index="index" open="(" separator="," close=")">
+				#{item} 
+			</foreach>
+			 )
 	</update>	
 	
 	<update id="updateBottlesWorkCdOnly" parameterType="com.gms.web.admin.domain.manage.BottleVO">
@@ -629,5 +634,41 @@
 		AND
 			TB.Product_Id = TP.Product_Id
 		group by Product_Nm, Bottle_Capa
+	</select>	
+	
+	<select id="selectCustomerBottleListDate" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="com.gms.web.admin.domain.manage.BottleVO">		
+		SELECT
+			<include refid="BottleSelectColumns" />
+		FROM
+			TB_Bottle_Hist TB, TB_CODE TC, TB_Product TG
+		WHERE
+			Bottle_Work_CD in ('0308' , '0309', '0310')
+		AND
+			TB.Delete_YN = 'N'			
+		AND Customer_id = #{customerId}
+		AND TB.Bottle_Work_CD = TC.CD_ID	
+		AND TB.Product_ID = TG.Product_Id
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
+		AND date_format(TB.Update_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
+		</if>	
+		Order By Bottle_Work_DT DESC
 	</select>
+	
+	
+	<select id="selectCustomerBottleRecent" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="Integer">		
+		SELECT
+			<include refid="BottleSelectColumns" />
+		FROM
+			TB_Bottle_Hist TB, TB_CODE TC, TB_Product TG
+		WHERE
+			Bottle_Work_CD in ('0308', '0309', '0310')
+		AND
+			TB.Delete_YN = 'N'			
+		AND Customer_id = #{customerId}
+		AND TB.Bottle_Work_CD = TC.CD_ID	
+		AND TB.Product_ID = TG.Product_Id		
+		Order By Bottle_Work_DT DESC
+		Limit 0,1
+	</select>
+	
 </mapper>
