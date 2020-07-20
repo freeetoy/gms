@@ -20,12 +20,15 @@ import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
+import com.gms.web.admin.domain.manage.CustomerPriceVO;
+import com.gms.web.admin.domain.manage.CustomerProductVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.OrderBottleVO;
 import com.gms.web.admin.domain.manage.OrderExtVO;
 import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.domain.manage.ProductTotalVO;
+import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.mapper.manage.OrderMapper;
 
 @Service
@@ -44,6 +47,9 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private WorkReportService workService;
 	
 
 	@Override
@@ -375,7 +381,7 @@ public class OrderServiceImpl implements OrderService {
 				params.setOrderProductCapa(orderProductCapa);
 				orderTotalAmount = 0;
 				for(int j=0;j<orderProduct.size();j++) {
-					orderTotalAmount  += orderProduct.get(j).getOrderAmount()*orderProduct.get(j).getOrderCount();		
+					orderTotalAmount  += orderProduct.get(j).getOrderAmount();		
 				}
 				params.setOrderTotalAmount(orderTotalAmount);
 			}
@@ -815,12 +821,22 @@ public class OrderServiceImpl implements OrderService {
 	public OrderExtVO getOrder(Integer orderId) {
 		
 		OrderVO order = orderMapper.selectOrderDetail(orderId);	
+		List<OrderProductVO> orderProduct = null;
 		
-		List<OrderProductVO> orderProduct = orderMapper.selectOrderProductList(orderId);
+		if(order.getOrderTypeCd().equals(PropertyFactory.getProperty("common.code.order.type.order")) )
+			orderProduct = orderMapper.selectOrderProductList(orderId);
+		else
+			orderProduct = orderMapper.selectOrderInfoOfNotProduct(orderId);
 		
 		OrderExtVO result = new OrderExtVO();
-		result.setOrder(order);
+		int productCount = 0;
+		for(int i=0 ; i < orderProduct.size() ; i++) {
+			productCount += orderProduct.get(i).getOrderCount();
+		}
+		order.setProductCount(productCount);
+		
 		result.setOrderProduct(orderProduct);
+		result.setOrder(order);
 		
 		return result;
 	}
@@ -910,6 +926,116 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public OrderVO getTodayOrderForCustomer(Integer customerId) {
 		return orderMapper.selectOrderTodayOfCustomer(customerId);
+	}
+
+	@Override
+	public int modifyOrderAmount(Integer customerId) {
+		int result = 0 ;
+
+		List<CustomerPriceExtVO> productList = customerService.getCustomerPriceList(customerId);
+		
+		OrderVO order = getTodayOrderForCustomer(customerId);
+		
+		List<OrderProductVO> orderProductList = getOrderProductList(order.getOrderId());
+		
+		List<WorkBottleVO> workBottleList = workService.getWorkBottleListOfOrder(order.getOrderId());
+		
+		int orderTotalAmount = 0;
+		for(int j=0;j<productList.size();j++) {
+			CustomerPriceExtVO customerProduct = productList.get(j);
+			
+			for(int i=0;i<orderProductList.size() ; i++) {
+				
+				if(orderProductList.get(i).getProductId() == customerProduct.getProductId() 
+						&& orderProductList.get(i).getProductPriceSeq() == customerProduct.getProductPriceSeq()) {
+					if(orderProductList.get(i).getBottleSaleYn().equals("N"))
+						orderProductList.get(i).setOrderAmount(orderProductList.get(i).getOrderCount()*customerProduct.getProductPrice());
+					else
+						orderProductList.get(i).setOrderAmount(orderProductList.get(i).getOrderCount()*customerProduct.getProductBottlePrice());
+				
+				result = orderMapper.updateOrderProductAmount(orderProductList.get(i));
+				orderTotalAmount += orderProductList.get(i).getOrderAmount();
+				}
+			}			
+		
+			for(int i=0;i<workBottleList.size();i++) {
+				
+				if(workBottleList.get(i).getProductId() == customerProduct.getProductId() 
+						&& workBottleList.get(i).getProductPriceSeq() == customerProduct.getProductPriceSeq()) {
+					if(workBottleList.get(i).getBottleSaleYn().equals("N"))
+						workBottleList.get(i).setProductPrice(customerProduct.getProductPrice());
+					else
+						workBottleList.get(i).setProductPrice(customerProduct.getProductBottlePrice());
+					
+					result = workService.modifyWorkBottlePrice(workBottleList.get(i));
+				}
+			}
+			
+		}
+		
+		order.setOrderTotalAmount(orderTotalAmount);
+		
+		result = orderMapper.updateOrderTotalAmount(order);
+		
+		return result;
+	}
+	
+	@Override
+	public int modifyOrderAmountAll() {
+		int result = 0 ;
+		
+		List<CustomerPriceVO>  customerPriceList = customerService.getCustomerPriceListAllNow();
+		Integer customerId = 0;
+		
+		for(int k=0 ; k < customerPriceList.size() ; k++) {
+			customerId = customerPriceList.get(k).getCustomerId();
+
+			List<CustomerPriceExtVO> productList = customerService.getCustomerPriceList(customerId);
+			
+			OrderVO order = getTodayOrderForCustomer(customerId);
+			
+			List<OrderProductVO> orderProductList = getOrderProductList(order.getOrderId());
+			
+			List<WorkBottleVO> workBottleList = workService.getWorkBottleListOfOrder(order.getOrderId());
+			
+			int orderTotalAmount = 0;
+			for(int j=0;j<productList.size();j++) {
+				CustomerPriceExtVO customerProduct = productList.get(j);
+				
+				for(int i=0;i<orderProductList.size() ; i++) {
+					
+					if(orderProductList.get(i).getProductId() == customerProduct.getProductId() 
+							&& orderProductList.get(i).getProductPriceSeq() == customerProduct.getProductPriceSeq()) {
+						if(orderProductList.get(i).getBottleSaleYn().equals("N"))
+							orderProductList.get(i).setOrderAmount(orderProductList.get(i).getOrderCount()*customerProduct.getProductPrice());
+						else
+							orderProductList.get(i).setOrderAmount(orderProductList.get(i).getOrderCount()*customerProduct.getProductBottlePrice());
+					
+					result = orderMapper.updateOrderProductAmount(orderProductList.get(i));
+					orderTotalAmount += orderProductList.get(i).getOrderAmount();
+					}
+				}			
+			
+				for(int i=0;i<workBottleList.size();i++) {
+					
+					if(workBottleList.get(i).getProductId() == customerProduct.getProductId() 
+							&& workBottleList.get(i).getProductPriceSeq() == customerProduct.getProductPriceSeq()) {
+						if(workBottleList.get(i).getBottleSaleYn().equals("N"))
+							workBottleList.get(i).setProductPrice(customerProduct.getProductPrice());
+						else
+							workBottleList.get(i).setProductPrice(customerProduct.getProductBottlePrice());
+						
+						result = workService.modifyWorkBottlePrice(workBottleList.get(i));
+					}
+				}
+				
+			}
+			
+			order.setOrderTotalAmount(orderTotalAmount);
+			
+			result = orderMapper.updateOrderTotalAmount(order);
+		}
+		return result;
 	}
 	
 	

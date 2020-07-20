@@ -130,23 +130,8 @@ public class WorkReportServiceImpl implements WorkReportService {
 				}
 			}
 		}
-		
-		for(int i=0;i<viewList.size() ; i++) {
-			/*
-			logger.debug("WorkReportServiceImpl getWorkReportList sviewList= "+ viewList.get(i).getCustomerNm());
-			logger.debug("WorkReportServiceImpl getWorkReportList salesize= "+ viewList.get(i).getSalesBottles().size());
-			logger.debug("WorkReportServiceImpl getWorkReportList backsize= "+ viewList.get(i).getBackBottles().size());
-			
-			for(int j=0;j<viewList.get(i).getSalesBottles().size();j++) {
-				logger.debug("WorkReportServiceImpl getWorkReportList viewList.get(i).getSalesBottles().size() .getProductId= "+ viewList.get(i).getSalesBottles().get(j).getProductNm());
-			}
-			
-			for(int j=0;j<viewList.get(i).getBackBottles().size();j++) {
-				logger.debug("WorkReportServiceImpl getWorkReportList viewList.get(i).getBackBottles().size() .getProductId= "+ viewList.get(i).getBackBottles().get(j).getProductNm());
-			}
-			*/
-		}
-		
+	
+	
 		return viewList;
 	}
 
@@ -218,9 +203,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					}
 					
 				}else {					
-					//logger.debug("###########WorkReportServiceImpl getWorkReportList1 workBottle.getWorkReportSeq()= "+ workBottle.getWorkReportSeq());
-					//logger.debug("############WorkReportServiceImpl getWorkReportList1 temp.getWorkReportSeq()= "+ temp.getWorkReportSeq());
-					//logger.debug("############WorkReportServiceImpl getWorkReportList1 temp.getWorkReportSeq(-workBottle.getWorkReportSeq())= "+ (temp.getWorkReportSeq()- workBottle.getWorkReportSeq()));
+					
 				}
 			}
 		}
@@ -354,9 +337,6 @@ public class WorkReportServiceImpl implements WorkReportService {
 				for(int j = 0 ; j < tempOrderProductList.size() ; j++) {
 					
 					TempProductVO tempProduct = tempOrderProductList.get(j);					
-					
-					//logger.debug("WorkReportServiceImpl registerWorkReportForOrder tempBottle.getProductId() =="+ tempBottle.getProductId() +" ==tempBottle.getProductPriceSeq() =="+ tempBottle.getProductPriceSeq());
-					//logger.debug("WorkReportServiceImpl registerWorkReportForOrder tempProduct.getProductId() =="+ tempProduct.getProductId() + "==tempProduct.getProductPriceSeq() ==" + tempProduct.getProductPriceSeq());
 									
 					//TODO 2020-06-16 order의 BottleChangeYN 과 판매/대여 비교
 					if(isGo && tempBottle.getProductId() == tempProduct.getProductId() 
@@ -539,10 +519,6 @@ public class WorkReportServiceImpl implements WorkReportService {
 
 			if(addOrderProductList.size() > 0) {				
 				
-				result = orderService.registerOrderProducts(addOrderProductList);
-				
-				//logger.debug("---------------- WorkReportServiceImpl registerWorkReportForOrder OrderProductNm "+orderInfo.getOrder().getOrderProductNm() + " OrderProductCapa "+orderInfo.getOrder().getOrderProductCapa() );
-				//logger.debug("---------------- WorkReportServiceImpl registerWorkReportForOrder getOrderTotalAmount "+orderInfo.getOrder().getOrderTotalAmount());
 				//order정보 업데이트
 
 				//TODO order 셋팅 필요
@@ -909,8 +885,6 @@ public class WorkReportServiceImpl implements WorkReportService {
 				order.setOrderProductNm(orderProductNm);
 				order.setOrderProductCapa(orderProductCapa);
 				
-				//logger.debug("WorkReportServiceImpl registerWorkReportNoOrder workBottleList.size() =" + workBottleList.size());
-				
 				for(int k=0; k < workBottleList.size() ; k++) { 
 					orderTotalAmount += workBottleList.get(k).getProductPrice();
 					//logger.debug("WorkReportServiceImpl registerWorkReportNoOrder workBottleList.get(k).getProductPrice() =" + workBottleList.get(k).getProductPrice());
@@ -1216,7 +1190,16 @@ public class WorkReportServiceImpl implements WorkReportService {
 	@Override
 	public List<BottleVO> getWorkBottleListToday(BottleVO param) {
 		// TODO Auto-generated method stub
-		return workMapper.selectWorBottleListToday(param);
+		List<BottleVO>  bottleList = workMapper.selectWorBottleListToday(param);
+		/*
+		for(int i=bottleList.size()-1;i>=0 ; i--) {
+			BottleVO temp = bottleList.get(i);
+			if(temp.getProductId()==52) {
+				if(temp)
+			}
+		}
+		*/
+		return bottleList;
 	}
 
 	@Override
@@ -1691,8 +1674,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					workBottleList.add(addWorkBottle);
 				}
 				logger.debug("WorkReportServiceImpl --registerWorkNoBottle  workBottleList.size=" + workBottleList.size() );
-				result = workMapper.insertWorkBottles(workBottleList);
-				
+				result = workMapper.insertWorkBottles(workBottleList);			
 				
 			}			
 		}
@@ -1785,5 +1767,12 @@ public class WorkReportServiceImpl implements WorkReportService {
 			} //if(param.get(i).getGasId()!= null && param.get(i).getGasId() > 0)  end
 		}
 		return result;
+	}
+
+
+	@Override
+	public int modifyWorkBottlePrice(WorkBottleVO param) {
+		
+		return workMapper.updateWorkBottlePrice(param);
 	}
 }

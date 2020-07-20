@@ -31,6 +31,9 @@ public class CustomerServiceImpl implements CustomerService {
 	private CustomerMapper customerMapper;
 	
 	@Autowired
+	private OrderService orderService;
+	
+	@Autowired
 	CacheManager cacheManager;
 
 	@Override	
@@ -271,7 +274,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Transactional
 	public boolean registerCustomerPrice(CustomerPriceVO[] param) {
 		boolean successFlag = false;
-
+		Integer customerId = 0;
 		// 정보 등록
 		int result = 0;
 		logger.debug("****** registerCustomer.getCustomerId()()) *****===*");
@@ -279,7 +282,10 @@ public class CustomerServiceImpl implements CustomerService {
 		boolean deleteResult = false;
 		for(int i = 0 ; i < param.length ; i++ ) {
 			
-			if( i == 0 ) deleteResult = deleteCustomerPrice(param[i].getCustomerId());
+			if( i == 0 ) {
+				deleteResult = deleteCustomerPrice(param[i].getCustomerId());
+				customerId = param[i].getCustomerId();
+			}
 			
 			result = customerMapper.insertCustomerPrice(param[i]);
 			
@@ -287,7 +293,8 @@ public class CustomerServiceImpl implements CustomerService {
 				successFlag = true;
 			}
 		}
-				
+		
+		result = orderService.modifyOrderAmount(customerId);
 		
 		return successFlag;
 	}
@@ -413,6 +420,12 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public List<CustomerBottleVO> getCustomerBottleList(Integer customerId) {
 		return customerMapper.selectCustomerBottleList(customerId);
+	}
+
+	@Override
+	public List<CustomerPriceVO> getCustomerPriceListAllNow() {
+		
+		return customerMapper.selectCustomerPriceListAllNow();
 	}	
 
 

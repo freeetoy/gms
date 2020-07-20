@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -42,12 +41,12 @@ import com.gms.web.admin.domain.manage.CustomerBottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
-import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.ProductPriceSimpleVO;
 import com.gms.web.admin.domain.manage.ProductTotalVO;
 import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.service.manage.BottleService;
 import com.gms.web.admin.service.manage.CustomerService;
+import com.gms.web.admin.service.manage.OrderService;
 import com.gms.web.admin.service.manage.ProductService;
 import com.gms.web.admin.service.manage.UserService;
 
@@ -69,6 +68,9 @@ public class ExcelServiceImpl implements ExcelService {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private OrderService orderService;
+	
 	@Override
 	@Transactional
 	public int uploadBottleExcelFile(MultipartHttpServletRequest request,
@@ -79,6 +81,8 @@ public class ExcelServiceImpl implements ExcelService {
         List<BottleVO> bottlelist = bottleService.getBottleListAll();
         
         List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList("");
+        
+        List<ProductTotalVO> productList = productService.getProductTotalDetailList();
         
         int result = 0;
         int updateCount = 0;
@@ -231,19 +235,21 @@ public class ExcelServiceImpl implements ExcelService {
                 			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.new"));
                 	}
                 	else if(j == 12) { 
-                		if(colValue.equals("자사")) bottle.setBottleOwnYn("N");
+                		if(colValue.equals("other")) bottle.setBottleOwnYn("N");
                 		else bottle.setBottleOwnYn("Y");
                 	}
                 }
                 
-                ProductTotalVO productTotal = new ProductTotalVO();
-                productTotal.setProductNm(productNm);
-                productTotal.setProductCapa(productCapa);
+                ProductTotalVO productTotal = null;
+
+                for(int k=0;k<productList.size();k++) {
+                	ProductTotalVO productTemp = productList.get(k);
+                	if(productTemp.getProductNm().equals(productNm) && productTemp.getProductCapa().equals(productCapa)) {
+                		productTotal = productTemp;
+                	}                	
+                }
                 
-                //logger.debug("&&&  ExcelService productNm "+ productNm);
-                //logger.debug("$$$$$$$$$$$$$$ ExcelService productCapa "+ productCapa);
-                
-                productTotal = productService.getProductTotalDetails(productTotal);
+                //productTotal = productService.getProductTotalDetails(productTotal);
                 
                 if(productTotal != null) {
 	                
@@ -275,11 +281,13 @@ public class ExcelServiceImpl implements ExcelService {
                 	sb.append(";");
                 	
                 }
+                
             }
             logger.error("$$$$$$$$$$$$$$ ExcelService sb "+ sb.toString());
             if(list.size() > 0)
             	result = bottleService.registerBottles(list);
             
+            workbook.close();
             logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
             
         } catch (org.apache.poi.openxml4j.exceptions.OLE2NotOfficeXmlFileException e) {
@@ -433,11 +441,11 @@ public class ExcelServiceImpl implements ExcelService {
                     			bottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.new"));
                     	}
                     	else if(j == 12) { 
-                    		if(colValue.equals("자사")) bottle.setBottleOwnYn("N");
+                    		if(colValue.equals("other")) bottle.setBottleOwnYn("N");
                     		else bottle.setBottleOwnYn("Y");
                     	}
                     }
-                    
+                    /*
                     ProductTotalVO productTotal = new ProductTotalVO();
                     productTotal.setProductNm(productNm);
                     productTotal.setProductCapa(productCapa);
@@ -446,7 +454,15 @@ public class ExcelServiceImpl implements ExcelService {
                     //logger.debug("$$$$$$$$$$$$$$ ExcelService productCapa "+ productCapa);
                     
                     productTotal = productService.getProductTotalDetails(productTotal);
-                    
+                    */
+                    ProductTotalVO productTotal = null;
+
+                    for(int k=0;k<productList.size();k++) {
+                    	ProductTotalVO productTemp = productList.get(k);
+                    	if(productTemp.getProductNm().equals(productNm) && productTemp.getProductCapa().equals(productCapa)) {
+                    		productTotal = productTemp;
+                    	}                	
+                    }
                     if(productTotal != null) {
     	                
     	                bottle.setProductId(productTotal.getProductId());
@@ -481,16 +497,20 @@ public class ExcelServiceImpl implements ExcelService {
                 if(list.size() > 0)
                 	result = bottleService.registerBottles(list);
                 
+                excelWB.close();
                 logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
         	} catch (Exception e1) {
         		e.printStackTrace();
+        		return -1;
         	}
         } catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();
+			return -1;
 		} catch (Exception e) {
 			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();
+			return -1;
 		}
         return result;
 	}
@@ -505,6 +525,8 @@ public class ExcelServiceImpl implements ExcelService {
         List<BottleVO> bottlelist = bottleService.getBottleListAll();
         
         List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList("");
+        
+        List<ProductTotalVO> productList = productService.getProductTotalDetailList();
         
         int result = 0;
         int updateCount = 0;
@@ -605,16 +627,19 @@ public class ExcelServiceImpl implements ExcelService {
                 	else if(j == 9) productNm = colValue;
                 	else if(j == 10) bottle.setBottleChargePrss(colValue);                 	
                 	else if(j == 11)  { 
-                		if(colValue.equals("self")) bottle.setBottleOwnYn("N");
-                		else bottle.setBottleOwnYn("Y");
+                		if(colValue.equals("self")) bottle.setBottleOwnYn("Y");
+                		else bottle.setBottleOwnYn("N");
                 	}
                 }
                 
-                ProductTotalVO productTotal = new ProductTotalVO();
-                productTotal.setProductNm(productNm);
-                productTotal.setProductCapa(productCapa);
-                
-                productTotal = productService.getProductTotalDetails(productTotal);
+                ProductTotalVO productTotal = null;
+
+                for(int k=0;k<productList.size();k++) {
+                	ProductTotalVO productTemp = productList.get(k);
+                	if(productTemp.getProductNm().equals(productNm) && productTemp.getProductCapa().equals(productCapa)) {
+                		productTotal = productTemp;
+                	}                	
+                }
                 
                 if(productTotal != null) {
 	                
@@ -651,9 +676,9 @@ public class ExcelServiceImpl implements ExcelService {
             if(list.size() > 0)
             	result = bottleService.registerBottles(list);
             
+            workbook.close();
             logger.debug("$$$$$$$$$$$$$$ ExcelService  uploadBottleExcelFileGMS result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
-            
-        
+           
         } catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();
@@ -773,7 +798,7 @@ public class ExcelServiceImpl implements ExcelService {
             else
             	result = 1;
             logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result);
-            
+            excelWB.close();
         } catch (org.apache.poi.poifs.filesystem.OfficeXmlFileException e) {
         	try {
 	        	OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream());
@@ -856,14 +881,15 @@ public class ExcelServiceImpl implements ExcelService {
 	                		boolean result1 = customerService.modifyCustomer(customer);
 	                		isRegisteFlag = false;
 	                	}                 		
-	                }
-	                
+	                }	                
 	                if(isRegisteFlag) list.add(customer);
 	            }
 	            if(list.size() > 0)
 	            	result = customerService.registerCustomers(list);
 	            else
 	            	result = 1;
+	            
+	            workbook.close();
         	} catch (Exception e1) {
     			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
     			e.printStackTrace();
@@ -959,22 +985,11 @@ public class ExcelServiceImpl implements ExcelService {
 	        		else
 	        			simpleProduct.setProductCapa(" ");
 	        		
-	        		//logger.debug(" *** ExcelSerive uploadExcelFile strlist.get(0) "+ strlist.get(0));  
-	        		//logger.debug(" *** ExcelSerive uploadExcelFile simpleProduct.getProductNm() "+ simpleProduct.getProductNm()); 
-	        		//logger.debug(" *** ExcelSerive uploadExcelFile simpleProduct.getProductCapa() "+ simpleProduct.getProductCapa());
-	        		
 					for(int k=0;k < productList.size() ; k++) {
 						
 	        			if(strlist.size() > 1 && simpleProduct.getProductNm().equals(productList.get(k).getProductNm()) 
 	        					&& simpleProduct.getProductCapa().equals(productList.get(k).getProductCapa()) ) {
-	        				//logger.debug(" ******** ExcelSerive uploadExcelFile simpleProduct.getProductCapa() "+ simpleProduct.getProductCapa());
-	        				/*
-	        				if(strlist.get(0).equals("대한의료용산화에틸렌20%")) {
-	        					logger.debug(" *** ExcelSerive uploadExcelFile strlist.get(0) "+ strlist.get(0)); 
-	        					logger.debug(" *** ExcelSerive uploadExcelFile strlist.get(1) "+ strlist.get(1));  
-	        					logger.debug(" *** ExcelSerive uploadExcelFile productList.get(k).getProductNm()"+ productList.get(k).getProductNm());  
-	        					logger.debug(" *** ExcelSerive uploadExcelFile productList.get(k).getProductCapa() "+ productList.get(k).getProductCapa());  
-	        				}*/
+
 	        				simpleProduct.setProductId(productList.get(k).getProductId());
 	        				simpleProduct.setProductPriceSeq(productList.get(k).getProductPriceSeq());
 	        			}else if(strlist.size() == 1 && simpleProduct.getProductNm().equals(productList.get(k).getProductNm()) ) {
@@ -988,17 +1003,8 @@ public class ExcelServiceImpl implements ExcelService {
 	        		
 	        		simpleList.add(simpleProduct);
         		}
-        	}/*
-        	logger.debug("^^^^  ExcelSerive uploadExcelFile simpleProuctsize==-"+simpleList.size());
-        	for(int i=0;i<simpleList.size();i++) {
-        		ProductPriceSimpleVO simpleProduct = simpleList.get(i);
-        		//if(productInfo !=null) {
-	        		logger.debug("^^^^  ExcelSerive uploadExcelFile simpleProuct.getProductNm==-"+simpleProduct.getProductNm());
-					logger.debug("*** ExcelSerive uploadExcelFile productInfo.getProductId=="+simpleProduct.getProductId());
-					logger.debug("*** ExcelSerive uploadExcelFile productInfo.getProductPriceSeq="+simpleProduct.getProductPriceSeq());
-        		//}
         	}
-        	*/
+        	
             for(int i=1; i<sheet.getLastRowNum() + 1; i++) {            	
             	
             	CustomerVO customer = null;
@@ -1092,9 +1098,6 @@ public class ExcelServiceImpl implements ExcelService {
 							customerPrice.setProductId(simpleProduct.getProductId());
 							customerPrice.setProductPriceSeq(simpleProduct.getProductPriceSeq());
 						}
-						//logger.debug("ExcelSerive uploadExcelFile j =="+j);
-						//logger.debug("---- ExcelSerive uploadExcelFile ----"+simpleProduct.getProductNm()+"--"+simpleProduct.getProductCapa());
-						//logger.debug("----- ExcelSerive uploadExcelFile ----"+customerPrice.getProductPrice());
 
 						if(j%2==0) {
 							
@@ -1114,6 +1117,7 @@ public class ExcelServiceImpl implements ExcelService {
 				                		if(customerPrice.getProductPrice() > 0 || customerPrice.getProductBottlePrice() > 0) {
 					                		logger.debug("*** ExcelSerive uploadExcelFile modifyCustomerPrice !!!! --------------");
 											
+					                		customerPrice.setUpdateId(customerPrice.getCreateId());
 					                		result = customerService.modifyCustomerPrice(customerPrice);
 					                		isRegisteFlag = false;
 					                		
@@ -1126,6 +1130,7 @@ public class ExcelServiceImpl implements ExcelService {
 					                			customerPrice40.setCustomerId(customerPrice.getCustomerId());
 					                			customerPrice40.setCreateDt(customerPrice.getCreateDt());
 					                			customerPrice40.setCreateId(customerPrice.getCreateId());
+					                			customerPrice40.setUpdateId(customerPrice.getCreateId());
 					                			customerPrice40.setProductPrice(customerPrice.getProductPrice());
 					                			customerPrice40.setProductBottlePrice(customerPrice.getProductBottlePrice());
 					                			customerPrice40.setProductPriceSeq(7);
@@ -1175,21 +1180,14 @@ public class ExcelServiceImpl implements ExcelService {
 					}                	
                 }
             }
-            
-           //result = customerService.registerCustomerPrices(list);
-            /*
-            for(int i=0 ; i< list.size();i++) {
-            	CustomerPriceVO temp = list.get(i);
-            	logger.debug("---- ExcelSerive uploadExcelFile customerId="+ temp.getCustomerId());
-            	logger.debug("ExcelSerive uploadExcelFile productId="+ temp.getProductId());
-            	logger.debug("ExcelSerive uploadExcelFile productPriceId="+ temp.getProductPrice());
-            	logger.debug("---ExcelSerive uploadExcelFile price="+ temp.getProductPrice());
-            }
-            */
+
             if(list.size() > 0) result = customerService.registerCustomerPrices(list);
             else result = 1;
             logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+" insertCount="+insertCount+"==not insert =="+sb.toString());
             
+            result = orderService.modifyOrderAmountAll();
+            
+            workbook.close();
 	    } catch (DataAccessException e) {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 	    	e.printStackTrace();
@@ -1400,17 +1398,7 @@ public class ExcelServiceImpl implements ExcelService {
 	        		simpleList.add(simpleProduct);
         		}
         	}
-        	/*
-        	logger.debug("^^^^  ExcelSerive uploadExcelFile simpleProuctsize==-"+simpleList.size());
-        	for(int i=0;i<simpleList.size();i++) {
-        		ProductPriceSimpleVO simpleProduct = simpleList.get(i);
-        		//if(productInfo !=null) {
-	        		logger.debug("^^^^  ExcelSerive uploadExcelFile simpleProuct.getProductNm==-"+simpleProduct.getProductNm());
-					logger.debug("*** ExcelSerive uploadExcelFile productInfo.getProductId=="+simpleProduct.getProductId());
-					logger.debug("*** ExcelSerive uploadExcelFile productInfo.getProductPriceSeq="+simpleProduct.getProductPriceSeq());
-        		//}
-        	}
-        	*/
+
             for(int i=1; i<sheet.getLastRowNum() + 1; i++) {            	
             	
             	CustomerVO customer = null;
@@ -1552,7 +1540,7 @@ public class ExcelServiceImpl implements ExcelService {
             if(list.size() > 0) result = customerService.registerCustomerBottles(list);
             else result = 1;
             logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+" insertCount="+insertCount+"==not insert =="+sb.toString());
-            
+            workbook.close();
 	    } catch (DataAccessException e) {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 	    	e.printStackTrace();

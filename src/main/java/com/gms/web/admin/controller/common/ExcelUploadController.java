@@ -71,6 +71,10 @@ public class ExcelUploadController {
 			String alertMessage = "엑셀 등록하였습니다.";
 			RequestUtils.responseWriteException(response, alertMessage,
 					"/gms/bottle/list.do");
+		}else {
+			 String alertMessage = "엑셀 등록하는데 오류가 발생하였습니다.";
+				RequestUtils.responseWriteException(response, alertMessage,
+						"/gms/bottle/list.do");
 		}
 		return null;
 		

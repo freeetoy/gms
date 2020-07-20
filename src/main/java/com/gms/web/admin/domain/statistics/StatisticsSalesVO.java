@@ -23,6 +23,9 @@ public class StatisticsSalesVO implements Serializable {
 	/**Rental_Count     */
 	private int rentalCount;
 	
+	/**Income_Amount    */
+	private int incomeAmount;
+	
 	/**Rental_Amount    */
 	private int rentalAmount;
 	

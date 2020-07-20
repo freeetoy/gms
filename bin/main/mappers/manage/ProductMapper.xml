@@ -122,6 +122,29 @@
 			pp.Product_Status  != '0'		
 	</select>
 	
+	<select id="selectProductTotalDetailList"  resultType="com.gms.web.admin.domain.manage.ProductTotalVO">
+		SELECT
+			p.Product_ID, 
+			Product_Nm, 
+			Gas_ID, 
+			pp.Product_Status, 
+			Member_Comp_Seq,
+			Product_Price_Seq, 
+			Product_Price, 
+			Product_Bottle_Price,
+			Product_Capa
+		FROM
+			TB_Product p, TB_Product_Price pp
+		WHERE
+			p.Product_ID = pp.Product_ID
+		AND
+			p.Product_Status  != '0'
+		AND
+			pp.Product_Status  != '0'		
+		AND
+			Gas_Id > 0
+	</select>
+	
 	<select id="selectProductDetail" parameterType="integer" resultType="com.gms.web.admin.domain.manage.ProductVO">
 		SELECT
 			<include refid="ProductColumns" />
@@ -280,10 +303,10 @@
 	</select>
 		
 	<select id="selectCustomerProductTotalList" parameterType="integer" resultType="com.gms.web.admin.domain.manage.ProductTotalVO">
-		SELECT p.Product_ID, pseq Product_Price_Seq,ta.price Product_Price,  Product_Nm, Gas_ID, pp.Product_Status, Member_Comp_Seq, Product_Capa,
+		SELECT p.Product_ID, pseq Product_Price_Seq,ta.price Product_Price, ta.Product_Bottle_Price, Product_Nm, Gas_ID, pp.Product_Status, Member_Comp_Seq, Product_Capa,
 			p.Create_ID, p.Create_Dt, p.Update_ID, p.Update_Dt
 		FROM (
-			SELECT DISTINCT a.product_id pid, a.product_price_seq pseq , a.product_price price
+			SELECT DISTINCT a.product_id pid, a.product_price_seq pseq , a.product_price price a.Product_Bottle_Price
 			FROM tb_product_price a
 			WHERE not exists 
 			(
@@ -294,7 +317,7 @@
 				AND Customer_Id = #{customerId}	
 			)
 			UNION 
-			SELECT DISTINCT c.product_id pid, c.product_price_seq pseq, c.product_price price
+			SELECT DISTINCT c.product_id pid, c.product_price_seq pseq, c.product_price price c.Product_Bottle_Price
 			FROM tb_customer_product_price c
 			WHERE customer_id=#{customerId}	
 			) ta, TB_Product p, TB_Product_Price pp

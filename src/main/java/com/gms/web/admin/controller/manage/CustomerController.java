@@ -182,12 +182,16 @@ public class CustomerController {
 			BottleVO bottle = new BottleVO();
 			bottle.setCustomerId(customerId);
 			//bottle.
-			String searchChargeDt = request.getParameter("searchChargeDt");				
+			String searchChargeDt = request.getParameter("searchChargeDt");		
+			
+			logger.debug(" searchChargeDt ======> "+searchChargeDt);
 			String searchChargeDtFrom = null;
 			String searchChargeDtEnd = null;
 			boolean firstFlag = false;		
 			
 			if(searchChargeDt != null && searchChargeDt.length() > 20) {
+				bottle.setSearchChargeDt(searchChargeDt);		
+				
 				searchChargeDtFrom = searchChargeDt.substring(0, 10) ;				
 				searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;				
 				
@@ -390,8 +394,9 @@ public class CustomerController {
 			}
 			
 			result = customerService.registerCustomerPrice(customerPrice);
-			//ID 중복체크			
-			//boolean result = customerService.registerCustomerPrice(params);
+			
+			// 당일 거래 내역 업데이트
+			
 			if (result == false) {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			}

@@ -21,6 +21,9 @@
 		<result property="salesAmount"				column="Sales_Amount"				/>
 		<result property="rentalCount"				column="Rental_Count"				/>
 		<result property="rentalAmount"				column="Rental_Amount"				/>
+		<result property="IncomeAmount"				column="Income_Amount"				/>
+		<result property="createId"					column="CREATE_ID"					/>
+		<result property="createDt"					column="CREATE_DT"					/>
 	</resultMap>
 	
 	<sql id="StatisticsOrderColumns">
@@ -45,6 +48,9 @@
 		 , Sales_Amount 	 
 		 , Rental_Count    
 		 , Rental_Amount 	
+		 , Income_Amount 	
+		 , Create_ID        
+		 , Create_Dt
 	</sql>
 
 	<insert id="inserDailyStatisticsOrder">
@@ -121,7 +127,7 @@
 		INSERT INTO TB_Daily_Stat_Sales(
 			<include refid="StatisticsSalesColumns" />
 		) 
-		SELECT 	DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d'), Sales_Count,IFNULL(Sales_Amount,0) Sales_Amount, Rental_Count, IFNULL(Rental_Amount,0) Rental_Amount
+		SELECT 	DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d'), Sales_Count,IFNULL(Sales_Amount,0) Sales_Amount, Rental_Count, IFNULL(Rental_Amount,0) Rental_Amount, IFNULL(Income_Amount,0) Income_Amount, 'admin',now()
 		FROM 
 		(
 			SELECT Count(Work_Seq) Sales_Count, Sum(Product_Price) Sales_Amount
@@ -134,7 +140,12 @@
 			FROM TB_Work_Bottle
 			WHERE Bottle_Work_Cd='0309' 
 			AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')			 
-		) B
+		) B,
+		(
+			SELECT Sum(Received_Amount) Income_Amount
+			FROM TB_Work_Report
+			WHERE DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')			 
+		) C
 	</insert>	
 	
 	<insert id="insertMonthlyStatisticsSales">
@@ -146,6 +157,8 @@
 			 , SUM(Sales_Amount)    
 			 , SUM(Rental_Count) 	 
 			 , SUM(Rental_Amount)   
+			 , SUM(Income_Amount)  
+			 , 'admin',now()
 		FROM TB_Daily_Stat_Sales
 		WHERE LEFT(Stat_Dt,7)=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m')
 		GROUP BY LEFT(Stat_Dt,7)

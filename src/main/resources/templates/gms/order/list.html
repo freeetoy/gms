@@ -717,6 +717,7 @@ $(document).ready(function(){
                       <th>거래처</th>
                       <th>상품명</th>
                       <th>용량</th>
+                      <th>주문금액</th>
                       <th>접수자</th>
                       <th>상태</th>
                       <th>요청일</th>
@@ -733,6 +734,8 @@ $(document).ready(function(){
                       <th><a th:href="@{/gms/customer/update.do( customerId=${row.customerId})}" th:text="${row.CustomerNm}"></a></th>
                       <th th:text="${row.orderProductNm}"></th>
                       <td th:text="${row.orderProductCapa}"></td>
+                      <td th:if="${row.orderTotalAmount > 999}" th:text="${#numbers.formatInteger(row.orderTotalAmount, 3, 'COMMA')}"></td>
+                      <td th:unless="${row.orderTotalAmount > 999}" th:text="${row.orderTotalAmount}"></td>
                       <td th:text="|${row.createNm}(${row.createId})|"></td>
                       <th th:if="${row.orderProcessCd=='0210'}" ><h6><span class="badge badge-danger">주문접수</span></h6>
                       <th th:if="${row.orderProcessCd=='0220'}" ><h6><span class="badge badge-danger">주문접수완료</span></h6>
@@ -762,7 +765,7 @@ $(document).ready(function(){
                       </td>
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( orderList )}">
-						<td colspan="10">조회된 결과가 없습니다.</td>
+						<td colspan="11">조회된 결과가 없습니다.</td>
 					</tr>	
 										
                   				

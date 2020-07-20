@@ -305,19 +305,25 @@
 			Order_ID = #{orderId}
 	</update>
 	
-	
-	
-	<update id="updateOrderDeposit" parameterType="com.gms.web.admin.domain.manage.OrderVO">
+	<update id="updateOrderTotalAmount" parameterType="com.gms.web.admin.domain.manage.OrderVO">
 		UPDATE TB_Order
 		SET
-			Order_Process_CD 	= #{orderProcessCd}
-			, Deposit_Check_Dt		= #{depositCheckDt}
-			, Deposit_Amount		= #{depositAmount}
-			, Deposit_Bank_CD		= #{depositBankCd}
+			Order_Total_Amount	= #{orderTotalAmount}
+			, UPDATE_ID 			= #{updateId}
+			, UPDATE_DT 			= NOW()
 		WHERE
 			Order_ID = #{orderId}
 	</update>
 	
+	<update id="updateOrderProductAmount" parameterType="com.gms.web.admin.domain.manage.OrderVO">
+		UPDATE TB_Order_Product
+		SET
+			Order_Amount	= #{orderAmount}
+			, UPDATE_ID 			= #{updateId}
+			, UPDATE_DT 			= NOW()
+		WHERE
+			Order_ID = #{orderId}
+	</update>
 	
 	<update id="updateOrdersProcessCd" parameterType="com.gms.web.admin.domain.manage.OrderVO">
 		UPDATE TB_Order
@@ -524,6 +530,22 @@
 		AND A.Product_ID = C.Product_ID
 		AND A.Product_Price_Seq = C.Product_Price_Seq								
 		ORDER BY A.Create_Dt DESC 
+	</select>
+	
+	<select id="selectOrderInfoOfNotProduct" resultType="com.gms.web.admin.domain.manage.OrderProductVO" parameterType="Integer">		
+		SELECT
+			Order_ID   
+		 , Order_Etc Order_Product_ETC
+		 , 0 Order_Amount
+		 , 0 Order_Count
+		 , Create_ID        
+		 , Create_Dt        
+		 , Update_ID        
+		 , Update_Dt  
+		FROM
+			TB_Order
+		WHERE
+			Order_ID = #{orderId}
 	</select>
 	
 	<select id="selectOrderProductListNotDelivery" resultType="com.gms.web.admin.domain.manage.OrderProductVO" parameterType="Integer">		

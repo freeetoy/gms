@@ -41,7 +41,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
             
             userId 		= StringUtils.defaultString(sessionInfo.getUserId());
             systemRole 	= StringUtils.defaultString(sessionInfo.getUserAuthority());
-            log.info("preHandle userId ************ "+userId);
+            log.debug("preHandle userId ************ "+userId);
                    
             session.setAttribute("compNm", PropertyFactory.getProperty("common.Member.Comp.Daehan.name"));		
             

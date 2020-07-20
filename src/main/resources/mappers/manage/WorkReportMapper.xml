@@ -222,6 +222,17 @@
 		WHERE
 			Work_Report_Seq = #{workReportSeq}
 	</update>
+	<update id="updateWorkBottlePrice" parameterType="com.gms.web.admin.domain.manage.WorkBottleVO">
+		UPDATE TB_Work_Bottle
+		SET
+			Product_Price		= #{productPrice}
+			, UPDATE_ID 		= #{updateId}
+			, UPDATE_DT 		= NOW()
+		WHERE
+			Work_Report_Seq = #{workReportSeq}
+		AND
+			Work_Seq 		= #{workSeq}
+	</update>
 	
 	<select id="selectWorkReportList" resultType="com.gms.web.admin.domain.manage.WorkReportVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
 		SELECT
@@ -355,110 +366,7 @@
 		AND 
 			DATE_FORMAT(Work_Dt,'%Y/%m/%d') = DATE_FORMAT(#{createDt},'%Y/%m/%d')		
 	</select>	
-	<!-- 
-	<select id="selectWorBottleListTotal" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="java.util.Map">
-		SELECT C.*
-		FROM (
-			SELECT A.*, B.Customer_Nm
-			FROM (
-				SELECT
-					TWB.Bottle_ID
-					, TWB.Bottle_BarCd
-					, TWB.Product_ID
-					, TWB.Product_Price_Seq
-					, TWB.Gas_ID	
-					, Product_Nm
-					, Bottle_Capa
-					, Bottle_Volumn
-					, TWB.Bottle_Work_CD
-					, USER_ID Bottle_Work_ID
-					, TWB.Customer_ID
-					, TB.Member_Comp_Seq	
-					, TW.Order_ID
-					, Order_Product_Seq	
-					, TWB.Bottle_Type
-					, Work_DT Bottle_Work_DT
-					, TW.CREATE_ID
-					, TW.CREATE_DT
-					, TW.UPDATE_ID
-					, TW.UPDATE_DT
-					, CD_NM Bottle_Work_CD_NM
-				FROM
-					TB_Work_Bottle TWB,TB_Work_Report TW, TB_Bottle TB, TB_CODE TC, TB_Product TG
-				WHERE
-					TB.Delete_YN = 'N'			
-				AND 
-					TWB.Work_Report_Seq = TW.Work_Report_Seq
-				AND 
-					TWB.Bottle_ID = TB.Bottle_ID
-				AND 
-					TWB.Bottle_Work_CD = TC.CD_ID	
-				AND 
-					TWB.Product_ID = TG.Product_Id
-			) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID	
-		) C
-		WHERE 1 = 1
-		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
-		AND Customer_Nm	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
-		</if>				
-		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
-		AND date_format(Bottle_Work_DT,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
-		</if>										
-		ORDER BY Bottle_Work_DT DESC 
-		Limit #{startRow}, #{rowPerPage}
-	</select>
 	
-	
-	<select id="selectWorBottleCountTotal" resultType="int" parameterType="java.util.Map">		
-		SELECT Count(Bottle_ID)
-		FROM (
-			SELECT A.*, B.Customer_Nm
-			FROM (
-				SELECT
-					TWB.Bottle_ID
-					, TWB.Bottle_BarCd
-					, TWB.Product_ID
-					, TWB.Product_Price_Seq
-					, TWB.Gas_ID	
-					, Product_Nm
-					, Bottle_Capa
-					, Bottle_Volumn
-					, TWB.Bottle_Work_CD
-					, USER_ID Bottle_Work_ID
-					, TWB.Customer_ID
-					, TB.Member_Comp_Seq	
-					, TW.Order_ID
-					, Order_Product_Seq	
-					, TWB.Bottle_Type
-					, Work_DT Bottle_Work_DT
-					, TW.CREATE_ID
-					, TW.CREATE_DT
-					, TW.UPDATE_ID
-					, TW.UPDATE_DT
-					, CD_NM Bottle_Work_CD_NM
-				FROM
-					TB_Work_Bottle TWB,TB_Work_Report TW, TB_Bottle TB, TB_CODE TC, TB_Product TG
-				WHERE
-					TB.Delete_YN = 'N'			
-				AND 
-					TWB.`Work_Report_Seq` = TW.`Work_Report_Seq`
-				AND 
-					TWB.`Bottle_ID` = TB.`Bottle_ID`
-				AND 
-					TWB.Bottle_Work_CD = TC.CD_ID	
-				AND 
-					TWB.Product_ID = TG.Product_Id
-			) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID	
-		) C
-		WHERE 1 = 1
-		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
-		AND Customer_Nm	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
-		</if>				
-		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
-		AND date_format(Bottle_Work_DT,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
-		</if>								
-	</select>
-	 -->
 	 <select id="selectWorBottleListTotal" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="java.util.Map">
 		SELECT C.*
 		FROM (
@@ -606,8 +514,7 @@
 			) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID	
 		) C
 		WHERE 1 = 1								
-		ORDER BY Bottle_Work_DT DESC 
-		
+		ORDER BY Bottle_Work_DT DESC 		
 	</select>
 	
 	<select id="selectWorkBottleListOfOrder" resultType="com.gms.web.admin.domain.manage.WorkBottleVO" parameterType="int">		
@@ -619,8 +526,6 @@
 			FROM
 				TB_Work_Bottle TB,TB_Work_Report TW
 			WHERE
-				TB.Delete_YN = 'N'		
-			AND 				
 				TB.Work_Report_Seq = TW.Work_Report_Seq
 			AND 
 				Order_Id = #{orderId}			

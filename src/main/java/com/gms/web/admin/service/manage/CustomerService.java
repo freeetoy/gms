@@ -82,4 +82,6 @@ public interface CustomerService {
 	
 	public List<CustomerBottleVO> getCustomerBottleList(Integer customerId);
 	
+	public List<CustomerPriceVO>  getCustomerPriceListAllNow();
+	
 }

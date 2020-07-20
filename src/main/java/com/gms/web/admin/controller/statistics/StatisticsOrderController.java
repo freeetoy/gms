@@ -477,7 +477,11 @@ public class StatisticsOrderController {
 		        
 		        cell = row.createCell(4);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getRentalAmount());		        
+		        cell.setCellValue(vo.getRentalAmount());		     
+		        
+		        cell = row.createCell(5);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getIncomeAmount());	
 		    }	
 	
 		    // 컨텐츠 타입과 파일명 지정

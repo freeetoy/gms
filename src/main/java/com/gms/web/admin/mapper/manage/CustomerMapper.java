@@ -61,6 +61,8 @@ public interface CustomerMapper {
 	
 	public List<CustomerPriceVO> selectCustomerPriceListAll();
 	
+	public List<CustomerPriceVO> selectCustomerPriceListAllNow();
+	
 	public List<CustomerSimpleVO> searchCustomerSimpleList(String searchCustomerNm);
 	
 	public List<CustomerSimpleVO> selectAgencyCustomerList();

@@ -244,7 +244,10 @@ public class ExcelDownloadController {
 			        
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue(vo.getBottleOwnYn());
+			        if(vo.getBottleOwnYn().equals("Y"))
+			        	cell.setCellValue("self");
+			        else
+			        	cell.setCellValue("other");
 		
 			    }	
 		    }
@@ -505,6 +508,10 @@ public class ExcelDownloadController {
 		   // 가스 정보 불러오기
 		   	BottleVO bottle = new BottleVO();
 			bottle.setCustomerId(param.getCustomerId());
+			
+			CustomerVO customer = customerService.getCustomerDetails(param.getCustomerId());
+			
+			String fileName = customer.getCustomerNm()+"_용기_";
 			//bottle.
 			String searchChargeDt = param.getSearchChargeDt();	
 			
@@ -518,6 +525,7 @@ public class ExcelDownloadController {
 				
 				searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;
 				
+				bottle.setSearchChargeDt(searchChargeDt);		
 				bottle.setSearchChargeDtFrom(searchChargeDtFrom);
 				bottle.setSearchChargeDtEnd(searchChargeDtEnd);
 				
@@ -549,14 +557,14 @@ public class ExcelDownloadController {
 		    // 데이터용 경계 스타일 테두리만 지정
 		    CellStyle bodyStyle = wb.createCellStyle();
 		    
-		    bodyStyle= ExcelStyle.getBodyStyle(bodyStyle);
-		   
+		    bodyStyle= ExcelStyle.getBodyStyle(bodyStyle);		   
 		   
 		    row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
 		   
 		    // 헤더 생성
 		    List<String> list = null;		    
-		    list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.customer.bottle.title"), ","); 		
+		    //list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.customer.bottle.title"), ","); 
+		    list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.bottle.title"), ","); 		
 		    
 		    for(int i =0;i<list.size();i++) {		    
 			    cell = row.createCell(i);
@@ -571,37 +579,67 @@ public class ExcelDownloadController {
 		    
 		    for(BottleVO vo : bottleList) {
 		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);		        
-		        
-		        cell = row.createCell(0);
+		        int k=0;
+		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleId());
 		        
-		        cell = row.createCell(1);
+		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleBarCd());
 		        
-		        cell = row.createCell(2);
+		        cell = row.createCell(k++);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getGasCd());
+		        
+		        cell = row.createCell(k++);;
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getProductNm());
 		        
-		        cell = row.createCell(3);
+		        cell = row.createCell(k++);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getBottleVolumn());
+		        
+		        cell = row.createCell(k++);;
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleCapa());
 		        
-		        cell = row.createCell(4);
+		        cell = row.createCell(k++);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getChargeCapa());
+		        
+		        cell = row.createCell(k++);
+		        cell.setCellStyle(bodyStyle);
+		        if(vo.getBottleChargeDt() !=null) 
+		        	cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleChargeDt(),"yyyy-MM-dd"));
+		        else
+		        	cell.setCellValue("");
+		       
+		        cell = row.createCell(k++);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getBottleChargePrss());
+		        
+		        cell = row.createCell(k++);
+		        cell.setCellStyle(bodyStyle);
+		        if(vo.getBottleCreateDt()!=null)
+		        	cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleCreateDt(),"yyyy-MM-dd"));
+		        else
+		        	cell.setCellValue("");
+		        
+		        cell = row.createCell(k++);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(customer.getCustomerNm());
+		        
+		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getBottleWorkCdNm());
 		        
-		        cell = row.createCell(5);
+		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
-		        if(vo.getBottleType().equals("E"))
-		        	cell.setCellValue("공병");
+		        if(vo.getBottleOwnYn().equals("Y"))
+		        	cell.setCellValue("self");
 		        else
-		        	cell.setCellValue("실병");
-		        
-		        cell = row.createCell(6);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(DateUtils.convertDateFormat(vo.getUpdateDt(),"yyyy-MM-dd"));
+		        	cell.setCellValue("other");
 	
 		    }	
 	
@@ -622,7 +660,7 @@ public class ExcelDownloadController {
 		 			
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("application/vnd.ms-excel");
-		    response.setHeader("Content-Disposition", "attachment;filename=CustomerBottle_"+DateUtils.getDate()+".xls");	
+		    response.setHeader("Content-Disposition", "attachment;filename="+ new String(fileName.getBytes(),"ISO8859_1")+DateUtils.getDate()+".xls");	
 	
 		    // 엑셀 출력
 		    wb.write(response.getOutputStream());

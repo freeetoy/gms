@@ -55,4 +55,6 @@ public interface WorkReportMapper {
 	public int modifyWorkReportOrderId(WorkReportVO param);
 	
 	public int updateWorkReportReceivedAmount(WorkReportVO param);
+	
+	public int updateWorkBottlePrice(WorkBottleVO param);
 }

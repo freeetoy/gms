@@ -83,53 +83,10 @@ $(document).ready(function(){
 
 		init_storage_list(select_pumname,0,"ins");
 	});
-
-
-
+	
     //수정시 row 추가
 
      var mod_counter = 0;
-/*
-    $("table.doc-list").on("click", ".ibtnAddMod", function (event) {
-         
-        console.log("추가 클릭");
-
-        mod_counter++;       
-        totalCount++;
-        
-        console.log("2 mod_counter=="+mod_counter); 
-		console.log("2 totalCount=="+totalCount); 
-		
-        console.log("추가 mod_counter:" + mod_counter);
-
-        var newRow = $("<tr>");
-        var cols = "";
-
-        cols += '<td style="padding-left:5px;">';
-        cols += '<select class="form-control" id="productId_' + mod_counter +  '" name="productId_' + mod_counter + '" style="width:200px"></select>';
-        cols += '</td><td>';
-        cols += ' <select class="form-control" id="productPriceSeq_' + mod_counter + '" name="productPriceSeq_' + mod_counter + '" style="width:80px"></select> ';
-		cols += '</td><td>';
-		cols += ' <input type="number" class="form-control" id="orderCount_' + counter + '" name="orderCount_' + counter + '" style="width:60px;height:35px;" onkeypress="return event.charCode >= 48" min="1" max="99999">';
-		cols += '</td><td>';  
-		cols += ' <input type="text" class="form-control" id="orderProductEtc_' + counter + '" name="orderProductEtc_' + counter + '" ">';
-		cols += '</td><td>';  
-		cols += ' <input type="checkbox" class="form-control" id="bottleChangeYn_' + counter + '" name="bottleChangeYn_' + counter + '" ">';
-		cols += '</td><td>'; 
-        cols += ' <input type="button" class="ibtnDelMod btn btn-md btn-danger" id="addrow" value="삭제" />';
-        cols += '</td>';
-        cols +='</tr>';
-
-        newRow.append(cols);
-        $("table.doc-list").append(newRow);
-
-        $("#productCount").val(mod_counter);
-        init_add(mod_counter);
-
-        init_mod_storage(mod_counter);
-
-    });
-    */
     
     // row 삭제
     $("table.doc-list").on("click", ".ibtnDel", function (event) {
@@ -140,8 +97,6 @@ $(document).ready(function(){
         $("#productCount").val(counter);
 		console.log("3 totalCount=="+totalCount); 
     });
-
-
 
 
     $("table.doc-list").on("click", ".ibtnDelMod", function (event) {
@@ -458,7 +413,7 @@ $(document).ready(function(){
 		                        
 		                       </td>   
 		                       <td>
-	                             <input type="number" id="orderCount_0" name="orderCount_0" style="width:60px;height:35px;" onkeypress="return event.charCode >= 48" min="1" max="99999" value=1> 
+	                             <input type="number" id="orderCount_0" name="orderCount_0" style="width:60px;height:35px;" onkeypress="return event.charCode >= 48" min="1" max="99999" value=0> 
 	                           </td>	                      
 		                       <td> 
 		                         <input type="text" class="form-control" id="orderProductEtc_0" name="orderProductEtc_0">

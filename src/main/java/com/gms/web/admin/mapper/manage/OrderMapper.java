@@ -19,6 +19,8 @@ public interface OrderMapper {
 	public List<OrderVO> selectOrderListToExcel(Map<String, Object> map);	
 
 	public List<OrderProductVO> selectOrderProductList(Integer orderId);	
+
+	public List<OrderProductVO> selectOrderInfoOfNotProduct(Integer orderId);	
 	
 	public List<OrderProductVO> selectOrderProductListNotDelivery(Integer orderId);	
 
@@ -48,10 +50,12 @@ public interface OrderMapper {
 	
 	public int updateOrder(OrderVO param);
 	
+	public int updateOrderTotalAmount(OrderVO param);
+	
+	public int updateOrderProductAmount(OrderProductVO param);
+	
 	public int updateOrderAdditionBottles(OrderVO param);
 	
-	public int updateOrderDeposit(OrderVO param);
-
 	public int updateOrderProductCount(OrderProductVO param);
 	
 	//public int updateOrderProductDeliveryDt(OrderProductVO param);

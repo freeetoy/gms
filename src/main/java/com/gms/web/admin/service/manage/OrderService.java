@@ -79,4 +79,8 @@ public interface OrderService {
 	public int deleteOrderProduct(OrderProductVO param);	
 	
 	public OrderVO getTodayOrderForCustomer(Integer customerId) ;
+	
+	public int modifyOrderAmount(Integer customerId) ;
+	
+	public int modifyOrderAmountAll() ;
 }

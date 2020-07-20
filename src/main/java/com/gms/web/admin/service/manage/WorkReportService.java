@@ -51,5 +51,7 @@ public interface WorkReportService {
 	
 	public int registerWorkReportOnly(WorkReportVO param);
 	
+	public int modifyWorkBottlePrice(WorkBottleVO param);
+	
 	//public int registerWorkGasAndBottle(WorkBottleVO param);
 }

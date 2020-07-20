@@ -140,7 +140,7 @@ $(document).ready(function(){
 		newRowlist1.append(colslist1);
 		$("table.mod-doc-list1").append(newRowlist1);		
 		
-		$("#btn_process_6").hide();
+		$("#btn_process_6").show();
 		$("#btn_process_5").show();
 		$("#btn_process_8").show();
 		var ajaxInfo ={
@@ -900,9 +900,9 @@ $(document).ready(function(){
         <!-- /.row -->
         <div class="row">	
         	<div class="col-4">
-        		<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 가스 판매&납품</a>
+        		<a class="btn_select_process1 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 가스 판매&납품/회수</a>
         		<a class="btn_select_process2 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-check-circle"></i> 단품판매</a>
-        		<a class="btn_select_process3 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 회수</a>
+        		<!--  <a class="btn_select_process3 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 회수</a>-->
         	</div>
         	<div class="col-8">
         	<a class="btn_ecount btn btn-primary btn-sm float-right"   th:userId="${session.userId}"  href="#" >

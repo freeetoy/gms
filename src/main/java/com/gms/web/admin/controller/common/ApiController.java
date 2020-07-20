@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.web.utils.RequestUtils;
+import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CashFlowVO;
 import com.gms.web.admin.domain.manage.CustomerSimpleVO;
@@ -171,7 +172,6 @@ public class ApiController {
 	}
 	
 	
-	
 	@RequestMapping(value = "/api/controlGasAndBottle.do")
 	@ResponseBody
 	public String manageGasAndBottle(String userId, String bottles, String customerNm, String bottleType, String bottleWorkCd )	{	
@@ -193,5 +193,12 @@ public class ApiController {
 		if(result > 0) 		return "success";
 		else return "fail";
 		//return null;
+	}
+	
+	@RequestMapping(value = "/api/bottleHistoryList.do")
+	@ResponseBody
+	public List<BottleHistoryVO> getBottleHistoryList(String bottleId)	{			
+		
+		return bottleService.selectBottleHistoryList(bottleId);
 	}
 }

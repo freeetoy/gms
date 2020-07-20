@@ -100,6 +100,7 @@ $(function() {
                       <th>판매금액</th>
                       <th>대여수량</th>
                       <th>대여금액</th>
+                      <th>입금액</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -113,10 +114,12 @@ $(function() {
                       <td th:if="${row.rentalAmount> 0 }" th:text="${#numbers.formatInteger(row.rentalAmount, 3, 'COMMA')}">
                       <td th:unless="${row.rentalAmount> 0 }" th:text="${row.rentalAmount}">
                       </td>                     
-                      
+                      <td th:if="${row.incomeAmount> 0 }" th:text="${#numbers.formatInteger(row.incomeAmount, 3, 'COMMA')}">
+                      <td th:unless="${row.incomeAmount> 0 }" th:text="${row.incomeAmount}">
+                      </td>     
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( statList )}">
-						<td colspan="4">조회된 결과가 없습니다.</td>
+						<td colspan="5">조회된 결과가 없습니다.</td>
 					</tr>
 					
                   </tbody>

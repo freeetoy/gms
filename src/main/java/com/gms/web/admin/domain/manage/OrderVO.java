@@ -76,7 +76,6 @@ public class OrderVO extends AbstractSearchVO implements Serializable {
 	/** Sales_ID           	*/
 	private String salesId;
 
-
 	/** Order_Total_Amount     	*/
 	private int orderTotalAmount;
 	
