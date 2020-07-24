@@ -1406,7 +1406,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 						
 						if(tempOrderProduct.getProductId() == tempRegisteredBottle.getProductId() && tempOrderProduct.getProductPriceSeq() == tempRegisteredBottle.getProductPriceSeq()) {
 							int leftCount  = tempOrderProduct.getOrderCount()-tempRegisteredBottle.getRegisteredCount();
-							logger.debug("WorkReportServiceImpl registerWorkNoBottle  leftCount=" + leftCount );
+							
 							if(leftCount <= 0) leftCount = 0;
 							else {
 								logger.debug("WorkReportServiceImpl registerWorkNoBottle  tempOrderProduct.getGasId()=" + tempOrderProduct.getGasId() );
