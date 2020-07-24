@@ -61,4 +61,8 @@ public interface BottleService {
 	public Map<String, Object> checkBottleIdDuplicate(BottleVO param);
 	
 	public List<BottleHistoryVO> selectBottleHistoryList(String bottleId);
+	
+	public List<BottleVO> getDummyBottleList();
+	
+	public BottleVO getDummyBottle(BottleVO param);
 }

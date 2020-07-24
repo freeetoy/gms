@@ -14,6 +14,8 @@ import com.gms.web.admin.domain.manage.WorkReportViewVO;
 @Mapper	
 public interface WorkReportMapper {
 	
+	public WorkReportVO selectWorkReport(Integer workReportSeq);	
+	
 	public List<WorkReportVO> selectWorkReportList(WorkReportVO param);	
 	
 	public List<WorkReportVO> selectWorkReportOnlyList(WorkReportVO param);	
@@ -57,4 +59,8 @@ public interface WorkReportMapper {
 	public int updateWorkReportReceivedAmount(WorkReportVO param);
 	
 	public int updateWorkBottlePrice(WorkBottleVO param);
+	
+	public List<WorkBottleVO> selectWorkBottleListOfProduct(WorkBottleVO params);	
+	
+	public int deleteWorkBottleOfProduct(WorkBottleVO params);
 }

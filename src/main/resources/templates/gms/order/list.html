@@ -49,11 +49,9 @@ var goUpdate = function(orderId){
 var gotoPage = function(pageNo) {
 	
 	//var form =  document.mainForm;			
-	console.log("gotoPage "+pageNo);
+
 	$("#currentPage").val(pageNo);  
-	 //mainForm.action="/gms/order/list.do";
-    //validate checkt시 confirm 중복되는 부분 처리 
-   
+
 	//mainForm.submit();    
 	var form = document.mainForm;	
 	document.mainForm.action="/gms/order/list.do";
@@ -224,7 +222,7 @@ $(document).ready(function(){
 						cols += '<td>품명</td>';
 						cols += '<td>용량</td>';
 						cols += '<td>수량</td>';
-						cols += '<td>기타</td>';
+						cols += '<td>적요</td>';
 						cols += '<td>용기교환</td>';
 						cols += '<td>용기판매</td></tr>';
 
@@ -234,14 +232,14 @@ $(document).ready(function(){
 						for(var i=0;i<data.orderProduct.length;i++){
 							var newRow1 = $("<tr >");
 							if(data.orderProduct[i].salesCount <=0) newRow1 = $("<tr style='color: blue'>"); 
-							
-							console.log("saleCount =="+data.orderProduct[i].salesCount);
 				        	
 							var cols1 = "";	
-				        	cols1 += '<th>'+data.orderProduct[i].productNm+'</th>';
-				        	if(data.orderProduct[i].productCapa==null) cols1 += '<th></th>';
-				        	else cols1 += '<th>'+data.orderProduct[i].productCapa+'</th>';				        	
-				        	cols1 += '<th>'+data.orderProduct[i].orderCount+'</th>';
+							if(data.orderProduct[i].productNm==null || data.orderProduct[i].productNm=='') cols1 += '<th></th>';
+							else cols1 += '<th>'+data.orderProduct[i].productNm+'</th>';
+				        	if(data.orderProduct[i].productCapa==null || data.orderProduct[i].productCapa=='') cols1 += '<th></th>';
+				        	else cols1 += '<th>'+data.orderProduct[i].productCapa+'</th>';	
+				        	if(data.orderProduct[i].productNm==null || data.orderProduct[i].productNm=='') cols1 += '<th></th>';
+				        	else cols1 += '<th>'+data.orderProduct[i].orderCount+'</th>';
 				        	if(data.orderProduct[i].orderProductEtc==null ) cols1 += '<th></th>';
 				        	else cols1 += '<th>'+data.orderProduct[i].orderProductEtc+'</th>';
 				        	if(data.orderProduct[i].bottleChangeYn==null ) cols1 += '<th></th>';
@@ -411,6 +409,18 @@ $(document).ready(function(){
           });
     });
 	
+    $(".btn_order_print_all").click(function()  
+    	    {
+    	    
+    	       var orderId = $(this).attr('orderId'); 
+
+    	       $.popupWindow('/gms/order/popupOrderAll.do', {
+    	              width: 1000,
+    	              height: 700,
+    	              center: 'screen',          
+    	              scrollbars: 'true'
+    	          });
+    	    });
 	//Ajax공통 호출
 	function callAjax(ajaxInfo){
 		var dfd = $.Deferred();
@@ -688,7 +698,8 @@ $(document).ready(function(){
               </div-->
               <div align=right class="col-4">
               	<a class="btn btn-outline-primary btn-sm" href="/gms/order/write.do"><i class="far fa-edit"></i>주문등록</a>&nbsp;
-              		<a th:href="@{/gms/order/excelDownload.do( searchCustomerNm=${searchCustomerNm},searchOrderDt= ${searchOrderDt}  )}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>      
+              		<a th:href="@{/gms/order/excelDownload.do( searchCustomerNm=${searchCustomerNm},searchOrderDt= ${searchOrderDt},searchOrderProcessCd=${searchOrderProcessCd} )}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>      
+              	
               	<!-- a href="/gms/order/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm"><i class="far fa-edit"></i>주문등록</button></a>
               	<a th:href="@{/gms/order/excelDownload.do( searchCustomerNm=${searchCustomerNm},searchOrderDt= ${searchOrderDt}  )}"><button type="button" class="btn btn-primary btn-sm float-righ"><i class="fas fa-download"></i>엑 셀</button></a> -->
               </div>
@@ -782,7 +793,7 @@ $(document).ready(function(){
          <div class="col-1">
          		<a id="select_del" class="btn_select_order btn-primary btn-sm" data-toggle="modal" data-target="#process-modal1"  href="#"><i class="fas fa-check-circle"></i>진행</a>            	
          	</div>									
-			<div class="col-11">
+			<div class="col-10">
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
 					<ul class="pagination">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
@@ -812,7 +823,9 @@ $(document).ready(function(){
         			</ul>
 				</div>
 			</div>
-			<div class="col-md-2">
+			<div class="col-1">
+			<a class="btn_order_print_all btn btn-secondary btn-xs"  href="#" >
+                              <i class="fas fa-print"></i>거래명세서일괄</a>
 			</div>
 			</div>
 		</div>

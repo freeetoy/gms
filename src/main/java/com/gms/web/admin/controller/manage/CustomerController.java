@@ -84,8 +84,8 @@ public class CustomerController {
 		UserVO param = new UserVO();
 		param.setUserPartCd(PropertyFactory.getProperty("common.user.SALES"));
 		
-		Map<String, Object> map = userService.getUserList(param);
-		model.addAttribute("userList", map.get("list"));
+		List<UserVO> userList = userService.getUserListPart(param);
+		model.addAttribute("userList", userList);
 		
 		//Map<String, Object> map1 = productService.getProductList();
 		model.addAttribute("productList", productService.getProductList());
@@ -127,9 +127,7 @@ public class CustomerController {
 
 	@RequestMapping(value = "/gms/customer/update.do")
 	public String openCustomerUpdate(@RequestParam(value = "customerId", required = false) Integer customerId, 
-			HttpServletRequest request
-			, HttpServletResponse response
-			,Model model) {
+			HttpServletRequest request , HttpServletResponse response,Model model) {
 
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));		
 		model.addAttribute("customerId", customerId);
@@ -159,6 +157,10 @@ public class CustomerController {
 			
 			Map<String, Object> map = userService.getUserList(param);
 			model.addAttribute("userList", map.get("list"));			
+			
+			// Customer_Price
+			List<CustomerPriceExtVO> customerPriceList = customerService.getCustomerPriceList(customerId) ;
+			model.addAttribute("customerPriceList", customerPriceList);	
 			
 			//Customer_Product 목록
 			List<CustomerProductVO> productList = customerService.getCustomerProductList(customerId);
@@ -376,10 +378,11 @@ public class CustomerController {
 			
 			//result = customerService.deleteCustomerPrice(Integer.parseInt(request.getParameter("customerId1")));
 			CustomerPriceVO[] customerPrice = new CustomerPriceVO[priceCount];
-			
+			String bottlePrice = "";
 			for(int i =0 ; i < priceCount ; i++ ) {
 				
 				CustomerPriceVO priceVo = new CustomerPriceVO();
+				bottlePrice = "";
 				
 				RequestUtils.initUserPrgmInfo(request, priceVo);
 				result = false;			
@@ -388,7 +391,9 @@ public class CustomerController {
 				priceVo.setProductId(Integer.parseInt(request.getParameter("productId_"+i)));
 				priceVo.setProductPriceSeq(Integer.parseInt(request.getParameter("productPriceSeq_"+i)));
 				priceVo.setProductPrice(Integer.parseInt(request.getParameter("productPrice_"+i)));
-				priceVo.setProductBottlePrice(Integer.parseInt(request.getParameter("productBottlePrice_"+i)));
+				if(request.getParameter("productBottlePrice_"+i) != null && request.getParameter("productBottlePrice_"+i).length() > 0 )	bottlePrice = request.getParameter("productBottlePrice_"+i);
+				else bottlePrice = "0";
+				priceVo.setProductBottlePrice(Integer.parseInt(bottlePrice));
 					
 				customerPrice[i] = priceVo;				
 			}

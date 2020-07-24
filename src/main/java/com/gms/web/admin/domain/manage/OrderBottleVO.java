@@ -1,6 +1,8 @@
 package com.gms.web.admin.domain.manage;
 
 
+import java.util.List;
+
 import com.gms.web.admin.common.domain.AbstractVO;
 
 import lombok.Getter;
@@ -30,4 +32,6 @@ public class OrderBottleVO extends AbstractVO {
 	
 	/** Bottle_ID		*/
 	private String bottleId;
+	
+	private List<Integer> orderBottleList;
 }

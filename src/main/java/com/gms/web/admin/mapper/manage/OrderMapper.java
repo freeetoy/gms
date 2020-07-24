@@ -80,5 +80,11 @@ public interface OrderMapper {
 
 	public List<OrderBottleVO> selectOrderBottleList(Integer orderId);	
 	
+	public List<OrderBottleVO> selectOrderBottleListOfProduct(OrderProductVO param);	
+	
+	public int deleteOrderBottle(OrderBottleVO param);
+	
 	public OrderVO selectOrderTodayOfCustomer(Integer custoerId);	
+	
+	public List<OrderVO> selectOrderReqDtTomorrow(OrderVO param);	
 }

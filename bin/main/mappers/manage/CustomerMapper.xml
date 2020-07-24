@@ -532,6 +532,10 @@
 			SELECT Customer_ID 
 			FROM TB_Work_Report 
 			WHERE DATE_FORMAT(create_Dt,'%Y/%m/%d') = DATE_FORMAT(curdate(),'%Y/%m/%d')	
+			union
+			SELECT Customer_ID 
+			FROM TB_Order
+			WHERE DATE_FORMAT(create_Dt,'%Y/%m/%d') = DATE_FORMAT(curdate(),'%Y/%m/%d')	
 		)
 	</select>
 	

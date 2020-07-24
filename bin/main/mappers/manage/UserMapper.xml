@@ -130,7 +130,7 @@
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchUserNm)">
 		AND User_NM	 LIKE CONCAT('%', CONCAT(#{searchUserNm}, '%'))
 		</if>
-			order by create_dt desc 
+			Order by create_dt desc 
 		Limit #{startRow}, #{rowPerPage}
 	</select>
 	
@@ -142,7 +142,18 @@
 		WHERE
 			delete_yn = 'N'		
 		AND User_Part_CD	= #{userPartCd}
-		Order By User_Nm desc 
+		Order By User_Nm 
+	</select>
+	
+	<select id="selectUserListPartNot" resultType="com.gms.web.admin.domain.manage.UserVO" parameterType="com.gms.web.admin.domain.manage.UserVO">
+		SELECT
+			<include refid="UserColumns" />
+		FROM
+			TB_USER
+		WHERE
+			delete_yn = 'N'		
+		AND User_Part_CD	!= #{userPartCd}
+		Order By User_Nm  
 	</select>
 	
 	<select id="selectUserCount" resultType="int" parameterType="java.util.Map">

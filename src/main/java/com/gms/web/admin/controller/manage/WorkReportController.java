@@ -1,5 +1,6 @@
 package com.gms.web.admin.controller.manage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,9 +10,12 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
@@ -22,6 +26,7 @@ import com.gms.web.admin.domain.common.LoginUserVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.OrderBottlesVO;
+import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
@@ -82,41 +87,7 @@ public class WorkReportController {
 		return mav;
 	}
 	
-	/*
-	@RequestMapping(value = "/gms/report/list.do")
-	public ModelAndView getWorkReportList(
-			HttpServletRequest request
-			, HttpServletResponse response
-			, WorkReportVO params) {
-
-		logger.debug("WorkReportController getWorkReportList");
-		
-		RequestUtils.initUserPrgmInfo(request, params);		
-		
-		
-		ModelAndView mav = new ModelAndView();		
-		
-		params.setUserId(params.getCreateId());
-		
-		
-		logger.debug("WorkReportController getWorkReportList User_id= "+ params.getUserId());
-		
-		
-		LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);	
-		
-		
-		
-		List<WorkReportVO> workList = workService.getWorkReportList(params);
-		
-		mav.addObject("workList", workList);	
-		mav.addObject("searchDt", params.getSearchDt());	
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.diary"));	 	
-		
-		mav.setViewName("gms/report/list");
-		
-		return mav;
-	}
-	*/
+	
 	
 	@RequestMapping(value = "/gms/report/listAll.do")
 	public ModelAndView getWorkReportListAll(
@@ -144,7 +115,7 @@ public class WorkReportController {
 		*/
 		
 		UserVO tempUser = new UserVO();		
-		List<UserVO> userList = userService.getUserListPart(tempUser);
+		List<UserVO> userList = userService.getUserListPartNot(tempUser);
 		
 		mav.addObject("userList",userList);
 		
@@ -174,10 +145,7 @@ public class WorkReportController {
 		ModelAndView mav = new ModelAndView();	
 		
 		//검색조건 셋팅
-		logger.debug("WorkReportController OrderBottleVO "+ params.getOrderId());
-		logger.debug("WorkReportController bottleWorkCd "+ params.getBottleWorkCd());
-		logger.debug("WorkReportController searchBottleIds "+ params.getBottleIds());
-		
+
 		int result =0;
 		try {	
 			
@@ -217,10 +185,7 @@ public class WorkReportController {
 		
 		ModelAndView mav = new ModelAndView();	
 		//검색조건 셋팅
-		
-		logger.debug("WorkReportController bottleWorkCd "+ params.getBottleWorkCd());
-		logger.debug("WorkReportController BottleIds "+ params.getBottlesIds());
-		logger.debug("WorkReportController customerId "+ params.getCustomerId());
+
 		
 		int result =0;
 		try {	
@@ -284,10 +249,6 @@ public class WorkReportController {
 		
 		//ModelAndView mav = new ModelAndView();	
 		//검색조건 셋팅
-		logger.debug("WorkReportController OrderBottleVO "+ params.getOrderId());
-		logger.debug("WorkReportController bottleWorkCd "+ params.getBottleWorkCd());
-		logger.debug("WorkReportController searchBottleIds "+ params.getBottleIds());
-		
 		int result =0;
 		try {	
 			
@@ -359,16 +320,10 @@ public class WorkReportController {
 		RequestUtils.initUserPrgmInfo(request, param);
 		
 		ModelAndView mav = new ModelAndView();	
-		//검색조건 셋팅
-		
-		logger.debug("WorkReportController bottleWorkCd "+ param.getBottleWorkCd());
-		logger.debug("WorkReportController customerId "+ param.getCustomerId());
-		logger.debug("WorkReportController ProductId "+ param.getProductId());
-		logger.debug("WorkReportController ProductPriceSeq "+ param.getProductPriceSeq());
 		
 		int result =0;
 		try {	
-				result =1;	
+			
 			result = workService.registerWorkNoBottle(param);					
 		
 		} catch (Exception e) {
@@ -389,4 +344,77 @@ public class WorkReportController {
 		return null;		
 	}
 	
+	@RequestMapping(value = "/gms/report/workBottleList.do")
+	@ResponseBody
+	public List<WorkBottleVO> getWorkBottleList(@RequestParam(value = "workReportSeq", required = false) Integer workReportSeq, Model model)	{	
+				
+		logger.debug("OrderContoller getWorkBottleList "+ workReportSeq);
+		
+		List<WorkBottleVO> workBottleList = workService.getWorkBottleList(workReportSeq);
+		//model.addAttribute("orderProductList", orderProductList);
+		
+		return workBottleList;
+	}
+	
+	@RequestMapping(value = "/gms/report/update.do")
+	public ModelAndView getWorkReportUpdate(
+			HttpServletRequest request
+			, HttpServletResponse response
+			, WorkReportVO param) {
+
+		logger.debug("WorkReportController getWorkReportUpdate");
+		
+		RequestUtils.initUserPrgmInfo(request, param);				
+		
+		ModelAndView mav = new ModelAndView();		
+			
+		WorkReportVO workReport = workService.getWorkReport(param.getWorkReportSeq());
+		
+		mav.addObject("workReport", workReport);	 	
+		
+		mav.setViewName("gms/report/update");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/gms/report/modify.do")
+	public ModelAndView getWorkReportModify(HttpServletRequest request
+			, HttpServletResponse response
+			, WorkReportVO param) {
+
+		int result = 1;
+		try {			
+		
+			logger.debug("WorkReportController getWorkReportModify");
+			
+			RequestUtils.initUserPrgmInfo(request, param);				
+			
+			ModelAndView mav = new ModelAndView();		
+			logger.debug("WorkReportController getWorkReportModify param.workReportSeq =="+param.getWorkReportSeq());
+			logger.debug("WorkReportController getWorkReportModify productCount=="+request.getParameter("productCount"));
+			
+			
+			
+			// Order정보 변경
+			
+			result = workService.modifyWorkBottleManual(request,param);
+			// WorkReport 정보 변경
+			
+			
+			mav.addObject("workReportSeq", param.getWorkReportSeq());	 	
+			
+			mav.setViewName("gms/report/update");
+			if(result > 0){
+				String alertMessage = "수정되었습니다.";
+				RequestUtils.responseWriteException(response, alertMessage,
+						"/gms/report/update.do?workReportSeq="+param.getWorkReportSeq());
+			}
+		} catch (DataAccessException e) {		
+			e.printStackTrace();
+		} catch (Exception e) {			
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
 }

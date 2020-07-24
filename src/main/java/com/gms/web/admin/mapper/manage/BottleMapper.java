@@ -63,4 +63,6 @@ public interface BottleMapper {
 	public int insertBottleHistory(BottleVO param);
 	
 	public int insertBottleHistorys(List<BottleVO> param);
+	
+	public List<BottleVO> selectDummyBottleList();	
 }

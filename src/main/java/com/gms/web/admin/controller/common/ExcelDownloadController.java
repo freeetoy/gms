@@ -244,11 +244,10 @@ public class ExcelDownloadController {
 			        
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
-			        if(vo.getBottleOwnYn().equals("Y"))
+			        if(vo.getBottleOwnYn()!=null && vo.getBottleOwnYn().equals("Y"))
 			        	cell.setCellValue("self");
 			        else
-			        	cell.setCellValue("other");
-		
+			        	cell.setCellValue("other");		
 			    }	
 		    }
 		    // width 자동조절
@@ -284,12 +283,28 @@ public class ExcelDownloadController {
 	}
       
    @RequestMapping(value = "/gms/order/excelDownload.do")
-   public void excelDownloadOrder(HttpServletResponse response,OrderVO param){
+   public void excelDownloadOrder(HttpServletResponse response, OrderVO param){
 	// 게시판 목록조회
 
 	   try {
+		   	String searchOrderDt = param.getSearchOrderDt();	
+			
+			String searchOrderDtFrom = null;
+			String searchOrderDtEnd = null;
+					
+			if(searchOrderDt != null && searchOrderDt.length() > 20) {
+		
+				searchOrderDtFrom = searchOrderDt.substring(0, 10) ;
+				
+				searchOrderDtEnd = searchOrderDt.substring(13, searchOrderDt.length()) ;
+				
+				param.setSearchOrderDtFrom(searchOrderDtFrom);
+				param.setSearchOrderDtEnd(searchOrderDtEnd);				
+			}		
+
 		   // 가스 정보 불러오기
-			List<OrderVO> orderlist = orderService.getOrderListToExcel(param);
+			List<OrderVO> orderlist = orderService.getOrderListToExcel(param);			
+			
 		    // 워크북 생성
 	
 		    Workbook wb = new HSSFWorkbook();

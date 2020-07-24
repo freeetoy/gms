@@ -173,8 +173,8 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 			<td class="tl_dot" align="center">적 요</td>
 		</tr>
 		<tr height="20" th:if="${not #lists.isEmpty( orderExt.orderProduct )}" th:each="row : ${orderExt.orderProduct}"> 
-			<td class="border_in" style="border-top-style:none;" align="center" th:text="${#calendars.format( row.updateDt, 'MM' )}"> </td>
-			<td class="border_in" style="border-top-style:none;border-left-style:none" align="center" th:text="${#calendars.format( row.updateDt, 'dd' )}"></td>
+			<td class="border_in" style="border-top-style:none;" align="center" th:text="${#calendars.format( orderExt.order.deliveryReqDt, 'MM' )}"> </td>
+			<td class="border_in" style="border-top-style:none;border-left-style:none" align="center" th:text="${#calendars.format( orderExt.order.deliveryReqDt, 'dd' )}"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.productNm}"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.productCapa}"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderCount}"></td>
@@ -221,7 +221,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 		</tr>
 		<tr height="30"> 
 		<td style="border-style: none solid solid solid;border-width: 1px;" align="center">비고</td>
-		<td colspan="9" style="border-style: none solid solid none;border-width: 1px;" align="center"></td>
+		<td colspan="9" style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${orderExt.order.orderEtc}"></td>
 		</tr>
 	</tbody>
 	</table>
@@ -383,8 +383,8 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 			<td class="tl_dot" style="border-right-style: solid;border-right-width: 1px;" align="center">적 요</td>
 		</tr>
 		<tr height="20" th:if="${not #lists.isEmpty( orderExt.orderProduct )}" th:each="row : ${orderExt.orderProduct}"> 
-			<td class="border_in" style="border-top-style:none;" align="center" th:text="${#calendars.format( row.updateDt, 'MM' )}"> </td>
-			<td class="border_in" style="border-top-style:none;border-left-style:none" align="center" th:text="${#calendars.format( row.updateDt, 'dd' )}"></td>
+			<td class="border_in" style="border-top-style:none;" align="center" th:text="${#calendars.format( orderExt.order.deliveryReqDt, 'MM' )}"> </td>
+			<td class="border_in" style="border-top-style:none;border-left-style:none" align="center" th:text="${#calendars.format( orderExt.order.deliveryReqDt, 'dd' )}"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.productNm}"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.productCapa}"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderCount}"></td>
@@ -430,7 +430,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 		</tr>
 		<tr height="30"> 
 		<td style="border-style: none solid solid solid;border-width: 1px;" align="center">비고</td>
-		<td colspan="9" style="border-style: none solid solid none;border-width: 1px;" align="center"></td>
+		<td colspan="9" style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${orderExt.order.orderEtc}"></td>
 		</tr>
 	</tbody>
 	</table>    

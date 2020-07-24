@@ -157,14 +157,14 @@ public class BottleController {
 			// Date 로 구하기
 		    SimpleDateFormat fm1 = new SimpleDateFormat("yyyy/MM/dd");
 		    String fromDate = fm1.format(new Date());
-		    logger.debug("현재시간 년월일 = " + fromDate);
+		    //logger.debug("현재시간 년월일 = " + fromDate);
 
 		    Calendar cal = Calendar.getInstance();;
 		    cal.setTime(new Date());
 		    cal.add(Calendar.DAY_OF_YEAR, 7); // 하루를 더한다.
 		    	    
 		    String endDate = fm1.format(cal.getTime());
-		    logger.debug("현재시간 년월일 = " + endDate);
+		    //logger.debug("현재시간 년월일 = " + endDate);
 		    
 		    searchChargeDt = fromDate+" - "+endDate;
 		    
@@ -225,8 +225,7 @@ public class BottleController {
 		if(searchChargeDt != null && searchChargeDt.length() > 20) {
 			
 			//logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
-			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;
-			
+			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;			
 			searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;
 			
 			params.setSearchChargeDtFrom(searchChargeDtFrom);
@@ -453,8 +452,7 @@ public class BottleController {
 		if(searchChargetDt != null && searchChargetDt.length() > 20) {
 			
 			//logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
-			searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
-			
+			searchChargeDtFrom = searchChargetDt.substring(0, 10) ;			
 			searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
 			
 			params.setSearchChargeDtFrom(searchChargeDtFrom);
@@ -469,7 +467,7 @@ public class BottleController {
 		
 		try {
 						
-			logger.debug("******params.getBottleId()()) *****===*"+params.getBottleId());
+			//logger.debug("******params.getBottleId()()) *****===*"+params.getBottleId());
 			
 			int  result = bottleService.modifyBottle(params);
 			
@@ -603,9 +601,8 @@ public class BottleController {
 					
 			if(searchChargetDt != null && searchChargetDt.length() > 20) {
 				
-				logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
-				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
-				
+				//logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
+				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;				
 				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
 				
 				params.setSearchChargeDtFrom(searchChargeDtFrom);
@@ -668,8 +665,7 @@ public class BottleController {
 			if(searchChargetDt != null && searchChargetDt.length() > 20) {
 				
 				//logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
-				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
-				
+				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;				
 				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
 				
 				params.setSearchChargeDtFrom(searchChargeDtFrom);

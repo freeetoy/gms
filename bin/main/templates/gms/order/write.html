@@ -252,8 +252,8 @@ $(document).ready(function(){
 	} 
 
     
-    $("#btn_com_search").click(function()  
-   {    	
+	$("#btn_com_search").click(function()  
+   	{    	
 	  var searchCustomerNm = $("#searchCustomerNm").val();
 
 	   $.ajax({
@@ -267,7 +267,7 @@ $(document).ready(function(){
 	    	$('#customerId').find('option').remove();        
 	    	  for(i=0; i< data.length;i++) {
 	  			//console.log(data[i]);      
-	  			$('#customerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')
+	  			$('#customerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'_'+ data[i].businessRegId+'</option>')
 	  			
 	  		}
 	      })
@@ -281,7 +281,7 @@ $(document).ready(function(){
 		
 		//$('#customerId1').val($(this).val());
 		var orderType = $(this).val();
-		console.log("orderType Change ="+orderType); 
+		
 		if(orderType=='0104' || orderType=='0105' || orderType=='0105' ){
 		 	$("table.doc-list").closest("table").remove();
 		//console.log("customerId change ="+totalCount); 
@@ -372,7 +372,7 @@ $(document).ready(function(){
 	            		  </td>                
 	                    </tr>                   
 	                    <tr>
-	                      <td class="card-footer">기타사항</td>
+	                      <td class="card-footer">비고</td>
 	                      <td colspan=3><input type="text" class="form-control" id="orderEtc" name="orderEtc" placeholder="기타사항"> </thd>   
 	                    </tr>                   
 	                     </thead>   
@@ -395,7 +395,7 @@ $(document).ready(function(){
 		                         <td>상품</td>
 		                         <td>용량</td>
 		                         <td>수량</td>
-		                         <td>기타</td>
+		                         <td>적요</td>
 		                         <td>용기교환</td>
 		                         <td>용기판매</td>
 		                         <td></td>

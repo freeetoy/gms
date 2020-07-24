@@ -13,7 +13,7 @@ function validationOfForm(form) {
 	if($("#customerId").val() == "="){
 		alert("거래처를 선택하세요" );
 	}
-	if($("#productId_0").val() == "0" || $("#productCapa_0").val() == "0" || $("#productPrice_0").val() == "" || $("#productBottlePrice_0").val() == ""){
+	if($("#productId_0").val() == "0" || $("#productCapa_0").val() == "0" || $("#productPrice_0").val() == ""){
 		//alert("document.mainForm.customerId.value== "+document.mainForm.customerId.value );
 		alert('상품 및 가격정보를 입력 하세요');      
 		return false;
@@ -80,23 +80,14 @@ $(document).ready(function(){
 		init_storage_list(select_pumname,0,"ins");
 	});
 
-
-
     //수정시 row 추가
 
      var mod_counter = 0;
 
     $("table.doc-list").on("click", ".ibtnAddMod", function (event) {
-         
-        console.log("추가 클릭");
 
         mod_counter++;       
         totalCount++;
-        
-        console.log("2 mod_counter=="+mod_counter); 
-		console.log("2 totalCount=="+totalCount); 
-		
-        console.log("추가 mod_counter:" + mod_counter);
 
         var newRow = $("<tr>");
         var cols = "";
@@ -128,25 +119,20 @@ $(document).ready(function(){
     // row 삭제
     $("table.doc-list").on("click", ".ibtnDel", function (event) {
         $(this).closest("tr").remove();       
-        console.log("ibtnDel mod_counter "+counter);
+
         counter -= 1
         totalCount-=1
         $("#priceCount").val(counter);
-        console.log("3 counter=="+counter); 
-		console.log("3 totalCount=="+totalCount); 
+
     });
-
-
-
 
     $("table.doc-list").on("click", ".ibtnDelMod", function (event) {
         $(this).closest("tr").remove();       
-        console.log("ibtnDelMod mod_counter "+mod_counter);
+
         mod_counter -= 1
         totalCount -= 1
         $("#priceCount").val(mod_counter);
-        console.log("4 mod_counter=="+mod_counter); 
-		console.log("4 totalCount=="+totalCount); 
+
     });
     
 
@@ -167,13 +153,12 @@ $(document).ready(function(){
 
        })
   	 .done(function(data){
-  		console.log(data);       
+  		  
   		var i=0;
   		$('#productId_' + pid).append('<option value=0>상품</option>');
 		for(i=0; i< data.length;i++) {
-			console.log(data[i]);      
-			$('#productId_' + pid).append('<option value='+data[i].productId+'>'+data[i].productNm+'</option>')
-			
+			     
+			$('#productId_' + pid).append('<option value='+data[i].productId+'>'+data[i].productNm+'</option>')			
 		}
   	 
        })
@@ -208,8 +193,6 @@ $(document).ready(function(){
     });
     
     function init_storage_list(pumname,sel_pid,type){
-	      
-		console.log(type);      
 		
 		$.ajax({
 			url: '/gms/product/priceList.do',
@@ -224,15 +207,15 @@ $(document).ready(function(){
 		    	var i=0;
 				//$('#productCapa_' + sel_pid).find('option').remove(); 
 				for(i=0; i< data.length;i++) {
-					console.log(data[i]);      
+					      
 					$('#productPriceSeq_' + sel_pid).append('<option value='+data[i].productPriceSeq+'>'+data[i].productCapa+'</option>')
 					
 				}
 			}else if(type == "mod"){
-				console.log("this is mod =="+sel_pid);
+				
 				$('#productPriceSeq_' + sel_pid).find('option').remove(); 
 				for(i=0; i< data.length;i++) {
-					console.log("tdata[i].productCapa =="+data[i].productCapa);
+					
 					$('#productPriceSeq_' + sel_pid).append('<option value='+data[i].productPriceSeq+'>'+data[i].productCapa+'</option>')
 				//$('#productPriceSeq_' + sel_pid).append(json_obj.productPriceList);
 				}
@@ -246,9 +229,7 @@ $(document).ready(function(){
     
     $('select[name=customerId]').change(function() {
 		
-			$('#customerId1').val($(this).val());
-			
-			console.log("customerId change ="+totalCount); 			
+			$('#customerId1').val($(this).val());			
 			
 			$.ajax({
 				url: '/gms/price/customerList.do',
@@ -261,16 +242,13 @@ $(document).ready(function(){
 				var counter = 0;
 		        var cols = "";
 		        
-				console.log("start datea ="+data);     
 				for(i=0; i< data.length;i++) {
 		            $('#productId_' + i).find('option').remove();
 		        }			
 
 		    	var i=0;
 				//$('#productCapa_' + sel_pid).find('option').remove(); 
-				
-				console.log("data.length "+data.length);     
-				
+
 				if(data.length ==0) {
 					
 					$("table.doc-list").find('tr').remove();
@@ -327,8 +305,7 @@ $(document).ready(function(){
 			        $("table.doc-list").append(newRow);
 			        
 					for(i=0; i< data.length;i++) {
-						console.log(data);     
-						console.log(data[i]);     
+  
 						var newRow = $("<tr>");
 				        
 			            cols = "";
@@ -361,8 +338,6 @@ $(document).ready(function(){
 			            init_add(counter);
 			            
 			            init_mod_storage(counter);
-			            
-						console.log("counter=="+counter);   
 	
 			            mod_counter = counter;
 			            

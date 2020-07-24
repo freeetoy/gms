@@ -83,4 +83,12 @@ public interface OrderService {
 	public int modifyOrderAmount(Integer customerId) ;
 	
 	public int modifyOrderAmountAll() ;
+	
+	public List<OrderVO> getOrderReqDtTomorrow(OrderVO param) ;
+	
+	public List<OrderBottleVO> getOrderBottleListOfProduct(OrderProductVO param);
+	
+	public int deleteOrderBottle(OrderBottleVO param);
+	
+	
 }

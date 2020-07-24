@@ -277,6 +277,7 @@
 			, Bottle_Charge_Prss= #{bottleChargePrss}
 			, Bottle_Own_YN		= #{bottleOwnYn}
 			, Own_Customer_ID	= #{ownCustomerId}
+			, Delete_YN			= 'N'
 			, UPDATE_ID 		= #{updateId}
 			, UPDATE_DT 		= NOW()
 		WHERE
@@ -669,6 +670,17 @@
 		AND TB.Product_ID = TG.Product_Id		
 		Order By Bottle_Work_DT DESC
 		Limit 0,1
+	</select>
+	
+	<select id="selectDummyBottleList" resultType="com.gms.web.admin.domain.manage.BottleVO" >		
+		SELECT
+			<include refid="BottleColumns" />
+		FROM
+			TB_Bottle TB
+		WHERE
+			TB.Delete_YN = 'N'
+		AND
+			Dummy_YN = 'Y'
 	</select>
 	
 </mapper>

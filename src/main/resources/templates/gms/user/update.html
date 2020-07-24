@@ -21,7 +21,67 @@
 	}
 	// end of function
 	
-
+// 입력된 내용을 작성한다.
+var goWrite = function(){
+	//validation();
+	var userNm = $("#userNm").val();
+	if(userNm=="" || userNm == null){
+		alert("사죵자명을 입력해 주세요.");
+		$("#userNm").focus();
+		isOkay = false;
+		return;
+	}
+	
+	var userPhone = $("#userPhone").val();
+	if(userPhone=="" || userPhone == null){
+		alert("연략처를 입력해 주세요.");
+		$("#userPhone").focus();
+		isOkay = false;
+		return;
+	}
+	
+	var userPasswd = $("#userPasswd").val();
+	if(userPasswd=="" || userPasswd == null){
+		alert("비밀번호를 입력해 주세요.");
+		$("#userPasswd").focus();
+		isOkay = false;
+		return;
+	}
+	
+	var userPasswdCfd = $("#userPasswdCfd").val();
+	if(userPasswdCfd=="" || userPasswdCfd == null){
+		alert("비밀번호확인을 입력해 주세요.");
+		$("#userPasswdCfd").focus();
+		isOkay = false;
+		return;
+	}
+	
+	if(userPasswd != userPasswdCfd){
+		alert("비밀번호와 비밀번호확인이 일치하지 않습니다.");
+		$("#userPasswdCfd").focus();
+		isOkay = false;
+		return;
+	}
+	/*
+	var result = (
+			   isValid(userPhone, "연락처", null, null)
+			&& isValid(userPasswd, "비밀번호", null, "password")
+			&& isValid(userPasswdCfd, "비밀번호확인", null, "password")
+	);
+	
+	if ( result === false ) {
+		return;	
+	}
+	
+	if(!isOkay){
+		return;
+	}
+	*/
+	var form = $("#writeForm");
+		
+	form.submit();
+}
+	
 
 </script>
 
@@ -47,7 +107,7 @@
              <!-- general form elements -->                        
               <!-- /.card-header -->
               
-              <form class="form-horizontal" th:action="@{/gms/user/modify.do}" th:object="${user}" method="post" onsubmit="return validationOfForm(this)">
+              <form id="writeForm" class="form-horizontal" th:action="@{/gms/user/modify.do}" th:object="${user}" method="post" >
                 <input type="hidden" name="userId" id="userId" th:value="${user.userId}">
                 <table class="table table-hover">
                   <thead>
@@ -103,7 +163,7 @@
             <div class="card-footer">
             	
                  <a href="#" th:onclick="history.back()"  class="btn btn-secondary float-left">취소</a>
-		          <input type="submit" value="저장" class="btn btn-success float-right">
+		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">
                 
              </div>	     		
             </form>   

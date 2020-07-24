@@ -29,6 +29,7 @@ import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.GasVO;
 import com.gms.web.admin.domain.manage.OrderExtVO;
+import com.gms.web.admin.domain.manage.OrderPrintVO;
 import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.service.common.CodeService;
@@ -369,6 +370,40 @@ public class OrderController {
 		model.addAttribute("customer", customer);
 		
 		return "gms/order/popupOrder";
+	}
+	
+	@RequestMapping(value = "/gms/order/popupOrderAll.do")
+	public String getPopupOrderDetailAll(Model model)	{
+		
+		logger.debug("OrderContoller getPopupOrderDetailAll");
+		
+		ArrayList<OrderPrintVO> orderPrintList = new ArrayList<OrderPrintVO>();
+		OrderVO tOrder = new OrderVO();
+		tOrder.setOrderProcessCd(PropertyFactory.getProperty("common.code.order.process.receive"));
+		
+		List<OrderVO> orderList = orderService.getOrderReqDtTomorrow(tOrder);
+		Integer orderId= 0;
+		for(int i=0 ; i< orderList.size() ; i++) {
+			OrderPrintVO orderPrint = new OrderPrintVO();
+			orderId = orderList.get(i).getOrderId();
+			
+			OrderExtVO result = orderService.getOrder(orderId);	
+			CustomerVO customer = customerService.getCustomerDetails(result.getOrder().getCustomerId());	
+			
+			orderPrint.setOrderExt(result);
+			orderPrint.setOrderTotalAmountHan(StringUtils.numberToHan(String.valueOf(result.getOrder().getOrderTotalAmount())));
+			orderPrint.setCustomer(customer);
+			//model.addAttribute("orderExt", result);			
+			//model.addAttribute("orderTotalAmountHan",StringUtils.numberToHan(String.valueOf(result.getOrder().getOrderTotalAmount())));
+			//logger.debug("OrderContoller getPopupOrderDetail Money 1024 "+StringUtils.numberToHan("1024"));
+
+			//model.addAttribute("customer", customer);
+			orderPrintList.add(orderPrint);
+		}
+		model.addAttribute("orderPrintList",orderPrintList);
+		
+		logger.debug("OrderContoller orderPrintList "+orderPrintList.size());
+		return "gms/order/popupOrderAll";
 	}
 	
 }

@@ -27,6 +27,8 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	
+	//protected static final Logger fileLogger = LoggerFactory.getLogger("fileLogger");
+	
 	@Autowired
 	private CustomerMapper customerMapper;
 	

@@ -147,15 +147,16 @@ public class OrderServiceImpl implements OrderService {
 		}		
 		
 		if(param.getSearchOrderDtFrom() != null) {
-			map.put("searchOrderDtFrom", param.getSearchOrderDtFrom());
-			logger.debug("****** getOrderListToExcel *****getSearchOrderDtFrom===*"+param.getSearchOrderDtFrom());
+			map.put("searchOrderDtFrom", param.getSearchOrderDtFrom());			
 		}
 		
 		if(param.getSearchOrderDtEnd() != null) {
-			map.put("searchOrderDtEnd", param.getSearchOrderDtEnd());
-			logger.debug("****** getOrderListToExcel *****getSearchOrderDtEnd===*"+param.getSearchOrderDtEnd());
+			map.put("searchOrderDtEnd", param.getSearchOrderDtEnd());			
 		}	
 				
+		map.put("searchCustomerNm", param.getSearchCustomerNm());	
+		map.put("searchOrderProcessCd", param.getSearchOrderProcessCd());	
+		
 		List<OrderVO> orderList = orderMapper.selectOrderListToExcel(map);		
 			
 		return orderList;
@@ -784,8 +785,8 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	@Transactional
 	public int deleteOrderProduct(OrderProductVO param) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return orderMapper.deleteOrderProduct(param);
 	}
 
 	@Override
@@ -935,73 +936,20 @@ public class OrderServiceImpl implements OrderService {
 		List<CustomerPriceExtVO> productList = customerService.getCustomerPriceList(customerId);
 		
 		OrderVO order = getTodayOrderForCustomer(customerId);
+		List<OrderProductVO> orderProductList = null;
+		List<WorkBottleVO> workBottleList = null;
+		if(order !=null) {
+			orderProductList = getOrderProductList(order.getOrderId());
 		
-		List<OrderProductVO> orderProductList = getOrderProductList(order.getOrderId());
-		
-		List<WorkBottleVO> workBottleList = workService.getWorkBottleListOfOrder(order.getOrderId());
+			workBottleList = workService.getWorkBottleListOfOrder(order.getOrderId());
+		}
 		
 		int orderTotalAmount = 0;
+		
 		for(int j=0;j<productList.size();j++) {
 			CustomerPriceExtVO customerProduct = productList.get(j);
 			
-			for(int i=0;i<orderProductList.size() ; i++) {
-				
-				if(orderProductList.get(i).getProductId() == customerProduct.getProductId() 
-						&& orderProductList.get(i).getProductPriceSeq() == customerProduct.getProductPriceSeq()) {
-					if(orderProductList.get(i).getBottleSaleYn().equals("N"))
-						orderProductList.get(i).setOrderAmount(orderProductList.get(i).getOrderCount()*customerProduct.getProductPrice());
-					else
-						orderProductList.get(i).setOrderAmount(orderProductList.get(i).getOrderCount()*customerProduct.getProductBottlePrice());
-				
-				result = orderMapper.updateOrderProductAmount(orderProductList.get(i));
-				orderTotalAmount += orderProductList.get(i).getOrderAmount();
-				}
-			}			
-		
-			for(int i=0;i<workBottleList.size();i++) {
-				
-				if(workBottleList.get(i).getProductId() == customerProduct.getProductId() 
-						&& workBottleList.get(i).getProductPriceSeq() == customerProduct.getProductPriceSeq()) {
-					if(workBottleList.get(i).getBottleSaleYn().equals("N"))
-						workBottleList.get(i).setProductPrice(customerProduct.getProductPrice());
-					else
-						workBottleList.get(i).setProductPrice(customerProduct.getProductBottlePrice());
-					
-					result = workService.modifyWorkBottlePrice(workBottleList.get(i));
-				}
-			}
-			
-		}
-		
-		order.setOrderTotalAmount(orderTotalAmount);
-		
-		result = orderMapper.updateOrderTotalAmount(order);
-		
-		return result;
-	}
-	
-	@Override
-	public int modifyOrderAmountAll() {
-		int result = 0 ;
-		
-		List<CustomerPriceVO>  customerPriceList = customerService.getCustomerPriceListAllNow();
-		Integer customerId = 0;
-		
-		for(int k=0 ; k < customerPriceList.size() ; k++) {
-			customerId = customerPriceList.get(k).getCustomerId();
-
-			List<CustomerPriceExtVO> productList = customerService.getCustomerPriceList(customerId);
-			
-			OrderVO order = getTodayOrderForCustomer(customerId);
-			
-			List<OrderProductVO> orderProductList = getOrderProductList(order.getOrderId());
-			
-			List<WorkBottleVO> workBottleList = workService.getWorkBottleListOfOrder(order.getOrderId());
-			
-			int orderTotalAmount = 0;
-			for(int j=0;j<productList.size();j++) {
-				CustomerPriceExtVO customerProduct = productList.get(j);
-				
+			if(orderProductList != null) {
 				for(int i=0;i<orderProductList.size() ; i++) {
 					
 					if(orderProductList.get(i).getProductId() == customerProduct.getProductId() 
@@ -1015,7 +963,8 @@ public class OrderServiceImpl implements OrderService {
 					orderTotalAmount += orderProductList.get(i).getOrderAmount();
 					}
 				}			
-			
+			}
+			if(workBottleList !=null) {
 				for(int i=0;i<workBottleList.size();i++) {
 					
 					if(workBottleList.get(i).getProductId() == customerProduct.getProductId() 
@@ -1028,14 +977,100 @@ public class OrderServiceImpl implements OrderService {
 						result = workService.modifyWorkBottlePrice(workBottleList.get(i));
 					}
 				}
-				
 			}
-			
+		}
+		
+		if(order !=null) {
 			order.setOrderTotalAmount(orderTotalAmount);
 			
 			result = orderMapper.updateOrderTotalAmount(order);
+		}else {
+			result = 1;
 		}
 		return result;
+	}
+	
+	@Override
+	public int modifyOrderAmountAll() {
+		int result = 1 ;
+		try {
+			List<CustomerPriceVO>  customerPriceList = customerService.getCustomerPriceListAllNow();
+			Integer customerId = 0;
+			
+			if(customerPriceList.size() == 0) result = 1;
+			for(int k=0 ; k < customerPriceList.size() ; k++) {
+				customerId = customerPriceList.get(k).getCustomerId();
+				
+				OrderVO order = getTodayOrderForCustomer(customerId);
+				if(order !=null) {
+					List<CustomerPriceExtVO> productList = customerService.getCustomerPriceList(customerId);
+					
+					List<OrderProductVO> orderProductList = getOrderProductList(order.getOrderId());
+					
+					List<WorkBottleVO> workBottleList = workService.getWorkBottleListOfOrder(order.getOrderId());
+					
+					int orderTotalAmount = 0;
+					for(int j=0;j<productList.size();j++) {
+						CustomerPriceExtVO customerProduct = productList.get(j);
+						
+						for(int i=0;i<orderProductList.size() ; i++) {
+							
+							if(orderProductList.get(i).getProductId() == customerProduct.getProductId() 
+									&& orderProductList.get(i).getProductPriceSeq() == customerProduct.getProductPriceSeq()) {
+								if(orderProductList.get(i).getBottleSaleYn().equals("N"))
+									orderProductList.get(i).setOrderAmount(orderProductList.get(i).getOrderCount()*customerProduct.getProductPrice());
+								else
+									orderProductList.get(i).setOrderAmount(orderProductList.get(i).getOrderCount()*customerProduct.getProductBottlePrice());
+							
+							result = orderMapper.updateOrderProductAmount(orderProductList.get(i));
+							orderTotalAmount += orderProductList.get(i).getOrderAmount();
+							}
+						}			
+					
+						for(int i=0;i<workBottleList.size();i++) {
+							
+							if(workBottleList.get(i).getProductId() == customerProduct.getProductId() 
+									&& workBottleList.get(i).getProductPriceSeq() == customerProduct.getProductPriceSeq()) {
+								if(workBottleList.get(i).getBottleSaleYn().equals("N"))
+									workBottleList.get(i).setProductPrice(customerProduct.getProductPrice());
+								else
+									workBottleList.get(i).setProductPrice(customerProduct.getProductBottlePrice());
+								
+								result = workService.modifyWorkBottlePrice(workBottleList.get(i));
+							}
+						}
+						
+					}
+					
+					order.setOrderTotalAmount(orderTotalAmount);
+					
+					result = orderMapper.updateOrderTotalAmount(order);
+				}
+			}
+		}catch (Exception e) {
+            e.printStackTrace();
+            
+            return -1;
+        }
+		return result;
+	}
+
+	@Override
+	public List<OrderVO> getOrderReqDtTomorrow(OrderVO param) {
+		// TODO Auto-generated method stub
+		return orderMapper.selectOrderReqDtTomorrow(param);
+	}
+
+	@Override
+	public List<OrderBottleVO> getOrderBottleListOfProduct(OrderProductVO param) {
+		
+		return orderMapper.selectOrderBottleListOfProduct(param);
+	}
+
+	@Override
+	public int deleteOrderBottle(OrderBottleVO param) {
+		
+		return orderMapper.deleteOrderBottle(param);
 	}
 	
 	

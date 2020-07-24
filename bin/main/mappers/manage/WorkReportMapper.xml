@@ -234,6 +234,34 @@
 			Work_Seq 		= #{workSeq}
 	</update>
 	
+	<select id="selectWorkReport" resultType="com.gms.web.admin.domain.manage.WorkReportVO" parameterType="int">		
+		SELECT
+			Tw.Work_Report_Seq, Tw.Customer_ID, TC.Customer_Nm, Tw.Order_ID
+		FROM
+			TB_Work_Report Tw, TB_Customer Tc
+		WHERE
+			Work_Report_Seq = #{workReportSeq}
+		AND 
+			Tw.Customer_ID = Tc.Customer_ID
+	</select>
+	
+	<select id="selectWorkBottleList" resultType="com.gms.web.admin.domain.manage.WorkBottleVO" parameterType="int">		
+		SELECT  
+			Product_Count, WB.Product_ID, WB.Product_Price_Seq, Bottle_Work_Cd, Product_Nm, Product_Capa,Gas_Id, Customer_Id, WB.Product_Price
+		FROM (
+			SELECT count(work_seq) Product_Count,Product_ID,Product_Price_Seq, Bottle_Work_Cd, Customer_Id, Product_Price
+			FROM TB_Work_Bottle
+			WHERE Work_Report_Seq = #{workReportSeq}
+			group by Bottle_Work_Cd , Product_ID  ,Product_Price_Seq
+			) WB, TB_Product P, TB_Product_Price PP		
+		WHERE 
+			WB.Product_ID = P.Product_ID
+		AND
+			WB.Product_ID = PP.Product_ID
+		AND
+			WB.Product_Price_Seq = PP.Product_Price_Seq
+	</select>
+	
 	<select id="selectWorkReportList" resultType="com.gms.web.admin.domain.manage.WorkReportVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
 		SELECT
 			<include refid="SelectWorkReportColumns" />
@@ -247,8 +275,7 @@
 		AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}
 		</if>
 		ORDER BY Work_Report_Seq DESC 
-	</select>
-	
+	</select>	
 	
 	<select id="selectWorkReportOnlyList" resultType="com.gms.web.admin.domain.manage.WorkReportVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
 		SELECT
@@ -545,4 +572,28 @@
 				Bottle_Work_CD in ('0308','0309')
 			Group By Product_ID, Product_Price_Seq ,Bottle_Sale_YN
 	</select>
+	
+	
+	<select id="selectWorkBottleListOfProduct" resultType="com.gms.web.admin.domain.manage.WorkBottleVO" parameterType="com.gms.web.admin.domain.manage.WorkBottleVO">		
+		SELECT 
+			<include refid="WorkBottleColumns" />
+		FROM 
+			TB_Work_Bottle 
+		WHERE
+			Work_Report_Seq = #{workReportSeq}
+		AND 
+			Product_Id 		= #{productId}		
+		AND 
+			Product_Price_Seq 	= #{productPriceSeq}	
+	</select>
+	
+	<update id="deleteWorkBottleOfProduct" parameterType="com.gms.web.admin.domain.manage.WorkBottleVO">		
+		DELETE FROM  TB_Work_Bottle		
+		WHERE
+			Work_Report_Seq = #{workReportSeq}	
+		AND Work_Seq in		
+		<foreach collection="workSeqList" item="item" index="index" open="(" separator="," close=")">
+			#{item} 		
+		</foreach> 
+	</update>	
 </mapper>

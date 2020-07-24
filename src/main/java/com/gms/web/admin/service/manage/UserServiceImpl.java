@@ -213,6 +213,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public List<UserVO> getUserListPartNot(UserVO param) {
+		// TODO Auto-generated method stub
+		param.setUserPartCd(PropertyFactory.getProperty("common.user.part.account"));
+		return userMapper.selectUserListPartNot(param);
+	}
+	@Override
 	public UserVO getUserOfName(String userNm) {
 		
 		return userMapper.selectUserofName(userNm);

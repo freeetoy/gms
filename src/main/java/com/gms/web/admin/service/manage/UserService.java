@@ -29,5 +29,7 @@ public interface UserService {
 	
 	public List<UserVO> getUserListPart(UserVO param);
 	
+	public List<UserVO> getUserListPartNot(UserVO param);
+	
 	public UserVO getUserOfName(String userNm);
 }

@@ -864,7 +864,8 @@ $(document).ready(function(){
                   <tbody>                 
                   	<tr th:if="${not #lists.isEmpty( workList )}" th:each="row : ${workList}" style="font-size:13px;">
                       <td th:text="${workList.indexOf(row)+1}"></td>
-                      <td th:text="${row.CustomerNm}"></td>
+                      <th><a th:href="@{/gms/report/update.do( workReportSeq=${row.workReportSeq})}" th:text="${row.CustomerNm}"></a></th>
+                      <!-- td th:text="${row.CustomerNm}"></td> -->
                       <td >
                       	<table>     
                       	<tr th:if="${not #lists.isEmpty(row.salesBottles )}" th:each="row1 : ${row.salesBottles}"  >
@@ -915,7 +916,7 @@ $(document).ready(function(){
         </div>
         </div>
       </div><!-- /.container-fluid -->
-      
+     
     </section>
     <!-- /.content -->
   </div>

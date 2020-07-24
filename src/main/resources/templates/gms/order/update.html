@@ -43,48 +43,7 @@ $(document).ready(function(){
 	initProduct(0);
 	initProductPriceList();
 	
-	/*
-	$("#addrow").on("click", function () {
-
-		//alert("addrow");
-		counter++;
-		totalCount++;
-		console.log("1counter=="+counter); 
-		console.log("1 totalCount=="+totalCount); 
-		if (counter > 11){
-
-		  alert('더 이상 추가 할수 없습니다.');
-		  return false;
-
-		}
-
-		var newRow = $("<tr>");
-		var cols = "";
-
-		cols += '<td style="padding-left:5px;">';
-		cols += '<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:200px"></select>'; 
-		cols += '</td><td>';
-		cols += ' <select class="form-control" id="productPriceSeq_' + counter + '" name="productPriceSeq_' + counter + '" style="width:80px"><option value=0>옵션</option></select> ';
-		cols += '</td><td>';
-		cols += ' <input type="number" class="form-control" id="orderCount_' + counter + '" name="orderCount_' + counter + '" style="width:60px;height:35px;" onkeypress="return event.charCode >= 48" min="1" max="99999">';
-		cols += '</td><td>';  
-		cols += ' <input type="text" class="form-control" id="orderProductEtc_' + counter + '" name="orderProductEtc_' + counter + '" " >';
-		cols += '</td><td>';  
-		cols += ' <input type="checkbox" class="form-control" id="bottleChangeYn" name="bottleChangeYn_' + counter + '" ">';
-		cols += '</td><td>'; 
-		cols += ' <input type="button" class="ibtnDel btn btn-md btn-danger" id="addrow" value="삭제" />';
-		cols += '</td>';
-		cols +='</tr>';
-
-		newRow.append(cols);
-		$("table.doc-list").append(newRow);
-		$("#productCount").val(counter+1);
-		initProduct(counter);
-
-		addProductCapa(counter);
-
-	});
-*/
+	
 	// 품명 선택 변경
 
     $('#productId_0').change( function(){
@@ -367,7 +326,7 @@ $(document).ready(function(){
 				cols += '<td>상품</td>';
 				cols += '<td>용량</td>';
 				cols += '<td>수량</td>';
-				cols += '<td>기타</td>';
+				cols += '<td>적요</td>';
 				cols += '<td>용기교환</td>';
 				cols += '<td>용기판매</td>';
 				cols += '<td></td></tr>';
@@ -412,7 +371,7 @@ $(document).ready(function(){
 				cols += '<td>상품</td>';
 				cols += '<td>용량</td>';
 				cols += '<td>수량</td>';
-				cols += '<td>기타</td>';
+				cols += '<td>적요</td>';
 				cols += '<td>용기교환</td>';
 				cols += '<td>용기판매</td>';
 				cols += '<td></td></tr>';
@@ -585,7 +544,7 @@ $(document).ready(function(){
 	            		  </td>                
 	                    </tr>                   
 	                    <tr>
-	                      <td class="card-footer">기타사항</td>
+	                      <td class="card-footer">비고</td>
 	                      <td colspan=3><input type="text" class="form-control" id="orderEtc" name="orderEtc"  th:value="${order.orderEtc}"> </thd>   
 	                    </tr>                   
 	                     </thead>   
@@ -607,7 +566,7 @@ $(document).ready(function(){
 		                         <td>상품</td>
 		                         <td>용량</td>
 		                         <td>수량</td>
-		                         <td>기타</td>
+		                         <td>적요</td>
 		                         <td>용기교환</td>
 								 <td>용기판매</td>
 		                         <td></td>

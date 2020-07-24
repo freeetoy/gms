@@ -80,5 +80,10 @@ public class WorkBottleVO extends AbstractVO implements Serializable {
 	/** Bottle_Sale_YN 	*/
 	private String bottleSaleYn;	
 	
+	private String newYn;
+	
+	private String newProductYn;
+	
+	private List<Integer> workSeqList;
 	
 }

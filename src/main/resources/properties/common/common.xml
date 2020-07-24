@@ -134,4 +134,8 @@
 	<entry key="o2.medical.35.productPriceSeq">6</entry>
 	<entry key="o2.medical.40.productPriceSeq">7</entry>
 	
+	<entry key="order.etc.message.work">업무일지추가</entry>
+	
+	<entry key="product.LN2.divide.productId">52</entry>
+	<entry key="product.LN2.divide.bottle.productPriceSeq">2</entry>
 </properties>

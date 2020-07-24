@@ -44,8 +44,6 @@ public class BottleServiceImpl implements BottleService {
 	@Override
 	public Map<String,Object> getBottleList(BottleVO param) {
 		logger.debug("****** getBottleList *****start===*");		
-		logger.debug("****** getBottleList *****param.getSearchBottleId===*" + param.getSearchBottleId());
-		logger.debug("****** getBottleList *****param.getSearchWorkCd===*" + param.getSearchWorkCd());
 		
 		int currentPage = param.getCurrentPage();
 		int ROW_PER_PAGE = param.getRowPerPage();
@@ -103,15 +101,13 @@ public class BottleServiceImpl implements BottleService {
 		int bottleCount = bottleMapper.selectBottleCount(map);
 		
 		//int lastPage = (int)(Math.ceil(bottleCount/ROW_PER_PAGE));
-		int lastPage = (int)((double)bottleCount/ROW_PER_PAGE+0.95);
-		
+		int lastPage = (int)((double)bottleCount/ROW_PER_PAGE+0.95);		
 		
 		if(currentPage >= (lastPage-4)) {
 			lastPageNum = lastPage;
 		}
 		
-		if(lastPageNum ==0) lastPageNum=1;
-		
+		if(lastPageNum ==0) lastPageNum=1;		
 		
 		//수정 Start
 		int pages = (bottleCount == 0) ? 1 : (int) ((bottleCount - 1) / ROW_PER_PAGE) + 1; // * 정수형이기때문에 소숫점은 표시안됨		
@@ -152,8 +148,7 @@ public class BottleServiceImpl implements BottleService {
 	
 	@Override
 	public List<BottleVO> getBottleListToExcel(BottleVO param) {
-		logger.debug("****** getBottleListToExcel *****start===*");				
-		logger.debug("****** getBottleListToExcel *****param.getMenuType===*" + param.getMenuType());		
+		logger.debug("****** getBottleListToExcel *****start===*");			
 		
 		Map<String, Object> map = new HashMap<String, Object>();			
 		
@@ -406,7 +401,7 @@ public class BottleServiceImpl implements BottleService {
 			String tempBottleIds = "";
 			param.getBottList().clear();
 			for(int i = 0; i< bottleList.size() ; i++) {
-				logger.debug("BottleServiceImpl changeBottlesWorkCdOnly  for in getBottlesId "+ bottleList.get(i).getBottleId());
+				//logger.debug("BottleServiceImpl changeBottlesWorkCdOnly  for in getBottlesId "+ bottleList.get(i).getBottleId());
 				tempBottleIds += bottleList.get(i).getBottleId()+",";
 				
 				bottleList.get(i).setBottleWorkCd(param.getBottleWorkCd());
@@ -639,6 +634,31 @@ public class BottleServiceImpl implements BottleService {
 	@Override
 	public BottleVO getCustomerBottleRecent(Integer customerId) {
 		return bottleMapper.selectCustomerBottleRecent(customerId);
+	}
+
+
+
+	@Override
+	public List<BottleVO> getDummyBottleList() {
+		
+		return bottleMapper.selectDummyBottleList();
+	}
+
+
+
+	@Override
+	public BottleVO getDummyBottle(BottleVO param) {
+
+		List<BottleVO> dummyList = getDummyBottleList();
+	
+		for(int i =0 ; i < dummyList.size() ; i++) {
+			BottleVO bottle = dummyList.get(i);
+			
+			if(param.getProductId() == bottle.getProductId() && param.getProductPriceSeq() == bottle.getProductPriceSeq()) {
+				return bottle;
+			}
+		}
+		return null;
 	}
 	
 

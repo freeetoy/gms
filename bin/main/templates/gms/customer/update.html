@@ -32,7 +32,6 @@ var validation = function(){
 	*/
 	var result = (
 			isValid(customerNm, "거래처명", null, null)
-		&& isValid(customerAddr, "거래처주소", null, null)		
 		&& isValid(salesId, "영업 담당자", null, null)
 	);
 	
@@ -288,11 +287,34 @@ $(function() {
                       <th class="card-footer" valign="top">적요</th>
                       <th ><textarea class="form-control" id="summary" name="summary" th:field="${customer.summary}"></textarea></th>
                     </tr>
+                    
+                   
                   </thead>                              
                 </table>
               </div>
             </div>
-            
+            <div class="col-md-8">
+	            <div class="card">    
+	           		<table class="table table-hover">	         	
+	         		<thead>
+	                   <tr>
+	                     <th>품명</th>
+	                     <th>용량</th>
+	                     <th>대여가격</th>
+	                     <th>판매가격</th>
+	                   </tr>
+	                 	</thead>
+	                 	<tbody>
+	                 	<tr th:if="${not #lists.isEmpty( customerPriceList )}" th:each="row : ${customerPriceList}">
+	                     <td th:text="${row.productNm}"></td>
+	                     <td th:text="${row.productCapa}"></td>
+	                     <td th:text="${row.productPrice}"></td>
+						 <td th:text="${row.productBottlePrice}"></td>
+	                   </tr>
+	                 	</tbody>
+	              	</table>   
+	              </div>
+              </div>
             <!-- /.card -->
       		<div class="col-md-8">
       			<div class="card-footer">
@@ -308,6 +330,7 @@ $(function() {
 	         	</table>
             </div>
             
+              
 			<div class="col-md-8">
 				<div class="row">        	
 	            <div class="col-1">
@@ -337,37 +360,34 @@ $(function() {
             	<table class="table table-hover">
 	         	</table>
             </div>
-	         <div class="col-md-8">
-				<div class="row">    
-				</div>
-				</div>
-	              <div class="card">    
-	            	<table class="table table-hover">	         	
-		         		<thead>
-	                    <tr>
-	                      <th>용기코드</th>
-	                      <th>용기바코드</th>
-	                      <th>품명</th>
-	                      <th>용량</th>
-	                      <th>구분</th>
-	                      <th>타입</th>
-	                      <th>날짜</th>
-	                    </tr>
-	                  	</thead>
-	                  	<tbody>
-	                  	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}">
-	                      <td th:text="${row.bottleId}"></td>
-	                      <td th:text="${row.bottleBarCd}"></td>                     
-	                      <td th:text="${row.productNm}"></td>
-	                      <td th:text="${row.bottleCapa}"></td>
-	                      <td th:text="${row.bottleWorkCdNm}"></td>
-	                      <td th:if="${row.bottleType=='E'}" th:text="공병"></td>
-	                      <td th:unless="${row.bottleType=='E'}" th:text="실병"></td>
-	                      <td th:text="${#calendars.format( row.updateDt, 'yyyy-MM-dd' )}"></td>
-	                    </tr>
-	                  	</tbody>
-	               	</table>   
-	               </div>
+	     
+             <div class="card">    
+           		<table class="table table-hover">	         	
+         		<thead>
+                   <tr>
+                     <th>용기코드</th>
+                     <th>용기바코드</th>
+                     <th>품명</th>
+                     <th>용량</th>
+                     <th>구분</th>
+                     <th>타입</th>
+                     <th>날짜</th>
+                   </tr>
+                 	</thead>
+                 	<tbody>
+                 	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}">
+                     <td th:text="${row.bottleId}"></td>
+                     <td th:text="${row.bottleBarCd}"></td>                     
+                     <td th:text="${row.productNm}"></td>
+                     <td th:text="${row.bottleCapa}"></td>
+                     <td th:text="${row.bottleWorkCdNm}"></td>
+                     <td th:if="${row.bottleType=='E'}" th:text="공병"></td>
+                     <td th:unless="${row.bottleType=='E'}" th:text="실병"></td>
+                     <td th:text="${#calendars.format( row.updateDt, 'yyyy-MM-dd' )}"></td>
+                   </tr>
+                 	</tbody>
+              	</table>   
+              </div>
             </div>
            
           	<!-- /.col-12 -->

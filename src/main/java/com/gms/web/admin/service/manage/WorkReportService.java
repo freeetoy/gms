@@ -3,6 +3,8 @@ package com.gms.web.admin.service.manage;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.WorkBottleRegisterVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
@@ -10,6 +12,8 @@ import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.domain.manage.WorkReportViewVO;
 
 public interface WorkReportService {
+	
+	public WorkReportVO getWorkReport(Integer workReportSeq);	
 
 	public List<WorkReportVO> getWorkReportList(WorkReportVO param);	
 	
@@ -54,4 +58,5 @@ public interface WorkReportService {
 	public int modifyWorkBottlePrice(WorkBottleVO param);
 	
 	//public int registerWorkGasAndBottle(WorkBottleVO param);
+	public int modifyWorkBottleManual(HttpServletRequest request, WorkReportVO param);
 }
