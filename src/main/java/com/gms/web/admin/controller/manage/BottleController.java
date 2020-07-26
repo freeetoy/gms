@@ -72,15 +72,11 @@ public class BottleController {
 		String searchChargeDtEnd = null;
 				
 		if(searchChargeDt != null && searchChargeDt.length() > 20) {
-			
-			//logger.debug("BottleContoller searchChargeDt "+ searchChargeDt.length());
-			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;
-			
+			searchChargeDtFrom = searchChargeDt.substring(0, 10) ;			
 			searchChargeDtEnd = searchChargeDt.substring(13, searchChargeDt.length()) ;
 			
 			params.setSearchChargeDtFrom(searchChargeDtFrom);
-			params.setSearchChargeDtEnd(searchChargeDtEnd);
-			
+			params.setSearchChargeDtEnd(searchChargeDtEnd);			
 		}
 		
 		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.come"));
@@ -100,6 +96,16 @@ public class BottleController {
 		// 가스 정보 불러오기
 		//List<GasVO> gasList = gasService.getGasList();
 		//model.addAttribute("gasList", gasList);
+		logger.debug("BottleContoller getBottleList ownCustomerId="+params.getOwnCustomerId());
+		logger.debug("BottleContoller getBottleList searchCustomerNm1="+params.getSearchCustomerNm1());
+		String ownCustomerId = "";
+		if(params.getOwnCustomerId() !=null) ownCustomerId = params.getOwnCustomerId();
+		
+		List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList(ownCustomerId);
+		
+		model.addAttribute("customerList", customerList);	
+		model.addAttribute("searchCustomerNm1", params.getSearchCustomerNm1());
+		model.addAttribute("ownCustomerId", params.getOwnCustomerId());
 		
 		// 상품 정보 불러오기
 		List<ProductVO> productList = productService.getGasProductList();
@@ -115,10 +121,7 @@ public class BottleController {
 		//검색어 셋팅
 		model.addAttribute("searchBottleId", params.getSearchBottleId());				
 		model.addAttribute("searchChargeDt", params.getSearchChargeDt());	
-		model.addAttribute("searchWorkCd", params.getSearchWorkCd() );
-		//if(params.getSearchProductId()!=null && params.getSearchProductId().length()) {
-			//model.addAttribute("searchProductId", params.getSearchProductId() );
-		//}
+		model.addAttribute("searchWorkCd", params.getSearchWorkCd() );		
 		
 		model.addAttribute("currentPage", map.get("currentPage"));
 		model.addAttribute("lastPage", map.get("lastPage"));
@@ -797,9 +800,16 @@ public class BottleController {
 	@ResponseBody
 	public BottleVO getBottleDetail(String bottleBarCd)	{		
 		
-		BottleVO bottle =  bottleService.getBottleDetailForBarCd(bottleBarCd);	
+		BottleVO bottle =  bottleService.getBottleDetailForBarCd(bottleBarCd);			
 		
-		if(bottle!=null) bottle.setSuccess(true);
+		if(bottle!=null) {
+			if(bottle.getBottleCapa() == null || (bottle.getBottleCapa()!=null && bottle.getBottleCapa().length() == 0)) {
+				bottle.setBottleCapa("-");
+				bottle.setChargeCapa("-");
+			}
+			
+			bottle.setSuccess(true);
+		}
 		else {
 			bottle = new BottleVO();
 			bottle.setSuccess(false);

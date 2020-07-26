@@ -357,7 +357,7 @@ $(document).ready(function(){
                       <th>용량</th>
                       <th>작업</th>
                       <th>거래처</th>
-                      <th>등록일</th>
+                      <th>처리일</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -372,7 +372,7 @@ $(document).ready(function(){
                       <td th:text="${row.bottleCapa}"></td>
                       <td th:text="${row.bottleWorkCdNm}"></td>
                       <td th:text="${row.CustomerNm}"></td>
-                      <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td> 
+                      <td th:text="${#calendars.format( row.updateDt, 'yyyy-MM-dd' )}"></td> 
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( bottleList )}">
 						<td colspan="8">조회된 결과가 없습니다.</td>

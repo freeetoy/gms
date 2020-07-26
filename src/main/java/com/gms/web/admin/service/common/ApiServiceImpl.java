@@ -133,6 +133,13 @@ public class ApiServiceImpl implements ApiService {
 		if(customer!=null) {
 			param.setCustomerId(customer.getCustomerId());
 			
+			if(param.getProductId()==Integer.parseInt(PropertyFactory.getProperty("product.LN2.divide.productId"))
+					&& param.getProductPriceSeq() == Integer.parseInt(PropertyFactory.getProperty("product.LN2.divide.bottle.productPriceSeq") )
+					&& param.getProductCount() > 1000 ) {
+				param.setProductPrice(param.getProductCount());
+				param.setProductCount(1);
+			}
+			
 			result = workService.registerWorkNoBottle(param);		
 		}else {
 			return CUSOTMER_NOT_EXIST;

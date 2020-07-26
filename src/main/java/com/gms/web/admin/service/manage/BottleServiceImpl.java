@@ -66,9 +66,7 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchGasId() != null) {
 			map.put("searchGasId", param.getSearchGasId());
-			//logger.debug("****** getBottleList *****searchGasId===*"+param.getSearchGasId());
-		}
-		
+		}		
 
 		if(param.getSearchProductId() != null  ) {			
 			map.put("searchProductId", param.getSearchProductId());
@@ -98,7 +96,11 @@ public class BottleServiceImpl implements BottleService {
 			//logger.debug("****** getBottleList *****getSearchSalesYn===*"+param.getSearchSalesYn());
 		}		
 	
-		int bottleCount = bottleMapper.selectBottleCount(map);
+		int bottleCount = 0;
+		if(param.getOwnCustomerId()!=null)
+			bottleCount = bottleMapper.selectBottleCount(map);
+		else
+			bottleCount = bottleMapper.selectBottleCount(map);
 		
 		//int lastPage = (int)(Math.ceil(bottleCount/ROW_PER_PAGE));
 		int lastPage = (int)((double)bottleCount/ROW_PER_PAGE+0.95);		

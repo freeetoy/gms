@@ -101,18 +101,7 @@ public class WorkReportController {
 		
 		ModelAndView mav = new ModelAndView();		
 		
-		params.setUserId(params.getCreateId());		
-		
-		//logger.debug("WorkReportController getWorkReportListAll User_id= "+ params.getUserId());
-		
-		/*
-		LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);
-		
-		if(sessionInfo.getUserAuthority().equals(PropertyFactory.getProperty("common.user.Authority.manager"))) {
-			List<CustomerVO> carList = customerService.searchCustomerListCar();
-			mav.addObject("carList",carList);
-		}
-		*/
+		params.setUserId(params.getCreateId());	
 		
 		UserVO tempUser = new UserVO();		
 		List<UserVO> userList = userService.getUserListPartNot(tempUser);
@@ -143,8 +132,6 @@ public class WorkReportController {
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		ModelAndView mav = new ModelAndView();	
-		
-		//검색조건 셋팅
 
 		int result =0;
 		try {	
@@ -183,10 +170,7 @@ public class WorkReportController {
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
-		ModelAndView mav = new ModelAndView();	
-		//검색조건 셋팅
-
-		
+		ModelAndView mav = new ModelAndView();		//검색조건 셋팅		
 		int result =0;
 		try {	
 			
@@ -261,8 +245,6 @@ public class WorkReportController {
 			work.setCreateId(params.getCreateId());
 			
 			result = workService.registerWorkReport0310(work);					
-
-			//mav.setViewName("/gms/mypage/assign");			
 		
 		} catch (Exception e) {
 			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
@@ -323,6 +305,13 @@ public class WorkReportController {
 		
 		int result =0;
 		try {	
+			
+			if(param.getProductId()==Integer.parseInt(PropertyFactory.getProperty("product.LN2.divide.productId"))
+					&& param.getProductPriceSeq() == Integer.parseInt(PropertyFactory.getProperty("product.LN2.divide.bottle.productPriceSeq") )
+					&& param.getProductCount() > 1000 ) {
+				param.setProductPrice(param.getProductCount());
+				param.setProductCount(1);
+			}
 			
 			result = workService.registerWorkNoBottle(param);					
 		
@@ -393,13 +382,8 @@ public class WorkReportController {
 			logger.debug("WorkReportController getWorkReportModify param.workReportSeq =="+param.getWorkReportSeq());
 			logger.debug("WorkReportController getWorkReportModify productCount=="+request.getParameter("productCount"));
 			
-			
-			
-			// Order정보 변경
-			
 			result = workService.modifyWorkBottleManual(request,param);
-			// WorkReport 정보 변경
-			
+			// WorkReport 정보 변경			
 			
 			mav.addObject("workReportSeq", param.getWorkReportSeq());	 	
 			

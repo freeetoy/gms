@@ -105,10 +105,8 @@ var fn_ChangeBottleWorkCd = function(bottleId){
 		if(data.result == "fail"){
 			alert("용기가 존재하지 않습니다");			
 			return;
-		}
-		
-	});
-	
+		}		
+	});	
 };
 
     
@@ -222,10 +220,9 @@ function fn_deleteBottles()
         form.submit();			
 		
 	}else{
-
-	return false;
+		alert("취소하였습니다");
+		return false;
 	}
-
 }
 
 
@@ -397,10 +394,10 @@ $(document).ready(function(){
 	    
 	$(".btn_bottle_search").click(function()  
  	{
-  		console.log("start btn_bottle_search}");
+  		
   		//$("#mcustomerNm").val
   		var bottleId = $("#selbottleId").val(); 
-  		console.log("start bottleId " +bottleId);
+  		
 		var ajaxInfo ={
 				type:"POST",
 				url:"/gms/bottle/detail.do",
@@ -427,7 +424,7 @@ $(document).ready(function(){
 				 
 		bottleIds +=bottleId+",";
 		//$("#bottlIds").val(data.order.orderId);
-		console.log("bottleIds " +bottleIds);
+		
 		$("#bottleIds").val(bottleIds);
 			})
 		       .fail(function(){
@@ -549,9 +546,8 @@ $(document).ready(function(){
 				alert("거래처를 선택해주세요");
 				return;				
 			}
-       }
-       
-       console.log("bottleWorkCd ="+bottleWorkCd);
+       }       
+      
        if(bottleWorkCd=='0301'){
     	  // $("#view_car").show();
     	   console.log("bottleWorkCd11 ="+bottleWorkCd);
@@ -562,15 +558,12 @@ $(document).ready(function(){
 			var form = document.createElement("form");
 			
 			var customerId = $("#customerId").val(); 
-			var bottleType = $("#bottleType1").val(); 
-			
-			console.log("customerId " + customerId+" bottleType " + bottleType);			
+			var bottleType = $("#bottleType1").val(); 	
 			
 			form.setAttribute("charset","UTF-8");
 			form.setAttribute("method","post");
 			form.setAttribute("action","/gms/bottle/changeBottlesWorkCd.do?currentPage=[[ ${currentPage} ]]&searchBottleId=[[ ${searchBottleId} ]]&searchProductId=[[ ${searchProductId} ]]&searchChargeDt=[[ ${searchChargeDt} ]]");			
 	        
-
 	        var hiddenField1 = document.createElement("input");
 	        hiddenField1.setAttribute("type", "hidden");
 	        hiddenField1.setAttribute("name", "bottleWorkCd");
@@ -629,8 +622,8 @@ $(document).ready(function(){
 	});
 	
 	
-    $("#btn_com_search").click(function()  
-   {    	
+	$("#btn_com_search").click(function()  
+   	{    	
 	  var searchCustomerNm = $("#searchCustomerNm").val();
 
 	   $.ajax({
@@ -661,6 +654,39 @@ $(document).ready(function(){
 		mainForm.action="/gms/bottle/list.do";
 		form.submit();
       
+    });
+    
+    $("#btn_com_search1").click(function()  
+   	{    	
+	  var searchCustomerNm = $("#searchCustomerNm1").val();
+
+	   $.ajax({
+	           url: '/gms/common/customerList.do',
+	           type: 'POST',
+	           data: 'searchCustomerNm='+ searchCustomerNm,
+	           dataType: 'json',
+
+	      })
+	      .done(function(data){
+	    	$('#ownCustomerId').find('option').remove();        
+	    	  for(i=0; i< data.length;i++) {
+	  			//console.log(data[i]);      
+	  			$('#ownCustomerId').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')
+	  			
+	  		}
+	      })
+	      .fail(function(){
+	         console.log("fail");
+	      });
+	 });
+    
+    $('select[name=ownCustomerId]').change(function() {
+    	/*
+    	var form = document.mainForm;	
+		$("#currentPage").val(1);  
+		mainForm.action="/gms/bottle/list.do";
+		form.submit();
+		*/
     });
 });
 	
@@ -1003,9 +1029,23 @@ $(document).ready(function(){
               <form id="mainForm" name="mainForm"  method="post">
               <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
               <input type="hidden" id="bottleId" name="bottleId" value="">
-               <input type="text" class="form-control" name="searchChargeDt" th:value="${searchChargeDt}"/>			
+              <select id="ownCustomerId" name="ownCustomerId" class="form-control">
+                    <option value="">거래처 목록</option>
+                  	<option th:each="row : ${customerList}"
+	                th:text="${row.customerNm}"
+	                th:value="${row.customerId}"
+	                th:if="${ownCustomerId ==row.customerId}" selected>
+		     		</option>
+			     	<option th:each="row : ${customerList}"
+	                th:text="${row.customerNm}"
+	                th:value="${row.customerId}"
+	                th:unless="${ownCustomerId ==row.customerId}">	
+			     	</option>   
+	    	</select>	                 	
             </div>               
-            <div class="col-5">               
+            <div class="col-2"><input type="text" class="form-control" id="searchCustomerNm1" name="searchCustomerNm1" th:value="${searchCustomerNm1}">
+            </div>
+            <div class="col-3"><input type="button" class="btn btn-default btn-success" id="btn_com_search1" value="검색" />               
             </div>
          </div>
          <div class="row">	

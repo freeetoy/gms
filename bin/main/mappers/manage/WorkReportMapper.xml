@@ -236,7 +236,7 @@
 	
 	<select id="selectWorkReport" resultType="com.gms.web.admin.domain.manage.WorkReportVO" parameterType="int">		
 		SELECT
-			Tw.Work_Report_Seq, Tw.Customer_ID, TC.Customer_Nm, Tw.Order_ID
+			Tw.Work_Report_Seq, Tw.Customer_ID, TC.Customer_Nm, Tw.Order_ID, User_Id, DATE_FORMAT(Tw.Create_Dt,'%Y/%m/%d') Search_Dt
 		FROM
 			TB_Work_Report Tw, TB_Customer Tc
 		WHERE
@@ -247,9 +247,9 @@
 	
 	<select id="selectWorkBottleList" resultType="com.gms.web.admin.domain.manage.WorkBottleVO" parameterType="int">		
 		SELECT  
-			Product_Count, WB.Product_ID, WB.Product_Price_Seq, Bottle_Work_Cd, Product_Nm, Product_Capa,Gas_Id, Customer_Id, WB.Product_Price
+			Product_Count, WB.Product_ID, WB.Product_Price_Seq, Bottle_Work_Cd, Product_Nm, Product_Capa,Gas_Id, Customer_Id, WB.Product_Price,Bottle_Type,Bottle_Sale_YN
 		FROM (
-			SELECT count(work_seq) Product_Count,Product_ID,Product_Price_Seq, Bottle_Work_Cd, Customer_Id, Product_Price
+			SELECT count(work_seq) Product_Count,Product_ID,Product_Price_Seq, Bottle_Work_Cd, Customer_Id, Product_Price,Bottle_Type,Bottle_Sale_YN
 			FROM TB_Work_Bottle
 			WHERE Work_Report_Seq = #{workReportSeq}
 			group by Bottle_Work_Cd , Product_ID  ,Product_Price_Seq

@@ -11,7 +11,7 @@ $(document).ready(function(){
 	var counter = 0;
 	var totalCount = 1;
 	
-	initProduct(0);
+	//initProduct(0);
 	initProductPriceList();
 	
 	
@@ -256,7 +256,6 @@ $(document).ready(function(){
 			}else {
 
 			 	$("table.doc-list").find('tr').remove();
-			 	$("table.doc-list1").find('tr').remove();
 			 	
 			 	var newRow = $("<tr>");
 		        
@@ -268,7 +267,6 @@ $(document).ready(function(){
 
 				newRow.append(cols);
 		        $("table.doc-list").append(newRow);
-		        $("table.doc-list1").append(newRow);
 		        
 				for(i=0; i< data.length;i++) {
 					 
@@ -278,28 +276,24 @@ $(document).ready(function(){
 		            cols = "";				
 					cols += '<td style="padding-left:5px;">';
 					
-					cols += '	<select class="form-control" id="bottleWorkCd_' + counter +  '" name="bottleWorkCd_' + counter + '" style="width:80px">'; 
+					cols += '	<select class="form-control" id="bottleWorkCd_' + counter +  '" name="bottleWorkCd_' + counter + '" style="width:80px" readonly>'; 
 					//cols += '	<option value="' + data[i].bottleWorkCd +'" selected>' + data[i].bottleWorkCd + '</option>';
 					if(data[i].bottleWorkCd =='0308')
 						cols += '	<option value="0308" selected>판매</option>';
-					else
-						cols += '	<option value="0308" >판매</option>';
-					if(data[i].bottleWorkCd =='0309'){ 
-						console.log("ffff");
+					
+					if(data[i].bottleWorkCd =='0309'){ 						
 						cols += '	<option value="0309" selected>대여</option>';
-					}else
-						cols += '	<option value="0309">대여</option>';
+					}
 					if(data[i].bottleWorkCd =='0310')
 						cols += '	<option value="0310" selected>회수</option>';
-					else
-						cols += '	<option value="0310">회수</option>';
+					
 					cols += '	</select>';
 					cols += '</td><td>';
-					cols += '	<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:250px">'; 
+					cols += '	<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:250px" readonly>'; 
 					cols += '	<option value="' + data[i].productId +'" selected>' + data[i].productNm + '</option>';
 					cols += '	</select>';
 					cols += '</td><td>';
-					cols += '	<select class="form-control" id="productPriceSeq_' + counter + '" name="productPriceSeq_' + counter + '" style="width:80px">';
+					cols += '	<select class="form-control" id="productPriceSeq_' + counter + '" name="productPriceSeq_' + counter + '" style="width:80px" readonly>';
 					cols += '	<option value="' + data[i].productPriceSeq +'" selected>' + data[i].productCapa + '</option>';
 					cols += '	</select> ';
 					cols += '</td><td>';				
@@ -317,9 +311,9 @@ $(document).ready(function(){
 		            newRow.append(cols);
 		            $("table.doc-list").append(newRow);
 		            
-		            initProduct(counter);
+		            //initProduct(counter);
 		            
-		            initModProductCapa(counter);
+		            //initModProductCapa(counter);
 		            
 		            mod_counter = counter;
 		            
@@ -334,6 +328,31 @@ $(document).ready(function(){
 			console.log("fail");
 		 });		
     }
+    
+    $("#goBack").on("click", function () {
+    	
+		var form = document.createElement("form");
+		form.setAttribute("charset","UTF-8");
+		form.setAttribute("method","post");
+		form.setAttribute("action","/gms/report/listAll.do");
+		
+		var hiddenField = document.createElement("input");
+		hiddenField.setAttribute("type", "hidden");
+		hiddenField.setAttribute("name", "searchDt" );
+		hiddenField.setAttribute("value",'[[ ${workReport.searchDt} ]]');
+		form.appendChild(hiddenField);     
+		
+		var hiddenField1 = document.createElement("input");
+		hiddenField1.setAttribute("type", "hidden");
+		hiddenField1.setAttribute("name", "searchUserId");
+		hiddenField1.setAttribute("value", '[[ ${workReport.userId} ]]' );
+		form.appendChild(hiddenField1);     
+		 
+		document.body.appendChild(form);
+		
+		form.submit();			
+                		
+    });
 });
 
 </script>
@@ -427,7 +446,7 @@ $(document).ready(function(){
             <!-- /.card -->
             
 	            <div class="card-footer">
-	                 <a href="#" th:onclick="history.back()"  class="btn btn-secondary float-left">취소</a>
+	                 <input type="button" id="goBack" value="취소"  class="btn btn-secondary float-left">
 			         <input type="button" id="save" value="저장"  class="btn btn-success float-right">
 	            </div>	
 	       

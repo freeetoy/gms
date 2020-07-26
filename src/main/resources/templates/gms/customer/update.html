@@ -308,8 +308,10 @@ $(function() {
 	                 	<tr th:if="${not #lists.isEmpty( customerPriceList )}" th:each="row : ${customerPriceList}">
 	                     <td th:text="${row.productNm}"></td>
 	                     <td th:text="${row.productCapa}"></td>
-	                     <td th:text="${row.productPrice}"></td>
-						 <td th:text="${row.productBottlePrice}"></td>
+	                     <td th:if="${row.productPrice> 999 }"  th:text="${#numbers.formatInteger(row.productPrice, 3, 'COMMA')}"></td> 
+	                     <td th:unless="${row.productPrice> 999 }"  th:text="${row.productPrice}"></td>
+	                     <td th:if="${row.productBottlePrice> 999 }"  th:text="${#numbers.formatInteger(row.productBottlePrice, 3, 'COMMA')}"></td> 
+						 <td th:unless="${row.productBottlePrice> 999 }"  th:text="${row.productBottlePrice}"></td>
 	                   </tr>
 	                 	</tbody>
 	              	</table>   

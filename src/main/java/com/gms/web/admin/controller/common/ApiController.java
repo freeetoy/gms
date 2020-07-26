@@ -125,6 +125,7 @@ public class ApiController {
 		
 		workBottle.setProductId(productId);
 		workBottle.setProductPriceSeq(productPriceSeq);
+		
 		workBottle.setProductCount(productCount);
 		workBottle.setCustomerNm(customerNm);				
 		workBottle.setCreateId(userId);	
