@@ -65,4 +65,10 @@ public interface BottleMapper {
 	public int insertBottleHistorys(List<BottleVO> param);
 	
 	public List<BottleVO> selectDummyBottleList();	
+	
+	public int selectBottleHistCountOfCustomer(Map<String, Object> map);	
+	
+	public List<BottleVO> selectBottleHisListOfCustomer(Map<String, Object> map);
+	
+	public List<BottleVO> selectBottleHistListToExcelOfCustomer(Map<String, Object> map);
 }

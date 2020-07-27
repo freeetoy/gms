@@ -89,8 +89,7 @@ public class BottleController {
 		if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
 			searchProductId = params.getSearchProductId();
 			model.addAttribute("searchProductId", Integer.parseInt(searchProductId));
-			model.addAttribute("searchProductId1", Integer.parseInt(searchProductId));
-			
+			model.addAttribute("searchProductId1", Integer.parseInt(searchProductId));			
 		}
 		
 		// 가스 정보 불러오기
@@ -101,11 +100,11 @@ public class BottleController {
 		String ownCustomerId = "";
 		if(params.getOwnCustomerId() !=null) ownCustomerId = params.getOwnCustomerId();
 		
-		List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList(ownCustomerId);
+		List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList(params.getSearchCustomerNm1());
 		
 		model.addAttribute("customerList", customerList);	
 		model.addAttribute("searchCustomerNm1", params.getSearchCustomerNm1());
-		model.addAttribute("ownCustomerId", params.getOwnCustomerId());
+		if(params.getOwnCustomerId() !=null && params.getOwnCustomerId().length() > 0 ) model.addAttribute("ownCustomerId", Integer.parseInt(params.getOwnCustomerId()) );
 		
 		// 상품 정보 불러오기
 		List<ProductVO> productList = productService.getGasProductList();

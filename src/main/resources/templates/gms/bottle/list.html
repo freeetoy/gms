@@ -1028,14 +1028,13 @@ $(document).ready(function(){
             <div class="col-3">
               <form id="mainForm" name="mainForm"  method="post">
               <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
-              <input type="hidden" id="bottleId" name="bottleId" value="">
+              <input type="hidden" id="bottleId" name="bottleId" th:value="${ownCustomerId}">
               <select id="ownCustomerId" name="ownCustomerId" class="form-control">
                     <option value="">거래처 목록</option>
                   	<option th:each="row : ${customerList}"
 	                th:text="${row.customerNm}"
 	                th:value="${row.customerId}"
-	                th:if="${ownCustomerId ==row.customerId}" selected>
-		     		</option>
+	                th:if="${ownCustomerId ==row.customerId}" selected>		     		
 			     	<option th:each="row : ${customerList}"
 	                th:text="${row.customerNm}"
 	                th:value="${row.customerId}"
@@ -1104,7 +1103,7 @@ $(document).ready(function(){
               </div-->
               <div align=right class="col-3">
               		<a class="btn btn-outline-primary btn-sm" href="/gms/bottle/write.do"><i class="far fa-edit"></i>용기등록</a>&nbsp;
-              		<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchProductId= ${searchProductId} ,searchChargeDt=${searchChargeDt},searchWorkCd=${searchWorkCd},menuType=1 )}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>               
+              		<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchProductId= ${searchProductId} ,searchChargeDt=${searchChargeDt},searchWorkCd=${searchWorkCd},ownCustomerId=${ownCustomerId},menuType=1 )}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>               
               </div>
          </div>
         <div class="row">	

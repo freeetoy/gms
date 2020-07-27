@@ -95,10 +95,16 @@ public class BottleServiceImpl implements BottleService {
 			map.put("bottleWorkCd", param.getBottleWorkCd());
 			//logger.debug("****** getBottleList *****getSearchSalesYn===*"+param.getSearchSalesYn());
 		}		
+		
+		String ownCustomerId = "";
+		if(param.getOwnCustomerId() !=null) {
+			ownCustomerId = param.getOwnCustomerId();
+			map.put("ownCustomerId", ownCustomerId);
+		}
 	
 		int bottleCount = 0;
-		if(param.getOwnCustomerId()!=null)
-			bottleCount = bottleMapper.selectBottleCount(map);
+		if(param.getOwnCustomerId()!=null  && param.getOwnCustomerId().length() > 0 )
+			bottleCount = bottleMapper.selectBottleHistCountOfCustomer(map);
 		else
 			bottleCount = bottleMapper.selectBottleCount(map);
 		
@@ -126,8 +132,11 @@ public class BottleServiceImpl implements BottleService {
 		//수정 end
 		
 		Map<String, Object> resutlMap = new HashMap<String, Object>();
-		
-		List<BottleVO> bottleList = bottleMapper.selectBottleList(map);
+		List<BottleVO> bottleList = null;
+		if(param.getOwnCustomerId()!=null  && param.getOwnCustomerId().length() > 0 )
+			bottleList = bottleMapper.selectBottleHisListOfCustomer(map);
+		else
+			bottleList = bottleMapper.selectBottleList(map);
 		
 		resutlMap.put("list",  bottleList);
 		
@@ -222,7 +231,16 @@ public class BottleServiceImpl implements BottleService {
 			else
 				map.put("searchWorkCd", PropertyFactory.getProperty("common.bottle.status.rent"));
 		}
-		List<BottleVO> bottleList = bottleMapper.selectBottleListToExcel(map);
+		
+		List<BottleVO> bottleList = null;
+		if(param.getOwnCustomerId() !=null && param.getOwnCustomerId().length() > 0 ) {
+			map.put("ownCustomerId", Integer.parseInt(param.getOwnCustomerId()) );
+			bottleList = bottleMapper.selectBottleHistListToExcelOfCustomer(map);
+		}else {
+			bottleList = bottleMapper.selectBottleListToExcel(map);
+		}
+		
+		//List<BottleVO> bottleList = bottleMapper.selectBottleListToExcel(map);
 		
 		
 		return bottleList;
