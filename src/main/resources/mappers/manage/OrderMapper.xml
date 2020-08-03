@@ -532,7 +532,9 @@
 			TB_Order_Product A Left Join (
 					SELECT Count(Work_Seq) Registered_Count,Product_ID, Product_Price_Seq  ,TB.Bottle_Sale_YN
 					FROM TB_Work_Bottle TB,TB_Work_Report TW 
-					WHERE TB.Work_Report_Seq = TW.Work_Report_Seq AND Order_Id = #{orderId}	
+					WHERE TB.Work_Report_Seq = TW.Work_Report_Seq 
+					AND TW.Delete_YN = 'N'
+					AND Order_Id = #{orderId}	
 					Group By Product_ID, Product_Price_Seq  ,TB.Bottle_Sale_YN
 			) TW on (A.Product_ID = TW.product_id AND A.Product_Price_Seq = TW.Product_Price_Seq AND A.Bottle_Sale_YN = TW.Bottle_Sale_YN)
 		WHERE

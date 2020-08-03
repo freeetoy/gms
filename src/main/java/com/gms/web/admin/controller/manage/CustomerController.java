@@ -30,8 +30,6 @@ import com.gms.web.admin.domain.manage.CustomerProductVO;
 import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.UserVO;
-import com.gms.web.admin.domain.manage.WorkBottleVO;
-import com.gms.web.admin.domain.manage.WorkReportViewVO;
 import com.gms.web.admin.service.manage.BottleService;
 import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.manage.ProductService;
@@ -155,9 +153,9 @@ public class CustomerController {
 			UserVO param = new UserVO();
 			param.setUserPartCd(PropertyFactory.getProperty("common.user.SALES"));
 			
-			Map<String, Object> map = userService.getUserList(param);
-			model.addAttribute("userList", map.get("list"));			
-			
+			List<UserVO> userList = userService.getUserListPart(param);
+			model.addAttribute("userList", userList);
+					
 			// Customer_Price
 			List<CustomerPriceExtVO> customerPriceList = customerService.getCustomerPriceList(customerId) ;
 			model.addAttribute("customerPriceList", customerPriceList);	
@@ -514,6 +512,97 @@ public class CustomerController {
 		//return null;
 	}
 	
+	@RequestMapping(value = "/gms/cbottle/cBottleList.do")
+	@ResponseBody
+	public List<CustomerBottleVO> getCustomerBottleList(@RequestParam(value = "customerId", required = false) Integer customerId)	{			
+						
+		return customerService.getCustomerBottleList(customerId);
+
+	}
+	
+	@RequestMapping(value = "/gms/customer/cProductBottleList.do")
+	@ResponseBody
+	public List<CustomerProductVO> getCustomerProductBottleList(@RequestParam(value = "customerId", required = false) Integer customerId)	{			
+						
+		return customerService.getCustomerProductList(customerId);
+
+	}
+	
+	@RequestMapping(value = "/gms/customer/bottle.do")
+	public String getCustomerRentBottle(@RequestParam(value = "searchCustomerNm", required = false) String searchCustomerNm, Model model) {
+		
+		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer.cproduct"));
+		
+		Map<String, Object> map = customerService.searchCustomerList(searchCustomerNm);
+		
+		model.addAttribute("customerList", map.get("list"));	
+		model.addAttribute("searchCustomerNm",searchCustomerNm);		
+					
+		return "gms/customer/bottle";
+	}
+	
+	@RequestMapping(value = "/gms/customer/bottleRegister.do", method = RequestMethod.POST)
+	public ModelAndView registerCustomerProductBottle(HttpServletRequest request
+			, HttpServletResponse response ) {
+		
+		logger.info("CustomerContoller registerCustomerBottle");	
+		ModelAndView mav = new ModelAndView();	
+		int result=0;
+		try {
+			mav.addObject("menuId", PropertyFactory.getProperty("common.menu.customer.cproduct"));
+			mav.addObject("searchCustomerNm", request.getParameter("searchCustomerNm1"));
+			int priceCount  = Integer.parseInt(request.getParameter("priceCount"));
+
+			logger.debug("CustomerContoller registerCustomerProductBottle searchCustomerNm1== "+ request.getParameter("searchCustomerNm1"));
+			logger.debug("CustomerContoller registerCustomerProductBottle priceCount== "+ priceCount);
+
+			List<CustomerProductVO> cBottleList = new ArrayList<CustomerProductVO>();	
+			
+			for(int i =0 ; i < priceCount ; i++ ) {
+				
+				CustomerProductVO cBottle = new CustomerProductVO();
+				
+				RequestUtils.initUserPrgmInfo(request, cBottle);					
+				
+				cBottle.setCustomerId(Integer.parseInt(request.getParameter("customerId1")));
+				cBottle.setProductId(Integer.parseInt(request.getParameter("productId_"+i)));
+				cBottle.setProductPriceSeq(Integer.parseInt(request.getParameter("productPriceSeq_"+i)));
+				cBottle.setBottleRentCount(Integer.parseInt(request.getParameter("bottleRentCount_"+i)));
+				cBottle.setBottleOwnCount(Integer.parseInt(request.getParameter("bottleOwnCount_"+i)));
+				
+				if(cBottle.getBottleRentCount() > 0 || cBottle.getBottleOwnCount() > 0)
+					cBottleList.add(cBottle);				
+			}
+			
+			result = customerService.deleteCustomerProducts(Integer.parseInt(request.getParameter("customerId1")));
+			
+			if(cBottleList.size() > 0) {	
+				result = customerService.registerCustomerProducts(cBottleList);
+			}else {
+				result = -3;
+			}
+			//ID 중복체크			
+			
+		} catch (DataAccessException e) {
+			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		if(result > 0){
+			String alertMessage = "저장되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/customer/bottle.do?searchCustomerNm="+request.getParameter("searchCustomerNm1"));
+		}else if(result ==-3) {
+			String alertMessage = "등록할 정보가 없습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/customer/bottle.do?searchCustomerNm="+request.getParameter("searchCustomerNm1"));
+		}
+		return null;
+		
+	}
+	
 	@RequestMapping(value = "/api/customerList.do")
 	@ResponseBody
 	public List<CustomerSimpleVO> getCustomerList(@RequestParam(value = "searchCustomerNm", required = false) String searchCustomerNm)	{	
@@ -523,16 +612,31 @@ public class CustomerController {
 		
 		return customerList;
 		//return null;
-	}
-	
-	
+	}	
 	
 	@RequestMapping(value = "/api/carList.do")
 	@ResponseBody
 	public List<CustomerSimpleVO> getCarList()	{
 		logger.info("CustomerContoller getCarList");
-				
-		List<CustomerSimpleVO> customerList = customerService.getCarSimpleList();
+		List<CustomerSimpleVO> customerList = null;
+		try {	
+			//customerList = customerService.getCarSimpleList("Y");
+			customerList = customerService.searchCustomerSimpleList("");
+		}catch(Exception e) {
+			return null;
+		}
+		
+		return customerList;
+		//return null;
+	}
+	
+	@RequestMapping(value = "/api/gasCustomerList.do")
+	@ResponseBody
+	public List<CustomerSimpleVO> getGasCustoerList()	{
+		logger.info("CustomerContoller getCarList");
+
+		//List<CustomerSimpleVO> customerList = customerService.getCarSimpleList("G");
+		List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList("");
 		return customerList;
 		//return null;
 	}
@@ -560,12 +664,24 @@ public class CustomerController {
 		//return null;
 	}
 	
-	@RequestMapping(value = "/gms/cbottle/cBottleList.do")
+	@RequestMapping(value = "/api/customerRentBottle.do")
 	@ResponseBody
-	public List<CustomerBottleVO> getCustomerBottleList(@RequestParam(value = "customerId", required = false) Integer customerId)	{			
+	public List<CustomerProductVO> getCustomerRentBottleList(@RequestParam(value = "customerId", required = false)  Integer customerId)	{	
+		
+		logger.info("CustomerContoller getCustomerRentBottleList");
 						
-		return customerService.getCustomerBottleList(customerId);
-
+		List<CustomerProductVO> productList = customerService.getCustomerProductList(customerId);	
+		List<CustomerProductVO> rentBottleList = new ArrayList<CustomerProductVO>();
+		
+		for(int i =0 ; i < productList.size() ; i++) {
+			CustomerProductVO customerProduct = productList.get(i);
+			
+			if(customerProduct.getBottleRentCount() != 0) {
+				rentBottleList.add(customerProduct);
+			}
+		}
+		return rentBottleList;
+		
 	}
 	
 }

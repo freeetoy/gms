@@ -98,7 +98,8 @@
 	</insert>
 
 	<select id="selectProductTotalDetail" parameterType="com.gms.web.admin.domain.manage.ProductTotalVO" resultType="com.gms.web.admin.domain.manage.ProductTotalVO">
-		SELECT
+		 <![CDATA[
+		 SELECT
 			p.Product_ID, 
 			Product_Nm, 
 			Gas_ID, 
@@ -120,6 +121,7 @@
 			p.Product_Status  != '0'
 		AND
 			pp.Product_Status  != '0'		
+			 ]]>
 	</select>
 	
 	<select id="selectProductTotalDetailList"  resultType="com.gms.web.admin.domain.manage.ProductTotalVO">

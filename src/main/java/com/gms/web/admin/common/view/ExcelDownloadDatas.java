@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.gms.web.admin.common.view.ExcelDownloadDatas.Align;
-import com.gms.web.admin.common.view.ExcelDownloadDatas.ColumnInfo;
-import com.gms.web.admin.common.view.ExcelDownloadDatas.FormatType;
 
 public class ExcelDownloadDatas<E> extends ArrayList<E> {
 	private static final long serialVersionUID = -3540238516552791708L;

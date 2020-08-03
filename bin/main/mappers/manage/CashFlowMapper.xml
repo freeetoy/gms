@@ -94,17 +94,29 @@
 	
 	<select id="selectCashFlowList" resultType="com.gms.web.admin.domain.manage.CashFlowVO" parameterType="java.util.Map">
 		SELECT
-			<include refid="CashFlowColumns" />
+			Cash_Flow_Seq         
+			 , TF.Customer_ID  
+			 , Customer_Nm
+			 , Income_Amount    
+			 , Receivable_Amount 		  
+			 , Income_Way		   
+			 , TF.Delete_YN
+			 , TF.Create_ID        
+			 , TF.Create_Dt        
+			 , TF.Update_ID        
+			 , TF.Update_Dt   
 		FROM
-			TB_Cash_Flow
+			TB_Cash_Flow TF, TB_Customer TC
 		WHERE
-			Customer_ID =  #{customerId}	
+			TF.Customer_ID =  #{customerId}	
+		AND
+			TF.Customer_Id  = TC.Customer_Id
 		AND
 			Delete_YN 	= 'N'		
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCreateDt)">
 		AND date_format(Create_Dt,'%Y/%m/%d  %H')  between  #{searchCreateDtFrom} AND  #{searchCreateDtEnd} 
 		</if>		
-		ORDER BY Create_Dt DESC 
+		ORDER BY TF.Create_Dt DESC 
 		Limit #{startRow}, #{rowPerPage}
 	</select>
 	

@@ -186,7 +186,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderAmount*0.1}"></td>
 			<td class="tl_dot" style="border-top-style:none;border-right-width: 1px;" align="center" th:text="${row.orderProductEtc}"></td>
 		</tr>
-		<tr height="20" th:each="seq : ${#numbers.sequence(1,15-orderExt.orderProduct.size())}"> 
+		<tr height="20" th:each="seq : ${#numbers.sequence(1,15-orderExt.orderProduct.size()-(rentBottleList.size()/3+1))}"> 
 			<td class="border_in" style="border-top-style:none;" align="center"></td>
 			<td class="border_in" style="border-top-style:none;border-left-style:none" align="center"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center"></td>
@@ -205,9 +205,9 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 	<tbody>
 		<tr height="20"> 
 			<td width="5%" style="border-style: solid solid solid solid;border-width: 1px;" align="center">수량</td>
-			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center" th:text="${orderExt.order.productCount}">1</td>
+			<td width="14%" style="border-style: solid solid solid none;border-width: 1px;" align="center" th:text="${orderExt.order.productCount}">1</td>
 
-			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">공급가액</td>
+			<td width="6%" style="border-style: solid solid solid none;border-width: 1px;" align="center">공급가액</td>
 			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center" th:text="${#numbers.formatInteger(orderExt.order.orderTotalAmount, 3, 'COMMA')}"></td>
 
 			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">부가세</td>
@@ -220,12 +220,54 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="right">(인)</td>
 		</tr>
 		<tr height="30"> 
-		<td style="border-style: none solid solid solid;border-width: 1px;" align="center">비고</td>
-		<td colspan="9" style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${orderExt.order.orderEtc}"></td>
-		</tr>
+			<td width="6%" style="border-style: none solid solid solid;border-width: 1px;" align="center">미수금액</td>
+			<td width="9%"  style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${cashSum.receivableAmountNet}"></td>
+			<td width="5%" style="border-style: none solid solid none;border-width: 1px;" align="center">비고</td>
+			<td colspan="7" style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${orderExt.order.orderEtc}"></td>
+		</tr>		
 	</tbody>
 	</table>
-
+	<table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto;margin-top: 5px;">
+	<tbody>
+		<tr> 
+			<td width="10%" class="border_in" style="border-top-style:solid;" align="center">대여용기</td>
+			
+			<td width="30%" class="border_in" style="border-top-style:solid;border-right-width: 0px;" align="center" >
+			<table width="100%"  border="1" cellspacing="0" cellpadding="0" >
+				<th:block th:if="${not #lists.isEmpty( rentBottleList )}" th:each="row : ${rentBottleList}">									
+					<tr class="tl_dot" style="border-top-style:solid;border-top-width: 1px;" height="20" th:if="${rentBottleList.indexOf(row)%3==0}">				
+						<td  width="60%" align="center" th:text="${row.productNm}"></td>		
+						<td  width="30%" align="center" th:text="${row.productCapa}"></td>		
+						<td  width="10%" align="center" th:text="${row.bottleRentCount}"></td>		
+					</tr>
+				</th:block>
+			</table>
+			</td>
+			<td width="30%" class="border_in" style="border-top-style:solid;border-right-width: 0px;" align="center" >
+			<table  width="100%" border="0" cellspacing="0" cellpadding="0" >
+				<th:block th:if="${not #lists.isEmpty( rentBottleList )}" th:each="row : ${rentBottleList}">									
+					<tr class="border_in" style="border-top-style:none;" height="20" th:if="${rentBottleList.indexOf(row)%3==1}">		
+						<td  width="60%" align="center" th:text="${row.productNm}"></td>		
+						<td  width="30%" align="center" th:text="${row.productCapa}"></td>		
+						<td  width="10%" align="center" th:text="${row.bottleRentCount}"></td>					
+				</tr>
+				</th:block>
+			</table>
+			</td>
+			<td width="30%" class="tl_dot" style="border-top-style:solid;border-right-width: 1px;" align="center" >
+				<table  width="100%" border="0" cellspacing="0" cellpadding="0" >
+					<th:block th:if="${not #lists.isEmpty( rentBottleList )}" th:each="row : ${rentBottleList}">									
+						<tr class="border_in" style="border-top-style:none;" height="20" th:if="${rentBottleList.indexOf(row)%3==2}">		
+							<td  width="60%" align="center" th:text="${row.productNm}"></td>		
+							<td  width="30%" align="center" th:text="${row.productCapa}"></td>		
+							<td  width="10%" align="center" th:text="${row.bottleRentCount}"></td>						
+						</tr>
+					</th:block>
+				</table>
+			</td>
+		</tr>		
+	</tbody>
+	</table>
 
 	     
 
@@ -237,12 +279,6 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 	</p>
 
 	<br>
-
-
-
-
-
-
 	<table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto;">
 	<tbody>
 		<tr>
@@ -396,7 +432,7 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 			<td class="tl_dot" style="border-top-style:none" align="center" th:text="${row.orderAmount*0.1}"></td>
 			<td class="tl_dot" style="border-top-style:none;border-right-width: 1px;" align="center" th:text="${row.orderProductEtc}"></td>
 		</tr>
-		<tr height="20" th:each="seq : ${#numbers.sequence(1,15-orderExt.orderProduct.size())}"> 
+		<tr height="20" th:each="seq : ${#numbers.sequence(1,15-orderExt.orderProduct.size()-(rentBottleList.size()/3+1))}"> 
 			<td class="border_in" style="border-top-style:none;" align="center"></td>
 			<td class="border_in" style="border-top-style:none;border-left-style:none" align="center"></td>
 			<td class="tl_dot" style="border-top-style:none" align="center"></td>
@@ -414,9 +450,9 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 	<tbody>
 		<tr height="20"> 
 			<td width="5%" style="border-style: solid solid solid solid;border-width: 1px;" align="center">수량</td>
-			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center" th:text="${orderExt.order.productCount}">1</td>
+			<td width="14%" style="border-style: solid solid solid none;border-width: 1px;" align="center" th:text="${orderExt.order.productCount}">1</td>
 
-			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">공급가액</td>
+			<td width="6%" style="border-style: solid solid solid none;border-width: 1px;" align="center">공급가액</td>
 			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="center" th:text="${#numbers.formatInteger(orderExt.order.orderTotalAmount, 3, 'COMMA')}"></td>
 
 			<td width="5%" style="border-style: solid solid solid none;border-width: 1px;" align="center">부가세</td>
@@ -429,11 +465,55 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 			<td width="15%" style="border-style: solid solid solid none;border-width: 1px;" align="right">(인)</td>
 		</tr>
 		<tr height="30"> 
-		<td style="border-style: none solid solid solid;border-width: 1px;" align="center">비고</td>
-		<td colspan="9" style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${orderExt.order.orderEtc}"></td>
-		</tr>
+			<td width="6%" style="border-style: none solid solid solid;border-width: 1px;" align="center">미수금액</td>
+			<td width="9%"  style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${cashSum.receivableAmountNet}"></td>
+			<td width="5%" style="border-style: none solid solid none;border-width: 1px;" align="center">비고</td>
+			<td colspan="7" style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${orderExt.order.orderEtc}"></td>
+		</tr>	
 	</tbody>
 	</table>    
+	<table width="960" border="0" cellspacing="0" cellpadding="0" align="center" style="table-layout:auto;margin-top: 5px;">
+	<tbody>
+		<tr> 
+			<td width="10%" class="border_in" style="border-top-style:solid;" align="center">대여용기</td>
+			
+			<td width="30%" class="border_in" style="border-top-style:solid;border-right-width: 0px;" align="center" >
+			<table width="100%"  border="1" cellspacing="0" cellpadding="0" >
+				<th:block th:if="${not #lists.isEmpty( rentBottleList )}" th:each="row : ${rentBottleList}">									
+					<tr class="tl_dot" style="border-top-style:solid;border-top-width: 1px;" height="20" th:if="${rentBottleList.indexOf(row)%3==0}">				
+						<td  width="60%" align="center" th:text="${row.productNm}"></td>		
+						<td  width="30%" align="center" th:text="${row.productCapa}"></td>		
+						<td  width="10%" align="center" th:text="${row.bottleRentCount}"></td>		
+					</tr>
+				</th:block>
+			</table>
+			</td>
+			<td width="30%" class="border_in" style="border-top-style:solid;border-right-width: 0px;" align="center" >
+			<table  width="100%" border="0" cellspacing="0" cellpadding="0" >
+				<th:block th:if="${not #lists.isEmpty( rentBottleList )}" th:each="row : ${rentBottleList}">									
+					<tr class="border_in" style="border-top-style:none;" height="20" th:if="${rentBottleList.indexOf(row)%3==1}">		
+						<td  width="60%" align="center" th:text="${row.productNm}"></td>		
+						<td  width="30%" align="center" th:text="${row.productCapa}"></td>		
+						<td  width="10%" align="center" th:text="${row.bottleRentCount}"></td>					
+				</tr>
+				</th:block>
+			</table>
+			</td>
+			<td width="30%" class="tl_dot" style="border-top-style:solid;border-right-width: 1px;" align="center" >
+				<table  width="100%" border="0" cellspacing="0" cellpadding="0" >
+					<th:block th:if="${not #lists.isEmpty( rentBottleList )}" th:each="row : ${rentBottleList}">									
+						<tr class="border_in" style="border-top-style:none;" height="20" th:if="${rentBottleList.indexOf(row)%3==2}">		
+							<td  width="60%" align="center" th:text="${row.productNm}"></td>		
+							<td  width="30%" align="center" th:text="${row.productCapa}"></td>		
+							<td  width="10%" align="center" th:text="${row.bottleRentCount}"></td>						
+						</tr>
+					</th:block>
+				</table>
+			</td>
+		</tr>		
+	</tbody>
+	</table>
+	
 	<p></p>
 	 <br>
 	 <!--

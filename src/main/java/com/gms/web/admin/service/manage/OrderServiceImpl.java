@@ -21,7 +21,6 @@ import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
 import com.gms.web.admin.domain.manage.CustomerPriceVO;
-import com.gms.web.admin.domain.manage.CustomerProductVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.OrderBottleVO;
 import com.gms.web.admin.domain.manage.OrderExtVO;
@@ -420,7 +419,7 @@ public class OrderServiceImpl implements OrderService {
 		result =  orderMapper.insertOrderProduct(param);		
 		//if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
 		
-		return result;// TODO Auto-generated method stub
+		return result;
 
 	}
 
@@ -906,7 +905,7 @@ public class OrderServiceImpl implements OrderService {
 			list = StringUtils.makeForeach(param.getOrderIds(), ","); 	
 		}	
 		
-		List<Integer> orderList = new ArrayList();
+		List<Integer> orderList = new ArrayList<Integer>();
 		for(int i = 0 ; i < list.size() ; i++) {
 			if(list.get(i) != null) {
 				int orderId = Integer.parseInt(list.get(i));
@@ -1071,6 +1070,12 @@ public class OrderServiceImpl implements OrderService {
 	public int deleteOrderBottle(OrderBottleVO param) {
 		
 		return orderMapper.deleteOrderBottle(param);
+	}
+
+	@Override
+	public List<OrderProductVO> getOrderProductListNotDelivery(Integer orderId) {
+		
+		return orderMapper.selectOrderProductListNotDelivery(orderId);
 	}
 	
 	

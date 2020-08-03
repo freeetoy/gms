@@ -43,5 +43,6 @@
         <appender-ref ref="STDOUT" />
         <appender-ref ref="ROLLING_FILE" />   
     </root>
+ 
     
 </configuration>

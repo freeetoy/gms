@@ -1,6 +1,5 @@
 package com.gms.web.admin.controller.manage;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,10 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.web.utils.RequestUtils;
-import com.gms.web.admin.domain.common.CodeVO;
 import com.gms.web.admin.domain.manage.CashFlowVO;
 import com.gms.web.admin.domain.manage.CashSumVO;
-import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.service.manage.CashFlowService;
 import com.gms.web.admin.service.manage.CustomerService;
 
@@ -36,6 +33,34 @@ public class CashFlowController {
 	@Autowired
 	private CustomerService customerService;
 	
+	@RequestMapping(value = "/gms/cash/register.do", method = RequestMethod.POST)
+	public ModelAndView registerCashFlow(
+			HttpServletRequest request
+			, HttpServletResponse response
+			, CashFlowVO param) {
+		
+		int result = 0;
+		ModelAndView mav = new ModelAndView();		
+		
+		RequestUtils.initUserPrgmInfo(request, param);		
+		param.setUpdateId(param.getCreateId());
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.cash"));
+		
+		
+		if(request.getParameter("customerId1") != null)
+			param.setCustomerId(Integer.parseInt(request.getParameter("customerId1")) );
+		logger.debug("customerId = "+param.getCustomerId());
+		
+		if(param.getIncomeAmount() <=0)
+			param.setIncomeWay(null);
+
+		result = cashService.registerCashFlow(param);
+		if(result > 0){
+			String alertMessage = "등록되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/cash/list.do?customerId="+param.getCustomerId() );
+		}
+		return null;
+	}
 	
 	@RequestMapping(value = "/gms/cash/modify.do", method = RequestMethod.POST)
 	public ModelAndView modifyCashFlow(
@@ -51,11 +76,16 @@ public class CashFlowController {
 		
 		int result = 0;
 		//TODO 판매완료된 상품 주문 수정 안되게 처리
+		logger.debug("CashFlowController modifyCashFlow customerId="+param.getCustomerId());
+		logger.debug("CashFlowController modifyCashFlow getSearchCreateDt="+param.getSearchCreateDt());
 		
 		result = cashService.modifyCashFlow(param);
 		if(result > 0){
 			String alertMessage = "수정되었습니다.";
-			RequestUtils.responseWriteException(response, alertMessage, "/gms/cash/list.do?currentPage="+param.getCurrentPage()+"&customerId="+param.getCustomerId()+"&searchCreateDt="+param.getSearchCreateDt() );
+			String strUrl = "/gms/cash/list.do?currentPage="+param.getCurrentPage();
+			if(param.getCustomerId() !=null && param.getCustomerId() > 0) strUrl +="&customerId="+param.getCustomerId();
+			if(param.getSearchCreateDt() !=null && param.getSearchCreateDt().length() > 0) strUrl +="&searchCreateDt="+param.getSearchCreateDt();
+			RequestUtils.responseWriteException(response, alertMessage, strUrl );
 		}
 		return null;
 	}
@@ -81,7 +111,10 @@ public class CashFlowController {
 		result = cashService.deleteCashFlow(param);
 		if(result > 0){
 			String alertMessage = "삭제되었습니다.";
-			RequestUtils.responseWriteException(response, alertMessage, "/gms/cash/list.do?currentPage="+param.getCurrentPage()+"&customerId="+customerId+"&searchCreateDt="+param.getSearchCreateDt() );
+			String strUrl = "/gms/cash/list.do?currentPage="+param.getCurrentPage();
+			if(param.getCustomerId() !=null && param.getCustomerId() > 0) strUrl +="&customerId="+param.getCustomerId();
+			if(param.getSearchCreateDt() !=null && param.getSearchCreateDt().length() > 0) strUrl +="&searchCreateDt="+param.getSearchCreateDt();
+			RequestUtils.responseWriteException(response, alertMessage, strUrl );
 		}
 		return null;
 	}

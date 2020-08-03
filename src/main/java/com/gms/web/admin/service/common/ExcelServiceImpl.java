@@ -73,7 +73,7 @@ public class ExcelServiceImpl implements ExcelService {
 	
 	@Override
 	@Transactional
-	public int uploadBottleExcelFile(MultipartHttpServletRequest request,
+	public Map<String,Object> uploadBottleExcelFile(MultipartHttpServletRequest request,
 			MultipartFile excelFile) {
 		
         List<BottleVO> list = new ArrayList<BottleVO>();
@@ -87,6 +87,7 @@ public class ExcelServiceImpl implements ExcelService {
         int result = 0;
         int updateCount = 0;
         int insertCount = 0;
+        Map<String, Object> map = new HashMap<String, Object>();	
         
         try {
         	logger.debug("$$$$$$$$$$$$$$ ExcelService HSSFSheet start ");
@@ -116,7 +117,6 @@ public class ExcelServiceImpl implements ExcelService {
                 
               //용기	바코드/RFID	가스	품명	용기체적	가스용량	충전용량	충전기한	충전압력	제조일	거래처	작업	소유	
                 //0		1			2	3	4		5		6		7		8		9		10		11	12
-
                 //N:자사소유                //Y:타사소유                
                 
                 String colValue="";
@@ -160,11 +160,9 @@ public class ExcelServiceImpl implements ExcelService {
 		                        colValue = "";
 	                    }
 	                	
-	                	//logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ colValue);
-	                	
+	                	//logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ colValue);	                	
 	                	//용기	바코드/RFID	가스	품명	용기체적	가스용량	충전용량	충전기한	충전압력	제조일	거래처	작업	소유	
-	                    //0		1			2	3	4		5		6		7		8		9		10		11	12
-	
+	                    //0		1			2	3	4		5		6		7		8		9		10		11	12	
 	                    //N:자사소유
 	                    //Y:타사소유                	
 	                	
@@ -237,19 +235,31 @@ public class ExcelServiceImpl implements ExcelService {
 	                	}
                 	}
                 }
-                
+                /*
                 ProductTotalVO productTotal = null;
-
+                
                 for(int k=0;k<productList.size();k++) {
                 	ProductTotalVO productTemp = productList.get(k);
+                	 logger.debug("ExcelSerive uploadExcelFile productTemp.productNm=="+ productTemp.getProductNm());
+                	 logger.debug("ExcelSerive uploadExcelFile productTemp.productCapa=="+ productTemp.getProductCapa());
                 	if(productTemp.getProductNm().equals(productNm) && productTemp.getProductCapa().equals(productCapa)) {
+                		logger.debug("ExcelSerive uploadExcelFile Equal");
                 		productTotal = productTemp;
                 	}                	
                 }
+                */
+                ProductTotalVO productTotal = new ProductTotalVO();
+                productTotal.setProductNm(productNm);
+                productTotal.setProductCapa(productCapa);
+                
+                //logger.debug("&&&  ExcelService productNm "+ productNm);
+                //logger.debug("$$$$$$$$$$$$$$ ExcelService productCapa "+ productCapa);
+                
+                productTotal = productService.getProductTotalDetails(productTotal);
                 
                 //productTotal = productService.getProductTotalDetails(productTotal);
                 
-                if(productTotal != null) {
+                if(productTotal != null && productTotal.getProductId() > 0 ) {
 	                
 	                bottle.setProductId(productTotal.getProductId());
 	                bottle.setProductPriceSeq(productTotal.getProductPriceSeq());
@@ -283,8 +293,13 @@ public class ExcelServiceImpl implements ExcelService {
             if(list.size() > 0)
             	result = bottleService.registerBottles(list);
             
+            map.put("insertCount", insertCount);
+            map.put("updateCount", updateCount);
+            map.put("exception",sb.toString());
+            map.put("result", result);
+            
             excelWB.close();
-            logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
+            logger.info("$$$$$$$$$$$$$$ ExcelService result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
             
         } catch (org.apache.poi.openxml4j.exceptions.OLE2NotOfficeXmlFileException e) {
         	try {
@@ -356,7 +371,7 @@ public class ExcelServiceImpl implements ExcelService {
                         }
                     	
                     	//if(i==0 && colValue.equals("end")) break;
-                    	logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ colValue);
+                    	//logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ colValue);
                     	
                     	//용기	바코드/RFID	가스	품명	용기체적	가스용량	충전용량	충전기한	충전압력	제조일	거래처	작업	소유	
                         //0		1			2	3	4		5		6		7		8		9		10		11	12
@@ -437,26 +452,23 @@ public class ExcelServiceImpl implements ExcelService {
                     		else bottle.setBottleOwnYn("Y");
                     	}
                     }
-                    logger.debug("&&&  ExcelService productNm "+ productNm);
-                    /*
+                   
+                   
                     ProductTotalVO productTotal = new ProductTotalVO();
                     productTotal.setProductNm(productNm);
                     productTotal.setProductCapa(productCapa);
-                    
-                    //logger.debug("&&&  ExcelService productNm "+ productNm);
-                    //logger.debug("$$$$$$$$$$$$$$ ExcelService productCapa "+ productCapa);
-                    
+            
                     productTotal = productService.getProductTotalDetails(productTotal);
-                    */
-                    ProductTotalVO productTotal = null;
-
+                   
+                  /*
                     for(int k=0;k<productList.size();k++) {
                     	ProductTotalVO productTemp = productList.get(k);
                     	if(productTemp.getProductNm().equals(productNm) && productTemp.getProductCapa().equals(productCapa)) {
                     		productTotal = productTemp;
                     	}                	
                     }
-                    if(productTotal != null) {
+                    */
+                    if(productTotal != null && productTotal.getProductId() > 0) {
     	                
     	                bottle.setProductId(productTotal.getProductId());
     	                bottle.setProductPriceSeq(productTotal.getProductPriceSeq());
@@ -490,24 +502,32 @@ public class ExcelServiceImpl implements ExcelService {
                 if(list.size() > 0)
                 	result = bottleService.registerBottles(list);
                 
+                map.put("insertCount", insertCount);
+                map.put("updateCount", updateCount);
+                map.put("exception",sb.toString());
+                map.put("result", result);
                 
                 workbook.close();
-                logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
+                logger.info("$$$$$$$$$$$$$$ ExcelService result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
         	} catch (Exception e1) {
         		e.printStackTrace();
-        		return -1;
+        		map.put("result", -1);
+        		return map;
         	}
         } catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();
-			return -1;
+			map.put("result", -1);
+    		return map;
 		} catch (Exception e) {
 			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
 			e.printStackTrace();
-			return -1;
+			map.put("result", -1);
+    		return map;
 		}
-        return result;
+        return map;
 	}
+	
 	
 	@Override
 	@Transactional
@@ -671,7 +691,7 @@ public class ExcelServiceImpl implements ExcelService {
             	result = bottleService.registerBottles(list);
             
             workbook.close();
-            logger.debug("$$$$$$$$$$$$$$ ExcelService  uploadBottleExcelFileGMS result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
+            logger.info("$$$$$$$$$$$$$$ ExcelService  uploadBottleExcelFileGMS result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
            
         } catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -791,7 +811,7 @@ public class ExcelServiceImpl implements ExcelService {
             	result = customerService.registerCustomers(list);
             else
             	result = 1;
-            logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result);
+            logger.info("$$$$$$$$$$$$$$ ExcelService result "+ result);
             excelWB.close();
         } catch (org.apache.poi.poifs.filesystem.OfficeXmlFileException e) {
         	try {
@@ -1177,7 +1197,7 @@ public class ExcelServiceImpl implements ExcelService {
 
             if(list.size() > 0) result = customerService.registerCustomerPrices(list);
             else result = 1;
-            logger.debug("$$$$$$$$$$$$$$ ExcelService result "+ result+" insertCount="+insertCount+"==not insert =="+sb.toString());
+            logger.info("$$$$$$$$$$$$$$ ExcelService result "+ result+" insertCount="+insertCount+"==not insert =="+sb.toString());
             
             result = orderService.modifyOrderAmountAll();
             

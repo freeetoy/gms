@@ -3,7 +3,6 @@ package com.gms.web.admin.service.manage;
 import java.util.List;
 import java.util.Map;
 
-import com.gms.web.admin.common.domain.Criteria;
 import com.gms.web.admin.domain.manage.UserVO;
 
 

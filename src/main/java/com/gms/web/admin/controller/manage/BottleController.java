@@ -100,7 +100,9 @@ public class BottleController {
 		String ownCustomerId = "";
 		if(params.getOwnCustomerId() !=null) ownCustomerId = params.getOwnCustomerId();
 		
-		List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList(params.getSearchCustomerNm1());
+		List<CustomerSimpleVO> customerList = null;
+		if(params.getSearchCustomerNm1()!=null && params.getSearchCustomerNm1().length() > 0)
+			customerList = customerService.searchCustomerSimpleList(params.getSearchCustomerNm1());
 		
 		model.addAttribute("customerList", customerList);	
 		model.addAttribute("searchCustomerNm1", params.getSearchCustomerNm1());
@@ -468,9 +470,7 @@ public class BottleController {
 		if(params.getSearchProductId() != null ) searchProductId = params.getSearchProductId();		
 		
 		try {
-						
-			//logger.debug("******params.getBottleId()()) *****===*"+params.getBottleId());
-			
+
 			int  result = bottleService.modifyBottle(params);
 			
 			model.addAttribute("searchBottleId", params.getSearchBottleId());
@@ -799,21 +799,27 @@ public class BottleController {
 	@ResponseBody
 	public BottleVO getBottleDetail(String bottleBarCd)	{		
 		
-		BottleVO bottle =  bottleService.getBottleDetailForBarCd(bottleBarCd);			
-		
-		if(bottle!=null) {
-			if(bottle.getBottleCapa() == null || (bottle.getBottleCapa()!=null && bottle.getBottleCapa().length() == 0)) {
-				bottle.setBottleCapa("-");
-				bottle.setChargeCapa("-");
-			}
+		try {
+			BottleVO bottle =  bottleService.getBottleDetailForBarCd(bottleBarCd);			
 			
-			bottle.setSuccess(true);
+			if(bottle!=null) {
+				if(bottle.getBottleCapa() == null || (bottle.getBottleCapa()!=null && bottle.getBottleCapa().length() == 0)) {
+					bottle.setBottleCapa("-");
+					bottle.setChargeCapa("-");
+				}
+				
+				bottle.setSuccess(true);
+			}
+			else {
+				bottle = new BottleVO();
+				bottle.setSuccess(false);
+			}
+			return bottle;
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("**************** getBottleDetail bottleBarCd== "+bottleBarCd);
+			return null;
 		}
-		else {
-			bottle = new BottleVO();
-			bottle.setSuccess(false);
-		}
-		return bottle;
 	}
 	
 	

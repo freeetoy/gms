@@ -236,11 +236,11 @@
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
 					<ul class="pagination">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
-							<a href="#" th:onclick="gotoPage([[ ${currentPage -1} ]])" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+							<a href="#" th:onclick="gotoPage([[ ${currentPage -1} ]])" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">이전</a>
 						</li>
 						
 						<li th:if="${currentPage<=1}" class="paginate_button page-item previous disabled" id="example2_previous">
-							<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+							<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">이전</a>
 						</li>
 						<th:block th:each="num:${#numbers.sequence(startPageNum, lastPageNum)}">
 						
@@ -254,10 +254,10 @@
 						</th:block>
 					
 						<li th:if="${currentPage < lastPage}" class="paginate_button page-item next" id="example2_next">
-						<a href="#" th:onclick="gotoPage([[ ${currentPage +1} ]])" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+						<a href="#" th:onclick="gotoPage([[ ${currentPage +1} ]])" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">다음</a>
 						</li>
 						<li th:if="${currentPage >= lastPage}" class="paginate_button page-item next disabled" id="example2_next">
-						<a href="#"  aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+						<a href="#"  aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">다음</a>
 						</li>
         			</ul>
 				</div>

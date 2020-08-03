@@ -5,12 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
-import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -26,11 +22,10 @@ import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.common.utils.ExcelStyle;
 import com.gms.web.admin.common.utils.StringUtils;
-import com.gms.web.admin.domain.statistics.StatisticsBottleVO;
 import com.gms.web.admin.domain.statistics.StatisticsOrderVO;
 import com.gms.web.admin.domain.statistics.StatisticsSalesVO;
 import com.gms.web.admin.service.statistics.StatisticsOrderService;
-import com.gms.web.admin.service.statistics.StatisticsProductService;
+
 
 @Controller
 public class StatisticsOrderController {

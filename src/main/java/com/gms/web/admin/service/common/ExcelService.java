@@ -1,11 +1,13 @@
 package com.gms.web.admin.service.common;
 
+import java.util.Map;
+
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 public interface ExcelService {
 
-	public int uploadBottleExcelFile(MultipartHttpServletRequest request, MultipartFile excelFile);
+	public Map<String,Object> uploadBottleExcelFile(MultipartHttpServletRequest request, MultipartFile excelFile);	
 	
 	public int uploadBottleExcelFileGMS(MultipartHttpServletRequest request, MultipartFile excelFile);
 	

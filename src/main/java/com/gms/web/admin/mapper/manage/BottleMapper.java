@@ -28,6 +28,8 @@ public interface BottleMapper {
 	
 	public BottleVO selectBottleDetail(String bottleId) ;
 	
+	public BottleVO selectLastBottleHist(String bottleId) ;
+	
 	public BottleVO selectBottleDetailForBarCd(String bottleBarCd) ;
 	
 	public List<BottleVO> selectBottleDetails(BottleVO param) ;
@@ -51,6 +53,10 @@ public interface BottleMapper {
 	public int deleteBottle(BottleVO param);
 	
 	public int deleteBottles(BottleVO param);
+	
+	public int deleteCustomerIdOfBottle(BottleVO param);
+	
+	public int deleteCustomerIdOfBottleHist(BottleVO param);
 
 	public int selectBottleCount(Map<String, Object> map);	
 
@@ -63,6 +69,8 @@ public interface BottleMapper {
 	public int insertBottleHistory(BottleVO param);
 	
 	public int insertBottleHistorys(List<BottleVO> param);
+	
+	public BottleVO selectDummyBottle(BottleVO param);	
 	
 	public List<BottleVO> selectDummyBottleList();	
 	

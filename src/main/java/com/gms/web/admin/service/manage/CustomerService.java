@@ -26,7 +26,7 @@ public interface CustomerService {
 	
 	public String searchCustomerSimpleListString(String customerNm);
 
-	public List<CustomerSimpleVO> getCarSimpleList();
+	public List<CustomerSimpleVO> getCarSimpleList(String carYn);
 	
 	public CustomerVO getCustomerDetails(Integer customerId);
 	
@@ -71,6 +71,10 @@ public interface CustomerService {
 	public List<CustomerProductVO> getCustomerProductList(Integer customerId);
 	
 	public int registerCustomerProduct(CustomerProductVO param);	
+	
+	public int registerCustomerProducts(List<CustomerProductVO> params);	
+	
+	public int deleteCustomerProducts(Integer customerId);
 	
 	public int modifyCustomerProductOwnCount(CustomerProductVO param);
 	

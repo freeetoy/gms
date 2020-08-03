@@ -194,7 +194,6 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	
-	
 	@Override
 	@Transactional
 	public boolean modifyCustomerStatus(CustomerVO param) {
@@ -261,7 +260,6 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerList;
 	}
 
-	
 
 	@Override
 	public List<CustomerVO> searchCustomerListCar() {
@@ -270,7 +268,6 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerList;
 	}
 
-	
 	
 	@Override
 	@Transactional
@@ -306,8 +303,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public int registerCustomerPrices(List<CustomerPriceVO> param) {
 		int result = 0;	
 		
-		//result = customerMapper.deleteCustomerPrices(param);
-		
+		//result = customerMapper.deleteCustomerPrices(param);		
 		result = customerMapper.insertCustomerPrices(param);
 				
 		return result;
@@ -370,8 +366,8 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public List<CustomerSimpleVO> getCarSimpleList() {
-		return customerMapper.selectCarSimpleList();
+	public List<CustomerSimpleVO> getCarSimpleList(String carYn) {
+		return customerMapper.selectCarSimpleList(carYn);
 	}
 
 	@Override
@@ -428,6 +424,18 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<CustomerPriceVO> getCustomerPriceListAllNow() {
 		
 		return customerMapper.selectCustomerPriceListAllNow();
+	}
+
+	@Override
+	public int registerCustomerProducts(List<CustomerProductVO> params) {
+		
+		return customerMapper.insertCustomerProducts(params);
+	}
+
+	@Override
+	public int deleteCustomerProducts(Integer customerId) {
+		
+		return customerMapper.deleteCustomerProduct(customerId);
 	}	
 
 

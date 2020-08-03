@@ -28,6 +28,8 @@ $(function() {
 	 
 	});
 	
+	
+
 $(document).ready(function(){ 	
 	
  	// 거래명세서 출력
@@ -354,7 +356,7 @@ $(document).ready(function(){
  		console.log("start btn_bottle_search}");
  		//$("#mcustomerNm").val
  		var bottleId = $("#bottleId").val(); 
- 		console.log("start bottleId" +bottleId);
+ 		
 			var ajaxInfo ={
 					type:"POST",
 					url:"/gms/bottle/detail.do",
@@ -480,7 +482,14 @@ $(document).ready(function(){
 	        hiddenField2.setAttribute("name", "bottlesIds");
 	        hiddenField2.setAttribute("value", bottlesIds);
 
-	        form.appendChild(hiddenField2);    
+	        form.appendChild(hiddenField2);  
+	        
+	        var hiddenField3 = document.createElement("input");
+	        hiddenField3.setAttribute("type", "hidden");
+	        hiddenField3.setAttribute("name", "userId");
+	        hiddenField3.setAttribute("value", $("#searchUserId").val());
+
+	        form.appendChild(hiddenField3); 
 	        
 	        document.body.appendChild(form);
 	        
@@ -543,6 +552,14 @@ $(document).ready(function(){
 	        hiddenField4.setAttribute("value", productCount);
 	        form.appendChild(hiddenField4);  
 	        
+	        var hiddenField5 = document.createElement("input");
+	        hiddenField5.setAttribute("type", "hidden");
+	        hiddenField5.setAttribute("name", "userId");
+	        hiddenField5.setAttribute("value", $("#searchUserId").val());
+
+	        form.appendChild(hiddenField5); 
+	        
+	        
 	        document.body.appendChild(form);
 	        
 	        form.submit();				
@@ -568,7 +585,7 @@ $(document).ready(function(){
     $(".btn_ecount").click(function()  
     {
  	   var searchDt = $('#searchDt').val();
- 	   console.log("searchDt=="+searchDt);
+ 	   
  	   var form = document.createElement("form");
 		form.setAttribute("charset","UTF-8");
 		form.setAttribute("method","post");
@@ -584,9 +601,55 @@ $(document).ready(function(){
         
         form.submit();		
     });
+    
+    
+    
+    $(".btn_select_delete").click(function()  
+	{
+		var workReportSeq = $(this).attr('workReportSeq'); 				
+		var searchUserId = $("#searchUserId").val(); 	
+		var searchDt = $('#searchDt').val();
+		
+		console.log("workReportSeq ="+workReportSeq);
+		console.log("searchUserId ="+searchUserId);
+		console.log("searchDt ="+searchDt);
+		if(confirm("삭제하시겠습니까?")){	
+    		
+    		var form = document.createElement("form");
+    		form.setAttribute("charset","UTF-8");
+    		form.setAttribute("method","post");
+    		form.setAttribute("action","/gms/report/delete.do");
+    		
+    		var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", "workReportSeq");
+            hiddenField.setAttribute("value", workReportSeq);
+
+            form.appendChild(hiddenField); 
+    		
+    		var hiddenField1 = document.createElement("input");
+            hiddenField1.setAttribute("type", "hidden");
+            hiddenField1.setAttribute("name", "searchDt");
+            hiddenField1.setAttribute("value", searchDt);
+
+            form.appendChild(hiddenField1);     
+            
+            var hiddenField2 = document.createElement("input");
+	        hiddenField2.setAttribute("type", "hidden");
+	        hiddenField2.setAttribute("name", "searchUserId");
+	        hiddenField2.setAttribute("value", $("#searchUserId").val());
+
+	        form.appendChild(hiddenField2); 
+	        
+            document.body.appendChild(form);
+
+            form.submit();			
+    	}                  
+	});	
 });
 	
 </script>
+
    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -688,7 +751,6 @@ $(document).ready(function(){
 										</div>
 										</tr>										
 									</table>
-											
 									
 									</form>
 									<div class="ln_solid"></div>
@@ -697,7 +759,6 @@ $(document).ready(function(){
 											<button type="button"  class="close" data-dismiss="modal" >Close</button>
 										</div>
 									</div>
-									
 									
 									<div id="test_char">
 									</div>
@@ -717,7 +778,7 @@ $(document).ready(function(){
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
-		             	<h4 class="modal-title">용기정보</h4>
+		             	<h4 class="modal-title">단품판매</h4>
 		              	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		                <span aria-hidden="true">&times;</span>
 		              	</button>
@@ -837,7 +898,7 @@ $(document).ready(function(){
          	</div>	
              </form> 
          </div>
-         <div class="row">	
+        <div class="row">	
 	        <div class="col-12">
 	        <table class="table table-hover">
 	        <tr></tr>
@@ -859,6 +920,7 @@ $(document).ready(function(){
                       <th>회수</th>                      
                       <th>금액</th>
                       <th>수금액</th>
+                      <th>삭제</th>
                     </tr>
                   </thead>
                   <tbody>                 
@@ -870,7 +932,6 @@ $(document).ready(function(){
                       	<table>     
                       	<tr th:if="${not #lists.isEmpty(row.salesBottles )}" th:each="row1 : ${row.salesBottles}"  >
                       		<td th:text="${row1.productNm} + ' ' + ${row1.productCapa}+ ' ' + ${row1.productCount} + ' (' + ${row1.bottleWorkCdNm} + ')' ">
-
                       	</tr>
                       	</table>
                       </td>
@@ -884,12 +945,14 @@ $(document).ready(function(){
                       <td th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
                       <td th:unless="${row.orderAmount> 0 }" th:text="${row.orderAmount}">
                       <td th:if="${row.receivedAmount> 0 }" th:text="${#numbers.formatInteger(row.receivedAmount, 3, 'COMMA')} + ${row.incomeWay} ">
-		     		  <td th:unless="${row.receivedAmount> 0 }" th:text="${row.receivedAmount} +  ${row.incomeWay} "></td>		     		                  
+		     		  <td th:unless="${row.receivedAmount> 0 }" th:text="${row.receivedAmount} +  ${row.incomeWay} "></td>	
+		     		  </td>
+		     		  <td><a class="btn_select_delete btn btn-danger btn-xs" th:workReportSeq="${row.workReportSeq}" th:customerNm1="${row.customerNm}"   href="#"><i class="fas fa-trash"></i>삭제</a></td>    
+                 
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( workList )}">
 						<td colspan="6">조회된 결과가 없습니다.</td>
-					</tr>		
-										  
+					</tr>												  
                   </tbody>					
                 </table>                
               </div>
@@ -912,12 +975,11 @@ $(document).ready(function(){
         	</div>
         </div>
         <div class="row">
-        <div class="col-12"><Br>
-        </div>
+	        <div class="col-12"><Br>
+	        </div>
         </div>
       </div><!-- /.container-fluid -->
-     
-    </section>
+     </section>
     <!-- /.content -->
   </div>
  

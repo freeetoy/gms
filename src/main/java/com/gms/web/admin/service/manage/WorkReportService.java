@@ -58,5 +58,13 @@ public interface WorkReportService {
 	public int modifyWorkBottlePrice(WorkBottleVO param);
 	
 	//public int registerWorkGasAndBottle(WorkBottleVO param);
-	public int modifyWorkBottleManual(HttpServletRequest request, WorkReportVO param);
+	public int modifyWorkBottleManual(HttpServletRequest request, WorkReportVO param);	
+	
+	public List<WorkBottleVO> getWorkBottleListOfUser(WorkReportVO param);		
+	
+	public int registerWorkReportMassNoOrder(WorkBottleVO param);
+	
+	public int registerWorkReportMassByBottle(WorkBottleVO param);
+	
+	public int deleteWorkReport(WorkReportVO param);
 }

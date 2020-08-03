@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.gms.web.admin.common.domain.Criteria;
 import com.gms.web.admin.domain.manage.UserVO;
 
 @Mapper

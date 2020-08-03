@@ -42,7 +42,7 @@ $(document).ready(function(){
         cols += '</td><td>';
         cols += ' <select class="form-control" id="productPriceSeq_' + mod_counter + '" name="productPriceSeq_' + mod_counter + '" style="width:80px"></select> ';
 		cols += '</td><td>';
-		cols += ' <input type="number" class="form-control" id="productCount_' + mod_counter + '" name="productCount_' + mod_counter + '" style="width:60px;height:35px;" onkeypress="return event.charCode >= 48" min="0" max="99999" value="1">';
+		cols += ' <input type="number" class="form-control" id="productCount_' + mod_counter + '" name="productCount_' + mod_counter + '" style="width:80px;height:35px;" onkeypress="return event.charCode >= 48" min="0" max="99999" value="1">';
 		cols += '</td><td>'; 
         cols += ' <input type="button" class="ibtnDelMod btn btn-md btn-danger" id="addrow" value="삭제" />';
         cols += '</td>';
@@ -136,13 +136,13 @@ $(document).ready(function(){
 		for(i=0 ; i < totalCount ; i++){ 
 	    	if($("#bottleWorkCd_"+i).val() == "0" ){
 	    		//alert("document.mainForm.customerId.value== "+document.mainForm.customerId.value );
-	    		alert('구분을 입력 하세요');      
+	    		alert('구분을 선택 하세요');      
 	    		return false;
 	    	}
 	    	
 	    	if($("#productId_"+i).val() == "0"  || $("#productCapa_0").val() == "0"  ){
 	    		//alert("document.mainForm.customerId.value== "+document.mainForm.customerId.value );
-	    		alert('상품을 입력 하세요');     
+	    		alert('상품을 선택 하세요');     
 	    		return false;
 	    	}
 	    		
@@ -297,7 +297,7 @@ $(document).ready(function(){
 					cols += '	<option value="' + data[i].productPriceSeq +'" selected>' + data[i].productCapa + '</option>';
 					cols += '	</select> ';
 					cols += '</td><td>';				
-					cols += '	<input type="number" class="form-control" id="productCount_' + counter + '" name="productCount_' + counter + '" value="' + data[i].productCount + '" style="width:60px;height:35px;" onkeypress="return event.charCode >= 48" min="0" max="99999">';
+					cols += '	<input type="number" class="form-control" id="productCount_' + counter + '" name="productCount_' + counter + '" value="' + data[i].productCount + '" style="width:80px;height:35px;" onkeypress="return event.charCode >= 48" min="0" max="99999">';
 					cols += '</td><td>';  
 	
 					if (counter < 1){	
@@ -432,7 +432,7 @@ $(document).ready(function(){
 									    </select>	   
 			                       </td>   
 			                       <td>
-		                             <input type="number" id="orderCount_0" name="orderCount_0" style="width:60px;height:35px;" onkeypress="return event.charCode >= 48" min="0" max="99999"> 
+		                             <input type="number" id="orderCount_0" name="orderCount_0" style="width:80px;height:35px;" onkeypress="return event.charCode >= 48" min="0" max="99999"> 
 		                           </td>	                      
 			                       <td>
 			                       <input type="button" class="btn btn-default btn-success" id="addrow" value="추가" />
@@ -452,7 +452,13 @@ $(document).ready(function(){
 	       
 	            </form>             	
         </div>
-        
+        <div class="row">	
+		        <div class="col-10">	        	
+		        <table class="table table-hover">	
+		        <tr><td  style='color: red'>(이미 등록된 납품 상품은 수량을 0으로 등록하면 삭제가 됩니다)</td></tr>
+		         </table>
+		        </div>
+	        </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>

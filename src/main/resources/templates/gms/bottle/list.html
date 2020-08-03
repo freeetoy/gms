@@ -446,7 +446,7 @@ $(document).ready(function(){
        var bottleWorkCd = '';
        $("#view_car").hide();
        
-       console.log("bottleIds ="+bottleIds);
+       
        if(bottleIds ==''){
     	   alert("용기를 선택하세요");
     	   return ;
@@ -501,14 +501,12 @@ $(document).ready(function(){
          			
          			ajax.done(function(data){
          				//console.log(data);
-         				for(i=0; i< data.length;i++) {
-         					console.log(data[i]);      
+         				for(i=0; i< data.length;i++) {         					  
          					$('#customerId1').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')					
-         				}			
-         				
+         				}			         				
          		})
-         		       .fail(function(){
-         			  console.log("fail");
+       		       .fail(function(){
+       			  console.log("fail");
          		});
              break;  
            case 'btn_process_7':
@@ -530,8 +528,7 @@ $(document).ready(function(){
       
 		if(bottleType ==''){
 			alert("용기타입을 선택해주세요");
-			return;
-			
+			return;			
 		}
       
        if(bottleWorkCd=='0301' || bottleWorkCd=='0307'|| bottleWorkCd=='0306'){	   	 
@@ -1023,7 +1020,7 @@ $(document).ready(function(){
       
         <div class="row">        	
             <div class="col-1">
-            	<label>충전기한</label>                 		
+            	<label>거래처</label>                 		
             </div>               
             <div class="col-3">
               <form id="mainForm" name="mainForm"  method="post">
@@ -1178,11 +1175,11 @@ $(document).ready(function(){
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
 					<ul class="pagination">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
-							<a href="#" th:onclick="gotoPage([[ ${currentPage -1} ]])"  aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+							<a href="#" th:onclick="gotoPage([[ ${currentPage -1} ]])"  aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">이전</a>
 						</li>
 						
 						<li th:if="${currentPage<=1}" class="paginate_button page-item previous disabled" id="example2_previous">
-							<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+							<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">이전</a>
 						</li>
 						<th:block th:each="num:${#numbers.sequence(startPageNum, lastPageNum)}">
 						
@@ -1196,10 +1193,10 @@ $(document).ready(function(){
 						</th:block>
 					
 						<li th:if="${currentPage < lastPage}" class="paginate_button page-item next" id="example2_next">
-						<a href="#" th:onclick="gotoPage([[ ${currentPage +1} ]])"  aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+						<a href="#" th:onclick="gotoPage([[ ${currentPage +1} ]])"  aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">다음</a>
 						</li>
 						<li th:if="${currentPage >= lastPage}" class="paginate_button page-item next disabled" id="example2_next">
-						<a href="#"  aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+						<a href="#"  aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">다음</a>
 						</li>
         			</ul>
 				</div>

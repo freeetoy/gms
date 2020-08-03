@@ -69,8 +69,9 @@ public interface CustomerMapper {
 	
 	public String searchCustomerSimpleListString(String searchCustomerNm);
 	
-	public List<CustomerSimpleVO> selectCarSimpleList();
+	public List<CustomerSimpleVO> selectCarSimpleList(String carYn);
 	
+
 	public int updateCustomerPrice(CustomerPriceVO param);
 	
 	public CustomerVO selectCustomerCar(String userId) ;
@@ -80,6 +81,10 @@ public interface CustomerMapper {
 	public List<CustomerProductVO> selectCustomerProductList(Integer customerId);
 	
 	public int insertCustomerProduct(CustomerProductVO param);
+	
+	public int insertCustomerProducts(List<CustomerProductVO> params);
+	
+	public int deleteCustomerProduct(Integer customerId);
 	
 	public int updateCustomerProductOwnCount(CustomerProductVO param);
 	

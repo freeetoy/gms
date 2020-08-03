@@ -1,9 +1,8 @@
 package com.gms.web.admin.controller.common;
 
 import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -12,14 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
 
 import com.gms.web.admin.common.web.utils.RequestUtils;
-import com.gms.web.admin.domain.manage.GasVO;
 import com.gms.web.admin.service.common.ExcelService;
 
 
@@ -38,7 +35,8 @@ public class ExcelUploadController {
     		, HttpServletResponse response) {
 		
 		MultipartFile file = null;
-		int result = 0;
+		Integer result = 0;
+		Map<String, Object> map = null;
 		try {
         
 	        Iterator<String> iterator = request.getFileNames();
@@ -55,10 +53,10 @@ public class ExcelUploadController {
         	}
         	logger.debug("$$$$$$$$$$$$$$ ExcelService fileSize "+ fileSize);
         	
-	        result = excelService.uploadBottleExcelFile(request, file);	        
+        	map = excelService.uploadBottleExcelFile(request, file);	        
 	      
 	        //model.addAttribute("gaslist", gaslist);
-	        
+	        result = (Integer) map.get("result");
 	        logger.debug("ExcelUploadContoller result "+ result);
 		} catch (Exception e) {
             e.printStackTrace();
@@ -68,7 +66,7 @@ public class ExcelUploadController {
             return null;
         }
 		if(result > 0){
-			String alertMessage = "엑셀 등록하였습니다.";
+			String alertMessage = "엑셀 등록하였습니다.\\n 등록건수="+map.get("insertCount")+" 수정건수 ="+map.get("updateCount") +"\\n 미처리 용기번호 ="+map.get("exception");
 			RequestUtils.responseWriteException(response, alertMessage,
 					"/gms/bottle/list.do");
 		}else {

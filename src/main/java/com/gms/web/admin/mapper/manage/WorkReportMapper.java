@@ -9,12 +9,13 @@ import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.WorkBottleRegisterVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
-import com.gms.web.admin.domain.manage.WorkReportViewVO;
 
 @Mapper	
 public interface WorkReportMapper {
 	
 	public WorkReportVO selectWorkReport(Integer workReportSeq);	
+	
+	public WorkReportVO selectWorkReportOnly(Integer workReportSeq);	
 	
 	public List<WorkReportVO> selectWorkReportList(WorkReportVO param);	
 	
@@ -56,6 +57,8 @@ public interface WorkReportMapper {
 	
 	public int modifyWorkReportOrderId(WorkReportVO param);
 	
+	public int deleteWorkReport(WorkReportVO param);
+	
 	public int updateWorkReportReceivedAmount(WorkReportVO param);
 	
 	public int updateWorkBottlePrice(WorkBottleVO param);
@@ -63,4 +66,6 @@ public interface WorkReportMapper {
 	public List<WorkBottleVO> selectWorkBottleListOfProduct(WorkBottleVO params);	
 	
 	public int deleteWorkBottleOfProduct(WorkBottleVO params);
+	
+	public int deleteWorkBottle(Integer workReportSeq);
 }

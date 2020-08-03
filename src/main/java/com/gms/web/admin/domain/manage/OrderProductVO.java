@@ -1,7 +1,6 @@
 package com.gms.web.admin.domain.manage;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import com.gms.web.admin.common.domain.AbstractVO;
 
@@ -66,5 +65,7 @@ public class OrderProductVO extends AbstractVO implements Serializable {
 	
 	/* Sales_Count*/
 	private int salesCount;
+	
+	private Integer customerId;
 
 }

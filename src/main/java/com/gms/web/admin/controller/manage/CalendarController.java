@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gms.web.admin.common.config.PropertyFactory;
-import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.ScheduleSimpleVO;
 import com.gms.web.admin.domain.manage.ScheduleVO;
 import com.gms.web.admin.service.manage.ScheduleService;

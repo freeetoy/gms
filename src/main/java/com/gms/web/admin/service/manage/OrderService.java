@@ -1,6 +1,5 @@
 package com.gms.web.admin.service.manage;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -90,5 +89,6 @@ public interface OrderService {
 	
 	public int deleteOrderBottle(OrderBottleVO param);
 	
-	
+	public List<OrderProductVO> getOrderProductListNotDelivery(Integer orderId);
+
 }

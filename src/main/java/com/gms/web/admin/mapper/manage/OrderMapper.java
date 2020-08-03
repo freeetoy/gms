@@ -1,13 +1,11 @@
 package com.gms.web.admin.mapper.manage;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gms.web.admin.domain.manage.OrderBottleVO;
-import com.gms.web.admin.domain.manage.OrderExtVO;
 import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.OrderVO;
 

@@ -1,19 +1,13 @@
 package com.gms.web.admin.controller.common;
 
 import java.util.List;
-import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
@@ -26,25 +20,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.common.utils.ExcelStyle;
-import com.gms.web.admin.common.utils.ResultRowDataHandler;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
-import com.gms.web.admin.domain.manage.GasVO;
 import com.gms.web.admin.domain.manage.OrderVO;
-import com.gms.web.admin.service.common.ExcelDownloadService;
 import com.gms.web.admin.service.manage.BottleService;
 import com.gms.web.admin.service.manage.CustomerService;
-import com.gms.web.admin.service.manage.GasService;
 import com.gms.web.admin.service.manage.OrderService;
 
 @Controller
 public class ExcelDownloadController {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
-
-	@Autowired
-	private GasService gasService;
 	
 	@Autowired
 	private BottleService bottleService;

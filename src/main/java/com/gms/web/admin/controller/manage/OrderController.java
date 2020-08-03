@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,15 +23,16 @@ import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.common.CodeVO;
 import com.gms.web.admin.domain.manage.BottleVO;
-import com.gms.web.admin.domain.manage.CustomerPriceExtVO;
-import com.gms.web.admin.domain.manage.CustomerPriceVO;
+import com.gms.web.admin.domain.manage.CashFlowVO;
+import com.gms.web.admin.domain.manage.CashSumVO;
+import com.gms.web.admin.domain.manage.CustomerProductVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
-import com.gms.web.admin.domain.manage.GasVO;
 import com.gms.web.admin.domain.manage.OrderExtVO;
 import com.gms.web.admin.domain.manage.OrderPrintVO;
 import com.gms.web.admin.domain.manage.OrderProductVO;
 import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.service.common.CodeService;
+import com.gms.web.admin.service.manage.CashFlowService;
 import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.manage.OrderService;
 import com.gms.web.admin.service.manage.WorkReportService;
@@ -56,6 +56,9 @@ public class OrderController {
 	
 	@Autowired
 	private WorkReportService workService;
+	
+	@Autowired
+	private CashFlowService cashService;
 	
 	@RequestMapping(value = "/gms/order/list.do")
 	public ModelAndView getOrderList(OrderVO params) {
@@ -215,7 +218,6 @@ public class OrderController {
 					
 	}
 	
-	
 	@RequestMapping(value = "/gms/order/modify.do", method = RequestMethod.POST)
 	public ModelAndView modifyOrder(
 			HttpServletRequest request
@@ -369,6 +371,33 @@ public class OrderController {
 		
 		model.addAttribute("customer", customer);
 		
+		//Customer_Product 목록
+		List<CustomerProductVO> productList = customerService.getCustomerProductList(result.getOrder().getCustomerId());		
+		
+		List<CustomerProductVO> rentBottleList = new ArrayList<CustomerProductVO>();
+		
+		for(int i =0 ; i < productList.size() ; i++) {
+			CustomerProductVO customerProduct = productList.get(i);
+			
+			if(customerProduct.getBottleRentCount() != 0) {
+				rentBottleList.add(customerProduct);
+			}
+		}
+		model.addAttribute("rentBottleList", rentBottleList);
+		if(rentBottleList.size() > 3 && rentBottleList.size()%3 > 0)
+			model.addAttribute("rentBottleListCount", rentBottleList.size()+1);
+		
+		CashFlowVO cashFlow = new CashFlowVO();
+		cashFlow.setCustomerId(result.getOrder().getCustomerId());
+		CashSumVO cashSum = cashService.getCashFlowSum(cashFlow);
+		if(cashSum == null) {
+			cashSum = new CashSumVO();
+			cashSum.setIncomeAmountSum(0);
+			cashSum.setReceivableAmountNet(0);
+			cashSum.setReceivableAmountSum(0);
+		}
+		model.addAttribute("cashSum", cashSum);
+		
 		return "gms/order/popupOrder";
 	}
 	
@@ -389,15 +418,40 @@ public class OrderController {
 			
 			OrderExtVO result = orderService.getOrder(orderId);	
 			CustomerVO customer = customerService.getCustomerDetails(result.getOrder().getCustomerId());	
+						
+			//Customer_Product 목록
+			List<CustomerProductVO> productList = customerService.getCustomerProductList(result.getOrder().getCustomerId());		
+			
+			List<CustomerProductVO> rentBottleList = new ArrayList<CustomerProductVO>();
+			
+			for(int j =0 ; j < productList.size() ; j++) {
+				CustomerProductVO customerProduct = productList.get(j);
+				
+				if(customerProduct.getBottleRentCount() != 0) {
+					rentBottleList.add(customerProduct);
+				}
+			}
+			//model.addAttribute("rentBottleList", rentBottleList);
+			if(rentBottleList.size() > 3 && rentBottleList.size()%3 > 0)
+				model.addAttribute("rentBottleListCount", rentBottleList.size()+1);
+			
+			CashFlowVO cashFlow = new CashFlowVO();
+			cashFlow.setCustomerId(result.getOrder().getCustomerId());
+			CashSumVO cashSum = cashService.getCashFlowSum(cashFlow);
+			if(cashSum == null) {
+				cashSum = new CashSumVO();
+				cashSum.setIncomeAmountSum(0);
+				cashSum.setReceivableAmountNet(0);
+				cashSum.setReceivableAmountSum(0);
+			}
+			//model.addAttribute("cashSum", cashSum);			
 			
 			orderPrint.setOrderExt(result);
 			orderPrint.setOrderTotalAmountHan(StringUtils.numberToHan(String.valueOf(result.getOrder().getOrderTotalAmount())));
 			orderPrint.setCustomer(customer);
-			//model.addAttribute("orderExt", result);			
-			//model.addAttribute("orderTotalAmountHan",StringUtils.numberToHan(String.valueOf(result.getOrder().getOrderTotalAmount())));
-			//logger.debug("OrderContoller getPopupOrderDetail Money 1024 "+StringUtils.numberToHan("1024"));
+			orderPrint.setCustomerProduct(rentBottleList);
+			orderPrint.setCashSum(cashSum);
 
-			//model.addAttribute("customer", customer);
 			orderPrintList.add(orderPrint);
 		}
 		model.addAttribute("orderPrintList",orderPrintList);

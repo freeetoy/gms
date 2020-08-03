@@ -144,7 +144,8 @@
 		(
 			SELECT Sum(Received_Amount) Income_Amount
 			FROM TB_Work_Report
-			WHERE DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')			 
+			WHERE DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')		
+			AND Delete_YN = 'N'	 
 		) C
 	</insert>	
 	

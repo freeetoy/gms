@@ -31,7 +31,7 @@ public class CashFlowServiceImpl implements CashFlowService {
 	
 	@Override
 	public int registerCashFlow(CashFlowVO param) {
-		
+		/*
 		OrderVO order = orderService.getTodayOrderForCustomer (param.getCustomerId());
 		
 		int orderAmount = 0;
@@ -41,7 +41,7 @@ public class CashFlowServiceImpl implements CashFlowService {
 		int receivableAmount = param.getReceivableAmount()+orderAmount;		
 		
 		param.setReceivableAmount(receivableAmount);
-		
+		*/
 		return cashMapper.insertCashFlow(param);
 	}
 

@@ -1,6 +1,5 @@
 package com.gms.web.admin.service.manage;
 
-import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gms.web.admin.common.config.PropertyFactory;
-import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.domain.manage.ScheduleVO;
 import com.gms.web.admin.mapper.manage.ScheduleMapper;
 

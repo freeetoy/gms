@@ -19,10 +19,7 @@ import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
-import com.gms.web.admin.domain.manage.OrderProductVO;
-import com.gms.web.admin.domain.manage.ProductPriceVO;
 import com.gms.web.admin.domain.manage.ProductTotalVO;
-import com.gms.web.admin.domain.manage.ProductVO;
 import com.gms.web.admin.domain.manage.SimpleBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.mapper.manage.BottleMapper;
@@ -339,12 +336,13 @@ public class BottleServiceImpl implements BottleService {
 		// 정보 등록
 		logger.debug("****** modifyBottle.getBottleId()()) *****===*"+param.getBottleId());
 		int result = 0;
-				
+		
+		/*
 		ProductTotalVO product = productService.getBottleGasCapa(param);
 		
 		param.setBottleCapa(product.getProductCapa());
 		param.setGasId(product.getGasId());		
-		
+		*/
 		result =  bottleMapper.updateBottle(param);
 		
 		//if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
@@ -669,16 +667,30 @@ public class BottleServiceImpl implements BottleService {
 	@Override
 	public BottleVO getDummyBottle(BottleVO param) {
 
-		List<BottleVO> dummyList = getDummyBottleList();
-	
-		for(int i =0 ; i < dummyList.size() ; i++) {
-			BottleVO bottle = dummyList.get(i);
-			
-			if(param.getProductId() == bottle.getProductId() && param.getProductPriceSeq() == bottle.getProductPriceSeq()) {
-				return bottle;
-			}
-		}
-		return null;
+		return bottleMapper.selectDummyBottle(param);
+	}
+
+
+
+	@Override
+	public BottleVO getLastBottleHist(String bottleId) {
+		
+		return bottleMapper.selectLastBottleHist(bottleId);
+	}
+
+
+
+	@Override
+	public int deleteCustomerIdOfBottle(BottleVO param) {
+		
+		int result = 0;
+		
+		result = bottleMapper.deleteCustomerIdOfBottleHist(param);
+		
+		if(result > 0)
+			return bottleMapper.deleteCustomerIdOfBottle(param);
+		else
+			return -1;
 	}
 	
 

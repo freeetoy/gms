@@ -1,7 +1,6 @@
 package com.gms.web.admin.domain.manage;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import com.gms.web.admin.common.domain.AbstractVO;
 

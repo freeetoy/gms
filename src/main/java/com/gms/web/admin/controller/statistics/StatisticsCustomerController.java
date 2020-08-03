@@ -24,9 +24,7 @@ import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.common.utils.ExcelStyle;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.manage.CustomerVO;
-import com.gms.web.admin.domain.manage.ProductVO;
 import com.gms.web.admin.domain.statistics.StatisticsCustomerVO;
-import com.gms.web.admin.domain.statistics.StatisticsProductVO;
 import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.statistics.StatisticsCustomerService;
 

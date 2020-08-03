@@ -1,11 +1,9 @@
 package com.gms.web.admin.controller.manage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,19 +19,14 @@ import org.springframework.web.servlet.ModelAndView;
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.common.web.utils.RequestUtils;
-import com.gms.web.admin.common.web.utils.SessionUtil;
 import com.gms.web.admin.domain.common.LoginUserVO;
 import com.gms.web.admin.domain.manage.BottleVO;
-import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.OrderBottlesVO;
-import com.gms.web.admin.domain.manage.OrderProductVO;
-import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.domain.manage.WorkReportViewVO;
 import com.gms.web.admin.service.manage.BottleService;
-import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.manage.UserService;
 import com.gms.web.admin.service.manage.WorkReportService;
 
@@ -169,7 +162,7 @@ public class WorkReportController {
 		logger.debug("WorkReportController registerWorkReportAll");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
-		
+		logger.debug("WorkReportController userId="+params.getUserId());
 		ModelAndView mav = new ModelAndView();		//검색조건 셋팅		
 		int result =0;
 		try {	
@@ -191,7 +184,8 @@ public class WorkReportController {
 				
 				List<BottleVO> bottleList = bottleService.getBottleDetails(bottle);
 				
-				params.setUserId(params.getCreateId());
+				if(params.getUserId()==null)
+					params.setUserId(params.getCreateId());
 				result = workService.registerWorkReportByBottle(params,bottleList);
 				
 				result =  bottleService.changeWorkCdsAndHistory(bottle, bottleList);
@@ -207,15 +201,14 @@ public class WorkReportController {
 			e.printStackTrace();
 		}
 		//return "redirect:/gms/mypage/assign.do";
-		
+		mav.addObject("searchUserId", params.getUserId());	
 		if(result > 0){
 			String alertMessage = "처리되었습니다.";
 			LoginUserVO adminLoginUserVO = (LoginUserVO)request.getSession().getAttribute(LoginUserVO.ATTRIBUTE_NAME); 
 			if(adminLoginUserVO.getUserAuthority().equals(PropertyFactory.getProperty("common.user.Authority.manager")))
-				RequestUtils.responseWriteException(response, alertMessage, "/gms/report/listAll.do");
+				RequestUtils.responseWriteException(response, alertMessage, "/gms/report/listAll.do?searchUserId="+params.getUserId());
 			else 
-				RequestUtils.responseWriteException(response, alertMessage, "/gms/report/list.do");
-			
+				RequestUtils.responseWriteException(response, alertMessage, "/gms/report/list.do");			
 		}
 		return null;
 		
@@ -325,7 +318,7 @@ public class WorkReportController {
 			String alertMessage = "처리되었습니다.";
 			LoginUserVO adminLoginUserVO = (LoginUserVO)request.getSession().getAttribute(LoginUserVO.ATTRIBUTE_NAME); 
 			if(adminLoginUserVO.getUserAuthority().equals(PropertyFactory.getProperty("common.user.Authority.manager")))
-				RequestUtils.responseWriteException(response, alertMessage, "/gms/report/listAll.do");
+				RequestUtils.responseWriteException(response, alertMessage, "/gms/report/listAll.do?searchUserId="+param.getUserId());
 			else 
 				RequestUtils.responseWriteException(response, alertMessage, "/gms/report/list.do");
 			
@@ -398,7 +391,38 @@ public class WorkReportController {
 		} catch (Exception e) {			
 			e.printStackTrace();
 		}
-		return null;
+		return null;		
+	}
+	
+	@RequestMapping(value = "/gms/report/delete.do", method = RequestMethod.POST)
+	public ModelAndView deleteWorkReport(HttpServletRequest request
+			, HttpServletResponse response
+			, WorkReportVO param) {
 		
+		logger.debug("WorkReportController deleteWorkReport");
+		
+		RequestUtils.initUserPrgmInfo(request, param);
+		param.setUserId(param.getCreateId());
+		ModelAndView mav = new ModelAndView();	
+
+		int result =0;
+		try {	
+			logger.debug("WorkReportController deleteWorkReport workReportSeq ="+param.getWorkReportSeq());
+			result = workService.deleteWorkReport(param);					
+
+			mav.addObject("searchDt", param.getSearchDt());
+			mav.addObject("searchUserId", param.getSearchUserId());
+		
+		} catch (Exception e) {
+			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		if(result > 0){
+			String alertMessage = "처리되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/report/listAll.do");
+		}
+		return null;
+		//return "redirect:/gms/mypage/assign.do";		
 	}
 }

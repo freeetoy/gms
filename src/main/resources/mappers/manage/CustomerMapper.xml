@@ -469,9 +469,7 @@
 			Customer_Status != '0'
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
 		AND Customer_NM	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
-		</if>
-		AND 
-			Car_YN = 'N'
+		</if>		
 		ORDER BY Customer_Nm Asc 
 	</select>
 	
@@ -490,7 +488,7 @@
 		ORDER BY Customer_Nm Asc 
 	</select>
 	
-	<select id="selectCarSimpleList" resultType="com.gms.web.admin.domain.manage.CustomerSimpleVO">
+	<select id="selectCarSimpleList" resultType="com.gms.web.admin.domain.manage.CustomerSimpleVO" parameterType="String">
 		SELECT
 			CUSTOMER_ID, Customer_NM
 		FROM
@@ -498,7 +496,7 @@
 		WHERE
 			Customer_Status != '0'
 		AND 
-			Car_YN = 'Y'
+			Car_YN = #{carYn}
 		ORDER BY Customer_Nm Asc 
 	</select>
 	
@@ -611,6 +609,32 @@
 			, NOW()
 		)
 	</insert>
+	
+	<insert id="insertCustomerProducts" parameterType="java.util.List">
+		INSERT INTO TB_CUSTOMER_PRODUCT(
+			<include refid="CustomerProduct" />
+		) VALUES 
+		<foreach collection="list" item="item" separator=" , ">
+		(
+			 #{item.customerId}
+			, #{item.productId}
+			, #{item.productPriceSeq}
+			, #{item.bottleOwnCount}
+			, #{item.bottleRentCount}
+			, #{item.createId}			
+			, NOW()
+			, NULL
+			, NOW()
+		)
+		</foreach>
+	</insert>
+	
+	<update id="deleteCustomerProduct" parameterType="Integer">
+		DELETE
+		FROM  TB_CUSTOMER_PRODUCT		
+		WHERE
+			CUSTOMER_ID = #{customerId}
+	</update>
 	
 	<update id="updateCustomerProductOwnCount" parameterType="com.gms.web.admin.domain.manage.CustomerProductVO">
 		UPDATE TB_CUSTOMER_PRODUCT

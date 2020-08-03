@@ -1,7 +1,6 @@
 package com.gms.web.admin.domain.manage;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import com.gms.web.admin.common.domain.AbstractVO;
@@ -86,4 +85,6 @@ public class WorkBottleVO extends AbstractVO implements Serializable {
 	
 	private List<Integer> workSeqList;
 	
+	/**User_ID              */
+	private String userId;
 }

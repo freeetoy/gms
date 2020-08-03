@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
-import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.SimpleBottleVO;
 
 public interface BottleService {
@@ -58,9 +57,13 @@ public interface BottleService {
 	
 	public int deleteBottles(BottleVO param);
 	
+	public int deleteCustomerIdOfBottle(BottleVO param);
+	
 	public Map<String, Object> checkBottleIdDuplicate(BottleVO param);
 	
 	public List<BottleHistoryVO> selectBottleHistoryList(String bottleId);
+	
+	public BottleVO getLastBottleHist(String bottleId);
 	
 	public List<BottleVO> getDummyBottleList();
 	

@@ -169,4 +169,6 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	
 	private boolean success;
 	
+	/** setCustomerIdNullYN	*/
+	private String  customerIdNullYn;
 }

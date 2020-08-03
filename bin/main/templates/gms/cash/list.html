@@ -5,6 +5,13 @@
 <th:block layout:fragment="content"> 
 <script type="text/javascript">
 
+var fn_register = function(){
+	
+	writeForm.action = "/gms/cash/register.do";
+    writeForm.submit();			
+               		
+}	
+	
 var fn_delete = function(cashFlowSeq){
 	
 	if(confirm("삭제하시겠습니까?")){	
@@ -25,7 +32,6 @@ var fn_delete = function(cashFlowSeq){
         form.submit();			
 	}                  		
 }	
-	
 
 // 입력된 내용을 작성한다.
 function goSearch(){	
@@ -91,6 +97,29 @@ $(document).ready(function(){
 	      });
 	});
 	
+	$("#btn_com_search1").click(function()  
+	{    	
+	  var searchCustomerNm = $("#searchCustomerNm1").val();
+	console.log("searchCustomerNm =="+searchCustomerNm);
+	   $.ajax({
+	           url: '/gms/common/customerList.do',
+	           type: 'POST',
+	           data: 'searchCustomerNm='+ searchCustomerNm,
+	           dataType: 'json',
+	
+	      })
+	      .done(function(data){
+	    	$('#customerId1').find('option').remove();        
+	    	  for(i=0; i< data.length;i++) {
+	  			//console.log(data[i]);      
+	  			$('#customerId1').append('<option value='+data[i].customerId+'>'+data[i].customerNm+'</option>')	  			
+	  		}
+	      })
+	      .fail(function(){
+	         console.log("fail");
+	      });
+	});
+	
 	$(".btn_select_process").click(function()  
 	{
 		var cashFlowSeq = $(this).attr('cashFlowSeq'); 		
@@ -120,6 +149,17 @@ $(document).ready(function(){
 					return;
 				}				
 			});				
+ 	});	
+	
+	$(".btn_select_process1").click(function()  
+	{
+		var customerId = $(this).attr('customerId1'); 				
+		
+		$("#customerId1").val(customerId);
+		
+		var customerNm = $(this).attr('customerNm1'); 				
+		
+		$("#customerNm2").val(customerNm);
  	});	
 	
 });
@@ -166,7 +206,7 @@ $(function() {
         <div class="modal-dialog modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">용기 상태 변경</h4>
+              <h4 class="modal-title">수금현황 변경</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -204,7 +244,84 @@ $(function() {
               </div>            
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <a class="btn btn-info btn-sm" href="#" onclick="javascript:fn_modifyBottleWorkCd();"><i class="fas fa-pencil-alt"></i>상태변경</a>
+              <a class="btn btn-info btn-sm" href="#" onclick="javascript:fn_modifyBottleWorkCd();"><i class="fas fa-pencil-alt"></i>저장</a>
+            </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      
+      <!-- modal start-->   
+        <div class="modal fade" id="process-modal1">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">수금현황 변경</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form id="writeForm" name="writeForm"  method="post">
+              
+              <div class="card-body">
+            	<table class="table table-hover">
+                  <thead>
+                  <tr>
+                      <th class="card-footer" width="100">거래처</th>
+                      <th style="width:250px">
+                      <select id="customerId1" name="customerId1" class="form-control">
+	                      <option value="0">거래처 목록</option>
+	                    	<option th:each="row : ${customerList}"
+				                th:text="${row.customerNm}"
+				                th:value="${row.customerId}"
+				                th:if="${customerId1 ==row.customerId}" selected>					             
+					        </option>	
+					        <option th:each="row : ${customerList}"
+				                th:text="${row.customerNm}"
+				                th:value="${row.customerId}"
+			                	th:unless="${customerId1 ==row.customerId}">				             
+					        </option>	
+						    </select>	                      
+			              
+			            <td style="width:150px">
+			            	<input type="text" class="form-control" id="searchCustomerNm1" name="searchCustomerNm1" >
+			            </td>  
+			            <td>	
+			            	<input type="button" class="btn btn-default btn-success" id="btn_com_search1" value="검색" />
+						</td>  
+                      </th>
+                    </tr>
+                     <tr>                                   
+                      <th class="card-footer" width="100">미수금액</th>
+                      <th><input type="text" class="form-control" id="receivableAmount" name="receivableAmount" placeholder="미수금" value="0"></th>
+                      <td colspan=2></td>   
+                    </tr>
+                    <tr>                                   
+                      <th class="card-footer" width="100">입금</th>
+                      <th><input type="text" class="form-control" id="incomeAmount" name="incomeAmount" placeholder="입금" value="0"></th>
+                      <td colspan=2></td>   
+                    </tr>
+                    
+                    <tr>
+                      <th class="card-footer" width="100">입금수단</th>
+                      <th>
+                      <select id="incomeWay" name="incomeWay" class="form-control">
+                          <option value="CASH">현금</option>
+                          <option value="CARD">카드</option>	
+                        </select>
+					  </th>
+					  <td colspan=2></td>   
+                    </tr>
+                  </thead>                              
+                </table>       
+                
+              </div>            
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <a class="btn btn-info btn-sm" href="#" onclick="javascript:fn_register();"><i class="fas fa-pencil-alt"></i>저장</a>
             </div>
             </form>
           </div>
@@ -217,7 +334,7 @@ $(function() {
         <div class="row">
     		
            	<div class="col-1">
-               		<label >거래처명</label>
+               		<label >거래처</label>
             </div>               
             <div class="col-4">     
             <form id="mainForm" name="mainForm"  th:action="@{/gms/cash/list.do}" method="post">         
@@ -244,7 +361,7 @@ $(function() {
 			<div class="col-1">
 	        	<input type="button" class="btn btn-default btn-success" id="btn_com_search" value="검색" />
 	        </div> 
-          
+            <div class="col-4">&nbsp;</div> 
          </div>
         
          <div class="row">	
@@ -254,18 +371,20 @@ $(function() {
 	         </table>
 	        </div>
         </div>
-        <div class="row">        	
-    		
+        <div class="row">   
             <div class="col-1">                      
             	<label>기간</label>
             </div>               
             <div class="col-4">              
                <input type="text" class="form-control" id="searchCreateDt" name="searchCreateDt" value=""/>			
             </div>               
-            <div class="col-3">
+            <div class="col-2">
                 <button class="btn btn-navbar" type="submit"><i class="fas fa-search"></i></button>           
               </div>               
               </form>  
+              <div align=right class="col-5">
+             	<a class="btn_select_process1 btn btn-outline-primary btn-sm"  data-toggle="modal" data-target="#process-modal1"  href="#"><i class="fas fa-edit"></i>등록 </a>   
+              </div>  
          </div>       
     	
         <div class="row">	
@@ -304,7 +423,7 @@ $(function() {
                     <tr>
                       <th>순번</th>                      
                       <th>등록일</th>
-                      <th th:if="${customerYN=='N'}" >거래처</th>
+                      <th>거래처</th>
                       <th>미수금</th>
                       <th>입금</th>
                       <th>입금방법</th>                      
@@ -314,13 +433,14 @@ $(function() {
                   	<tr th:if="${not #lists.isEmpty( list )}" th:each="row : ${list}"  style="font-size:14px;">
                       <td th:text="${totalCount-((currentPage-1) * rowPerPage) - list.indexOf(row)}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd HH:mm' )}"></td>
-                      <th th:if="${customerYN=='N' }" th:text="${row.customerNm}" >거래처</th>
+                      <th th:text="${row.customerNm}" >거래처</th>
                       <td th:if="${row.receivableAmount> 999 }"  th:text="${#numbers.formatInteger(row.receivableAmount, 3, 'COMMA')}"></td> 
                       <td th:unless="${row.receivableAmount> 999 }"  th:text="${row.receivableAmount}"></td>                     
                       <td th:if="${row.incomeAmount> 999 }" th:text="${#numbers.formatInteger(row.incomeAmount, 3, 'COMMA')}"></td>
                       <td th:unless="${row.incomeAmount> 999 }" th:text="${row.incomeAmount}"></td>
                       <td th:if="${row.incomeWay=='CASH'}">현금
                       <td th:if="${row.incomeWay=='CARD'}">카드        
+                      <td th:if="${row.incomeWay==null}">    
                       <td th:if="${row.incomeWay==''}">                 
                       </td>
                       <td> 
@@ -329,7 +449,8 @@ $(function() {
                               <i class="fas fa-trash">
                               </i>
                               Delete
-                          </a>                        
+                          </a>
+                          <!-- a class="btn_select_process1 btn btn-info btn-xs" th:customerId1="${row.customerId}" th:customerNm1="${row.customerNm}" data-toggle="modal" data-target="#process-modal1"  href="#"><i class="fas fa-check-circle"></i>등록 </a>     -->                    
                       </td>
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( list )}">
@@ -350,11 +471,11 @@ $(function() {
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
 					<ul class="pagination">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
-							<a href="#" th:onclick="gotoPage(1)" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+							<a href="#" th:onclick="gotoPage(1)" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">이전</a>
 						</li>
 						
 						<li th:if="${currentPage<=1}" class="paginate_button page-item previous disabled" id="example2_previous">
-							<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+							<a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">이전</a>
 						</li>
 						<th:block th:each="num:${#numbers.sequence(startPageNum, lastPageNum)}">
 						
@@ -368,10 +489,10 @@ $(function() {
 						</th:block>
 					
 						<li th:if="${currentPage < lastPage}" class="paginate_button page-item next" id="example2_next">
-						<a  href="#" th:onclick="gotoPage([[ ${currentPage+1} ]])" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+						<a  href="#" th:onclick="gotoPage([[ ${currentPage+1} ]])" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">다음</a>
 						</li>
 						<li th:if="${currentPage >= lastPage}" class="paginate_button page-item next disabled" id="example2_next">
-						<a href="#"  aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a>
+						<a href="#"  aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">다음</a>
 						</li>
         			</ul>
 				</div>

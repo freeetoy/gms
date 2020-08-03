@@ -268,7 +268,7 @@
 			, Product_ID		= #{productId}
 			, Product_Price_Seq	= #{productPriceSeq}
 			, Gas_ID			= #{gasId}
-			, Gas_CD			= #{gasCd}
+			, Gas_CD			= #{gasCd}			
 			, Bottle_Capa		= #{bottleCapa}
 			, Charge_Capa		= #{chargeCapa}
 			, Bottle_Create_Dt	= #{bottleCreateDt}
@@ -376,6 +376,28 @@
 			<foreach collection="bottList" item="item" index="index" open="(" separator="," close=")">
 				#{item} 
 			</foreach>
+	</update>
+
+	<update id="deleteCustomerIdOfBottle" parameterType="com.gms.web.admin.domain.manage.BottleVO">
+		UPDATE TB_Bottle
+		SET
+			Customer_ID 	=  null
+			, UPDATE_ID = #{updateId}
+			, UPDATE_DT = NOW()
+		WHERE
+			Bottle_ID = #{bottleId}
+	</update>
+	
+	<update id="deleteCustomerIdOfBottleHist" parameterType="com.gms.web.admin.domain.manage.BottleVO">
+		UPDATE TB_Bottle_hist
+		SET
+			Customer_ID 	=  null
+			, UPDATE_ID = #{updateId}
+			, UPDATE_DT = NOW()
+		WHERE
+			Bottle_ID 	= #{bottleId}
+		AND
+			Customer_ID =  #{customerId}
 	</update>
 
 	<select id="selectBottleDetail" parameterType="String" resultType="com.gms.web.admin.domain.manage.BottleVO">
@@ -655,6 +677,18 @@
 		Order By Bottle_Work_DT DESC
 	</select>
 	
+	<select id="selectLastBottleHist" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="String">		
+		SELECT
+			<include refid="BottleColumns" />
+		FROM
+			TB_Bottle_Hist TB
+		WHERE
+			Delete_YN = 'N'			
+		AND 
+			Bottle_Id = #{bottleId}		
+		Order By Bottle_Hist_Seq desc
+		Limit 1,1
+	</select>
 	
 	<select id="selectCustomerBottleRecent" resultType="com.gms.web.admin.domain.manage.BottleVO" parameterType="Integer">		
 		SELECT
@@ -670,6 +704,21 @@
 		AND TB.Product_ID = TG.Product_Id		
 		Order By Bottle_Work_DT DESC
 		Limit 0,1
+	</select>
+	
+	<select id="selectDummyBottle" parameterType="com.gms.web.admin.domain.manage.BottleVO" resultType="com.gms.web.admin.domain.manage.BottleVO" >		
+		SELECT
+			<include refid="BottleColumns" />
+		FROM
+			TB_Bottle TB
+		WHERE
+			Product_id =  #{productId}
+		AND
+			Product_Price_Seq =  #{productPriceSeq}
+		AND
+			TB.Delete_YN = 'N'
+		AND
+			Dummy_YN = 'Y'
 	</select>
 	
 	<select id="selectDummyBottleList" resultType="com.gms.web.admin.domain.manage.BottleVO" >		
