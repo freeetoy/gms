@@ -293,15 +293,7 @@ public class BottleServiceImpl implements BottleService {
 		// 정보 등록
 		logger.debug("****** registerBottle.getBottleId()()) *****===*"+param.getBottleId());
 		int result = 0;
-		/*
-		ProductPriceVO productPrice = new ProductPriceVO();
-		productPrice.setProductId(param.getProductId());
-		productPrice.setProductPriceSeq(param.getProductPriceSeq());
-		
-		ProductPriceVO productPrice1 = productService.getProductPriceDetails(productPrice);
-		
-		logger.debug("****** registerBottle.botteLCapa()()) *****===*"+productPrice1.getProductCapa());
-		*/
+
 		ProductTotalVO product = productService.getBottleGasCapa(param);
 		
 		param.setBottleCapa(product.getProductCapa());
@@ -528,7 +520,9 @@ public class BottleServiceImpl implements BottleService {
 		// 정보 등록
 		logger.debug("****** registerBottle.insertBottleHistory()()) *****===*" +bottleId);
 		
-		BottleVO bottle = bottleMapper.selectBottleDetail(bottleId);
+		BottleVO bottle = new BottleVO();
+		bottle.setBottleId(bottleId);
+		//bottleMapper.selectBottleDetail(bottleId);
 		
 		//TODO bottleId만 넘겨줘도 될듯..
 		return bottleMapper.insertBottleHistory(bottle);		
@@ -691,6 +685,14 @@ public class BottleServiceImpl implements BottleService {
 			return bottleMapper.deleteCustomerIdOfBottle(param);
 		else
 			return -1;
+	}
+
+
+
+	@Override
+	public List<BottleVO> getSimpleDummyBottleList() {
+		
+		return bottleMapper.selectSimpleDummyBottleList();
 	}
 	
 

@@ -286,7 +286,7 @@
 		WHERE
 			Customer_Status != '0'		
 		AND
-			CUSTOMER_NM = #{customerNm}
+			CUSTOMER_NM = <![CDATA[#{customerNm}]]> 
 	</select>
 	
 	<select id="selectCustomerDetailByNmBusi" parameterType="String" resultType="com.gms.web.admin.domain.manage.CustomerVO">
@@ -297,7 +297,7 @@
 		WHERE
 			Customer_Status != '0'		
 		AND
-			CUSTOMER_NM = #{customerNm}
+			CUSTOMER_NM = <![CDATA[#{customerNm}]]> 
 		AND 
 			Business_Reg_ID = #{businessRegId}		
 	</select>

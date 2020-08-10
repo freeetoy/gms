@@ -2,6 +2,7 @@ package com.gms.web.admin.service.common;
 
 import java.util.List;
 
+import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CashFlowVO;
 import com.gms.web.admin.domain.manage.SimpleBottleVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
@@ -23,7 +24,9 @@ public interface ApiService {
 	
 	public List<WorkBottleVO> getWorkReportList(WorkReportVO param);
 	
-	public int registerWorkReportMassForSale(WorkBottleVO param);
+	public int registerWorkReportMassForSale(WorkReportVO param);
 	
-	public int registerWorkReportMassForChangeCd(WorkBottleVO param);
+	public int registerWorkReportMassForChangeCd(WorkReportVO param);
+	
+	public List<BottleVO> getDummyBottleList();
 }

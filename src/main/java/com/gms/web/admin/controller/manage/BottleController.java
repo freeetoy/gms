@@ -42,6 +42,7 @@ import com.gms.web.admin.service.manage.ProductService;
 public class BottleController {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger1 = LoggerFactory.getLogger("ROLLING_FILE1");
 	/*
 	 * UserService 빈(Bean) 선언
 	 */
@@ -798,7 +799,8 @@ public class BottleController {
 	@RequestMapping(value = "/api/bottleDetail.do")
 	@ResponseBody
 	public BottleVO getBottleDetail(String bottleBarCd)	{		
-		
+		logger.debug("&&&&  getBottleDetail= bottleBarCd=*"+bottleBarCd);
+		logger1.debug("getBottleDetail= bottleBarCd=*"+bottleBarCd);
 		try {
 			BottleVO bottle =  bottleService.getBottleDetailForBarCd(bottleBarCd);			
 			

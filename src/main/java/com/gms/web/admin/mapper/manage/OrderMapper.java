@@ -78,6 +78,8 @@ public interface OrderMapper {
 
 	public List<OrderBottleVO> selectOrderBottleList(Integer orderId);	
 	
+	public List<OrderBottleVO> selectOrderBottleListNotDelivery(Integer orderId);	
+	
 	public List<OrderBottleVO> selectOrderBottleListOfProduct(OrderProductVO param);	
 	
 	public int deleteOrderBottle(OrderBottleVO param);

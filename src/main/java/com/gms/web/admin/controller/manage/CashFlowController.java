@@ -135,6 +135,7 @@ public class CashFlowController {
 		String searchCreateDt = param.getSearchCreateDt();	
 		mav.addObject("searchCreateDt", param.getSearchCreateDt());		
 		
+		/*
 		CashSumVO cashSum = cashService.getCashFlowSum(param);
 		if(cashSum == null) {
 			cashSum = new CashSumVO();
@@ -143,7 +144,7 @@ public class CashFlowController {
 			cashSum.setReceivableAmountSum(0);
 		}
 		mav.addObject("cashSum", cashSum);
-		
+		*/
 		// 주문 타입 불러오기
 		Map<String, Object> map1 = customerService.searchCustomerList("");
 		mav.addObject("customerList", map1.get("list"));		

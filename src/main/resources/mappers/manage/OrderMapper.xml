@@ -592,8 +592,10 @@
 			D.Bottle_ID is null
 		AND A.Product_ID = B.Product_ID
 		AND A.Product_ID = C.Product_ID
-		AND A.Product_Price_Seq = C.Product_Price_Seq								
-		ORDER BY A.Create_Dt DESC 
+		AND A.Product_Price_Seq = C.Product_Price_Seq				
+		AND A.Product_ID = D.Product_ID		
+		AND A.Product_Price_Seq = D.Product_Price_Seq	
+		ORDER BY A.Product_ID, A.Product_Price_Seq DESC 
 	</select>
 	
 	<select id="selectOrderCount" resultType="int" parameterType="java.util.Map">
@@ -661,6 +663,17 @@
 			TB_Order_Bottle
 		WHERE
 			Order_ID = #{orderId}
+	</select>
+	
+	<select id="selectOrderBottleListNotDelivery" resultType="com.gms.web.admin.domain.manage.OrderBottleVO" parameterType="Integer">		
+		SELECT
+			<include refid="OrderBottleColumns" />
+		FROM
+			TB_Order_Bottle
+		WHERE
+			Order_ID = #{orderId}
+		AND 
+			Bottle_ID is null
 	</select>
 	
 	<select id="selectOrderBottleListOfProduct" resultType="com.gms.web.admin.domain.manage.OrderBottleVO" parameterType="com.gms.web.admin.domain.manage.OrderProductVO">		

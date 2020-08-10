@@ -17,7 +17,7 @@ public interface WorkReportService {
 
 	public List<WorkReportVO> getWorkReportList(WorkReportVO param);	
 	
-	public List<WorkReportViewVO> getWorkReportList1(WorkReportVO param);	
+	//public List<WorkReportViewVO> getWorkReportList1(WorkReportVO param);	
 	
 	public List<WorkReportViewVO> getWorkReportListAll(WorkReportVO param);	
 	
@@ -62,9 +62,9 @@ public interface WorkReportService {
 	
 	public List<WorkBottleVO> getWorkBottleListOfUser(WorkReportVO param);		
 	
-	public int registerWorkReportMassNoOrder(WorkBottleVO param);
+	public int registerWorkReportMassNoOrder(WorkReportVO param);
 	
-	public int registerWorkReportMassByBottle(WorkBottleVO param);
+	public int registerWorkReportMassByBottle(WorkReportVO param);
 	
 	public int deleteWorkReport(WorkReportVO param);
 }

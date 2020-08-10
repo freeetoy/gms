@@ -732,6 +732,23 @@
 			Dummy_YN = 'Y'
 	</select>
 	
+	<select id="selectSimpleDummyBottleList" resultType="com.gms.web.admin.domain.manage.SimpleBottleVO" >		
+		SELECT
+			Bottle_Id, Bottle_BarCd, Product_Nm, Product_Capa Bottle_Capa,TB.Product_Id, TB.Product_Price_Seq
+		FROM
+			TB_Bottle TB, TB_Product TP, TB_Product_Price PP 
+		WHERE
+			TB.Delete_YN = 'N'
+		AND
+			Dummy_YN = 'Y'
+		AND TB.Product_ID = TP.Product_ID
+		AND TB.Product_ID = PP.Product_ID
+		AND TB.Product_Price_Seq = PP.Product_Price_Seq
+		AND TP.Product_Status >0 
+		AND PP.Product_Status > 0
+		Order by TP.Product_ID ,  TB.Product_Price_Seq
+	</select>
+	
 	<select id="selectBottleHistCountOfCustomer" resultType="int" parameterType="java.util.Map">
 		SELECT
 			Count(Bottle_id)

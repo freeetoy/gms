@@ -67,5 +67,7 @@ public interface BottleService {
 	
 	public List<BottleVO> getDummyBottleList();
 	
+	public List<BottleVO> getSimpleDummyBottleList();
+	
 	public BottleVO getDummyBottle(BottleVO param);
 }

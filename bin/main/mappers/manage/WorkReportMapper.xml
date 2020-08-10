@@ -232,6 +232,8 @@
 		WHERE
 			Work_Report_Seq = #{workReportSeq}
 	</update>
+	
+	
 	<update id="updateWorkBottlePrice" parameterType="com.gms.web.admin.domain.manage.WorkBottleVO">
 		UPDATE TB_Work_Bottle
 		SET
@@ -282,6 +284,7 @@
 			WB.Product_ID = PP.Product_ID
 		AND
 			WB.Product_Price_Seq = PP.Product_Price_Seq
+		Order by Work_Report_Seq desc
 	</select>
 	
 	<select id="selectWorkReportList" resultType="com.gms.web.admin.domain.manage.WorkReportVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO">		
@@ -386,7 +389,7 @@
 		AND AA.Product_ID 		= TP.Product_ID
 		AND AA.Product_ID 		= TPP.Product_ID
 		AND AA.Product_Price_Seq = Tpp.Product_Price_Seq		
-		ORDER BY Work_Report_Seq DESC 
+		ORDER BY Work_Report_Seq  
 	</select>
 	
 	<select id="selectWorkReportSeq" resultType="int">

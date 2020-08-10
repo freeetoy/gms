@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.domain.manage.BottleHistoryVO;
+import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CashFlowVO;
 import com.gms.web.admin.domain.manage.SimpleBottleVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
@@ -23,6 +24,8 @@ import com.gms.web.admin.service.manage.BottleService;
 public class ApiController {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final Logger logger1 = LoggerFactory.getLogger("ROLLING_FILE1");
+	
 	private final String TAG="ApiController";
 	/*
 	 * Service 빈(Bean) 선언
@@ -37,7 +40,7 @@ public class ApiController {
 	@ResponseBody
 	public String controlAction(String userId, String bottles, String customerNm, String bottleType, String bottleWorkCd)	{	
 				
-		logger.info("userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
+		logger1.info(TAG,"userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
 		
 		boolean phoneCall = true;
 		int result = 0;		
@@ -100,6 +103,9 @@ public class ApiController {
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.hole"))) {			//누공확인
 			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.hole"));
 			result = apiService.registerWorkReportForChangeCd(workReport);
+		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.freechange"))) {			//누공확인
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.freechange"));
+			result = apiService.registerWorkReportForChangeCd(workReport);
 		}
 		if(result > 0)
 			return "success";
@@ -113,7 +119,7 @@ public class ApiController {
 	@ResponseBody
 	public String controlActionNoGas(String userId, String customerNm, Integer productId, Integer productPriceSeq, int productCount )	{	
 				
-		logger.info("userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
+		logger1.info(TAG,"userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
 		
 		boolean phoneCall = true;
 		int result = 0;
@@ -142,7 +148,7 @@ public class ApiController {
 	@ResponseBody
 	public String manageCashFlow(String userId, String customerNm,  int incomeAmount, int receivableAmount, String incomeWay )	{	
 				
-		logger.info("userId="+userId+" : incomeAmount ="+incomeAmount +": receivableAmount ="+ receivableAmount + " : customerNm ="+customerNm + " : incomeWay ="+incomeWay);
+		logger1.info(TAG,"userId="+userId+" : incomeAmount ="+incomeAmount +": receivableAmount ="+ receivableAmount + " : customerNm ="+customerNm + " : incomeWay ="+incomeWay);
 				
 		int result = 0;
 		
@@ -174,7 +180,7 @@ public class ApiController {
 	@ResponseBody
 	public String manageGasAndBottle(String userId, String bottles, String customerNm, String bottleType, String bottleWorkCd )	{	
 				
-		logger.info("userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
+		logger1.info(TAG,"userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
 				
 		int result = 0;
 		boolean phoneCall = true;
@@ -203,7 +209,7 @@ public class ApiController {
 	@RequestMapping(value = "/api/workReportList.do")
 	@ResponseBody
 	public List<WorkBottleVO> getWorkBottleList(String userId)	{			
-		logger.debug("getWorkBottleList== userId="+userId);
+		logger1.debug("getWorkBottleList== userId="+userId);
 		WorkReportVO workReport = new WorkReportVO();
 		
 		workReport.setSearchUserId(userId);
@@ -214,41 +220,54 @@ public class ApiController {
 	
 	@RequestMapping(value = "/api/controlMassAction.do")
 	@ResponseBody
-	public String controlMassAction(String userId, String bottles, String customerNm, String bottleType, String bottleWorkCd, String productCount)	{	
+	public String controlMassAction(String userId, String bottles, String customerNm, String bottleType, String bottleWorkCd)	{	
 				
-		logger.info("userId="+userId+" : bottles ="+bottles +" : bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm +" : productCount ="+productCount);
+		logger1.info(TAG,"**************/n userId="+userId+" : bottles ="+bottles +" : bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm +"/n*******");
 		
-		int result = 0;		
-				
-		WorkBottleVO workBottle = new WorkBottleVO();	
+		int result = 1;		
+		boolean phoneCall = true;
 		
-		workBottle.setBottleType(bottleType);
+		WorkReportVO workReport = new WorkReportVO();	
 		
-		workBottle.setCustomerNm(customerNm);	
-		//workBottle.setProductCount(productCount);
-		workBottle.setCreateId(userId);		
-		workBottle.setUserId(userId);
-		workBottle.setUpdateId(userId);		
+		workReport.setBottleType(bottleType);
+		workReport.setBottlesIds(bottles);		//BottleBarCd 모음
+		workReport.setCustomerNm(customerNm);		
+		workReport.setPhoneFlag(phoneCall);
+		workReport.setCreateId(userId);		
+		workReport.setUserId(userId);
+		workReport.setUpdateId(userId);		
 		
-		if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.sales"))) {		//판매
+		if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.masssales"))) {		//판매
 			
-			workBottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.sale"));			
-			result = apiService.registerWorkReportMassForSale(workBottle);
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.sale"));		
+			workReport.setWorkCd(PropertyFactory.getProperty("common.bottle.status.sale"));	
+			result = apiService.registerWorkReportMassForSale(workReport);
 			
-		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.rental"))) {		//대여
+		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.massrental"))) {		//대여
 			
-			workBottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.rent"));			
-			result = apiService.registerWorkReportMassForSale(workBottle);
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.rent"));	
+			workReport.setWorkCd(PropertyFactory.getProperty("common.bottle.status.rent"));	
+			result = apiService.registerWorkReportMassForSale(workReport);
 			
-		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.back"))) {			//회수
-			workBottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.back"));
-			result = apiService.registerWorkReportMassForChangeCd(workBottle);																	
+		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.massback"))) {			//회수
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.back"));
+			workReport.setWorkCd(PropertyFactory.getProperty("common.bottle.status.back"));	
+			result = apiService.registerWorkReportMassForChangeCd(workReport);																	
 		
 		}
+		
 		if(result > 0)
 			return "success";
 		else
 			return "fail";
-		//return null;
+	}
+	
+	
+	@RequestMapping(value = "/api/dummyList.do")
+	@ResponseBody
+	public List<BottleVO> getDummyBottleList()	{			
+		logger.debug("getDummyBottleList===");
+		
+		return apiService.getDummyBottleList();
 	}
 }

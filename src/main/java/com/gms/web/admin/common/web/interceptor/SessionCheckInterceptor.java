@@ -19,10 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class SessionCheckInterceptor implements HandlerInterceptor {
 	
+	private Long startTime = 0L;
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
+		startTime = System.currentTimeMillis();
 		//log.debug("preHandle!!");
 		String requestURI = request.getRequestURI().trim();
 		
@@ -32,7 +35,7 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
         
         String userId = "";
         String systemRole = "";
-        boolean isAuthChk = false;
+       
         String forwardUrl = "gms/login";
         
         LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);       
@@ -57,11 +60,9 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
         	
         	//request.getSession().invalidate();
         	response.sendRedirect(request.getContextPath() + "/login");
-			return false;   	
-			
-        }
-        
-        //return super.preHandle(request, response, handler);
+			return false;   				
+        }        
+       
         return true;
 	}
 
@@ -74,7 +75,9 @@ public class SessionCheckInterceptor implements HandlerInterceptor {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		//log.debug("afterCompletion!!");
+		
+		Long endTime = System.currentTimeMillis();
+		log.debug("afterCompletion!! =" +(endTime-startTime)+" millis");
 	}
 
 }

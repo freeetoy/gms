@@ -68,4 +68,7 @@ public class OrderProductVO extends AbstractVO implements Serializable {
 	
 	private Integer customerId;
 
+	/** Bottle_BarCd		--20200807 추가	*/
+	private String bottleBarCd;     
+	
 }

@@ -1077,6 +1077,12 @@ public class OrderServiceImpl implements OrderService {
 		
 		return orderMapper.selectOrderProductListNotDelivery(orderId);
 	}
+
+	@Override
+	public List<OrderBottleVO> getOrderBottleListNotDelivery(Integer orderId) {
+		
+		return orderMapper.selectOrderBottleListNotDelivery(orderId);
+	}
 	
 	
 }

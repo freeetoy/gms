@@ -66,9 +66,6 @@ public class WorkReportController {
 		
 		logger.debug("WorkReportController getWorkReportList User_id= "+ params.getUserId());		
 		
-		//LoginUserVO sessionInfo = SessionUtil.getSessionInfo(request);			
-		
-		//List<WorkReportViewVO> workList = workService.getWorkReportList1(params);
 		List<WorkReportViewVO> workList = workService.getWorkReportListAll(params);
 		
 		mav.addObject("workList", workList);	

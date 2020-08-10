@@ -224,7 +224,7 @@ public class ApiServiceImpl implements ApiService {
 	}
 
 	@Override
-	public int registerWorkReportMassForSale(WorkBottleVO param) {
+	public int registerWorkReportMassForSale(WorkReportVO param) {
 		int result = 0;	
 		
 		UserVO user = userService.getUserDetails(param.getUserId());
@@ -248,7 +248,7 @@ public class ApiServiceImpl implements ApiService {
 	}
 
 	@Override
-	public int registerWorkReportMassForChangeCd(WorkBottleVO param) {
+	public int registerWorkReportMassForChangeCd(WorkReportVO param) {
 		int result = 0;	
 		
 		UserVO user = userService.getUserDetails(param.getUserId());
@@ -268,6 +268,12 @@ public class ApiServiceImpl implements ApiService {
 			return USER_NOT_EXIST;
 		}
 		return result;						   
+	}
+
+	@Override
+	public List<BottleVO> getDummyBottleList() {
+		
+		return bottleService.getSimpleDummyBottleList();
 	}
 
 

@@ -90,5 +90,7 @@ public interface OrderService {
 	public int deleteOrderBottle(OrderBottleVO param);
 	
 	public List<OrderProductVO> getOrderProductListNotDelivery(Integer orderId);
+	
+	public List<OrderBottleVO> getOrderBottleListNotDelivery(Integer orderId);
 
 }

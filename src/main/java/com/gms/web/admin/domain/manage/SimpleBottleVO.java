@@ -23,6 +23,12 @@ public class SimpleBottleVO implements Serializable {
 	/** Bottle_Capa	*/
 	private String bottleCapa;
 	
+	/** Product Id */
+	private Integer productId ;	
+	
+	/** Product_Price_Seq		*/
+	private Integer productPriceSeq;
+	
 	/** Receivable_Amount	*/    
 	private int receivableAmount;
 }

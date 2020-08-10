@@ -73,6 +73,8 @@ public interface BottleMapper {
 	public BottleVO selectDummyBottle(BottleVO param);	
 	
 	public List<BottleVO> selectDummyBottleList();	
+
+	public List<BottleVO> selectSimpleDummyBottleList();	
 	
 	public int selectBottleHistCountOfCustomer(Map<String, Object> map);	
 	
