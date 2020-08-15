@@ -271,9 +271,9 @@
 	
 	<select id="selectWorkBottleList" resultType="com.gms.web.admin.domain.manage.WorkBottleVO" parameterType="int">		
 		SELECT  
-			Product_Count, WB.Product_ID, WB.Product_Price_Seq, Bottle_Work_Cd, Product_Nm, Product_Capa,Gas_Id, Customer_Id, WB.Product_Price,Bottle_Type,Bottle_Sale_YN
+			Work_Report_Seq,Product_Count, WB.Product_ID, WB.Product_Price_Seq, Bottle_Work_Cd, Product_Nm, Product_Capa,Gas_Id, Customer_Id, WB.Product_Price,Bottle_Type,Bottle_Sale_YN
 		FROM (
-			SELECT count(work_seq) Product_Count,Product_ID,Product_Price_Seq, Bottle_Work_Cd, Customer_Id, SUM(Product_Price) Product_Price,Bottle_Type,Bottle_Sale_YN
+			SELECT Work_Report_Seq,Count(work_seq) Product_Count,Product_ID,Product_Price_Seq, Bottle_Work_Cd, Customer_Id, SUM(Product_Price) Product_Price,Bottle_Type,Bottle_Sale_YN
 			FROM TB_Work_Bottle
 			WHERE Work_Report_Seq = #{workReportSeq}
 			Group by Bottle_Work_Cd , Product_ID  ,Product_Price_Seq
@@ -377,7 +377,7 @@
 				FROM TB_Work_Bottle TB, TB_Work_Report TW
 				WHERE TB.Work_Report_Seq  = TW.Work_Report_Seq
 				AND User_id = #{searchUserId}
-				AND Bottle_WorK_CD in ('0308','0309', '0310', '0311', '0312')
+				AND Bottle_WorK_CD in ('0308','0309', '0310', '0311', '0312', '0313')
 				AND TW.Delete_YN = 'N'
 				<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
 				AND DATE_FORMAT(Work_Dt,'%Y/%m/%d')  =   #{searchDt}

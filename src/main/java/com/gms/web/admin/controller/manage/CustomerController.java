@@ -110,13 +110,13 @@ public class CustomerController {
 			//ID 중복체크			
 			boolean result = customerService.registerCustomer(params);
 			if (result == false) {
-				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+				logger.error("CustomerContoller registerCustomer Exception===");
 			}
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("CustomerContoller registerCustomer Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("CustomerContoller registerCustomer Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -246,7 +246,7 @@ public class CustomerController {
 		String searchCustomerNm = params.getSearchCustomerNm();
 		boolean result = false;
 		try {			
-			logger.debug("******params.getCustomerId()()) *****===*"+params.getCustomerId());
+			//logger.debug("******params.getCustomerId()()) *****===*"+params.getCustomerId());
 			mav.addObject("currentPage", params.getCurrentPage());
 			mav.addObject("searchCustomerNm", params.getSearchCustomerNm());
 			result = customerService.modifyCustomer(params);
@@ -255,10 +255,10 @@ public class CustomerController {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			}
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("CustomerContoller modifyCustomer Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("CustomerContoller modifyCustomer Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		
@@ -285,7 +285,7 @@ public class CustomerController {
 		
 		int result = 0;
 		try {			
-			logger.debug("******params.getCustomerId()()) *****===*"+param.getCustomerId());
+			//logger.debug("******params.getCustomerId()()) *****===*"+param.getCustomerId());
 			mav.addObject("menuId", PropertyFactory.getProperty("common.menu.customer"));
 			mav.addObject("currentPage", param.getCurrentPage());
 			mav.addObject("searchCustomerNm", param.getSearchCustomerNm());
@@ -296,10 +296,10 @@ public class CustomerController {
 			result = customerService.deleteCustomer(param);			
 			
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("CustomerContoller deleteCustomer Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("CustomerContoller deleteCustomer Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		
@@ -323,10 +323,10 @@ public class CustomerController {
 		
 		CustomerVO result = customerService.getCustomerDetails(customerId);
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));
-		
+		/*
 		if(result != null) logger.info("******result *****===*"+result.getCustomerId());
 		else logger.info("******result is null  *****===*"); 
-		
+		*/
 		return result;
 	}
 	
@@ -350,9 +350,7 @@ public class CustomerController {
 		Map<String, Object> map = customerService.searchCustomerList(searchCustomerNm);
 		//model.addAttribute("customerList", map.get("list"));
 		mav.addObject("customerList", map.get("list"));	
-		//model.addAttribute("productList", productService.getProductList());
-		
-					
+
 		//return "/gms/price/write";
 		mav.setViewName("gms/price/write");
 		return mav;
@@ -370,9 +368,6 @@ public class CustomerController {
 			int priceCount  = Integer.parseInt(request.getParameter("priceCount"));
 			
 			boolean result=false;
-			
-			logger.debug("CustomerContoller registerCustomerPrice priceCnt== "+ priceCount);
-			logger.debug("CustomerContoller registerCustomerPrice request.getParameter(\"customerId1\"== "+ request.getParameter("customerId1"));
 			
 			//result = customerService.deleteCustomerPrice(Integer.parseInt(request.getParameter("customerId1")));
 			CustomerPriceVO[] customerPrice = new CustomerPriceVO[priceCount];
@@ -404,10 +399,10 @@ public class CustomerController {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			}
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("CustomerContoller registerCustomerPrice Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("CustomerContoller registerCustomerPrice Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -452,11 +447,6 @@ public class CustomerController {
 			
 			int result=0;
 
-			logger.debug("CustomerContoller registerCustomerPrice request.getParameter(\"customerId1\"== "+ request.getParameter("customerId1"));
-			
-			//result = customerService.deleteCustomerPrice(Integer.parseInt(request.getParameter("customerId1")));
-			//CustomerBottleVO[] customerBottle = new CustomerBottleVO[priceCount];
-
 			List<CustomerBottleVO> cBottleList = new ArrayList<CustomerBottleVO>();	
 			
 			for(int i =0 ; i < priceCount ; i++ ) {
@@ -479,10 +469,10 @@ public class CustomerController {
 			//ID 중복체크			
 			
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("CustomerContoller registerCustomerBottle Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("CustomerContoller registerCustomerBottle Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -553,9 +543,6 @@ public class CustomerController {
 			mav.addObject("searchCustomerNm", request.getParameter("searchCustomerNm1"));
 			int priceCount  = Integer.parseInt(request.getParameter("priceCount"));
 
-			logger.debug("CustomerContoller registerCustomerProductBottle searchCustomerNm1== "+ request.getParameter("searchCustomerNm1"));
-			logger.debug("CustomerContoller registerCustomerProductBottle priceCount== "+ priceCount);
-
 			List<CustomerProductVO> cBottleList = new ArrayList<CustomerProductVO>();	
 			
 			for(int i =0 ; i < priceCount ; i++ ) {
@@ -584,10 +571,10 @@ public class CustomerController {
 			//ID 중복체크			
 			
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("CustomerContoller registerCustomerProductBottle Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("CustomerContoller registerCustomerProductBottle Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result > 0){
@@ -635,10 +622,8 @@ public class CustomerController {
 	public List<CustomerSimpleVO> getGasCustoerList()	{
 		logger.info("CustomerContoller getCarList");
 
-		//List<CustomerSimpleVO> customerList = customerService.getCarSimpleList("G");
 		List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList("");
 		return customerList;
-		//return null;
 	}
 	
 	@RequestMapping(value = "/api/customerAllList.do")
@@ -649,7 +634,6 @@ public class CustomerController {
 		
 		List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList("");
 		return customerList;
-		//return null;
 	}
 	
 	@RequestMapping(value = "/api/customerAllList1.do")
@@ -661,7 +645,6 @@ public class CustomerController {
 		String customerList = customerService.searchCustomerSimpleListString(searchCustomerNm);
 		
 		return customerList;
-		//return null;
 	}
 	
 	@RequestMapping(value = "/api/customerRentBottle.do")

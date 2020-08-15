@@ -116,9 +116,8 @@ public class BottleServiceImpl implements BottleService {
 		
 		//수정 Start
 		int pages = (bottleCount == 0) ? 1 : (int) ((bottleCount - 1) / ROW_PER_PAGE) + 1; // * 정수형이기때문에 소숫점은 표시안됨		
-        int blocks;
-        int block;
-        blocks = (int) Math.ceil(1.0 * pages / ROW_PER_PAGE); // *소숫점 반올림
+        
+        int block;        
         block = (int) Math.ceil(1.0 * currentPage / ROW_PER_PAGE); // *소숫점 반올림
         startPageNum = (block - 1) * ROW_PER_PAGE + 1;
         lastPageNum = block * ROW_PER_PAGE;        
@@ -335,6 +334,7 @@ public class BottleServiceImpl implements BottleService {
 		param.setBottleCapa(product.getProductCapa());
 		param.setGasId(product.getGasId());		
 		*/
+		
 		result =  bottleMapper.updateBottle(param);
 		
 		//if(result > 0 ) result = bottleMapper.insertBottleHistory(param.getBottleId());
@@ -354,8 +354,7 @@ public class BottleServiceImpl implements BottleService {
 		param.setBottleId(param.getChBottleId());
 		
 		if(result > 0 ) result = bottleMapper.insertBottleHistory(param);
-		
-		//TODO TB_Work_Report 추가
+				
 		param = getBottleDetail(param.getChBottleId());
 		
 		// TB_Work_Report & TB_Work_Bottle 등록
@@ -385,7 +384,7 @@ public class BottleServiceImpl implements BottleService {
 	@Override
 	@Transactional
 	public int changeBottlesWorkCd(BottleVO param) {
-		// TODO Auto-generated method stub
+		
 		int result = 0;
 
 		try {		
@@ -445,10 +444,7 @@ public class BottleServiceImpl implements BottleService {
 			workReport.setUserId(param.getCreateId());
 			workReport.setCreateId(param.getCreateId());
 			workReport.setBottlesIds(param.getBottleIds());		
-			workReport.setCustomerId(param.getCustomerId());
-			//workReport.set
-			
-			//logger.debug("WorkReportServiceImpl registerWorkReport workReportSeq =" + workReportSeq);
+			workReport.setCustomerId(param.getCustomerId());			
 			
 			result = workService.registerWorkReportByBottle(workReport, bottleList);
 			if(result <= 0) return result;
@@ -459,10 +455,10 @@ public class BottleServiceImpl implements BottleService {
 			if(result > 0 ) result = bottleMapper.insertBottleHistorys(bottleList);
 		
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("changeBottlesWorkCd Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("changeBottlesWorkCd Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		
@@ -523,8 +519,7 @@ public class BottleServiceImpl implements BottleService {
 		BottleVO bottle = new BottleVO();
 		bottle.setBottleId(bottleId);
 		//bottleMapper.selectBottleDetail(bottleId);
-		
-		//TODO bottleId만 넘겨줘도 될듯..
+				
 		return bottleMapper.insertBottleHistory(bottle);		
 	}
 
@@ -552,6 +547,7 @@ public class BottleServiceImpl implements BottleService {
 
 
 	@Override
+	@Transactional
 	public int changeBottlesWorkCdOnly(BottleVO param) {
 
 		int result = 0;
@@ -589,18 +585,17 @@ public class BottleServiceImpl implements BottleService {
 			param.setBottleIds(tempBottleIds);
 			logger.debug("BottleServiceImpl changeBottlesWorkCdOnly after **** getBottlesId "+ param.getBottleIds());
 			
-			if(bottleList.size() > 0 ) param.setCustomerId(bottleList.get(0).getCustomerId());
-			
+			if(bottleList.size() > 0 ) param.setCustomerId(bottleList.get(0).getCustomerId());			
 			
 			result =  bottleMapper.updateBottlesWorkCd(param);
 			
 			if(result > 0 ) result = bottleMapper.insertBottleHistorys(bottleList);
 		
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("changeBottlesWorkCdOnly Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("changeBottlesWorkCdOnly Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		
@@ -629,6 +624,7 @@ public class BottleServiceImpl implements BottleService {
 		
 			for(int i = 0 ; i < params.size() ; i++) {
 				params.get(i).setChBottleId(params.get(i).getBottleId());
+				params.get(i).setCarCustomerId(param.getCustomerId().toString());
 				params.get(i).setBottleWorkCd(param.getBottleWorkCd());
 				result =  bottleMapper.updateBottleWorkCd(params.get(i));
 			}

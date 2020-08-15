@@ -94,7 +94,7 @@ $(function() {
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover">
                   <thead>
-                    <tr>
+                    <tr style="font-size:13px;">
                       <th>날짜</th>
                       <th>주문건수</th>
                       <th>주문금액</th>
@@ -109,11 +109,13 @@ $(function() {
                   <tbody>
                   	<tr th:if="${not #lists.isEmpty( statList )}" th:each="row : ${statList}" style="font-size:14px;">
                       <td th:text="${row.statDt}"></td>
-                      <td th:text="${row.orderTotalCount}"></td>
+                       <td th:if="${row.orderTotalCount> 999 }" th:text="${#numbers.formatInteger(row.orderTotalCount, 3, 'COMMA')}">
+                      <td th:unless="${row.orderTotalCount> 999 }" th:text="${row.orderTotalCount}">    
                       <td th:if="${row.orderTotalAmount> 0 }" th:text="${#numbers.formatInteger(row.orderTotalAmount, 3, 'COMMA')}">
                       <td th:unless="${row.orderTotalAmount> 0 }" th:text="${row.orderTotalAmount}">
                       </td>                
-                      <td th:text="${row.orderCompletedCount}"></td>
+                      <td th:if="${row.orderCompletedCount> 999 }" th:text="${#numbers.formatInteger(row.orderCompletedCount, 3, 'COMMA')}">
+                      <td th:unless="${row.orderCompletedCount> 999 }" th:text="${row.orderCompletedCount}">     
                       <td th:if="${row.orderCompletedAmount> 0 }" th:text="${#numbers.formatInteger(row.orderCompletedAmount, 3, 'COMMA')}">
                       <td th:unless="${row.orderCompletedAmount> 0 }" th:text="${row.orderCompletedAmount}">
                       </td>                   

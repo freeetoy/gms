@@ -121,10 +121,10 @@ public class ProductController {
 			}	
 			
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("ProductController registerProduct Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("ProductController registerProduct Exception==="+e.toString());
 			e.printStackTrace();
 		}
 			
@@ -160,10 +160,10 @@ public class ProductController {
 			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.product"));
 			
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("ProductController updateProductForm Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("ProductController updateProductForm Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -245,10 +245,10 @@ public class ProductController {
 			}	
 			
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("ProductController modifyProduct Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("ProductController modifyProduct Exception==="+e.toString());
 			e.printStackTrace();
 		}
 			
@@ -271,10 +271,10 @@ public class ProductController {
 			model.addAttribute("productList", productList);
 			
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("ProductController deleteProduct Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("ProductController deleteProduct Exception==="+e.toString());
 			e.printStackTrace();
 		}		
 		
@@ -302,10 +302,10 @@ public class ProductController {
 			model.addAttribute("productList", productList);
 			
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("ProductController modifyProductPriceStatus Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("ProductController modifyProductPriceStatus Exception==="+e.toString());
 			e.printStackTrace();
 		}		
 		
@@ -364,10 +364,9 @@ public class ProductController {
 	public List<ProductPriceSimpleVO> getProductPriceListOfNoGas(Model model)	{	
 		
 		List<ProductPriceSimpleVO> productList = productService.getNoGasProductPriceList();
-		model.addAttribute("productList", productList);
+		//model.addAttribute("productList", productList);
 		
 		return productList;
-		//return null;
 	}
 	
 	@RequestMapping(value = "/api/gasProductPriceList.do")
@@ -375,7 +374,7 @@ public class ProductController {
 	public List<ProductPriceSimpleVO> getProductPriceListOfGas(Model model)	{	
 		
 		List<ProductPriceSimpleVO> productList = productService.getGasProductPriceList();
-		model.addAttribute("productList", productList);
+		//model.addAttribute("productList", productList);
 		
 		return productList;
 	}

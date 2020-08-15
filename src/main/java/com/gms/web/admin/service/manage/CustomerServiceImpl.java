@@ -72,9 +72,9 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		int pages = (customerCount == 0) ? 1 : (int) ((customerCount - 1) / ROW_PER_PAGE) + 1; // * 정수형이기때문에 소숫점은 표시안됨
 		
-        int blocks;
+      
         int block;
-        blocks = (int) Math.ceil(1.0 * pages / ROW_PER_PAGE); // *소숫점 반올림
+        
         block = (int) Math.ceil(1.0 * currentPage / ROW_PER_PAGE); // *소숫점 반올림
         startPageNum = (block - 1) * ROW_PER_PAGE + 1;
         lastPageNum = block * ROW_PER_PAGE;
@@ -82,18 +82,11 @@ public class CustomerServiceImpl implements CustomerService {
         if (lastPageNum > pages){
         	lastPageNum = pages;
         }		
-		
-		logger.debug("****** getCustomerList *****currentPage===*"+currentPage);	
-		logger.debug("****** getCustomerList.lastPage *****===*"+lastPage);		
-		logger.debug("****** getCustomerList.starPageNum *****===*"+startPageNum);
-		logger.debug("****** getCustomerList.lastPageNum *****===*"+lastPageNum);
-		
+			
 		Map<String, Object> resutlMap = new HashMap<String, Object>();
 		
-		List<CustomerVO> customerList = customerMapper.selectCustomerList(map);
-		
-		logger.debug("****** getCustomerList.customerList *****===*"+customerList.size());
-		
+		List<CustomerVO> customerList = customerMapper.selectCustomerList(map);		
+
 		resutlMap.put("list",  customerList);
 		resutlMap.put("searchCustomerNm", param.getSearchCustomerNm());
 		resutlMap.put("currentPage", currentPage);
@@ -132,7 +125,6 @@ public class CustomerServiceImpl implements CustomerService {
 
 		// 정보 등록
 		int result = 0;
-		logger.debug("****** registerCustomer.getCustomerId()()) *****===*"+param.getCustomerId());
 		
 		result = customerMapper.insertCustomer(param);
 		if (result > 0) {
@@ -162,7 +154,6 @@ public class CustomerServiceImpl implements CustomerService {
 
 		// 거래처 정보 수정
 		int result = 0;
-		logger.debug("****** modifyCustomer()()) *****===*"+param.getCustomerId());	
 		
 		result = customerMapper.updateCustomer(param);
 		if (result > 0) {
@@ -256,7 +247,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<CustomerVO> searchCustomerListExcel(String param) {
 		
 		List<CustomerVO> customerList = customerMapper.searchCustomerList(param);
-		// TODO Auto-generated method stub
+		
 		return customerList;
 	}
 
@@ -264,7 +255,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public List<CustomerVO> searchCustomerListCar() {
 		List<CustomerVO> customerList = customerMapper.selectCustomerListCar();
-		// TODO Auto-generated method stub
+		
 		return customerList;
 	}
 
@@ -302,8 +293,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Transactional
 	public int registerCustomerPrices(List<CustomerPriceVO> param) {
 		int result = 0;	
-		
-		//result = customerMapper.deleteCustomerPrices(param);		
+				
 		result = customerMapper.insertCustomerPrices(param);
 				
 		return result;
@@ -314,7 +304,6 @@ public class CustomerServiceImpl implements CustomerService {
 	@Transactional
 	public boolean deleteCustomerPrice(Integer customerId) {
 		boolean successFlag = false;
-
 		// 정보 등록
 		int result = 0;
 		logger.debug("****** deleteCustomerPrice.getCustomerId()()) *****===*"+customerId);
@@ -334,7 +323,6 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public int deleteCustomerPrices(List<CustomerPriceVO> param) {
-		// TODO Auto-generated method stub
 		return customerMapper.deleteCustomerPrices(param);
 	}
 	
@@ -349,14 +337,12 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 	
 	@Override
-	public List<CustomerPriceVO> getCustomerPriceListAll() {
-		// TODO Auto-generated method stub
+	public List<CustomerPriceVO> getCustomerPriceListAll() {		
 		return customerMapper.selectCustomerPriceListAll();
 	}
 
 	@Override
 	public int modifyCustomerPrice(CustomerPriceVO param) {
-		// TODO Auto-generated method stub
 		return customerMapper.updateCustomerPrice(param);
 	}
 

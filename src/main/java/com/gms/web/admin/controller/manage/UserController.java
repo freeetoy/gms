@@ -82,10 +82,10 @@ public class UserController {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			}
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("UserController registerUser Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("UserController registerUser Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -131,10 +131,10 @@ public class UserController {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			}
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("UserController modifyUser Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("UserController modifyUser Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -165,13 +165,12 @@ public class UserController {
 			model.addAttribute("totalCount", map.get("totalCount"));
 			
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("UserController deleteUser Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("UserController deleteUser Exception==="+e.toString());
 			e.printStackTrace();
 		}
-		
 		
 		return "redirect:/gms/user/list.do?currentPage="+params.getCurrentPage();
 	}

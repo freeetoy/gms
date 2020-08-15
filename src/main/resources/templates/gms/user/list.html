@@ -3,17 +3,14 @@
 <div class="wrapper">
 
 <th:block layout:fragment="content"> 
-<script type="text/javascript">
-
-	
+<script type="text/javascript">	
 	
 	var fn_deleteUser = function(userId){
 		var form = document.deleteform;	
 		               		
 		if(confirm("삭제하시겠습니까?")){	
 			
-			$("#userId").val(userId);  			
-			
+			$("#userId").val(userId);  						
 			
 	        form.submit();			
 		}                  		
@@ -26,7 +23,6 @@
 		
 		form.submit();
 	};
-
 
 
 	function gotoPage(pageNo) {
@@ -98,7 +94,7 @@
                 	<input type="hidden" id="userId" name="userId" value="">
                 </form>
                   <thead>
-                    <tr>
+                    <tr style="font-size:14px;">
                       <th>순번</th>
                       <th>사용자명</th>
                       <th>ID</th>

@@ -221,7 +221,8 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 		</tr>
 		<tr height="30"> 
 			<td width="6%" style="border-style: none solid solid solid;border-width: 1px;" align="center">미수금액</td>
-			<td width="9%"  style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${cashSum.receivableAmountNet}"></td>
+			<td width="9%"  style="border-style: none solid solid none;border-width: 1px;" align="center" th:if="${cashSum.receivableAmountNet> 999 }" th:text="${#numbers.formatInteger(cashSum.receivableAmountNet, 3, 'COMMA')}">
+			<td width="9%"  style="border-style: none solid solid none;border-width: 1px;" align="center" th:unless="${cashSum.receivableAmountNet> 999 }" th:text="${cashSum.receivableAmountNet}"></td>
 			<td width="5%" style="border-style: none solid solid none;border-width: 1px;" align="center">비고</td>
 			<td colspan="7" style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${orderExt.order.orderEtc}"></td>
 		</tr>		
@@ -466,7 +467,8 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 		</tr>
 		<tr height="30"> 
 			<td width="6%" style="border-style: none solid solid solid;border-width: 1px;" align="center">미수금액</td>
-			<td width="9%"  style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${cashSum.receivableAmountNet}"></td>
+			<td width="9%"  style="border-style: none solid solid none;border-width: 1px;" align="center" th:if="${cashSum.receivableAmountNet> 999 }" th:text="${#numbers.formatInteger(cashSum.receivableAmountNet, 3, 'COMMA')}">
+			<td width="9%"  style="border-style: none solid solid none;border-width: 1px;" align="center" th:unless="${cashSum.receivableAmountNet> 999 }" th:text="${cashSum.receivableAmountNet}"></td>
 			<td width="5%" style="border-style: none solid solid none;border-width: 1px;" align="center">비고</td>
 			<td colspan="7" style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${orderExt.order.orderEtc}"></td>
 		</tr>	

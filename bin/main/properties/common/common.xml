@@ -145,4 +145,6 @@
 	
 	<entry key="product.LN2.divide.productId">52</entry>
 	<entry key="product.LN2.divide.bottle.productPriceSeq">2</entry>
+		
+	<entry key="cash.receivable.limit">10000000</entry>
 </properties>

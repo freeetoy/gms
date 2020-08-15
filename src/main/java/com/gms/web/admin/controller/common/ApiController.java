@@ -40,7 +40,8 @@ public class ApiController {
 	@ResponseBody
 	public String controlAction(String userId, String bottles, String customerNm, String bottleType, String bottleWorkCd)	{	
 				
-		logger1.info(TAG,"userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
+		logger1.info("userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
+		logger.info("userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
 		
 		boolean phoneCall = true;
 		int result = 0;		
@@ -119,7 +120,8 @@ public class ApiController {
 	@ResponseBody
 	public String controlActionNoGas(String userId, String customerNm, Integer productId, Integer productPriceSeq, int productCount )	{	
 				
-		logger1.info(TAG,"userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
+		logger1.info("userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
+		logger.info("userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
 		
 		boolean phoneCall = true;
 		int result = 0;
@@ -148,7 +150,8 @@ public class ApiController {
 	@ResponseBody
 	public String manageCashFlow(String userId, String customerNm,  int incomeAmount, int receivableAmount, String incomeWay )	{	
 				
-		logger1.info(TAG,"userId="+userId+" : incomeAmount ="+incomeAmount +": receivableAmount ="+ receivableAmount + " : customerNm ="+customerNm + " : incomeWay ="+incomeWay);
+		logger.info("userId="+userId+" : incomeAmount ="+incomeAmount +": receivableAmount ="+ receivableAmount + " : customerNm ="+customerNm + " : incomeWay ="+incomeWay);
+		logger1.info("userId="+userId+" : incomeAmount ="+incomeAmount +": receivableAmount ="+ receivableAmount + " : customerNm ="+customerNm + " : incomeWay ="+incomeWay);
 				
 		int result = 0;
 		
@@ -180,7 +183,8 @@ public class ApiController {
 	@ResponseBody
 	public String manageGasAndBottle(String userId, String bottles, String customerNm, String bottleType, String bottleWorkCd )	{	
 				
-		logger1.info(TAG,"userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
+		logger.info("userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
+		logger1.info("userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
 				
 		int result = 0;
 		boolean phoneCall = true;
@@ -222,7 +226,8 @@ public class ApiController {
 	@ResponseBody
 	public String controlMassAction(String userId, String bottles, String customerNm, String bottleType, String bottleWorkCd)	{	
 				
-		logger1.info(TAG,"**************/n userId="+userId+" : bottles ="+bottles +" : bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm +"/n*******");
+		logger.info("**************/n userId="+userId+" : bottles ="+bottles +" : bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm +"/n*******");
+		logger1.info("**************/n userId="+userId+" : bottles ="+bottles +" : bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm +"/n*******");
 		
 		int result = 1;		
 		boolean phoneCall = true;
@@ -252,8 +257,7 @@ public class ApiController {
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.massback"))) {			//회수
 			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.back"));
 			workReport.setWorkCd(PropertyFactory.getProperty("common.bottle.status.back"));	
-			result = apiService.registerWorkReportMassForChangeCd(workReport);																	
-		
+			result = apiService.registerWorkReportMassForChangeCd(workReport);		
 		}
 		
 		if(result > 0)
@@ -269,5 +273,33 @@ public class ApiController {
 		logger.debug("getDummyBottleList===");
 		
 		return apiService.getDummyBottleList();
+	}
+	
+	
+	@RequestMapping(value = "/api/bottleDetail.do")
+	@ResponseBody
+	public BottleVO getBottleDetail(String bottleBarCd)	{				
+		logger1.info("getBottleDetail= bottleBarCd=*"+bottleBarCd);
+		try {
+			BottleVO bottle =  bottleService.getBottleDetailForBarCd(bottleBarCd);			
+			
+			if(bottle!=null) {
+				if(bottle.getBottleCapa() == null || (bottle.getBottleCapa()!=null && bottle.getBottleCapa().length() == 0)) {
+					bottle.setBottleCapa("-");
+					bottle.setChargeCapa("-");
+				}
+				
+				bottle.setSuccess(true);
+			}
+			else {
+				bottle = new BottleVO();
+				bottle.setSuccess(false);
+			}
+			return bottle;
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("====* getBottleDetail bottleBarCd== "+bottleBarCd);
+			return null;
+		}
 	}
 }

@@ -94,7 +94,7 @@ $(function() {
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover">
                   <thead>
-                    <tr>
+                    <tr style="font-size:13px;">
                       <th>날짜</th>
                       <th>판매수량</th>
                       <th>판매금액</th>
@@ -105,12 +105,14 @@ $(function() {
                   </thead>
                   <tbody>
                   	<tr th:if="${not #lists.isEmpty( statList )}" th:each="row : ${statList}" style="font-size:14px;">
-                      <td th:text="${row.statDt}"></td>
-                      <td th:text="${row.salesCount}"></td>
+                      <td th:text="${row.statDt}"></td>                      
+                      <td th:if="${row.salesCount> 999 }" th:text="${#numbers.formatInteger(row.salesCount, 3, 'COMMA')}">
+                      <td th:unless="${row.salesCount> 999 }" th:text="${row.salesCount}">
                       <td th:if="${row.salesAmount> 0 }" th:text="${#numbers.formatInteger(row.salesAmount, 3, 'COMMA')}">
                       <td th:unless="${row.salesAmount> 0 }" th:text="${row.salesAmount}">
-                      </td>      
-                      <td th:text="${row.rentalCount}"></td>
+                      </td>  
+                      <td th:if="${row.rentalCount> 999 }" th:text="${#numbers.formatInteger(row.rentalCount, 3, 'COMMA')}">
+                      <td th:unless="${row.rentalCount> 999 }" th:text="${row.rentalCount}">
                       <td th:if="${row.rentalAmount> 0 }" th:text="${#numbers.formatInteger(row.rentalAmount, 3, 'COMMA')}">
                       <td th:unless="${row.rentalAmount> 0 }" th:text="${row.rentalAmount}">
                       </td>                     

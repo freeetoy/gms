@@ -430,8 +430,7 @@ public class ExcelDownloadController {
 		  //거래처명	거래처주소	거래처사업자등록번호	거래처전화	대표자	업태	종목	이메일
 		    //0		1		2				3		4		5	6	7
 		    // 데이터 부분 생성
-		    int i = 1;
-		    
+		   		    
 		    for(CustomerVO vo : customerlist) {
 		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);		        
 		        
@@ -577,7 +576,6 @@ public class ExcelDownloadController {
 		  //용기,바코드/RFID, 품명,가스용량,구분,타입,날짜
 		    //0		1		2	3	 4	 5	6	
 		    // 데이터 부분 생성
-		    int i = 1;
 		    
 		    for(BottleVO vo : bottleList) {
 		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);		        

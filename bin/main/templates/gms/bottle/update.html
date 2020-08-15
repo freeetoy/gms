@@ -198,7 +198,6 @@ var goList = function(){
 			.fail(function(){
 				console.log("fail");
 			 });
-
 		} 
 
 		
@@ -220,9 +219,8 @@ var goList = function(){
     </section>
   
     <section class="content">   
-        
-        <div class="row">          
-            <div class="col-md-7">
+  		<div class="row">          
+            <div class="col-md-8">
               
              <!-- general form elements -->                        
               <!-- /.card-header -->
@@ -328,20 +326,13 @@ var goList = function(){
                 </table>               
                 
               </div>
-            </div>
-            
-            <div class="col-md-7">
-            <table class="table table-hover"/>	         
-            </div>
-          
-      		<div class="card-footer">      		
+              <div class="card-footer">      		
                  <a href="#" th:onclick="history.back()"  class="btn btn-secondary float-left">취소</a>
 		          <input type="button" value="저장" onclick="javascript:goWrite()" class="btn btn-success float-right">                  		
             	</form>   
+           		 </div>
             </div>
-            
-            <!-- history 이력 -->
-            <div class="col-md-7">
+           <div class="col-md-8">
             	<div class="card">   
             	<table class="table table-hover">	         	
 	         		<thead>
@@ -369,14 +360,9 @@ var goList = function(){
                </div>
             </div>
             
-          	<!-- /.col-12 -->
-          </div>
-        </div>      
-        
-        
-        <!-- /.row -->
-      </div>
+            
       <!-- /.container-fluid -->
+      </div>
     </section>
     <!-- /.content -->
   </div>

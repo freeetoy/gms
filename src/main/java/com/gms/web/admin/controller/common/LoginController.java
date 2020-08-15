@@ -2,6 +2,9 @@ package com.gms.web.admin.controller.common;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Base64;
+import java.util.Base64.Decoder;
+import java.util.Base64.Encoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -97,9 +100,7 @@ public class LoginController {
 			, HttpServletResponse response
 			, LoginUserVO param) {
 		
-		logger.info("LoginContoller loginAction Start");
-		
-		ModelAndView mav = new ModelAndView();		
+		logger.info("LoginContoller loginAction Start");		
 		
 		UserVO user = userService.getUserDetails(param.getUserId());
 		String alertMessage = "로그인 되었습니다.";
@@ -111,7 +112,7 @@ public class LoginController {
 			HttpSession session = request.getSession();
 			
 			if(loginUser!= null && loginUser.getUserId() != null) {
-				logger.debug("LoginContoller loginAction userNm "+loginUser.getUserNm());			
+				//logger.debug("LoginContoller loginAction userNm "+loginUser.getUserNm());			
 				
 				loginUser.setUserId(param.getUserId());
 				session.setAttribute(LoginUserVO.ATTRIBUTE_NAME, loginUser);		
@@ -120,14 +121,12 @@ public class LoginController {
 				
 				//RequestUtils.responseWriteException(response, alertMessage, "/gms/start");
 			}else {
-				alertMessage = "비밀번호를 확인해주세요";			
-				
+				//alertMessage = "비밀번호를 확인해주세요";	
 				//RequestUtils.responseWriteException(response, alertMessage, "/login");
 				return "redirect:/login";
 			}
 		}else {
-			alertMessage = "사용자 정보가 없습니다. 아이디를 확인해주세요";			
-			
+			//alertMessage = "사용자 정보가 없습니다. 아이디를 확인해주세요";	
 			//RequestUtils.responseWriteException(response, alertMessage, "/login");
 			return "redirect:/login"; //gms/order/list.do";
 		}
@@ -136,19 +135,18 @@ public class LoginController {
 		return "redirect:/gms/start"; //gms/order/list.do";
 		
 	}
+	
 	@RequestMapping(value="/api/loginAction.do")
 	@ResponseBody
 	public LoginUserVO apiLoginAction(
 			HttpServletRequest request
 			, HttpServletResponse response
 			, String id, String pw) throws UnsupportedEncodingException {
+		
 		String result = "";
 		boolean res=false;
-		ModelAndView mav = new ModelAndView();		
-		logger.info("LoginContoller /api/loginAction Start");			
-			
-		logger.debug("LoginContoller loginAction id "+id);
-		logger.debug("LoginContoller loginAction pw "+pw);
+		
+		logger.info("LoginContoller /api/loginAction Start");		
 		
 		LoginUserVO param = new LoginUserVO();
 		param.setUserId(id);
@@ -156,7 +154,54 @@ public class LoginController {
 			
 		LoginUserVO user = loginService.getUserInfo(param);			
 		
-		logger.debug("LoginContoller loginAction user.getMessage "+user.getErrorMessage());
+		//logger.debug("LoginContoller loginAction user.getMessage "+user.getErrorMessage());
+		
+		user.setUserNm(URLEncoder.encode(user.getUserNm(), "UTF-8"));
+		if(user != null && user.getUserId() != null){
+			result = "success";
+			res = true;
+			user.setSuccess(res);
+			
+		}else {
+			result = "fail";
+			res = false;
+			user.setSuccess(res);
+		}
+		return user;
+		
+	}
+	
+	@RequestMapping(value="/api/loginEncodeAction.do")
+	@ResponseBody
+	public LoginUserVO apiLoginEncodeAction(
+			HttpServletRequest request
+			, HttpServletResponse response
+			, String id, String pw) throws UnsupportedEncodingException {
+		
+		String result = "";
+		boolean res=false;
+		
+		logger.info("LoginContoller /api/loginEncodeAction Start");		
+		
+		LoginUserVO param = new LoginUserVO();		
+		
+		byte[] idBytes = id.getBytes();
+        byte[] pwBytes = pw.getBytes();
+        
+		// Base64 디코딩 /////////////////////////////////////////////////// 
+		Decoder decoder = Base64.getDecoder(); 
+		byte[] decodedIdBytes = decoder.decode(idBytes);
+		byte[] decodedPwBytes = decoder.decode(pwBytes);
+
+		String newId= new String(decodedIdBytes);
+		String newPw= new String(decodedPwBytes);
+		//logger.info("LoginContoller new Id ="+newId);		
+		param.setUserId(newId);
+		param.setUserPasswd(newPw);
+			
+		LoginUserVO user = loginService.getUserInfo(param);			
+		
+		//logger.debug("LoginContoller loginAction user.getMessage "+user.getErrorMessage());
 		
 		user.setUserNm(URLEncoder.encode(user.getUserNm(), "UTF-8"));
 		if(user != null && user.getUserId() != null){

@@ -649,7 +649,7 @@ $(document).ready(function(){
             <form id="mainForm" name="mainForm"  method="post">
               <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
               <input type="hidden" id="orderId" name="orderId" value="">
-               		<label>접수 기간</label>
+               		<label>접수기간</label>
             </div>               
             <div class="col-4">              
                <input type="text" class="form-control" name="searchOrderDt" th:value="${searchOrderDt}"/>			
@@ -720,7 +720,7 @@ $(document).ready(function(){
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover">                
                   <thead>
-                    <tr>
+                    <tr style="font-size:14px;">
                       <th><input type="checkbox" name="checkAll" id="checkAll" onclick="checkAll();"/></th>
                       <th>순번</th>
                       <th>거래처</th>

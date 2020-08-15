@@ -33,7 +33,7 @@
 		WHERE 
 			WB.Work_Report_Seq = WR.Work_Report_Seq
 		AND 
-			TR.Delete_YN = 'N'
+			WR.Delete_YN = 'N'
 		AND 
 			WR.Order_ID = OP.Order_ID
 		AND 

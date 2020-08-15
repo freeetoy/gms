@@ -61,9 +61,7 @@ public class ProductServiceImpl implements ProductService {
 			result = productMapper.updateProduct(param);
 		if (result > 0) {
 			successFlag = true;
-		}
-	
-		
+		}		
 		return successFlag;
 	}
 	
@@ -78,7 +76,6 @@ public class ProductServiceImpl implements ProductService {
 		if (result > 0) {
 			successFlag = true;
 		}
-	
 		
 		return successFlag;
 	}
@@ -105,10 +102,7 @@ public class ProductServiceImpl implements ProductService {
 	@Transactional
 	public boolean deleteProduct(Integer productId) {
 		ProductVO product = productMapper.selectProductDetail(productId);
-		
-		logger.debug("****** deleteProduct.productId *****===*"+productId);
-		logger.debug("****** product.productId()*****===*"+product.getProductId());
-		
+				
 		if (product == null || "0".equals(product.getProductStatus())) {
 			return false;
 		}
@@ -120,24 +114,15 @@ public class ProductServiceImpl implements ProductService {
 		
 		return true;
 	}
-/*
-	@Override
-	public List<ProductVO> getProductList() {
-		logger.info("****** getProductList *****===*");
-		return productMapper.selectProductList();
-	}
-*/
+
 	@Override
 	@Transactional
 	public boolean registerProductPrice(ProductPriceVO param) {
 		boolean successFlag = false;
 		// 가스정보 등록
 		int result = 0;
-		logger.debug("****** registerProductPrice.getProductId()()) *****===*"+param.getProductId());
-		if (param.getProductId() != null) {					
-			
-			logger.debug("****** registerProductparam.getProductId()()) *****===*"+param.getProductId());
-			
+		
+		if (param.getProductId() != null) {			
 			result = productMapper.insertProductPrice(param);
 			if (result > 0) {				
 				successFlag = true;
@@ -206,7 +191,7 @@ public class ProductServiceImpl implements ProductService {
 			param.setProductId(Integer.valueOf(productId));
 			param.setMemberCompSeq(1);				
 					
-			logger.debug("****** before registerProduct param. result *****===*"+result);
+			//logger.debug("****** before registerProduct param. result *****===*"+result);
 			result = productMapper.insertProduct(param);
 			
 			if (result > 0) {

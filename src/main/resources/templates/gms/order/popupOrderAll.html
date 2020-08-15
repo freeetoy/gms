@@ -225,7 +225,8 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 		</tr> -->
 		<tr height="30"> 
 			<td width="6%" style="border-style: none solid solid solid;border-width: 1px;" align="center">미수금액</td>
-			<td width="9%"  style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${row.cashSum.receivableAmountNet}"></td>
+			<td width="9%"  style="border-style: none solid solid none;border-width: 1px;" align="center" th:if="${row.cashSum.receivableAmountNet> 999 }" th:text="${#numbers.formatInteger(row.cashSum.receivableAmountNet, 3, 'COMMA')}">
+			<td width="9%"  style="border-style: none solid solid none;border-width: 1px;" align="center" th:unless="${row.cashSum.receivableAmountNet> 999 }" th:text="${row.cashSum.receivableAmountNet}"></td>
 			<td width="5%" style="border-style: none solid solid none;border-width: 1px;" align="center">비고</td>
 			<td colspan="7" style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${row.orderExt.order.orderEtc}"></td>
 		</tr>	
@@ -476,7 +477,8 @@ body, table, tr, td {font-family:굴림, verdana, arial; font-size: 14px;color: 
 		</tr>
 		<tr height="30"> 
 			<td width="6%" style="border-style: none solid solid solid;border-width: 1px;" align="center">미수금액</td>
-			<td width="9%"  style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${row.cashSum.receivableAmountNet}"></td>
+			<td width="9%"  style="border-style: none solid solid none;border-width: 1px;" align="center" th:if="${row.cashSum.receivableAmountNet> 999 }" th:text="${#numbers.formatInteger(row.cashSum.receivableAmountNet, 3, 'COMMA')}">
+			<td width="9%"  style="border-style: none solid solid none;border-width: 1px;" align="center" th:unless="${row.cashSum.receivableAmountNet> 999 }" th:text="${row.cashSum.receivableAmountNet}"></td>
 			<td width="5%" style="border-style: none solid solid none;border-width: 1px;" align="center">비고</td>
 			<td colspan="7" style="border-style: none solid solid none;border-width: 1px;" align="center" th:text="${row.orderExt.order.orderEtc}"></td>
 		</tr>	

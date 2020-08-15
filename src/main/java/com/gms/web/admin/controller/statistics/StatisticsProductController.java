@@ -44,7 +44,7 @@ public class StatisticsProductController {
 	public ModelAndView getStatisticsProductDaily(StatisticsProductVO params) {
 
 		logger.info("StatisticsProductContoller getStatisticsProductDaily");
-		logger.debug("StatisticsProductContoller searchStatisticsProductDt "+ params.getSearchStatDt());
+		//logger.debug("StatisticsProductContoller searchStatisticsProductDt "+ params.getSearchStatDt());
 
 		ModelAndView mav = new ModelAndView();		
 		//Integer searchProductId = params.getSearchProductId();				
@@ -59,13 +59,11 @@ public class StatisticsProductController {
 			
 			params.setSearchStatDtFrom(searchStatDtFrom);
 			params.setSearchStatDtEnd(searchStatDtEnd);			
-		}else {						
-			
+		}else {		
 			searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");
-			logger.debug("****** getStatisticsProductDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
-			
+			//logger.debug("****** getStatisticsProductDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);			
 			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
-			logger.debug("****** getStatisticsProductDaily else *****getSearchStatDtEnd===*"+searchStatDtEnd);
+			//logger.debug("****** getStatisticsProductDaily else *****getSearchStatDtEnd===*"+searchStatDtEnd);
 			
 			params.setSearchStatDtFrom(searchStatDtFrom);
 			params.setSearchStatDtEnd(searchStatDtEnd);
@@ -98,7 +96,7 @@ public class StatisticsProductController {
 	public ModelAndView getStatisticsProductMonthly(StatisticsProductVO params) {
 
 		logger.info("StatisticsProductContoller getStatisticsProductMonthly");
-		logger.debug("StatisticsProductContoller searchStatisticsProductDt "+ params.getSearchStatDt());
+		//logger.debug("StatisticsProductContoller searchStatisticsProductDt "+ params.getSearchStatDt());
 
 		ModelAndView mav = new ModelAndView();
 		
@@ -115,13 +113,11 @@ public class StatisticsProductController {
 			
 			params.setSearchStatDtFrom(searchStatDtFrom);
 			params.setSearchStatDtEnd(searchStatDtEnd);			
-		}else {						
-			
+		}else {			
 			searchStatDtFrom = DateUtils.getNextDate(-366,"yyyy/MM");
-			logger.debug("****** getMonthlylStatisticsProductList else *****getSearchStatDtFrom===*"+searchStatDtFrom);
-			
+			//logger.debug("****** getMonthlylStatisticsProductList else *****getSearchStatDtFrom===*"+searchStatDtFrom);			
 			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM");
-			logger.debug("****** getMonthlylStatisticsProductList else *****getSearchStatDtEnd===*"+searchStatDtEnd);
+			//logger.debug("****** getMonthlylStatisticsProductList else *****getSearchStatDtEnd===*"+searchStatDtEnd);
 			
 			params.setSearchStatDtFrom(searchStatDtFrom);
 			params.setSearchStatDtEnd(searchStatDtEnd);
@@ -178,10 +174,8 @@ public class StatisticsProductController {
 					searchStatDtFrom = searchStatDtFrom.substring(0,7);
 					searchStatDtEnd = searchStatDtEnd.substring(0,7);
 				}
-				logger.debug("****** getStatisticsBottleDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
-				
-				logger.debug("****** getStatisticsBottleDaily else *****getSearchStatDtEnd===*"+searchStatDtEnd);
-		
+				//logger.debug("****** getStatisticsBottleDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);				
+				//logger.debug("****** getStatisticsBottleDaily else *****getSearchStatDtEnd===*"+searchStatDtEnd);
 				
 				params.setSearchStatDtFrom(searchStatDtFrom);
 				params.setSearchStatDtEnd(searchStatDtEnd);

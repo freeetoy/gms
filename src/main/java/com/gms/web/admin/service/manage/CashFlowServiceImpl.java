@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.gms.web.admin.domain.manage.CashFlowVO;
 import com.gms.web.admin.domain.manage.CashSumVO;
-import com.gms.web.admin.domain.manage.OrderVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.mapper.manage.CashFlowMapper;
 
@@ -25,10 +24,7 @@ public class CashFlowServiceImpl implements CashFlowService {
 	
 	@Autowired
 	private WorkReportService workService;
-	
-	@Autowired
-	private OrderService orderService;
-	
+		
 	@Override
 	public int registerCashFlow(CashFlowVO param) {
 		/*
@@ -128,10 +124,8 @@ public class CashFlowServiceImpl implements CashFlowService {
 		
 		//수정 Start
 		int pages = (sCount == 0) ? 1 : (int) ((sCount - 1) / ROW_PER_PAGE) + 1; // * 정수형이기때문에 소숫점은 표시안됨
-		
-        int blocks;
-        int block;
-        blocks = (int) Math.ceil(1.0 * pages / ROW_PER_PAGE); // *소숫점 반올림
+		       
+        int block;        
         block = (int) Math.ceil(1.0 * currentPage / ROW_PER_PAGE); // *소숫점 반올림
         starPageNum = (block - 1) * ROW_PER_PAGE + 1;
         lastPageNum = block * ROW_PER_PAGE;        

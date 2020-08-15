@@ -36,7 +36,7 @@ $(document).ready(function(){
         var cols = "";
 
         cols += '<td style="padding-left:5px;">';
-        cols += '<select class="form-control" id="bottleWorkCd_' + mod_counter +  '" name="bottleWorkCd_' + mod_counter + '" style="width:80px"></select>';
+        cols += '<select class="form-control" id="bottleWorkCd_' + mod_counter +  '" name="bottleWorkCd_' + mod_counter + '" style="width:100px"></select>';
         cols += '</td><td>';
         cols += '<select class="form-control" id="productId_' + mod_counter +  '" name="productId_' + mod_counter + '" style="width:250px"></select>';
         cols += '</td><td>';
@@ -95,6 +95,9 @@ $(document).ready(function(){
 		$('#bottleWorkCd_' + pid).append('<option value=0308>판매</option>')	
 		$('#bottleWorkCd_' + pid).append('<option value=0309>대여</option>')	
 		$('#bottleWorkCd_' + pid).append('<option value=0310>회수</option>')	
+		$('#bottleWorkCd_' + pid).append('<option value=0311>무료회수</option>')	
+		$('#bottleWorkCd_' + pid).append('<option value=0312>매입</option>')	
+		$('#bottleWorkCd_' + pid).append('<option value=0313>무상교체</option>')	
     } 
     
 	function initProduct(pid){
@@ -230,10 +233,13 @@ $(document).ready(function(){
 		        var newRow = $("<tr>");
 				var cols = "";
 				cols += '<td style="padding-left:5px;">';
-				cols += '<select class="form-control" id="bottleWorkCd_0" name="bottleWorkCd_0" style="width:80px">'; 
+				cols += '<select class="form-control" id="bottleWorkCd_0" name="bottleWorkCd_0" style="width:100px">'; 
 				cols += '<option value=0308>판매</option>'; 
 				cols += '<option value=0309>대여</option>'; 
 				cols += '<option value=0310>회수</option>'; 
+				cols += '<option value=0311>무료회수</option>'; 
+				cols += '<option value=0312>매입</option>'; 
+				cols += '<option value=0313>무상교체</option>'; 
 				cols += '</select>'; 
 				cols += '</td><td>';
 				cols += '<select class="form-control" id="productId_0" name="productId_0" style="width:250px"></select>'; 
@@ -276,16 +282,20 @@ $(document).ready(function(){
 		            cols = "";				
 					cols += '<td style="padding-left:5px;">';
 					
-					cols += '	<select class="form-control" id="bottleWorkCd_' + counter +  '" name="bottleWorkCd_' + counter + '" style="width:80px" readonly>'; 
+					cols += '	<select class="form-control" id="bottleWorkCd_' + counter +  '" name="bottleWorkCd_' + counter + '" style="width:100px" readonly>'; 
 					//cols += '	<option value="' + data[i].bottleWorkCd +'" selected>' + data[i].bottleWorkCd + '</option>';
 					if(data[i].bottleWorkCd =='0308')
-						cols += '	<option value="0308" selected>판매</option>';
-					
-					if(data[i].bottleWorkCd =='0309'){ 						
+						cols += '	<option value="0308" selected>판매</option>';					
+					if(data[i].bottleWorkCd =='0309')					
 						cols += '	<option value="0309" selected>대여</option>';
-					}
-					if(data[i].bottleWorkCd =='0310')
+					if(data[i].bottleWorkCd =='0310')					
 						cols += '	<option value="0310" selected>회수</option>';
+					if(data[i].bottleWorkCd =='0311')					
+						cols += '	<option value="0311" selected>무료회수</option>';
+					if(data[i].bottleWorkCd =='0312')
+						cols += '	<option value="0312" selected>대여</option>';
+					if(data[i].bottleWorkCd =='0313')
+						cols += '	<option value="0313" selected>무상교체</option>';	
 					
 					cols += '	</select>';
 					cols += '</td><td>';
@@ -387,6 +397,7 @@ $(document).ready(function(){
               	<input type="hidden" id="workReportSeq" name="workReportSeq" th:value="${workReport.workReportSeq}">
               	<input type="hidden" id="orderId" name="orderId" th:value="${workReport.orderId}">
               	<input type="hidden" id="customerId" name="customerId" th:value="${workReport.customerId}">
+              	<input type="hidden" id="userId" name="userId" th:value="${workReport.userId}">
               	<input type="hidden" id="productCount" name="productCount" value="">
                 <label th:text="${workReport.customerNm}"  class="control-label col-10">상품정보</label>
               	<!-- <div class="form-group">				        
@@ -417,7 +428,7 @@ $(document).ready(function(){
 		                       </tr>
 		                       <tr >
 		                       		<td  style="padding-left: 5px;">                                           
-			                         <select id="bottleWorkCd_0" name="bottleWorkCd_0" class="form-control" style="width:80px">
+			                         <select id="bottleWorkCd_0" name="bottleWorkCd_0" class="form-control" style="width:100px">
 				                        
 								    </select>	   
 			                       </td>

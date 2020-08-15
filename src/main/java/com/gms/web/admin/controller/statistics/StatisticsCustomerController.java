@@ -45,7 +45,7 @@ public class StatisticsCustomerController {
 	public ModelAndView getStatisticsCustomerDaily(StatisticsCustomerVO params) {
 
 		logger.info("StatisticsCustomerContoller getStatisticsCustomerDaily");
-		logger.debug("StatisticsCustomerContoller searchStatisticsCustomerDt "+ params.getSearchStatDt());
+		//logger.debug("StatisticsCustomerContoller searchStatisticsCustomerDt "+ params.getSearchStatDt());
 
 		ModelAndView mav = new ModelAndView();
 		
@@ -62,13 +62,12 @@ public class StatisticsCustomerController {
 			
 			params.setSearchStatDtFrom(searchStatDtFrom);
 			params.setSearchStatDtEnd(searchStatDtEnd);			
-		}else {						
-			
+		}else {				
 			searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");
-			logger.debug("****** getStatisticsCustomerDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
+			//logger.debug("****** getStatisticsCustomerDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
 			
 			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
-			logger.debug("****** getStatisticsCustomerDaily else *****getSearchStatDtEnd===*"+searchStatDtEnd);
+			//logger.debug("****** getStatisticsCustomerDaily else *****getSearchStatDtEnd===*"+searchStatDtEnd);
 			
 			params.setSearchStatDtFrom(searchStatDtFrom);
 			params.setSearchStatDtEnd(searchStatDtEnd);
@@ -84,8 +83,7 @@ public class StatisticsCustomerController {
 		
 		//검색어 셋팅
 		mav.addObject("searchStatDt", searchStatDt);	
-		mav.addObject("searchCustomerId", params.getSearchCustomerId());	
-		
+		mav.addObject("searchCustomerId", params.getSearchCustomerId());			
 		
 		Map<String, Object> map = customerService.searchCustomerList("");
 		mav.addObject("customerList", map.get("list"));
@@ -117,13 +115,11 @@ public class StatisticsCustomerController {
 			
 			params.setSearchStatDtFrom(searchStatDtFrom);
 			params.setSearchStatDtEnd(searchStatDtEnd);			
-		}else {						
-			
+		}else {									
 			searchStatDtFrom = DateUtils.getNextDate(-366,"yyyy/MM");
-			logger.debug("****** getMonthlylStatisticsCustomerList else *****getSearchStatDtFrom===*"+searchStatDtFrom);
-			
+			//logger.debug("****** getMonthlylStatisticsCustomerList else *****getSearchStatDtFrom===*"+searchStatDtFrom);			
 			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM");
-			logger.debug("****** getMonthlylStatisticsCustomerList else *****getSearchStatDtEnd===*"+searchStatDtEnd);
+			//logger.debug("****** getMonthlylStatisticsCustomerList else *****getSearchStatDtEnd===*"+searchStatDtEnd);
 			
 			params.setSearchStatDtFrom(searchStatDtFrom);
 			params.setSearchStatDtEnd(searchStatDtEnd);
@@ -170,8 +166,7 @@ public class StatisticsCustomerController {
 				
 				params.setSearchStatDtFrom(searchStatDtFrom);
 				params.setSearchStatDtEnd(searchStatDtEnd);			
-			}else {						
-					
+			}else {			
 				searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");		
 				searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");	
 				

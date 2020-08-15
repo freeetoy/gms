@@ -52,7 +52,7 @@ var goUpdate = function(bottleId){
         <form id="mainForm" name="mainForm"  method="post">
         <input type="hidden" id="bottleId" name="bottleId" value="">
          <div class="row">	         
-	        <div class="col-3">
+	        <div class="col-2">
                	<select id="searchWorkCd" name="searchWorkCd" class="form-control">
                     <option value="">작업</option>				    
 			        <option th:each="row : ${codeList}"
@@ -67,7 +67,7 @@ var goUpdate = function(bottleId){
 			        </option>					        				
                  </select>
               </div>        
-              <div class="col-9">
+              <div class="col-10">
                 <button class="btn btn-navbar" type="button">
 		            <i class="fas fa-search"></i>
 		          </button>           		

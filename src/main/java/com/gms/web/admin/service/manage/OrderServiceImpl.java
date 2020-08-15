@@ -104,9 +104,8 @@ public class OrderServiceImpl implements OrderService {
 		
 		//수정 Start
 		int pages = (orderCount == 0) ? 1 : (int) ((orderCount - 1) / ROW_PER_PAGE) + 1; // * 정수형이기때문에 소숫점은 표시안됨		
-        int blocks;
-        int block;
-        blocks = (int) Math.ceil(1.0 * pages / ROW_PER_PAGE); // *소숫점 반올림
+       
+        int block;       
         block = (int) Math.ceil(1.0 * currentPage / ROW_PER_PAGE); // *소숫점 반올림
         startPageNum = (block - 1) * ROW_PER_PAGE + 1;
         lastPageNum = block * ROW_PER_PAGE;        
@@ -165,13 +164,11 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Override
 	public List<OrderVO> getCustomerOrderList(Integer customerId) {
-		// TODO Auto-generated method stub
 		return orderMapper.selectCustomerOrderList(customerId);
 	}
 	
 	@Override
 	public List<OrderVO> getSalseOrderList(String salesId) {
-		// TODO Auto-generated method stub
 		return orderMapper.selectSalesOrderList(salesId);
 	}
 
@@ -242,7 +239,7 @@ public class OrderServiceImpl implements OrderService {
 			String orderTypeCd = params.getOrderTypeCd();
 						
 			int orderAmount = 0;
-			int deleteAmount = 0;
+			//int deleteAmount = 0;
 			int orderTotalAmount = 0;
 			
 			Integer productId =0;
@@ -310,7 +307,7 @@ public class OrderServiceImpl implements OrderService {
 								orderAmount = tempProduct.getProductBottlePrice() *orderCount;	
 							else
 								orderAmount = tempProduct.getProductPrice() *orderCount;	
-							logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
+							//logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
 							productVo.setOrderAmount(orderAmount);
 												
 						}
@@ -321,14 +318,12 @@ public class OrderServiceImpl implements OrderService {
 						CustomerPriceExtVO customerPrice = customerPriceList.get(k);
 						
 						if(productId == customerPrice.getProductId() && productPriceSeq == customerPrice.getProductPriceSeq()) {
-							
-							//if(tempProduct.getGasId()!=null && tempProduct.getGasId() > 0) bottleFlag = true;									
-							
+							//if(tempProduct.getGasId()!=null && tempProduct.getGasId() > 0) bottleFlag = true;	
 							if(bottleSaleYn.equals("Y"))
 								orderAmount = customerPrice.getProductBottlePrice() *orderCount;	
 							else
 								orderAmount = customerPrice.getProductPrice() *orderCount;	
-							logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
+							//logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
 							productVo.setOrderAmount(orderAmount);
 												
 						}
@@ -364,9 +359,6 @@ public class OrderServiceImpl implements OrderService {
 					}
 				}
 				
-				logger.debug("OrderContoller registerOrder orderProductNm== "+ orderProductNm);
-				logger.debug("OrderContoller registerOrder orderProductCapa== "+ orderProductCapa);
-				
 				if(productCount > 1) {
 					orderProductNm = orderProductNm +"외 "+ (productCount-1);
 					orderProductCapa = orderProductCapa +"외 "+ (productCount-1);
@@ -392,10 +384,10 @@ public class OrderServiceImpl implements OrderService {
 			result =  orderMapper.insertOrder(params);	
 		
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("registerOrder Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("registerOrder Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		
@@ -404,7 +396,6 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Override
 	public int registerOrder(OrderVO param) {
-		// TODO Auto-generated method stub
 		return orderMapper.insertOrder(param);	
 	}
 	
@@ -433,10 +424,10 @@ public class OrderServiceImpl implements OrderService {
 			result = orderMapper.insertOrderProducts(orderProduct);
 			
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("registerOrderAndProduct Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("registerOrderAndProduct Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		
@@ -461,8 +452,8 @@ public class OrderServiceImpl implements OrderService {
 			
 			int productCount  = params.getProductCount();
 			
-			logger.debug("OrderContoller modifyOrder orderId== "+ params.getOrderId());				
-			logger.debug("OrderContoller modifyOrder productCount== "+ params.getProductCount());	
+			//logger.debug("OrderContoller modifyOrder orderId== "+ params.getOrderId());				
+			//logger.debug("OrderContoller modifyOrder productCount== "+ params.getProductCount());	
 			
 			List<OrderProductVO> orderProduct = new ArrayList<OrderProductVO>();
 			List<OrderBottleVO> orderBottleList = new ArrayList<OrderBottleVO>();
@@ -550,12 +541,12 @@ public class OrderServiceImpl implements OrderService {
 							if(i==0) {
 								orderProductNm = tempProduct.getProductNm();
 								orderProductCapa = tempProduct.getProductCapa();
-								logger.debug("OrderService modifyOrder productPriceList orderProductNm== "+ orderProductNm);
-								logger.debug("OrderService modifyOrder productPriceList orderProductCapa== "+ orderProductCapa);
+								//logger.debug("OrderService modifyOrder productPriceList orderProductNm== "+ orderProductNm);
+								//logger.debug("OrderService modifyOrder productPriceList orderProductCapa== "+ orderProductCapa);
 							}
 							
 							orderAmount = tempProduct.getProductPrice() *orderCount;	
-							logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
+							//logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
 							productVo.setOrderAmount(orderAmount);
 							orderTotalAmount += orderAmount;								
 						}
@@ -639,10 +630,10 @@ public class OrderServiceImpl implements OrderService {
 			result =  orderMapper.updateOrder(params);	
 		
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("modifyOrder Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("modifyOrder Exception==="+e.toString());
 			e.printStackTrace();
 		}
 			
@@ -665,9 +656,8 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Override
 	@Transactional
-	public int modifyOrderBottleId(OrderProductVO param) {
+	public int modifyOrderBottleId(OrderProductVO param) {		
 		
-		//TODO  용기거래테이블 등록 필요
 		BottleVO bottle = new BottleVO();
 		bottle.setBottleId(param.getBottleId());
 		bottle.setOrderId(param.getOrderId());
@@ -685,8 +675,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public int modifyOrderComplete(OrderProductVO param) {
 		int result = 0;
-		try {
-			//TODO  용기거래테이블 등록 필요
+		try {			
 			BottleVO bottle = new BottleVO();
 			
 			bottle.setBottleId(param.getBottleId());
@@ -714,10 +703,10 @@ public class OrderServiceImpl implements OrderService {
 				return 0;
 			}
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("modifyOrderComplete Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("modifyOrderComplete Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		return result;
@@ -754,10 +743,10 @@ public class OrderServiceImpl implements OrderService {
 			result = orderMapper.updateOrderProcessCd(params);			
 					
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("changeOrderProcessCd Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("changeOrderProcessCd Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		
@@ -768,7 +757,6 @@ public class OrderServiceImpl implements OrderService {
 	@Transactional
 	public int deleteOrder(OrderVO param) {
 		
-		//TODO 판매완료된 상품 주문 삭제시 안되게 처리		
 		List<OrderProductVO> orderProductList = getOrderProductList(param.getOrderId());
 		
 		boolean alreadySales = false;
@@ -801,16 +789,16 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public int getOrderId() {
-		// TODO Auto-generated method stub
+		
 		int result = 0;
 		try {
 			result =  orderMapper.selectOrderId();	
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("getOrderId Exception==="+e.toString());
 			result = 1;
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("getOrderId Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result ==0) result = 1;
@@ -868,7 +856,6 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public int registerOrderBottle(OrderBottleVO param) {
-		// TODO Auto-generated method stub
 		return orderMapper.insertOrderBottle(param);	
 	}
 
@@ -1056,7 +1043,6 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public List<OrderVO> getOrderReqDtTomorrow(OrderVO param) {
-		// TODO Auto-generated method stub
 		return orderMapper.selectOrderReqDtTomorrow(param);
 	}
 

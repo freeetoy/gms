@@ -378,17 +378,17 @@ public class BottleController {
 			
 			result = bottleService.registerBottle(params);
 			if (result < 0) {
-				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+				
 				logger.debug("BottleContoller registerBottle error");
 				
 				String alertMessage = "에러가 되었습니다.";
 				RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do");
 			}
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("BottleContoller registerBottle Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("BottleContoller registerBottle Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result > 0){
@@ -445,7 +445,7 @@ public class BottleController {
 			, HttpServletResponse response
 			, Model model
 			, BottleVO params) {
-		logger.info("BottleContoller modifyBottle");
+		logger.info("BottleContoller modifyBottle ");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -454,15 +454,13 @@ public class BottleController {
 		String searchChargeDtFrom = null;
 		String searchChargeDtEnd = null;
 				
-		if(searchChargetDt != null && searchChargetDt.length() > 20) {
-			
+		if(searchChargetDt != null && searchChargetDt.length() > 20) {			
 			//logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
 			searchChargeDtFrom = searchChargetDt.substring(0, 10) ;			
 			searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
 			
 			params.setSearchChargeDtFrom(searchChargeDtFrom);
-			params.setSearchChargeDtEnd(searchChargeDtEnd);
-			
+			params.setSearchChargeDtEnd(searchChargeDtEnd);			
 		}
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.bottle"));
@@ -480,15 +478,14 @@ public class BottleController {
 			model.addAttribute("searchChargeDt", params.getSearchChargeDt());			
 			model.addAttribute("currentPage", params.getCurrentPage());
 			
-			if (result < 0) {
-				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
-				logger.debug("BottleContoller registerBottle error");
+			if (result < 0) {				
+				logger.error("BottleContoller modifyBottle error");
 			}
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("BottleContoller modifyBottle Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("BottleContoller modifyBottle Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -529,20 +526,17 @@ public class BottleController {
 		int  result = 0;
 		
 		try {		
-			logger.debug("******params.getBottleId()()) *****===*"+params.getChBottleId());
+			//logger.debug("******params.getBottleId()()) *****===*"+params.getChBottleId());
 			
 			String searchChargetDt = params.getSearchChargeDt();	
 					
-			if(searchChargetDt != null && searchChargetDt.length() > 20) {
-				
+			if(searchChargetDt != null && searchChargetDt.length() > 20) {				
 				//logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
-				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;
-				
+				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;				
 				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
 				
 				params.setSearchChargeDtFrom(searchChargeDtFrom);
-				params.setSearchChargeDtEnd(searchChargeDtEnd);
-				
+				params.setSearchChargeDtEnd(searchChargeDtEnd);				
 			}			
 			
 			if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
@@ -560,17 +554,17 @@ public class BottleController {
 			mav.addObject("currentPage", params.getCurrentPage());	
 			
 			if (result < 0) {
-				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
-				logger.debug("BottleContoller registerBottle error");
+				
+				logger.debug("BottleContoller modifyBottleWorkCd error");
 				
 				String alertMessage = "처리중 에러가 발생하였습니다.";
 				RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId());
 			}
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("BottleContoller modifyBottleWorkCd Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("BottleContoller modifyBottleWorkCd Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		
@@ -598,19 +592,17 @@ public class BottleController {
 		
 		int  result = 0;
 		try {		
-			logger.debug("******params.getBottleId()()) *****===*"+params.getChBottleId());
+			//logger.debug("******params.getBottleId()()) *****===*"+params.getChBottleId());
 			
 			String searchChargetDt = params.getSearchChargeDt();	
 					
-			if(searchChargetDt != null && searchChargetDt.length() > 20) {
-				
+			if(searchChargetDt != null && searchChargetDt.length() > 20) {				
 				//logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
 				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;				
 				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
 				
 				params.setSearchChargeDtFrom(searchChargeDtFrom);
-				params.setSearchChargeDtEnd(searchChargeDtEnd);
-				
+				params.setSearchChargeDtEnd(searchChargeDtEnd);				
 			}			
 			
 			if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
@@ -627,15 +619,14 @@ public class BottleController {
 			model.addAttribute("searchChargeDt", params.getSearchChargeDt());			
 			model.addAttribute("currentPage", params.getCurrentPage());
 			*/
-			if (result < 0) {
-				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
-				logger.debug("BottleContoller registerBottle error");
+			if (result < 0) {				
+				logger.debug("BottleContoller modifyBottlesWorkCd error");
 			}
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("BottleContoller modifyBottlesWorkCd Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("BottleContoller modifyBottlesWorkCd Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result > 0){
@@ -665,25 +656,21 @@ public class BottleController {
 		int  result = 0;
 		try {
 			
-			if(searchChargetDt != null && searchChargetDt.length() > 20) {
-				
+			if(searchChargetDt != null && searchChargetDt.length() > 20) {				
 				//logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
 				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;				
 				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
 				
 				params.setSearchChargeDtFrom(searchChargeDtFrom);
-				params.setSearchChargeDtEnd(searchChargeDtEnd);
-				
+				params.setSearchChargeDtEnd(searchChargeDtEnd);				
 			}			
 			
 			if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
 				searchProductId = params.getSearchProductId();
-				//model.addAttribute("searchProductId", Integer.parseInt(searchProductId));
-				
+				//model.addAttribute("searchProductId", Integer.parseInt(searchProductId));				
 				mav.addObject("searchProductId", searchProductId);
-			}			
-						
-			logger.debug("******params.getBottleId()()) *****===*"+params.getBottleId());
+			}									
+			//logger.debug("******params.getBottleId()()) *****===*"+params.getBottleId());
 			
 			result = bottleService.deleteBottle(params);
 			
@@ -692,16 +679,15 @@ public class BottleController {
 			mav.addObject("currentPage", params.getCurrentPage());
 			
 			if (result < 0) {
-				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
-				logger.debug("BottleContoller registerBottle error");
+				logger.debug("BottleContoller deleteBottle error");
 				String alertMessage = "용기중 오류가 발생하였습니다.";
 				RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId());
 			}
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("BottleContoller deleteBottle Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("BottleContoller deleteBottle Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -718,6 +704,7 @@ public class BottleController {
 	public ModelAndView deleteBottles(HttpServletRequest request
 			, HttpServletResponse response
 			, BottleVO params) {
+		
 		logger.info("BottleContoller deleteBottles");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
@@ -735,14 +722,11 @@ public class BottleController {
 		try {
 			
 			if(searchChargetDt != null && searchChargetDt.length() > 20) {
-				
-				//logger.debug("BottleContoller searchChargeDt "+ searchChargetDt.length());
 				searchChargeDtFrom = searchChargetDt.substring(0, 10) ;				
 				searchChargeDtEnd = searchChargetDt.substring(13, searchChargetDt.length()) ;
 				
 				params.setSearchChargeDtFrom(searchChargeDtFrom);
-				params.setSearchChargeDtEnd(searchChargeDtEnd);
-				
+				params.setSearchChargeDtEnd(searchChargeDtEnd);				
 			}			
 			
 			if(params.getSearchProductId() != null && params.getSearchProductId().length() > 0 ) {
@@ -751,8 +735,7 @@ public class BottleController {
 				mav.addObject("searchProductId", searchProductId);
 			}			
 						
-			logger.debug("******params.getBottleId()()) *****===*"+params.getBottleId());
-			
+			//logger.debug("******params.getBottleId()()) *****===*"+params.getBottleId());			
 			if(request.getParameter("bottleIds")!=null && request.getParameter("bottleIds").length() > 0) {
 				bottleIds= request.getParameter("bottleIds");
 				List<String> list = StringUtils.makeForeach(bottleIds, ","); 		
@@ -766,14 +749,13 @@ public class BottleController {
 			mav.addObject("currentPage", params.getCurrentPage());
 			
 			if (result < 0) {
-				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
-				logger.debug("BottleContoller registerBottle error");
+				logger.debug("BottleContoller deleteBottles error");
 			}
 		} catch (DataAccessException e) {
-			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+			logger.error("BottleContoller deleteBottles Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("BottleContoller deleteBottles Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result > 0){
@@ -796,33 +778,7 @@ public class BottleController {
 		//return null;
 	}
 	
-	@RequestMapping(value = "/api/bottleDetail.do")
-	@ResponseBody
-	public BottleVO getBottleDetail(String bottleBarCd)	{		
-		logger.debug("&&&&  getBottleDetail= bottleBarCd=*"+bottleBarCd);
-		logger1.debug("getBottleDetail= bottleBarCd=*"+bottleBarCd);
-		try {
-			BottleVO bottle =  bottleService.getBottleDetailForBarCd(bottleBarCd);			
-			
-			if(bottle!=null) {
-				if(bottle.getBottleCapa() == null || (bottle.getBottleCapa()!=null && bottle.getBottleCapa().length() == 0)) {
-					bottle.setBottleCapa("-");
-					bottle.setChargeCapa("-");
-				}
-				
-				bottle.setSuccess(true);
-			}
-			else {
-				bottle = new BottleVO();
-				bottle.setSuccess(false);
-			}
-			return bottle;
-		}catch(Exception e) {
-			e.printStackTrace();
-			logger.error("**************** getBottleDetail bottleBarCd== "+bottleBarCd);
-			return null;
-		}
-	}
+	
 	
 	
 }

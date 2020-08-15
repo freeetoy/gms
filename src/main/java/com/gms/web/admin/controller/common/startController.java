@@ -36,7 +36,7 @@ public class startController {
 
 		ModelAndView mav = new ModelAndView();		
 		
-		logger.debug("startController parmas.searchWordCD "+params.getSearchWorkCd());
+		//logger.debug("startController parmas.searchWordCD "+params.getSearchWorkCd());
 		if(params.getSearchWorkCd()== null) params.setSearchWorkCd(PropertyFactory.getProperty("common.bottle.status.rent"));
 		List<BottleVO> bottleList =  workService.getWorkBottleListToday(params);
 		

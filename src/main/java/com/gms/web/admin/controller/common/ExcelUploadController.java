@@ -1,22 +1,33 @@
 package com.gms.web.admin.controller.common;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
 
+import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.web.utils.RequestUtils;
+import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.service.common.ExcelService;
 
 
@@ -30,6 +41,58 @@ public class ExcelUploadController {
 	
 	private long SIZE_LIMIT = 1024*1024*3;
 	
+	private File convertInputStreamToFile(InputStream is) throws IOException {
+
+		File file = File.createTempFile("C:\\home\\data\test", "tmp");
+
+		OutputStream outputStream = new FileOutputStream(file);
+
+		IOUtils.copy(is, outputStream);
+
+		outputStream.close();
+
+		return file;
+	}
+	
+	@RequestMapping(value = "/gms/upload.do")
+	public String openUpload() {
+					
+		return "gms/upload";
+	}
+
+	@RequestMapping(value = "/uploadFileJar", method = RequestMethod.POST)	
+    public ModelAndView uploadFileJar(MultipartHttpServletRequest request
+    		, HttpServletResponse response) {
+		MultipartFile file = null;
+		Integer result = 0;
+		Map<String, Object> map = null;
+		
+		try {
+        
+	        Iterator<String> iterator = request.getFileNames();
+	        if(iterator.hasNext()) {
+	            file = request.getFile(iterator.next());
+	        }
+	        //long SIZE_LIMIT = 1024*1024*3;
+	        long fileSize = file.getSize();
+        	
+	        InputStream input = file.getInputStream();
+	        File fileNew = convertInputStreamToFile(input);
+
+	        logger.debug( "aaa =="+fileNew.getAbsoluteFile());
+		} catch (IOException e) {
+
+            return null;
+        }
+		if(result > 0){
+			String alertMessage = "성공";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/upload.do");
+		
+		}
+		return null;
+		
+    }
 	@RequestMapping(value = "/uploadExcelFile", method = RequestMethod.POST)	
     public ModelAndView uploadExcelFile(MultipartHttpServletRequest request
     		, HttpServletResponse response) {

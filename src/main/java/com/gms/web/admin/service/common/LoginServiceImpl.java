@@ -65,8 +65,7 @@ public class LoginServiceImpl implements LoginService{
 		
 		int result= 0;
 		
-		if(userInfo != null){ //아이디가 있을경우		
-			
+		if(userInfo != null){ //아이디가 있을경우					
 			param.setIdCheckYn("Y");		
 			
 			try {				

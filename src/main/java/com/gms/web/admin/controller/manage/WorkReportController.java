@@ -139,7 +139,7 @@ public class WorkReportController {
 			//mav.setViewName("/gms/mypage/assign");			
 		
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("WorkReportController registerWorkReportForOrder Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result > 0){
@@ -159,7 +159,7 @@ public class WorkReportController {
 		logger.debug("WorkReportController registerWorkReportAll");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
-		logger.debug("WorkReportController userId="+params.getUserId());
+		//logger.debug("WorkReportController userId="+params.getUserId());
 		ModelAndView mav = new ModelAndView();		//검색조건 셋팅		
 		int result =0;
 		try {	
@@ -194,7 +194,7 @@ public class WorkReportController {
 			//mav.setViewName("/gms/mypage/assign");			
 		
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("WorkReportController registerWorkReportAll Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		//return "redirect:/gms/mypage/assign.do";
@@ -216,12 +216,11 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, OrderBottlesVO params) {
 		
-		logger.debug("WorkReportController registerWorkReportForOrder");
+		logger.debug("WorkReportController registerWorkReport0310");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		ModelAndView mav = new ModelAndView();	
-		
-		//ModelAndView mav = new ModelAndView();	
+
 		//검색조건 셋팅
 		int result =0;
 		try {	
@@ -237,7 +236,7 @@ public class WorkReportController {
 			result = workService.registerWorkReport0310(work);					
 		
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("WorkReportController registerWorkReport0310 Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result > 0){
@@ -268,7 +267,7 @@ public class WorkReportController {
 			params.setSearchUserId(params.getCreateId());
 		}
 		
-		logger.debug("WorkReportController getWorkReportList User_id= "+ params.getUserId());		
+		//logger.debug("WorkReportController getWorkReportList User_id= "+ params.getUserId());		
 		
 		//List<WorkReportViewVO> workList = workService.getWorkReportList1(params);
 		List<WorkReportViewVO> workList = workService.getWorkReportListAll(params);
@@ -306,7 +305,7 @@ public class WorkReportController {
 			result = workService.registerWorkNoBottle(param);					
 		
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("WorkReportController registerWorkReportNoGasProduct Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		//return "redirect:/gms/mypage/assign.do";
@@ -366,12 +365,17 @@ public class WorkReportController {
 		
 			logger.debug("WorkReportController getWorkReportModify");
 			
-			RequestUtils.initUserPrgmInfo(request, param);				
-			
+			//RequestUtils.initUserPrgmInfo(request, param);	
+			if(param.getUserId() !=null ) {			
+				param.setUserId(param.getUserId());
+				param.setCreateId(param.getUserId());
+				param.setUpdateId(param.getUserId());
+			}else {				
+				RequestUtils.initUserPrgmInfo(request, param);	
+				param.setUserId(param.getCreateId());
+			}
 			ModelAndView mav = new ModelAndView();		
-			logger.debug("WorkReportController getWorkReportModify param.workReportSeq =="+param.getWorkReportSeq());
-			logger.debug("WorkReportController getWorkReportModify productCount=="+request.getParameter("productCount"));
-			
+
 			result = workService.modifyWorkBottleManual(request,param);
 			// WorkReport 정보 변경			
 			
@@ -384,8 +388,10 @@ public class WorkReportController {
 						"/gms/report/update.do?workReportSeq="+param.getWorkReportSeq());
 			}
 		} catch (DataAccessException e) {		
+			logger.error("WorkReportController getWorkReportModify Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {			
+			logger.error("WorkReportController getWorkReportModify Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		return null;		
@@ -396,7 +402,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, WorkReportVO param) {
 		
-		logger.debug("WorkReportController deleteWorkReport");
+		//logger.debug("WorkReportController deleteWorkReport");
 		
 		RequestUtils.initUserPrgmInfo(request, param);
 		param.setUserId(param.getCreateId());
@@ -411,13 +417,13 @@ public class WorkReportController {
 			mav.addObject("searchUserId", param.getSearchUserId());
 		
 		} catch (Exception e) {
-			// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			logger.error("WorkReportController deleteWorkReport Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result > 0){
 			String alertMessage = "처리되었습니다.";
 			RequestUtils.responseWriteException(response, alertMessage,
-					"/gms/report/listAll.do");
+					"/gms/report/listAll.do?searchUserId="+param.getSearchUserId());
 		}
 		return null;
 		//return "redirect:/gms/mypage/assign.do";		
