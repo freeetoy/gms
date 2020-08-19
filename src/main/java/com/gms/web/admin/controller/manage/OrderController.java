@@ -375,17 +375,23 @@ public class OrderController {
 		List<CustomerProductVO> productList = customerService.getCustomerProductList(result.getOrder().getCustomerId());		
 		
 		List<CustomerProductVO> rentBottleList = new ArrayList<CustomerProductVO>();
+		StringBuffer rentList = new StringBuffer();
 		
 		for(int i =0 ; i < productList.size() ; i++) {
 			CustomerProductVO customerProduct = productList.get(i);
 			
 			if(customerProduct.getBottleRentCount() != 0) {
 				rentBottleList.add(customerProduct);
+				rentList.append(customerProduct.getProductNm()).append(" ").append(customerProduct.getBottleRentCount()).append("ea");
+				if(i < productList.size()-1) rentList.append(" / ");
 			}
+			
 		}
 		model.addAttribute("rentBottleList", rentBottleList);
 		if(rentBottleList.size() > 3 && rentBottleList.size()%3 > 0)
 			model.addAttribute("rentBottleListCount", rentBottleList.size()+1);
+		
+		model.addAttribute("rentBottle", rentList.toString());
 		
 		CashFlowVO cashFlow = new CashFlowVO();
 		cashFlow.setCustomerId(result.getOrder().getCustomerId());
@@ -423,17 +429,22 @@ public class OrderController {
 			List<CustomerProductVO> productList = customerService.getCustomerProductList(result.getOrder().getCustomerId());		
 			
 			List<CustomerProductVO> rentBottleList = new ArrayList<CustomerProductVO>();
-			
+			StringBuffer rentList = new StringBuffer();
 			for(int j =0 ; j < productList.size() ; j++) {
 				CustomerProductVO customerProduct = productList.get(j);
 				
 				if(customerProduct.getBottleRentCount() != 0) {
 					rentBottleList.add(customerProduct);
+					rentList.append(customerProduct.getProductNm()).append(" ").append(customerProduct.getBottleRentCount()).append("ea");
+					if(i < productList.size()-1) rentList.append(" / ");
 				}
 			}
+			/*
 			//model.addAttribute("rentBottleList", rentBottleList);
 			if(rentBottleList.size() > 3 && rentBottleList.size()%3 > 0)
 				model.addAttribute("rentBottleListCount", rentBottleList.size()+1);
+			*/
+			//model.addAttribute("rentBottle", rentList.toString());
 			
 			CashFlowVO cashFlow = new CashFlowVO();
 			cashFlow.setCustomerId(result.getOrder().getCustomerId());
@@ -442,14 +453,15 @@ public class OrderController {
 				cashSum = new CashSumVO();
 				cashSum.setIncomeAmountSum(0);
 				cashSum.setReceivableAmountNet(0);
-				cashSum.setReceivableAmountSum(0);
+				cashSum.setReceivableAmountSum(0);				
 			}
 			//model.addAttribute("cashSum", cashSum);			
 			
 			orderPrint.setOrderExt(result);
 			orderPrint.setOrderTotalAmountHan(StringUtils.numberToHan(String.valueOf(result.getOrder().getOrderTotalAmount())));
 			orderPrint.setCustomer(customer);
-			orderPrint.setCustomerProduct(rentBottleList);
+			orderPrint.setRentBottle(rentList.toString());
+			//orderPrint.setCustomerProduct(rentBottleList);
 			orderPrint.setCashSum(cashSum);
 
 			orderPrintList.add(orderPrint);

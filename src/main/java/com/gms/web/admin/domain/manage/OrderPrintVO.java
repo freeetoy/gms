@@ -1,7 +1,6 @@
 package com.gms.web.admin.domain.manage;
 
 import java.io.Serializable;
-import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +17,7 @@ public class OrderPrintVO implements Serializable {
 	
 	private String orderTotalAmountHan;
 	
-	private List<CustomerProductVO> customerProduct;
+	private String rentBottle;
 	
 	private CashSumVO cashSum;
 }

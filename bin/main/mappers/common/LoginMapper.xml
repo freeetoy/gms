@@ -24,6 +24,7 @@
        <if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(idCheckYn)">
 		  	AND TA.USER_PASSWD = #{userPasswd}
        </if>       	  
+       AND	DELETE_YN = 'N'
 	</select> 
 	
 	<update id="updateUserLastConnect" parameterType="com.gms.web.admin.domain.common.LoginUserVO">

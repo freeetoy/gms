@@ -351,6 +351,7 @@ public class WorkReportController {
 		mav.addObject("workReport", workReport);	 	
 		
 		mav.setViewName("gms/report/update");
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.diary"));	 	
 		
 		return mav;
 	}

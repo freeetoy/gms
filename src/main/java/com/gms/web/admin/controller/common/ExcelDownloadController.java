@@ -169,8 +169,8 @@ public class ExcelDownloadController {
 				    sheet.autoSizeColumn(i);
 			    }
 			   
-			    //용기	바코드/RFID	가스	품명	용기체적	가스용량		충전용량	충전기한	충전압력	제조일	거래처	작업		소유	
-	            //0		1			2	3		4		5		6		7		8		9	10		11		12
+			  //용기번호	바코드번호	가스종류	충전용량	제조월	충전기한	용기체적	사업자등록번호	GMP여부(Y/N)	품명	충전압력	용기소유(자사-self,타사-other)
+            	//0		1			2	3		4		5		6		7			8			9		10		11	
 			    // 데이터 부분 생성
 			    for(BottleVO vo : bottleList) {
 			    	int k=0;
@@ -189,19 +189,14 @@ public class ExcelDownloadController {
 			        
 			        cell = row.createCell(k++);;
 			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue(vo.getProductNm());
-			        
-			        cell = row.createCell(k++);
-			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue(vo.getBottleVolumn());
-			        
-			        cell = row.createCell(k++);;
-			        cell.setCellStyle(bodyStyle);
 			        cell.setCellValue(vo.getBottleCapa());
 			        
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue(vo.getChargeCapa());
+			        if(vo.getBottleCreateDt()!=null)
+			        	cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleCreateDt(),"yyyy-MM-dd"));
+			        else
+			        	cell.setCellValue("");			        
 			        
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
@@ -209,18 +204,35 @@ public class ExcelDownloadController {
 			        	cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleChargeDt(),"yyyy-MM-dd"));
 			        else
 			        	cell.setCellValue("");
-			       
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleVolumn());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(PropertyFactory.getProperty("common.Member.Comp.Daehan.businessNum"));
+			        
+			        //GMP여부
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue("");
+			        
+			        cell = row.createCell(k++);;
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getProductNm());
+			        
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
 			        cell.setCellValue(vo.getBottleChargePrss());
 			        
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
-			        if(vo.getBottleCreateDt()!=null)
-			        	cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleCreateDt(),"yyyy-MM-dd"));
+			        if(vo.getBottleOwnYn()!=null && vo.getBottleOwnYn().equals("Y"))
+			        	cell.setCellValue("self");
 			        else
-			        	cell.setCellValue("");
-			        
+			        	cell.setCellValue("other");					       
+			        /*
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
 			        cell.setCellValue(vo.getCustomerNm());
@@ -228,13 +240,8 @@ public class ExcelDownloadController {
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
 			        cell.setCellValue(vo.getBottleWorkCdNm());
+			        */
 			        
-			        cell = row.createCell(k++);
-			        cell.setCellStyle(bodyStyle);
-			        if(vo.getBottleOwnYn()!=null && vo.getBottleOwnYn().equals("Y"))
-			        	cell.setCellValue("self");
-			        else
-			        	cell.setCellValue("other");		
 			    }	
 		    }
 		    // width 자동조절
