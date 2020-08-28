@@ -92,8 +92,7 @@ public class ExcelServiceImpl implements ExcelService {
         
         try {
         	
-    		FileInputStream excelFIS = (FileInputStream)(excelFile.getInputStream());
-    		
+    		FileInputStream excelFIS = (FileInputStream)(excelFile.getInputStream());    		
     		
     		logger.debug("$$$$$$$$$$$$$$ ExcelService XSSFSheet start ");
             OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream());
@@ -192,6 +191,7 @@ public class ExcelServiceImpl implements ExcelService {
 	                		bottle.setBottleChargeDt(date);
                 		}
                 	}
+                	else if(j == 6) bottle.setBottleVolumn(colValue);//  productNm = colValue;
                 	else if(j == 9) productNm = colValue;
                 	else if(j == 10) bottle.setBottleChargePrss(colValue);	                	
                 	else if(j == 11) {
@@ -314,9 +314,15 @@ public class ExcelServiceImpl implements ExcelService {
 	                	}	                		
 	                }
 	                if(isRegisteFlag) {
-	                	list.add(bottle);
-	                	//result = bottleService.registerBottle(bottle);
-	                	insertCount++;
+	                	boolean isBeen = false;
+	                	for(int k=0; k < list.size() ; k++) {
+	                		if(list.get(k).getBottleId().equals(bottle.getBottleId())) isBeen = true;
+	                	}
+	                	if(!isBeen) {
+	                		list.add(bottle);	                	
+	                		insertCount++;
+	                		
+	                	}
 	                }
                 }else {
                 	sb.append(bottle.getBottleId());
@@ -444,6 +450,7 @@ public class ExcelServiceImpl implements ExcelService {
     		                		bottle.setBottleChargeDt(date);
     	                		}
     	                	}
+    	                	else if(j == 6) bottle.setBottleVolumn(colValue);//  productNm = colValue;
     	                	else if(j == 9) productNm = colValue;
     	                	else if(j == 10) bottle.setBottleChargePrss(colValue);	                	
     	                	else if(j == 11) {
@@ -489,26 +496,30 @@ public class ExcelServiceImpl implements ExcelService {
     	                	*/
                     	}
                     }
-                    /*
+                    
                     ProductTotalVO productTotal = null;
                     
                     for(int k=0;k<productList.size();k++) {
                     	ProductTotalVO productTemp = productList.get(k);
-                    	 logger.debug("ExcelSerive uploadExcelFile productTemp.productNm=="+ productTemp.getProductNm());
-                    	 logger.debug("ExcelSerive uploadExcelFile productTemp.productCapa=="+ productTemp.getProductCapa());
-                    	if(productTemp.getProductNm().equals(productNm) && productTemp.getProductCapa().equals(productCapa)) {
+                    /*	 
+                    	logger.debug("ExcelSerive uploadExcelFile productTemp.productNm=="+ productTemp.getProductNm()+"=="+productTemp.getProductNm().length());
+                    	 logger.debug("ExcelSerive uploadExcelFile productTemp.productCapa=="+ productTemp.getProductCapa()+"=="+productTemp.getProductCapa().length());
+                    	 logger.debug("ExcelSerive uploadExcelFile productNm=="+ productNm+"=="+productNm.length());
+                    	 logger.debug("ExcelSerive uploadExcelFile productCapa=="+ productCapa+"=="+productCapa.length());
+                    */
+                    	if(productTemp.getProductNm().equals(productNm) && productTemp.getProductCapa().toLowerCase().equals(productCapa.toLowerCase())) {
+                    		
                     		logger.debug("ExcelSerive uploadExcelFile Equal");
                     		productTotal = productTemp;
                     	}                	
                     }
-                    */
+                    /*
                     ProductTotalVO productTotal = new ProductTotalVO();
                     productTotal.setProductNm(productNm);
                     productTotal.setProductCapa(productCapa);
                                     
                     productTotal = productService.getProductTotalDetails(productTotal);
-                    
-                    //productTotal = productService.getProductTotalDetails(productTotal);
+                    */            
                     
                     if(productTotal != null && productTotal.getProductId() > 0 ) {
     	                
@@ -531,9 +542,15 @@ public class ExcelServiceImpl implements ExcelService {
     	                	}	                		
     	                }
     	                if(isRegisteFlag) {
-    	                	list.add(bottle);
-    	                	//result = bottleService.registerBottle(bottle);
-    	                	insertCount++;
+    	                	boolean isBeen = false;
+    	                	for(int k=0; k < list.size() ; k++) {
+    	                		if(list.get(k).getBottleId().equals(bottle.getBottleId())) isBeen = true;
+    	                	}
+    	                	if(!isBeen) {
+    	                		list.add(bottle);    	                	
+    	                		insertCount++;
+    	                		result = bottleService.registerBottle(bottle);
+    	                	}
     	                }
                     }else {
                     	sb.append(bottle.getBottleId());

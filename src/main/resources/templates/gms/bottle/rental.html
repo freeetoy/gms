@@ -21,8 +21,7 @@ function checkAll(){
 
 	
 function validationOfForm(form) {
-	
-	console.log(form.chBottle.value);
+
 	return ture;
 }
 	
@@ -81,10 +80,7 @@ var fn_deleteBottle = function(bottleId){
 		
 		ajax = callAjax(ajaxInfo);
 		
-		ajax.done(function(data){
-			console.log(data);
-		
-			console.log("####bottleCd---"+data.bottleId);		
+		ajax.done(function(data){			
 			
 			$("#chBottleId").val(data.bottleId);
 			$("#bottleBarCd").val(data.bottleBarCd);
@@ -96,17 +92,13 @@ var fn_deleteBottle = function(bottleId){
 			if(data.result == "fail"){
 				alert("용기가 존재하지 않습니다");			
 				return;
-			}
-			
-		});
-		
+			}			
+		});		
 	};
 	
 	    
 	var goUpdate = function(bottleId){		
 		
-		//alert("goUpdate "+bottleId);
-		console.log("goUpdate bottleId ="+bottleId);
 		var form = $("#mainForm");	
 
 		$("#bottleId").val(bottleId);
@@ -186,9 +178,7 @@ var fn_deleteBottle = function(bottleId){
 			alert('삭제할 항목을 선택 하세요.');
 			return false;
 			
-		}
-		console.log("chki="+chki);	
-		console.log("checkeValue="+checkedValue);		
+		}	
 		
 		if(confirm("정말로 삭제 하시겠습니까?")){
 
@@ -210,7 +200,7 @@ var fn_deleteBottle = function(bottleId){
 			
 		}else{
 
-		return false;
+			return false;
 		}
 
 	}
@@ -391,7 +381,7 @@ $(document).ready(function(){
          <div class="row">								
 			<div class="col-12">
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
-					<ul class="pagination">
+					<ul class="pagination" style="font-size:14px;">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
 							<a href="#" th:onclick="gotoPage([[ ${currentPage -1} ]])"  aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">이전</a>
 						</li>

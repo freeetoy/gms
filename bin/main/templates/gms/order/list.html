@@ -47,8 +47,6 @@ var goUpdate = function(orderId){
 }
 
 var gotoPage = function(pageNo) {
-	
-	//var form =  document.mainForm;			
 
 	$("#currentPage").val(pageNo);  
 
@@ -123,7 +121,7 @@ $(function() {
 $(document).ready(function(){ 
 	
 	$(".btn_select_process").click(function()  
-		{
+	{
 		
 		var orderId = $(this).attr('orderId'); 
 					    
@@ -359,8 +357,6 @@ $(document).ready(function(){
     		
     	}
     	var orderProcessCd =  $("#searchWorkCd1").val();
-    	console.log("chki="+chki);	
-    	console.log("checkeValue="+checkedValue);	
     	
     	if(confirm("정말로 상태를 변경하시겠습니까?")){
 
@@ -395,8 +391,7 @@ $(document).ready(function(){
     
  	// 거래명세서 출력
     $(".btn_order_print").click(function()  
-    {
-    
+    {    
        var orderId = $(this).attr('orderId'); 
 
        $.popupWindow('/gms/order/popupOrder.do?orderId=' + orderId, {
@@ -407,18 +402,24 @@ $(document).ready(function(){
           });
     });
 	
-    $(".btn_order_print_all").click(function()  
-    	    {
-    	    
-    	       var orderId = $(this).attr('orderId'); 
-
-    	       $.popupWindow('/gms/order/popupOrderAll.do', {
-    	              width: 1300,
-    	              height: 700,
-    	              center: 'screen',          
-    	              scrollbars: 'true'
-    	          });
-    	    });
+	$(".btn_order_print_all").click(function()  
+   	{		
+		var searchOrderProcessCd = $('#searchOrderProcessCd').val();	
+		var searchCustomerNm = $('#searchCustomerNm').val();	
+		var searchOrderDt = $('#searchOrderDt').val();	
+		
+		if(searchOrderDt=="" || searchOrderDt == null){
+			alert("접수기간을 입력하세요");
+			$('#searchOrderDt').focus();
+		}else { 		
+	      	$.popupWindow('/gms/order/popupOrderAll.do?searchCustomerNm='+searchCustomerNm+'&searchOrderDt='+searchOrderDt+'&searchOrderProcessCd='+searchOrderProcessCd, {
+	             width: 1300,
+	             height: 700,
+	             center: 'screen',          
+	             scrollbars: 'true'
+	        });
+		}
+   	});
 	//Ajax공통 호출
 	function callAjax(ajaxInfo){
 		var dfd = $.Deferred();
@@ -652,7 +653,7 @@ $(document).ready(function(){
                		<label>접수기간</label>
             </div>               
             <div class="col-4">              
-               <input type="text" class="form-control" name="searchOrderDt" th:value="${searchOrderDt}"/>			
+               <input type="text" class="form-control" id="searchOrderDt" name="searchOrderDt" th:value="${searchOrderDt}"/>			
             </div>               
             <div class="col-3">               
             </div>
@@ -726,13 +727,13 @@ $(document).ready(function(){
                       <th>거래처</th>
                       <th>상품명</th>
                       <th>용량</th>
-                      <th>주문금액</th>
+                      <th>주문액</th>
                       <th>접수자</th>
                       <th>상태</th>
                       <th>요청일</th>
                       <th>접수일</th>
                       <th>진행확인</th>
-                      <th  align="center">관리</th>
+                      <th align="center">관리</th>
                     </tr>
                   </thead>                  
                  
@@ -793,7 +794,7 @@ $(document).ready(function(){
          	</div>									
 			<div class="col-10">
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
-					<ul class="pagination">
+					<ul class="pagination" style="font-size:14px;">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
 							<a th:href="@{/gms/order/list.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">이전</a>
 						</li>

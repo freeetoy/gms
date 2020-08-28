@@ -29,6 +29,9 @@ public class UserVO  extends  AbstractSearchVO implements Serializable {
 	/** User_Part_CD	 */
 	private String userPartCd;
 	
+	/** User_Part_Nm	 */
+	private String userPartNm;
+	
 	/** User_Authority	 */
 	private String userAuthority;
 	

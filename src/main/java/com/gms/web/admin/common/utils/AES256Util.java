@@ -15,9 +15,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class AES256Util {
 	private String iv;
     private Key keySpec;

@@ -37,22 +37,14 @@ var goUpdate = function(orderId){
 	
 }
 
-var gotoPage = function(pageNo) {
-	
-	//var form =  document.mainForm;			
-	console.log("gotoPage "+pageNo);
+var gotoPage = function(pageNo) {	
+
 	$("#currentPage").val(pageNo);  
-	 //mainForm.action="/gms/order/list.do";
-    //validate checkt시 confirm 중복되는 부분 처리 
-   
-	//mainForm.submit();
-    
+
 	var form = document.mainForm;	
 	document.mainForm.action="/gms/order/list.do";
-	document.mainForm.submit();   
-   		
+	document.mainForm.submit();      		
 }
-
 
 	
 var goDelete = function(orderId){
@@ -118,8 +110,7 @@ var goDelete = function(orderId){
 $(document).ready(function(){ 
 	
 	$(".btn_select_process").click(function()  
-		{
-		console.log("start btn_selelct_pr}");
+	{
 		
 		var orderId = $(this).attr('orderId'); 
 
@@ -274,8 +265,6 @@ $(document).ready(function(){
 
        }     
        
-       console.log("orderId ="+orderId);
-       console.log("orderProcessCd ="+orderProcessCd);
 		if(confirm(msg)){
 			
 			var form = document.createElement("form");
@@ -592,7 +581,7 @@ $(document).ready(function(){
          <div class="row">								
 			<div class="col-12">
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
-					<ul class="pagination">
+					<ul class="pagination" style="font-size:14px;">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
 							<a th:href="@{/gms/order/list.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">이전</a>
 						</li>

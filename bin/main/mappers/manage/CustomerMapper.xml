@@ -375,7 +375,7 @@
 		SELECT
 			<include refid="CustomerColumns" />
 		FROM
-			TB_CUSTOMER A Left Join  TB_USER B On A.Sales_ID = B.User_ID
+			TB_CUSTOMER A Left Join  TB_USER B On ( A.Sales_ID = B.User_ID AND B.Delete_YN='N')
 		WHERE
 			Customer_Status != '0'
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">

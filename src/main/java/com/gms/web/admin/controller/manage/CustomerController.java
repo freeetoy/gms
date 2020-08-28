@@ -97,7 +97,7 @@ public class CustomerController {
 			, HttpServletResponse response
 			, Model model
 			, CustomerVO params) {
-		logger.info("CustomerContoller registerCustomer");
+		logger.info(" registerCustomer");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -110,13 +110,13 @@ public class CustomerController {
 			//ID 중복체크			
 			boolean result = customerService.registerCustomer(params);
 			if (result == false) {
-				logger.error("CustomerContoller registerCustomer Exception===");
+				logger.error(" registerCustomer Exception===");
 			}
 		} catch (DataAccessException e) {
-			logger.error("CustomerContoller registerCustomer Exception==="+e.toString());
+			logger.error(" registerCustomer Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("CustomerContoller registerCustomer Exception==="+e.toString());
+			logger.error(" registerCustomer Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -182,9 +182,8 @@ public class CustomerController {
 			BottleVO bottle = new BottleVO();
 			bottle.setCustomerId(customerId);
 			//bottle.
-			String searchChargeDt = request.getParameter("searchChargeDt");		
+			String searchChargeDt = request.getParameter("searchChargeDt");					
 			
-			logger.debug(" searchChargeDt ======> "+searchChargeDt);
 			String searchChargeDtFrom = null;
 			String searchChargeDtEnd = null;
 			boolean firstFlag = false;		
@@ -238,7 +237,7 @@ public class CustomerController {
 		
 		ModelAndView mav = new ModelAndView();	
 		
-		logger.info("CustomerContoller modifyCustomer");
+		logger.info(" modifyCustomer");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.customer"));
@@ -255,10 +254,10 @@ public class CustomerController {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			}
 		} catch (DataAccessException e) {
-			logger.error("CustomerContoller modifyCustomer Exception==="+e.toString());
+			logger.error(" modifyCustomer Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("CustomerContoller modifyCustomer Exception==="+e.toString());
+			logger.error(" modifyCustomer Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		
@@ -276,7 +275,7 @@ public class CustomerController {
 			, HttpServletResponse response
 			, CustomerVO param) {		
 		
-		logger.info("CustomerContoller deleteCustomer");
+		logger.info(" deleteCustomer");
 		
 		ModelAndView mav = new ModelAndView();	
 		RequestUtils.initUserPrgmInfo(request, param);		
@@ -296,10 +295,10 @@ public class CustomerController {
 			result = customerService.deleteCustomer(param);			
 			
 		} catch (DataAccessException e) {
-			logger.error("CustomerContoller deleteCustomer Exception==="+e.toString());
+			logger.error(" deleteCustomer Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("CustomerContoller deleteCustomer Exception==="+e.toString());
+			logger.error(" deleteCustomer Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		
@@ -361,7 +360,7 @@ public class CustomerController {
 			, HttpServletResponse response
 			, Model model) {
 		
-		logger.info("CustomerContoller registerCustomerPrice");	
+		logger.info(" registerCustomerPrice");	
 		
 		try {
 			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));		
@@ -399,10 +398,10 @@ public class CustomerController {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			}
 		} catch (DataAccessException e) {
-			logger.error("CustomerContoller registerCustomerPrice Exception==="+e.toString());
+			logger.error(" registerCustomerPrice Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("CustomerContoller registerCustomerPrice Exception==="+e.toString());
+			logger.error(" registerCustomerPrice Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -439,7 +438,7 @@ public class CustomerController {
 			, HttpServletResponse response
 			, Model model) {
 		
-		logger.info("CustomerContoller registerCustomerBottle");	
+		logger.info(" registerCustomerBottle");	
 		
 		try {
 			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.customer"));		
@@ -469,10 +468,10 @@ public class CustomerController {
 			//ID 중복체크			
 			
 		} catch (DataAccessException e) {
-			logger.error("CustomerContoller registerCustomerBottle Exception==="+e.toString());
+			logger.error(" registerCustomerBottle Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("CustomerContoller registerCustomerBottle Exception==="+e.toString());
+			logger.error(" registerCustomerBottle Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -535,7 +534,7 @@ public class CustomerController {
 	public ModelAndView registerCustomerProductBottle(HttpServletRequest request
 			, HttpServletResponse response ) {
 		
-		logger.info("CustomerContoller registerCustomerBottle");	
+		logger.info(" registerCustomerBottle");	
 		ModelAndView mav = new ModelAndView();	
 		int result=0;
 		try {
@@ -571,10 +570,10 @@ public class CustomerController {
 			//ID 중복체크			
 			
 		} catch (DataAccessException e) {
-			logger.error("CustomerContoller registerCustomerProductBottle Exception==="+e.toString());
+			logger.error(" registerCustomerProductBottle Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("CustomerContoller registerCustomerProductBottle Exception==="+e.toString());
+			logger.error(" registerCustomerProductBottle Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result > 0){
@@ -620,7 +619,7 @@ public class CustomerController {
 	@RequestMapping(value = "/api/gasCustomerList.do")
 	@ResponseBody
 	public List<CustomerSimpleVO> getGasCustoerList()	{
-		logger.info("CustomerContoller getCarList");
+		logger.info(" getCarList");
 
 		List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList("");
 		return customerList;
@@ -630,7 +629,7 @@ public class CustomerController {
 	@ResponseBody
 	public List<CustomerSimpleVO> getCustomerAllList()	{	
 				
-		logger.info("CustomerContoller getCustomerAllList");
+		logger.info(" getCustomerAllList");
 		
 		List<CustomerSimpleVO> customerList = customerService.searchCustomerSimpleList("");
 		return customerList;
@@ -640,7 +639,7 @@ public class CustomerController {
 	@ResponseBody
 	public String getCustomerListString(@RequestParam(value = "searchCustomerNm", required = false)  String searchCustomerNm)	{	
 		
-		logger.info("CustomerContoller getCustomerListString");
+		logger.info(" getCustomerListString");
 						
 		String customerList = customerService.searchCustomerSimpleListString(searchCustomerNm);
 		
@@ -651,7 +650,7 @@ public class CustomerController {
 	@ResponseBody
 	public List<CustomerProductVO> getCustomerRentBottleList(@RequestParam(value = "customerId", required = false)  Integer customerId)	{	
 		
-		logger.info("CustomerContoller getCustomerRentBottleList");
+		logger.info(" getCustomerRentBottleList");
 						
 		List<CustomerProductVO> productList = customerService.getCustomerProductList(customerId);	
 		List<CustomerProductVO> rentBottleList = new ArrayList<CustomerProductVO>();

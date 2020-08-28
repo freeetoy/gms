@@ -452,6 +452,7 @@
 			TB.Bottle_Work_CD = TC.CD_ID	
 		AND 
 			TB.Product_ID = TG.Product_Id
+		Limit 0,1
 	</select>
 	
 	<select id="selectBottleDetails" parameterType="String" resultType="com.gms.web.admin.domain.manage.BottleVO">

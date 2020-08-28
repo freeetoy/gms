@@ -710,11 +710,23 @@
 	
 	<select id="selectOrderReqDtTomorrow" resultType="com.gms.web.admin.domain.manage.OrderVO" parameterType="com.gms.web.admin.domain.manage.OrderVO">		
 		SELECT
-			<include refid="OrderColumns" />
+			Order_ID , A.Member_Comp_Seq , Order_Type_CD , Delivery_Req_Dt , Delivery_Req_AmPm , Order_Etc , 
+			Order_Product_Nm , Order_Product_Capa , A.Customer_ID , Order_Process_CD , Order_Total_Amount , 
+			Order_Delivery_Dt , Deposit_Check_Dt , Deposit_Amount , Deposit_Bank_Cd , A.Sales_ID , 
+			A.Create_ID , A.Create_Dt , A.Update_ID , A.Update_Dt 
 		FROM
-			TB_Order
-		WHERE
-			Order_Process_CD = #{orderProcessCd}
-		AND DATE_FORMAT(`Delivery_Req_Dt`,'%Y/%m/%d') = DATE_FORMAT(date_sub(curdate(), interval -1 day),'%Y/%m/%d')
+			TB_Order A, TB_Customer B
+		WHERE 
+			A.Customer_ID = B.Customer_ID		
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchCustomerNm)">
+		AND Customer_Nm	 LIKE CONCAT('%', CONCAT(#{searchCustomerNm}, '%'))
+		</if>
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchOrderDt)">
+		AND date_format(A.Create_Dt,'%Y/%m/%d')  between  #{searchOrderDtFrom} AND  #{searchOrderDtEnd} 
+		</if>		
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchOrderProcessCd)">
+		AND Order_Process_CD  =  #{searchOrderProcessCd}
+		</if>		
+		ORDER BY Order_Id desc
 	</select>
 </mapper>

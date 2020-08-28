@@ -56,6 +56,18 @@
 		}                  		
 	}
 	
+	
+$(document).ready(function(){
+	
+	$(".btn_search").click(function()  
+    {
+		alert("Fff");
+		mainForm.submit();
+      
+    });
+	
+});
+
 </script>
 
    <div class="content-wrapper">
@@ -74,9 +86,29 @@
     <section class="content">          
         
     	<div class="row">
-              <div class="col-10">
+              <div class="col-2">
+              <!-- 
+              <form id="mainForm" name="mainForm"  method="post" th:action="@{/gms/schedule/list.do}">
+	              <select id="searchYear" name="searchYear" class="form-control">
+	                    <option value="">년도</option>				    
+				        <option th:each="row : ${searchYears}"
+				                th:text="${row}"
+				                th:value="${row}"
+				                th:if="${searchYear ==row}" selected>					             
+				        </option>	
+				        <option th:each="row : ${searchYears}"
+				                th:text="${row}"
+				                th:value="${row}"
+				                th:unless="${searchYear ==row}">					             
+				        </option>					        				
+	                 </select>
+	                  -->
               </div>               
              
+             <div class="col-8">
+             <!--<input type="button" class="btn btn-default btn-success" id="btn_search" name="btn_search" value="검색" />     -->
+             </div> 
+             </form>
               <div class="col-2">
                		<a href="/gms/schedule/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm"><i class="far fa-edit"></i> 휴가등록</button></a>
               </div>

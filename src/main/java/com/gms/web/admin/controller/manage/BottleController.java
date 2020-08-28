@@ -65,7 +65,7 @@ public class BottleController {
 	@RequestMapping(value = "/gms/bottle/list.do")
 	public String getBottleList(BottleVO params, Model model) {
 
-		logger.debug("BottleContoller getBottleList");
+		logger.debug("getBottleList");
 		
 		String searchChargeDt = params.getSearchChargeDt();	
 		
@@ -96,8 +96,8 @@ public class BottleController {
 		// 가스 정보 불러오기
 		//List<GasVO> gasList = gasService.getGasList();
 		//model.addAttribute("gasList", gasList);
-		logger.debug("BottleContoller getBottleList ownCustomerId="+params.getOwnCustomerId());
-		logger.debug("BottleContoller getBottleList searchCustomerNm1="+params.getSearchCustomerNm1());
+		logger.debug(" getBottleList ownCustomerId="+params.getOwnCustomerId());
+		logger.debug(" getBottleList searchCustomerNm1="+params.getSearchCustomerNm1());
 		String ownCustomerId = "";
 		if(params.getOwnCustomerId() !=null) ownCustomerId = params.getOwnCustomerId();
 		
@@ -140,7 +140,7 @@ public class BottleController {
 	@RequestMapping(value = "/gms/bottle/charge.do")
 	public String getBottleTestList(BottleVO params, Model model) {
 
-		logger.debug("BottleContoller getBottleList");
+		logger.debug(" getBottleList");
 		
 		String searchChargeDt = params.getSearchChargeDt();	
 		
@@ -220,7 +220,7 @@ public class BottleController {
 	@RequestMapping(value = "/gms/bottle/sales.do")
 	public String getBottleSalesList(BottleVO params, Model model) {
 
-		logger.debug("BottleContoller getBottleList");
+		logger.debug(" getBottleList");
 		
 		String searchChargeDt = params.getSearchChargeDt();	
 		
@@ -364,7 +364,7 @@ public class BottleController {
 	public ModelAndView registerBottle(HttpServletRequest request
 			, HttpServletResponse response
 			, BottleVO params) {
-		logger.info("BottleContoller registerBottle");
+		logger.info(" registerBottle");
 		
 		ModelAndView mav = new ModelAndView();
 		RequestUtils.initUserPrgmInfo(request, params);
@@ -379,16 +379,16 @@ public class BottleController {
 			result = bottleService.registerBottle(params);
 			if (result < 0) {
 				
-				logger.debug("BottleContoller registerBottle error");
+				logger.debug(" registerBottle error");
 				
 				String alertMessage = "에러가 되었습니다.";
 				RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do");
 			}
 		} catch (DataAccessException e) {
-			logger.error("BottleContoller registerBottle Exception==="+e.toString());
+			logger.error(" registerBottle Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("BottleContoller registerBottle Exception==="+e.toString());
+			logger.error(" registerBottle Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result > 0){
@@ -403,7 +403,7 @@ public class BottleController {
 	public String openBottleUpdate(BottleVO params, Model model) {
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.bottle"));
-		logger.debug("BottleContoller openBottleUpdate bottleId "+ params.getBottleId());
+		logger.debug(" openBottleUpdate bottleId "+ params.getBottleId());
 		
 		if (params.getBottleId() == null) {
 			return "redirect:/gms/bottle/list.do";
@@ -445,7 +445,7 @@ public class BottleController {
 			, HttpServletResponse response
 			, Model model
 			, BottleVO params) {
-		logger.info("BottleContoller modifyBottle ");
+		logger.info(" modifyBottle ");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -482,10 +482,10 @@ public class BottleController {
 				logger.error("BottleContoller modifyBottle error");
 			}
 		} catch (DataAccessException e) {
-			logger.error("BottleContoller modifyBottle Exception==="+e.toString());
+			logger.error(" modifyBottle Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("BottleContoller modifyBottle Exception==="+e.toString());
+			logger.error(" modifyBottle Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -510,7 +510,7 @@ public class BottleController {
 	public ModelAndView modifyBottleWorkCd(HttpServletRequest request
 			, HttpServletResponse response
 			, BottleVO params) {
-		logger.debug("BottleContoller modifyBottleWorkCd");
+		logger.debug(" modifyBottleWorkCd");
 		
 		ModelAndView mav = new ModelAndView();
 		RequestUtils.initUserPrgmInfo(request, params);
@@ -555,16 +555,16 @@ public class BottleController {
 			
 			if (result < 0) {
 				
-				logger.debug("BottleContoller modifyBottleWorkCd error");
+				logger.debug(" modifyBottleWorkCd error");
 				
 				String alertMessage = "처리중 에러가 발생하였습니다.";
 				RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId());
 			}
 		} catch (DataAccessException e) {
-			logger.error("BottleContoller modifyBottleWorkCd Exception==="+e.toString());
+			logger.error(" modifyBottleWorkCd Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("BottleContoller modifyBottleWorkCd Exception==="+e.toString());
+			logger.error(" modifyBottleWorkCd Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		
@@ -581,7 +581,7 @@ public class BottleController {
 	public ModelAndView modifyBottlesWorkCd(HttpServletRequest request
 			, HttpServletResponse response
 			, BottleVO params) {
-		logger.info("BottleContoller modifyBottleWorkCd");
+		logger.info(" modifyBottleWorkCd");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -620,13 +620,13 @@ public class BottleController {
 			model.addAttribute("currentPage", params.getCurrentPage());
 			*/
 			if (result < 0) {				
-				logger.debug("BottleContoller modifyBottlesWorkCd error");
+				logger.debug(" modifyBottlesWorkCd error");
 			}
 		} catch (DataAccessException e) {
-			logger.error("BottleContoller modifyBottlesWorkCd Exception==="+e.toString());
+			logger.error(" modifyBottlesWorkCd Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("BottleContoller modifyBottlesWorkCd Exception==="+e.toString());
+			logger.error(" modifyBottlesWorkCd Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result > 0){
@@ -641,7 +641,7 @@ public class BottleController {
 	public ModelAndView deleteBottle(HttpServletRequest request
 			, HttpServletResponse response
 			, BottleVO params) {
-		logger.info("BottleContoller modifyBottleWorkCd");		
+		logger.info(" modifyBottleWorkCd");		
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -679,15 +679,15 @@ public class BottleController {
 			mav.addObject("currentPage", params.getCurrentPage());
 			
 			if (result < 0) {
-				logger.debug("BottleContoller deleteBottle error");
+				logger.debug(" deleteBottle error");
 				String alertMessage = "용기중 오류가 발생하였습니다.";
 				RequestUtils.responseWriteException(response, alertMessage, "/gms/bottle/list.do?currentPage="+params.getCurrentPage()+"&searchBottleId="+params.getSearchBottleId()+"&searchChargeDt="+params.getSearchChargeDt()+"&searchProductId="+params.getSearchProductId());
 			}
 		} catch (DataAccessException e) {
-			logger.error("BottleContoller deleteBottle Exception==="+e.toString());
+			logger.error(" deleteBottle Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("BottleContoller deleteBottle Exception==="+e.toString());
+			logger.error(" deleteBottle Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -705,7 +705,7 @@ public class BottleController {
 			, HttpServletResponse response
 			, BottleVO params) {
 		
-		logger.info("BottleContoller deleteBottles");
+		logger.info(" deleteBottles");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		ModelAndView mav = new ModelAndView();
@@ -749,13 +749,13 @@ public class BottleController {
 			mav.addObject("currentPage", params.getCurrentPage());
 			
 			if (result < 0) {
-				logger.debug("BottleContoller deleteBottles error");
+				logger.debug(" deleteBottles error");
 			}
 		} catch (DataAccessException e) {
-			logger.error("BottleContoller deleteBottles Exception==="+e.toString());
+			logger.error(" deleteBottles Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("BottleContoller deleteBottles Exception==="+e.toString());
+			logger.error(" deleteBottles Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result > 0){
@@ -777,8 +777,6 @@ public class BottleController {
 		return bottleList;
 		//return null;
 	}
-	
-	
 	
 	
 }

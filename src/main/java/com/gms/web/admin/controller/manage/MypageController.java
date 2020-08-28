@@ -44,7 +44,7 @@ public class MypageController {
 			, HttpServletResponse response
 			, OrderVO params) {
 
-		logger.info("MypageContoller getAssignList");
+		logger.info(" getAssignList");
 		
 		RequestUtils.initUserPrgmInfo(request, params);				
 		
@@ -69,7 +69,7 @@ public class MypageController {
 			, HttpServletResponse response
 			, OrderVO params) {
 
-		logger.info("MypageContoller getAssignListPrint");
+		logger.info(" getAssignListPrint");
 		
 		RequestUtils.initUserPrgmInfo(request, params);			
 		
@@ -99,7 +99,7 @@ public class MypageController {
 			HttpServletRequest request
 			, HttpServletResponse response) {
 
-		logger.info("MypageContoller getMyInfoUpdate");
+		logger.info(" getMyInfoUpdate");
 		
 		LoginUserVO loginUser = (LoginUserVO)request.getSession().getAttribute(LoginUserVO.ATTRIBUTE_NAME);
 		
@@ -120,7 +120,7 @@ public class MypageController {
 	public ModelAndView modifyUser(HttpServletRequest request
 			, HttpServletResponse response
 			, UserVO params) {
-		logger.info("MyPageContoller modifyUser");
+		logger.info(" modifyUser");
 		
 		ModelAndView mav = new ModelAndView();		
 		
@@ -151,7 +151,7 @@ public class MypageController {
 			, HttpServletResponse response
 			, OrderVO params) {
 
-		logger.info("MypageContoller getAssignList");
+		logger.info(" getAssignList");
 		
 		RequestUtils.initUserPrgmInfo(request, params);				
 		

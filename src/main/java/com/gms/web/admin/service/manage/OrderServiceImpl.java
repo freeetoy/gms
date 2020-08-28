@@ -184,9 +184,9 @@ public class OrderServiceImpl implements OrderService {
 		OrderVO orderInfo = orderMapper.selectLastOrderForCustomer(customerId);	
 		//return null;
 		String today = DateUtils.getDate("YYYY/MM/dd");
-		//logger.debug("WorkReportServiceImpl getLastOrderForCustomer today =" + today);		
+			
 		if( orderInfo != null) {
-			logger.debug("WorkReportServiceImpl getLastOrderForCustomer orderInfo.getUpdateDt() =" + DateUtils.convertDateFormat(orderInfo.getUpdateDt(),"YYYY/MM/dd") );	
+			//logger.debug("WorkReportServiceImpl getLastOrderForCustomer orderInfo.getUpdateDt() =" + DateUtils.convertDateFormat(orderInfo.getUpdateDt(),"YYYY/MM/dd") );	
 			if(orderInfo.getOrderProcessCd().equals(PropertyFactory.getProperty("common.code.order.process.delivery"))) {
 				if(DateUtils.convertDateFormat(orderInfo.getUpdateDt(),"YYYY/MM/dd").equals(today) ) return orderInfo;
 				else orderInfo = null;
@@ -434,6 +434,26 @@ public class OrderServiceImpl implements OrderService {
 		return result;
 	}
 
+	@Override
+	@Transactional
+	public int modifyOrderRegiProduct(OrderVO order, List<OrderProductVO> orderProduct) {
+		int result = 0;
+		try {			
+			result = orderMapper.insertOrderProducts(orderProduct);
+			
+			result =  orderMapper.updateOrder(order);	
+			
+		} catch (DataAccessException e) {
+			logger.error("modifyOrderRegiProduct Exception==="+e.toString());
+			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error("modifyOrderRegiProduct Exception==="+e.toString());
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 	
 	@Override
 	@Transactional
@@ -1069,6 +1089,8 @@ public class OrderServiceImpl implements OrderService {
 		
 		return orderMapper.selectOrderBottleListNotDelivery(orderId);
 	}
+
+	
 	
 	
 }

@@ -16,9 +16,8 @@ function checkAll(){
 }
 
 	
-function validationOfForm(form) {
+function validationOfForm(form) {	
 	
-	console.log(form.chBottle.value);
 	return ture;
 }
 	
@@ -29,9 +28,8 @@ function fn_modifyBottleWorkCd(){
 		var form = $("#chForm");	
 		
 		var carCustomerId = $('#carCustomerId').val();	
-		var bottleWorkCd = $('#bottleWorkCd').val();	
+		var bottleWorkCd = $('#bottleWorkCd').val();			
 		
-		console.log("carCustomerId = "+carCustomerId);
 		//chForm.carCustomer.val(carCustomerId);
 		
 		if(bottleWorkCd=='0301' || bottleWorkCd == '0306' || bottleWorkCd == '0307'){
@@ -89,8 +87,7 @@ var fn_ChangeBottleWorkCd = function(bottleId){
 	ajax = callAjax(ajaxInfo);
 	
 	ajax.done(function(data){
-		console.log(data);
-
+		
 		$("#chBottleId").val(data.bottleId);
 		$("#bottleBarCd").val(data.bottleBarCd);
 		
@@ -112,8 +109,6 @@ var fn_ChangeBottleWorkCd = function(bottleId){
     
 var goUpdate = function(bottleId){		
 	
-	//alert("goUpdate "+bottleId);
-	console.log("goUpdate bottleId ="+bottleId);
 	var form = $("#mainForm");	
 
 	$("#bottleId").val(bottleId);
@@ -264,7 +259,6 @@ $(document).ready(function(){
 	
 	 $(".btn_select_process").click(function()  
 	{
-		console.log("start btn_select_process}");		
 		
 		$("#view_custom").hide();
 		var bottleId = $(this).attr('bottleId'); 
@@ -1128,13 +1122,14 @@ $(document).ready(function(){
                       <th>용량</th>
                       <th>작업</th>
                       <th>거래처</th>
+                      <th>작업자</th>
                       <th>처리일</th>
                       <th>관리</th>
                     </tr>
                   </thead>
                   <tbody>
                   <form name="checkForm" id="checkForm">
-                  	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}" style="font-size:14px;">
+                  	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}" style="font-size:13.5px;">
                       <td>
                       <input class="IdCheckbox"  name="check_id" type="checkbox" th:value="${row.bottleId}"></td>
                       <th>
@@ -1145,6 +1140,7 @@ $(document).ready(function(){
                       <td th:text="${row.bottleCapa}"></td>
                       <td th:text="${row.bottleWorkCdNm}"></td>
                       <td th:text="${row.CustomerNm}"></td>
+                      <td th:text="${row.updateId}"></td>
                       <td th:text="${#calendars.format( row.updateDt, 'yyyy-MM-dd' )}"></td>  
                       <td>                      
 						<a class="btn_select_process btn btn-info btn-xs" th:bottleId="${row.bottleId}" data-toggle="modal" data-target="#modal-default"  href="#"><i class="fas fa-check-circle"></i>상태변경 </a>
@@ -1173,7 +1169,7 @@ $(document).ready(function(){
          	</div>						
 			<div class="col-9">
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
-					<ul class="pagination">
+					<ul class="pagination" style="font-size:14px;">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
 							<a href="#" th:onclick="gotoPage([[ ${currentPage -1} ]])"  aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">이전</a>
 						</li>

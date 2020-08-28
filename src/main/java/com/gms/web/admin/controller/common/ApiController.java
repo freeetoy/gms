@@ -279,7 +279,7 @@ public class ApiController {
 	@RequestMapping(value = "/api/bottleDetail.do")
 	@ResponseBody
 	public BottleVO getBottleDetail(String bottleBarCd)	{				
-		logger1.info("getBottleDetail= bottleBarCd=*"+bottleBarCd);
+		logger1.info("bottleBarCd="+bottleBarCd);
 		try {
 			BottleVO bottle =  bottleService.getBottleDetailForBarCd(bottleBarCd);			
 			

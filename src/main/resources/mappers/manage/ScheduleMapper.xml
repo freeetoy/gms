@@ -165,7 +165,7 @@
 		AND
 			TU.Delete_YN	= 'N'
 		AND
-			TS.User_ID = TU.User_ID
+			TS.User_ID = TU.User_ID		
 	</select>
 	
 	

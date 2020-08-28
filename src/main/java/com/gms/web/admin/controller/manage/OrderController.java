@@ -63,7 +63,7 @@ public class OrderController {
 	@RequestMapping(value = "/gms/order/list.do")
 	public ModelAndView getOrderList(OrderVO params) {
 
-		logger.debug("BottleContoller getBottleList");
+		logger.debug(" getOrderList");
 
 		ModelAndView mav = new ModelAndView();
 		
@@ -109,7 +109,7 @@ public class OrderController {
 	@RequestMapping(value = "/gms/order/monitor.do")
 	public ModelAndView getWorkBottleListToday(BottleVO params) {
 
-		logger.debug("BottleContoller getWorkBottleListToday");
+		logger.debug(" getWorkBottleListToday");
 
 		ModelAndView mav = new ModelAndView();		
 		
@@ -182,7 +182,7 @@ public class OrderController {
 			, HttpServletResponse response,
 			OrderVO params) {
 		
-		logger.debug("OrderContoller openOrderUpate "+ params.getOrderId());
+		logger.debug("openOrderUpate "+ params.getOrderId());
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.order"));			
@@ -268,7 +268,7 @@ public class OrderController {
 	@ResponseBody
 	public List<OrderProductVO> getOrderProductList(@RequestParam(value = "orderId", required = false) Integer orderId, Model model)	{	
 				
-		logger.debug("OrderContoller getOrderProductList "+ orderId);
+		logger.debug("getOrderProductList "+ orderId);
 		
 		List<OrderProductVO> orderProductList = orderService.getOrderProductList(orderId);
 		//model.addAttribute("orderProductList", orderProductList);
@@ -282,14 +282,11 @@ public class OrderController {
 			, HttpServletResponse response
 			, OrderVO params) {
 		
-		logger.debug("OrderContoller deleteOrder");
+		logger.debug(" deleteOrder");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
-		//검색조건 셋팅
-		logger.debug("OrderContoller searchOrderDt "+ params.getSearchOrderDt());
-		logger.debug("OrderContoller searchCustomerNm "+ params.getSearchCustomerNm());		
-		
+		//검색조건 셋팅		
 		int  result = orderService.deleteOrder(params);
 		
 		if(result > 0){
@@ -319,7 +316,7 @@ public class OrderController {
 			, HttpServletResponse response
 			, OrderVO params) {
 		
-		logger.debug("OrderContoller modifyOrderWorkCd");
+		logger.debug(" modifyOrderWorkCd");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -339,8 +336,8 @@ public class OrderController {
 			, HttpServletResponse response
 			, OrderVO params) {
 		
-		logger.debug("OrderContoller modifyOrdersProcessCd");
-		//TODO 로직 처리 필요
+		logger.debug(" modifyOrdersProcessCd");
+		
 		RequestUtils.initUserPrgmInfo(request, params);
 	
 		int result = orderService.changeOrdersProcessCd(params);
@@ -358,7 +355,7 @@ public class OrderController {
 	@RequestMapping(value = "/gms/order/popupOrder.do")
 	public String getPopupOrderDetail(@RequestParam(value = "orderId", required = false) Integer orderId, Model model)	{
 		
-		logger.debug("OrderContoller getPopupOrderDetail");
+		logger.debug(" getPopupOrderDetail");
 		
 		OrderExtVO result = orderService.getOrder(orderId);			
 		
@@ -408,15 +405,26 @@ public class OrderController {
 	}
 	
 	@RequestMapping(value = "/gms/order/popupOrderAll.do")
-	public String getPopupOrderDetailAll(Model model)	{
+	public String getPopupOrderDetailAll(OrderVO param, Model model)	{
 		
-		logger.debug("OrderContoller getPopupOrderDetailAll");
+		logger.debug(" getPopupOrderDetailAll");
 		
 		ArrayList<OrderPrintVO> orderPrintList = new ArrayList<OrderPrintVO>();
-		OrderVO tOrder = new OrderVO();
-		tOrder.setOrderProcessCd(PropertyFactory.getProperty("common.code.order.process.receive"));
+		//OrderVO tOrder = new OrderVO();
+		//tOrder.setOrderProcessCd(PropertyFactory.getProperty("common.code.order.process.receive"));
+		String searchOrderDt = param.getSearchOrderDt();	
+		String searchOrderDtFrom = null;
+		String searchOrderDtEnd = null;
+				
+		if(searchOrderDt != null && searchOrderDt.length() > 20) {						
+			searchOrderDtFrom = searchOrderDt.substring(0, 10) ;			
+			searchOrderDtEnd = searchOrderDt.substring(13, searchOrderDt.length()) ;
+			
+			param.setSearchOrderDtFrom(searchOrderDtFrom);
+			param.setSearchOrderDtEnd(searchOrderDtEnd);			
+		}
 		
-		List<OrderVO> orderList = orderService.getOrderReqDtTomorrow(tOrder);
+		List<OrderVO> orderList = orderService.getOrderReqDtTomorrow(param);
 		Integer orderId= 0;
 		for(int i=0 ; i< orderList.size() ; i++) {
 			OrderPrintVO orderPrint = new OrderPrintVO();
@@ -466,9 +474,8 @@ public class OrderController {
 
 			orderPrintList.add(orderPrint);
 		}
-		model.addAttribute("orderPrintList",orderPrintList);
+		model.addAttribute("orderPrintList",orderPrintList);		
 		
-		logger.debug("OrderContoller orderPrintList "+orderPrintList.size());
 		return "gms/order/popupOrderAll";
 	}
 	

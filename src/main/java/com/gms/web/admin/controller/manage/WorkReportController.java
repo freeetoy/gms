@@ -55,7 +55,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, WorkReportVO params) {
 
-		logger.debug("WorkReportController getWorkReportList");
+		logger.debug(" getWorkReportList");
 		
 		RequestUtils.initUserPrgmInfo(request, params);				
 		
@@ -64,7 +64,7 @@ public class WorkReportController {
 		params.setUserId(params.getCreateId());		
 		params.setSearchUserId(params.getCreateId());
 		
-		logger.debug("WorkReportController getWorkReportList User_id= "+ params.getUserId());		
+		logger.debug(" getWorkReportList User_id= "+ params.getUserId());		
 		
 		List<WorkReportViewVO> workList = workService.getWorkReportListAll(params);
 		
@@ -85,7 +85,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, WorkReportVO params) {
 
-		logger.debug("WorkReportController getWorkReportListAll");
+		logger.debug(" getWorkReportListAll");
 		
 		RequestUtils.initUserPrgmInfo(request, params);				
 		
@@ -118,7 +118,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, OrderBottlesVO params) {
 		
-		logger.debug("WorkReportController registerWorkReportForOrder");
+		logger.debug(" registerWorkReportForOrder");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		ModelAndView mav = new ModelAndView();	
@@ -139,7 +139,7 @@ public class WorkReportController {
 			//mav.setViewName("/gms/mypage/assign");			
 		
 		} catch (Exception e) {
-			logger.error("WorkReportController registerWorkReportForOrder Exception==="+e.toString());
+			logger.error(" registerWorkReportForOrder Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result > 0){
@@ -156,7 +156,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, WorkReportVO params) {
 		
-		logger.debug("WorkReportController registerWorkReportAll");
+		logger.debug(" registerWorkReportAll");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		//logger.debug("WorkReportController userId="+params.getUserId());
@@ -194,7 +194,7 @@ public class WorkReportController {
 			//mav.setViewName("/gms/mypage/assign");			
 		
 		} catch (Exception e) {
-			logger.error("WorkReportController registerWorkReportAll Exception==="+e.toString());
+			logger.error(" registerWorkReportAll Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		//return "redirect:/gms/mypage/assign.do";
@@ -216,7 +216,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, OrderBottlesVO params) {
 		
-		logger.debug("WorkReportController registerWorkReport0310");
+		logger.debug(" registerWorkReport0310");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		ModelAndView mav = new ModelAndView();	
@@ -236,7 +236,7 @@ public class WorkReportController {
 			result = workService.registerWorkReport0310(work);					
 		
 		} catch (Exception e) {
-			logger.error("WorkReportController registerWorkReport0310 Exception==="+e.toString());
+			logger.error(" registerWorkReport0310 Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result > 0){
@@ -254,7 +254,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, WorkReportVO params) {
 
-		logger.debug("WorkReportController getWorkReportList");
+		logger.debug(" getWorkReportList");
 		
 		RequestUtils.initUserPrgmInfo(request, params);		
 		
@@ -286,7 +286,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, WorkBottleVO param) {
 		
-		logger.debug("WorkReportController registerWorkReportNoGasProduct");
+		logger.debug(" registerWorkReportNoGasProduct");
 		
 		RequestUtils.initUserPrgmInfo(request, param);
 		
@@ -305,7 +305,7 @@ public class WorkReportController {
 			result = workService.registerWorkNoBottle(param);					
 		
 		} catch (Exception e) {
-			logger.error("WorkReportController registerWorkReportNoGasProduct Exception==="+e.toString());
+			logger.error(" registerWorkReportNoGasProduct Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		//return "redirect:/gms/mypage/assign.do";
@@ -326,7 +326,7 @@ public class WorkReportController {
 	@ResponseBody
 	public List<WorkBottleVO> getWorkBottleList(@RequestParam(value = "workReportSeq", required = false) Integer workReportSeq, Model model)	{	
 				
-		logger.debug("OrderContoller getWorkBottleList "+ workReportSeq);
+		logger.debug(" getWorkBottleList "+ workReportSeq);
 		
 		List<WorkBottleVO> workBottleList = workService.getWorkBottleList(workReportSeq);
 		//model.addAttribute("orderProductList", orderProductList);
@@ -340,7 +340,7 @@ public class WorkReportController {
 			, HttpServletResponse response
 			, WorkReportVO param) {
 
-		logger.debug("WorkReportController getWorkReportUpdate");
+		logger.debug(" getWorkReportUpdate");
 		
 		RequestUtils.initUserPrgmInfo(request, param);				
 		
@@ -364,7 +364,7 @@ public class WorkReportController {
 		int result = 1;
 		try {			
 		
-			logger.debug("WorkReportController getWorkReportModify");
+			logger.debug(" getWorkReportModify");
 			
 			//RequestUtils.initUserPrgmInfo(request, param);	
 			if(param.getUserId() !=null ) {			
@@ -389,10 +389,10 @@ public class WorkReportController {
 						"/gms/report/update.do?workReportSeq="+param.getWorkReportSeq());
 			}
 		} catch (DataAccessException e) {		
-			logger.error("WorkReportController getWorkReportModify Exception==="+e.toString());
+			logger.error(" getWorkReportModify Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {			
-			logger.error("WorkReportController getWorkReportModify Exception==="+e.toString());
+			logger.error(" getWorkReportModify Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		return null;		
@@ -411,14 +411,14 @@ public class WorkReportController {
 
 		int result =0;
 		try {	
-			logger.debug("WorkReportController deleteWorkReport workReportSeq ="+param.getWorkReportSeq());
+			logger.debug(" deleteWorkReport workReportSeq ="+param.getWorkReportSeq());
 			result = workService.deleteWorkReport(param);					
 
 			mav.addObject("searchDt", param.getSearchDt());
 			mav.addObject("searchUserId", param.getSearchUserId());
 		
 		} catch (Exception e) {
-			logger.error("WorkReportController deleteWorkReport Exception==="+e.toString());
+			logger.error(" deleteWorkReport Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		if(result > 0){

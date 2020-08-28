@@ -66,7 +66,7 @@ public class UserController {
 			, HttpServletResponse response
 			, Model model
 			, UserVO params) {
-		logger.info("UserContoller registerUser");
+		logger.info("registerUser");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		
@@ -118,7 +118,7 @@ public class UserController {
 			, HttpServletResponse response
 			, Model model
 			, UserVO params) {
-		logger.info("UserContoller modifyUser");
+		logger.info(" modifyUser");
 		
 		RequestUtils.initUserPrgmInfo(request, params);
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.user"));
@@ -131,10 +131,10 @@ public class UserController {
 				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
 			}
 		} catch (DataAccessException e) {
-			logger.error("UserController modifyUser Exception==="+e.toString());
+			logger.error(" modifyUser Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("UserController modifyUser Exception==="+e.toString());
+			logger.error(" modifyUser Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -165,10 +165,10 @@ public class UserController {
 			model.addAttribute("totalCount", map.get("totalCount"));
 			
 		} catch (DataAccessException e) {
-			logger.error("UserController deleteUser Exception==="+e.toString());
+			logger.error(" deleteUser Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("UserController deleteUser Exception==="+e.toString());
+			logger.error(" deleteUser Exception==="+e.toString());
 			e.printStackTrace();
 		}
 		

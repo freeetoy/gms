@@ -179,7 +179,15 @@ public class BottleServiceImpl implements BottleService {
 		
 		if(param.getSearchChargeDt() != null) {
 			map.put("searchChargeDt", param.getSearchChargeDt());
-			//logger.debug("****** getBottleListToExcel *****getSearchChargeDt===*"+param.getSearchChargeDt());
+			logger.debug("****** getBottleListToExcel *****getSearchChargeDt===*"+param.getSearchChargeDt());
+			
+			if(param.getSearchChargeDt() != null && param.getSearchChargeDt().length() > 20) {
+				String searchChargeDtFrom = param.getSearchChargeDt().substring(0, 10) ;				
+				String searchChargeDtEnd = param.getSearchChargeDt().substring(13, param.getSearchChargeDt().length()) ;
+				
+				map.put("searchChargeDtFrom",searchChargeDtFrom);
+				map.put("searchChargeDtEnd", searchChargeDtEnd);			
+			}
 		}else {
 			if(param.getMenuType()==2) {		// 용기충전
 				// Date 로 구하기

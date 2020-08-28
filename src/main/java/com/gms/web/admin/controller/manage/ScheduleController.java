@@ -1,5 +1,6 @@
 package com.gms.web.admin.controller.manage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.common.web.utils.SessionUtil;
 import com.gms.web.admin.domain.common.LoginUserVO;
@@ -45,6 +47,18 @@ public class ScheduleController {
 		
 		param.setUserId(param.getCreateId());
 		
+		int startYear = 2020;
+		int endYear = Integer.parseInt(DateUtils.getDate("yyyy"));
+		List<String> searchYears = new ArrayList<String>();
+		for(int i = startYear ; i <= endYear ; i++) {
+			searchYears.add(Integer.toString(i));
+		}
+		mav.addObject("searchYears", searchYears);
+		
+		if(param.getSearchYear() == null ) {
+			param.setSearchYear(DateUtils.getDate("yyyy"));
+		}
+		
 		List<ScheduleVO> scheduleList = scheduleService.getScheduleListUser(param);
 		mav.addObject("scheduleList", scheduleList);			
 		/*
@@ -52,6 +66,7 @@ public class ScheduleController {
 			logger.info("ScheduleController getScheduleList createDt "+scheduleList.get(i).getCreateDt());
 		}
 		*/
+		
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.vacation"));	 
 		
 		

@@ -60,4 +60,6 @@ public class ScheduleVO extends AbstractVO implements Serializable {
 	private String SearchDt;
 	
 	private int dateDiffs;
+	
+	private String searchYear;
 }

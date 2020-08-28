@@ -105,7 +105,12 @@
 
 	<select id="selectUserList" resultType="com.gms.web.admin.domain.manage.UserVO" parameterType="java.util.Map">
 		SELECT
-			<include refid="UserColumns" />
+			<include refid="UserColumns" />,
+			CASE User_Part_CD
+				WHEN  '01' THEN '영업팀'
+				WHEN  '02' THEN '회계팀'
+		        ELSE '관리팀'
+			END AS USER_PART_NM
 		FROM
 			TB_USER
 		WHERE

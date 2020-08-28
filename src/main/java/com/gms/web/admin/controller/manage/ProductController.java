@@ -78,7 +78,7 @@ public class ProductController {
 	@RequestMapping(value = "/gms/product/register.do", method = RequestMethod.POST)
 	public String registerProduct(HttpServletRequest req) {		
 		
-		logger.debug("ProductContoller registerProduct");
+		logger.debug(" registerProduct");
 		try {
 	
 			int priceCount  = Integer.parseInt(req.getParameter("priceCount"));
@@ -121,10 +121,10 @@ public class ProductController {
 			}	
 			
 		} catch (DataAccessException e) {
-			logger.error("ProductController registerProduct Exception==="+e.toString());
+			logger.error(" registerProduct Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("ProductController registerProduct Exception==="+e.toString());
+			logger.error(" registerProduct Exception==="+e.toString());
 			e.printStackTrace();
 		}
 			
@@ -133,7 +133,7 @@ public class ProductController {
 	
 	@RequestMapping(value = "/gms/product/update.do")
 	public String updateProductForm(ProductVO params, Model model) {
-		logger.debug("ProductContoller updateProduct");
+		logger.debug(" updateProduct");
 		
 		try {
 
@@ -160,10 +160,10 @@ public class ProductController {
 			model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.product"));
 			
 		} catch (DataAccessException e) {
-			logger.error("ProductController updateProductForm Exception==="+e.toString());
+			logger.error(" updateProductForm Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("ProductController updateProductForm Exception==="+e.toString());
+			logger.error(" updateProductForm Exception==="+e.toString());
 			e.printStackTrace();
 		}
 	
@@ -172,7 +172,7 @@ public class ProductController {
 	
 	@RequestMapping(value = "/gms/product/modify.do", method = RequestMethod.POST)
 	public String modifyProduct(HttpServletRequest req) {
-		logger.debug("ProductContoller modifyProduct");
+		logger.debug(" modifyProduct");
 		try {
 		
 			int priceCount  = Integer.parseInt(req.getParameter("priceCount"));
@@ -245,10 +245,10 @@ public class ProductController {
 			}	
 			
 		} catch (DataAccessException e) {
-			logger.error("ProductController modifyProduct Exception==="+e.toString());
+			logger.error(" modifyProduct Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("ProductController modifyProduct Exception==="+e.toString());
+			logger.error(" modifyProduct Exception==="+e.toString());
 			e.printStackTrace();
 		}
 			
@@ -271,10 +271,10 @@ public class ProductController {
 			model.addAttribute("productList", productList);
 			
 		} catch (DataAccessException e) {
-			logger.error("ProductController deleteProduct Exception==="+e.toString());
+			logger.error(" deleteProduct Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("ProductController deleteProduct Exception==="+e.toString());
+			logger.error(" deleteProduct Exception==="+e.toString());
 			e.printStackTrace();
 		}		
 		
@@ -302,10 +302,10 @@ public class ProductController {
 			model.addAttribute("productList", productList);
 			
 		} catch (DataAccessException e) {
-			logger.error("ProductController modifyProductPriceStatus Exception==="+e.toString());
+			logger.error(" modifyProductPriceStatus Exception==="+e.toString());
 			e.printStackTrace();
 		} catch (Exception e) {
-			logger.error("ProductController modifyProductPriceStatus Exception==="+e.toString());
+			logger.error(" modifyProductPriceStatus Exception==="+e.toString());
 			e.printStackTrace();
 		}		
 		

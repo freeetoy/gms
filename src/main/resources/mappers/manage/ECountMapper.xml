@@ -21,23 +21,19 @@
 	 <select id="selectECount" resultType="com.gms.web.admin.domain.manage.ECountVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO" >		
 		SELECT 
 			TC.ECount_CD Customer_ID,Customer_NM, WB.Product_ID, PP.ECount_CD, PP.ECount_CDS, PT.Product_Nm, PP.Product_Capa, User_Nm Sales_Nm, WB.Bottle_Sale_YN,
-			WB.Order_Count, OP.Order_Amount/OP.Order_Count Product_Price, WB.Order_Count*Product_Price Supply_Price,WB.Order_Count*Product_Price*0.1 VAT
+			WB.Order_Count, WB.Product_Price, WB.Order_Count*WB.Product_Price Supply_Price,WB.Order_Count*WB.Product_Price*0.1 VAT
 		FROM 
 			(
-				SELECT count(Work_Seq) Order_Count,Work_Report_Seq,Product_ID, Product_Price_Seq,Create_ID,Bottle_Sale_YN
+				SELECT count(Work_Seq) Order_Count,Work_Report_Seq,Product_ID, Product_Price_Seq,Create_ID,Bottle_Sale_YN,Product_Price
 				FROM TB_Work_Bottle 
 				WHERE Bottle_Work_Cd in ('0308','0309')
 				AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  #{searchDt}
-				Group By Work_Report_Seq,Product_ID, Product_Price_Seq ,Create_ID
-			) WB,TB_Work_Report WR ,TB_Order_Product OP,TB_Product PT, TB_Product_Price PP, TB_Customer TC, TB_User TU
+				Group By Work_Report_Seq,Product_ID, Product_Price_Seq ,Create_ID,Bottle_Sale_YN,Product_Price
+			) WB,TB_Work_Report WR ,TB_Product PT, TB_Product_Price PP, TB_Customer TC, TB_User TU
 		WHERE 
 			WB.Work_Report_Seq = WR.Work_Report_Seq
 		AND 
-			WR.Delete_YN = 'N'
-		AND 
-			WR.Order_ID = OP.Order_ID
-		AND 
-			WB.Product_Price_Seq = OP.Product_Price_Seq 
+			WR.Delete_YN = 'N'		
 		AND 
 			WB.Product_ID = PT.Product_ID
 		AND 

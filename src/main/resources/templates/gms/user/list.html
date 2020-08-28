@@ -99,6 +99,7 @@
                       <th>사용자명</th>
                       <th>ID</th>
                       <th>권한</th>
+                      <th>부서</th>
                       <th>연락처</th>
                       <th>최종접속일</th>
                       <th>등록일</th>
@@ -116,6 +117,7 @@
                       <td th:if="${row.userAuthority =='01'}" th:text="사용자">
                       <td th:unless="${row.userAuthority =='01'}" th:text="관리자">
                       </td>
+                      <td th:text="${row.userPartNm}"></td>
                       <td th:text="${row.userPhone}"></td>
                       <td th:text="${#calendars.format( row.lastConnectDt, 'yyyy-MM-dd' )}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
@@ -144,7 +146,7 @@
          <div class="row">								
 			<div class="col-12">
 				<div class="pagination justify-content-center m-0" id="example2_paginate">
-					<ul class="pagination">
+					<ul class="pagination" style="font-size:14px;">
 						<li th:if="${currentPage > 1}" class="paginate_button page-item previous" id="example2_previous">
 							<a th:href="@{/gms/user/list.do(currentPage=${currentPage -1})}" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">이전</a>
 						</li>

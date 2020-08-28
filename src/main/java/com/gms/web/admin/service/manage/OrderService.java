@@ -48,6 +48,8 @@ public interface OrderService {
 	public int registerOrderProducts(List<OrderProductVO> orderProduct);	
 	
 	public int registerOrderAndProduct(OrderVO order, List<OrderProductVO> orderProduct);	
+	
+	public int modifyOrderRegiProduct(OrderVO order, List<OrderProductVO> orderProduct);	
 
 	public int modifyOrder(HttpServletRequest request,OrderVO param);
 	
