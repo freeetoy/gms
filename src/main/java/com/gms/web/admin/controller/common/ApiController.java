@@ -26,6 +26,8 @@ public class ApiController {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	private final Logger logger1 = LoggerFactory.getLogger("ROLLING_FILE1");
 	
+	private final int CUSOTMER_NOT_EXIST = -3;
+	private final int USER_NOT_EXIST = -4;
 	private final String TAG="ApiController";
 	/*
 	 * Service 빈(Bean) 선언
@@ -108,8 +110,11 @@ public class ApiController {
 			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.freechange"));
 			result = apiService.registerWorkReportForChangeCd(workReport);
 		}
+		
 		if(result > 0)
 			return "success";
+		if(result == USER_NOT_EXIST)
+			return "noUser";
 		else
 			return "fail";
 		//return null;
@@ -141,8 +146,12 @@ public class ApiController {
 		//workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.come"));
 		result = apiService.registerWorkReportNoGas(workBottle);			
 		
-		if(result > 0) 		return "success";
-		else return "fail";
+		if(result > 0)
+			return "success";
+		if(result == USER_NOT_EXIST)
+			return "noUser";
+		else
+			return "fail";
 		//return null;
 	}
 	
@@ -165,8 +174,12 @@ public class ApiController {
 		
 		result = apiService.registerCashFlow(cashFlow);
 		
-		if(result > 0) 		return "success";
-		else return "fail";
+		if(result > 0)
+			return "success";
+		if(result == USER_NOT_EXIST)
+			return "noUser";
+		else
+			return "fail";
 		//return null;
 	}
 
@@ -198,8 +211,12 @@ public class ApiController {
 		workReport.setCreateId(userId);				
 		workReport.setUpdateId(userId);				
 		
-		if(result > 0) 		return "success";
-		else return "fail";
+		if(result > 0)
+			return "success";
+		if(result == USER_NOT_EXIST)
+			return "noUser";
+		else
+			return "fail";
 		//return null;
 	}
 	
@@ -262,6 +279,8 @@ public class ApiController {
 		
 		if(result > 0)
 			return "success";
+		if(result == USER_NOT_EXIST)
+			return "noUser";
 		else
 			return "fail";
 	}
