@@ -103,4 +103,13 @@ public class LoginServiceImpl implements LoginService{
 		
 		return userInfo;
 	}
+
+	@Override
+	public int modifyLastConnect(LoginUserVO param) {
+		
+		if(param.getUserId()!=null)
+			return  loginMapper.updateUserLastConnect(param);
+		else
+			return -1;
+	}
 }

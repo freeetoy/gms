@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.StringUtils;
+import com.gms.web.admin.domain.common.LoginUserVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CashFlowVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
@@ -46,6 +47,9 @@ public class ApiServiceImpl implements ApiService {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private LoginService loginService;
+	
 	@Override
 	public int registerWorkReportForSale(WorkReportVO param) {
 		
@@ -54,6 +58,11 @@ public class ApiServiceImpl implements ApiService {
 		UserVO user = userService.getUserDetails(param.getUserId());
 		
 		if(user != null) {
+			//사용자 최종접속일 정보 업데이트
+			LoginUserVO loginUser = new LoginUserVO();
+			loginUser.setUserId(user.getUserId());
+			
+			result = loginService.modifyLastConnect(loginUser);
 		
 			//Customer 정보가져
 			CustomerVO customer = getCustomer(param.getCustomerNm());
@@ -78,6 +87,12 @@ public class ApiServiceImpl implements ApiService {
 		UserVO user = userService.getUserDetails(param.getUserId());
 		
 		if(user != null) {
+			//사용자 최종접속일 정보 업데이트
+			LoginUserVO loginUser = new LoginUserVO();
+			loginUser.setUserId(user.getUserId());
+			
+			result = loginService.modifyLastConnect(loginUser);
+			
 			List<String> list = null;				
 			BottleVO bottle = new BottleVO();
 			
@@ -127,6 +142,12 @@ public class ApiServiceImpl implements ApiService {
 		UserVO user = userService.getUserDetails(param.getCreateId());
 		
 		if(user != null) {
+			//사용자 최종접속일 정보 업데이트
+			LoginUserVO loginUser = new LoginUserVO();
+			loginUser.setUserId(user.getUserId());
+			
+			result = loginService.modifyLastConnect(loginUser);
+			
 			//Customer 정보가져
 			CustomerVO customer = getCustomer(param.getCustomerNm());
 			
@@ -156,6 +177,12 @@ public class ApiServiceImpl implements ApiService {
 		UserVO user = userService.getUserDetails(param.getCreateId());
 		
 		if(user != null) {
+			//사용자 최종접속일 정보 업데이트
+			LoginUserVO loginUser = new LoginUserVO();
+			loginUser.setUserId(user.getUserId());
+			
+			result = loginService.modifyLastConnect(loginUser);
+			
 			//Customer 정보가져
 			CustomerVO customer = getCustomer(param.getCustomerNm());
 			
@@ -229,7 +256,13 @@ public class ApiServiceImpl implements ApiService {
 		
 		UserVO user = userService.getUserDetails(param.getUserId());
 		
-		if(user != null) {		
+		if(user != null) {	
+			//사용자 최종접속일 정보 업데이트
+			LoginUserVO loginUser = new LoginUserVO();
+			loginUser.setUserId(user.getUserId());
+			
+			result = loginService.modifyLastConnect(loginUser);
+			
 			//Customer 정보가져
 			CustomerVO customer = getCustomer(param.getCustomerNm());
 			if(customer!=null) {
@@ -254,6 +287,12 @@ public class ApiServiceImpl implements ApiService {
 		UserVO user = userService.getUserDetails(param.getUserId());
 		
 		if(user != null) {		
+			//사용자 최종접속일 정보 업데이트
+			LoginUserVO loginUser = new LoginUserVO();
+			loginUser.setUserId(user.getUserId());
+			
+			result = loginService.modifyLastConnect(loginUser);
+			
 			//Customer 정보가져
 			CustomerVO customer = getCustomer(param.getCustomerNm());
 			if(customer!=null) {
