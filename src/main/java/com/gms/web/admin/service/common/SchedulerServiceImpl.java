@@ -11,6 +11,7 @@ import com.gms.web.admin.service.statistics.StatisticsBottleService;
 import com.gms.web.admin.service.statistics.StatisticsCustomerService;
 import com.gms.web.admin.service.statistics.StatisticsOrderService;
 import com.gms.web.admin.service.statistics.StatisticsProductService;
+import com.gms.web.admin.service.statistics.StatisticsUserService;
 
 @Service
 public class SchedulerServiceImpl implements SchedulerService {
@@ -28,6 +29,9 @@ public class SchedulerServiceImpl implements SchedulerService {
 	
 	@Autowired
 	private StatisticsBottleService statBottleService;
+	
+	@Autowired
+	private StatisticsUserService statUserService;
 
 	@Override
 	@Transactional
@@ -48,6 +52,8 @@ public class SchedulerServiceImpl implements SchedulerService {
 			result = statCustomerService.registerDailyStatisticsCustomer();
 			
 			result  = statBottleService.registerDailyStatisticsBottle();
+			
+			result  = statUserService.registerDailyStatisticsUser();
 			
 		} catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
