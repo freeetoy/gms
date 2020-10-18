@@ -15,17 +15,17 @@ $(document).ready(function(){
     });
 });
 
-var goUpdate = function(bottleId){		
+var goUpdate = function(bottleBarCd){		
 	
 	//alert("goUpdate "+bottleId);
-	console.log("goUpdate bottleId ="+bottleId);
+	//console.log("goUpdate bottleId ="+bottleId);
 	var form = $("#mainForm");	
 
-	$("#bottleId").val(bottleId);
+	$("#bottleBarCd").val(bottleBarCd);
    	
    	//document.getElementById("priceCount").value = totalCount;
    	mainForm.action="/gms/bottle/update.do";
-   	form.submit();view_type
+   	form.submit();
 }
 </script>
    <div class="content-wrapper">
@@ -50,7 +50,7 @@ var goUpdate = function(bottleId){
 	        </div>
         </div>
         <form id="mainForm" name="mainForm"  method="post">
-        <input type="hidden" id="bottleId" name="bottleId" value="">
+        <input type="hidden" id="bottleBarCd" name=bottleBarCd value="">
          <div class="row">	         
 	        <div class="col-2">
                	<select id="searchWorkCd" name="searchWorkCd" class="form-control">
@@ -107,10 +107,10 @@ var goUpdate = function(bottleId){
                  
                   	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}" style="font-size:14px;">
                       <td th:text="${bottleList.indexOf(row)+1}"></td>
+                      <td th:text="${row.bottleId}"></th>
                       <td>
-                      <a href="#" th:onclick="goUpdate([[ ${row.bottleId} ]])" th:text="${row.bottleId}"></a>                     
+                      <a href="#" th:onclick="goUpdate([[ ${row.bottleBarCd} ]])" th:text="${row.bottleBarCd}"></a>   
                       </td>
-                      <td th:text="${row.bottleBarCd}"></td>
                       <td th:text="${row.CustomerNm}"></td>
                       <td th:text="${row.productNm}"></td>
                       <td th:text="${row.bottleCapa}"></td>

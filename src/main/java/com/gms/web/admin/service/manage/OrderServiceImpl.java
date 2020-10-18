@@ -593,13 +593,13 @@ public class OrderServiceImpl implements OrderService {
 						for(int k=0; k< orderCount ; k++) {
 							
 							OrderBottleVO orderBottle = new OrderBottleVO();
-							String orderBottleId ="";
+							String orderBottleBarCd ="";
 							
 							for(int l=oldOrderBottleList.size()-1 ; l >= 0 ;l--) {
 								OrderBottleVO oldOrderBottle = oldOrderBottleList.get(l);
 								
 								if(oldOrderBottle.getProductId() == productId && oldOrderBottle.getProductPriceSeq()==productPriceSeq) {
-									orderBottleId = oldOrderBottle.getBottleId();
+									orderBottleBarCd = oldOrderBottle.getBottleBarCd();
 									oldOrderBottleList.remove(l);
 								}
 								
@@ -608,7 +608,7 @@ public class OrderServiceImpl implements OrderService {
 							orderBottle.setOrderProductSeq(i+1);
 							orderBottle.setProductId(productId);							
 							orderBottle.setProductPriceSeq(productPriceSeq);
-							orderBottle.setBottleId(orderBottleId);
+							orderBottle.setBottleBarCd(orderBottleBarCd);
 							orderBottle.setCreateId(params.getCreateId());
 							orderBottle.setUpdateId(params.getCreateId());
 							

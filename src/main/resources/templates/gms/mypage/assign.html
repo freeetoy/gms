@@ -26,11 +26,9 @@ $(document).ready(function(){
  	
     var customerId ="";
     $(".btn_select_process").click(function()  
-	{
-		console.log("start btn_selelct_pr}");
+	{		
 		var customerId ="";
 		var orderId = $(this).attr('orderId'); 
-
 				    
 		var ajaxInfo ={
 				type:"POST",
@@ -44,18 +42,17 @@ $(document).ready(function(){
 			ajax = callAjax(ajaxInfo);
 			
 			ajax.done(function(data){
-				console.log(data);
+				
 				var Ampm = "오전";
 				if(data.order.deliveryReqAmpm=='P' ) Ampm = "오후" ;
 				
 				$("#chOrderId").val(data.order.orderId);
 				customerId  = data.order.customerId;
-				console.log("customerId====="+customerId);
+				
 				$("#mcustomerNm").val(data.order.customerNm);			
 				$("#deliveryReqDt").val(moment(data.order.deliveryReqDt).format('YYYY/MM/DD') + ' ' +Ampm);			
 				$("#orderEtc").val(data.order.orderEtc);			
 				$("#orderTotalAmount").val(numberWithCommas(data.order.orderTotalAmount));	
-				console.log(data.order.orderTotalAmount);		
 				
 				//고객이 보유한 Bottle 정보
 				getBottls(customerId);
@@ -157,8 +154,7 @@ $(document).ready(function(){
     
     var bottleIds = "";
     $(".btn_select_process1").click(function()  
- 	{
-		console.log("start btn_selelct_pr}");
+ 	{		
 		bottleIds = "";	
 		var orderId = $(this).attr('orderId'); 
 		$("table.mod-doc-list1").find('tr').remove();			
@@ -188,7 +184,7 @@ $(document).ready(function(){
     				ajax = callAjax(ajaxInfo);
     				
     				ajax.done(function(data){
-    					console.log(data);
+    					
     					var Ampm = "오전";
     					if(data.order.deliveryReqAmpm=='P' ) Ampm = "오후" ;
     					
@@ -199,9 +195,7 @@ $(document).ready(function(){
     					$("#deliveryReqDt").val(moment(data.order.deliveryReqDt).format('YYYY/MM/DD') + ' ' +Ampm);			
     					$("#orderEtc").val(data.order.orderEtc);			
     					$("#orderTotalAmount").val(numberWithCommas(data.order.orderTotalAmount));	
-    					console.log("orderTotalAmout =="+data.order.orderTotalAmount);    					
-    					console.log("data.orderProduct.length =="+data.orderProduct.length);    			
-    					
+    					    					
     					if(data.orderProduct.length > 0) {
     						$("table.mod-doc-list0").find('tr').remove();
     			
@@ -236,14 +230,11 @@ $(document).ready(function(){
     			})
     			       .fail(function(){
     				  console.log("fail");
-    			});
-    				
-
+    			});  				
     				//$("#orderAmountView").show();
     				//$("#view_button").hide();
     		});
-    
-    
+       
     
 	$(".btn_bottle_search").click(function()  
   	{
@@ -263,7 +254,7 @@ $(document).ready(function(){
   				ajax = callAjax(ajaxInfo);
   				
   				ajax.done(function(data){
-  					console.log(data);
+  					
   						
 				    var newRow1 = $("<tr>");
 				    var cols1 = "";	
@@ -350,13 +341,10 @@ $(document).ready(function(){
             break;8
 
        }           
-       console.log("bottleWorkCd ="+bottleWorkCd);
        
-      
 		if(confirm(msg)){
 			
-			var bottleType = $("#bottleType1").val(); 			
-			console.log("bottleType " + bottleType);			
+			var bottleType = $("#bottleType1").val(); 						
 			
 			var form = document.createElement("form");
 			form.setAttribute("charset","UTF-8");

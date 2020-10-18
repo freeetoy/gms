@@ -126,7 +126,7 @@ public class ApiController {
 	public String controlActionNoGas(String userId, String customerNm, Integer productId, Integer productPriceSeq, int productCount )	{	
 				
 		logger1.info("userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
-		logger.info("userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
+		logger.info("controlActionNoGas userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
 		
 		boolean phoneCall = true;
 		int result = 0;
@@ -222,9 +222,9 @@ public class ApiController {
 	
 	@RequestMapping(value = "/api/bottleHistoryList.do")
 	@ResponseBody
-	public List<BottleHistoryVO> getBottleHistoryList(String bottleId)	{			
+	public List<BottleHistoryVO> getBottleHistoryList(String bottleBarCd)	{			
 		
-		return bottleService.selectBottleHistoryList(bottleId);
+		return bottleService.selectBottleHistoryList(bottleBarCd);
 	}
 	
 	@RequestMapping(value = "/api/workReportList.do")

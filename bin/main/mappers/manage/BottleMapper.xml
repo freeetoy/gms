@@ -69,8 +69,8 @@
 	</resultMap>
 	
 	<sql id="BottleColumns">
-		  Bottle_ID
-		, Bottle_BarCd
+		  Bottle_BarCd
+		, Bottle_ID
 		, Product_ID
 		, Product_Price_Seq
 		, Gas_ID	
@@ -165,8 +165,8 @@
 		INSERT INTO TB_Bottle(
 			<include refid="BottleColumns" />
 		) VALUES (
-			  #{bottleId}
-			, #{bottleBarCd}
+			  #{bottleBarCd}
+			, #{bottleId}
 			, #{productId}
 			, #{productPriceSeq}
 			, #{gasId}
@@ -201,8 +201,8 @@
 		) VALUES 
 		<foreach collection="list" item="item" separator=" , ">
 		(
-			  #{item.bottleId}
-			, #{item.bottleBarCd}
+			  #{item.bottleBarCd}
+			, #{item.bottleId}
 			, #{item.productId}
 			, #{item.productPriceSeq}
 			, #{item.gasId}
@@ -237,11 +237,11 @@
 		SELECT b.history_seq,a.*
 			FROM TB_Bottle a,
 			(
-				SELECT bottle_id, count(bottle_id)+1 history_seq 
+				SELECT Bottle_BarCd, count(Bottle_BarCd)+1 history_seq 
 				FROM TB_Bottle_Hist 
-				WHERE Bottle_Id=#{bottleId}
+				WHERE Bottle_BarCd=#{bottleBarCd}
 			) b 
-		WHERE a.Bottle_Id =#{bottleId}
+		WHERE a.Bottle_BarCd =#{bottleBarCd}
 	</insert>
 	
 	<insert id="insertBottleHistorys" parameterType="java.util.List">
@@ -249,22 +249,22 @@
 		SELECT b.history_seq,a.*
 			FROM TB_Bottle a,
 			(
-				SELECT c.bottle_id, IFNULL(count(d.bottle_id)+1,1) history_seq 
-				FROM TB_Bottle c Left Join  TB_Bottle_Hist d ON c.Bottle_Id=d.bottle_id
-				WHERE c.Bottle_Id in (
+				SELECT c.Bottle_BarCd, IFNULL(count(d.Bottle_BarCd)+1,1) history_seq 
+				FROM TB_Bottle c Left Join  TB_Bottle_Hist d ON c.Bottle_BarCd=d.Bottle_BarCd
+				WHERE c.Bottle_BarCd in (
 				<foreach collection="list" item="item" separator=" , ">
-				#{item.bottleId} 
+				#{item.bottleBarCd} 
 				</foreach>
 				)
-				GROUP BY C.Bottle_Id
+				GROUP BY C.Bottle_BarCd
 			) b 
-		WHERE a. Bottle_ID = b.Bottle_Id 			
+		WHERE a. Bottle_BarCd = b.Bottle_BarCd 			
 	</insert>
 	
 	<update id="updateBottle" parameterType="com.gms.web.admin.domain.manage.BottleVO">
 		UPDATE TB_Bottle
 		SET
-			Bottle_BarCd		= #{bottleBarCd}
+			Bottle_ID		= #{bottleId}
 			, Product_ID		= #{productId}
 			, Product_Price_Seq	= #{productPriceSeq}
 			, Gas_ID			= #{gasId}
@@ -281,7 +281,7 @@
 			, UPDATE_ID 		= #{updateId}
 			, UPDATE_DT 		= NOW()
 		WHERE
-			Bottle_ID = #{bottleId}
+			Bottle_BarCd = #{bottleBarCd}
 	</update>	
 
 	<update id="updateBottleWorkCd" parameterType="com.gms.web.admin.domain.manage.BottleVO">
@@ -297,7 +297,7 @@
 			, UPDATE_ID 		= #{updateId}
 			, UPDATE_DT 		= NOW()
 		WHERE
-			Bottle_ID = #{chBottleId}
+			Bottle_BarCd = #{chBottleBarCd}
 	</update>	
 	
 	<update id="updateBottlesWorkCd" parameterType="com.gms.web.admin.domain.manage.BottleVO">
@@ -333,7 +333,7 @@
 			, UPDATE_ID 		= #{updateId}
 			, UPDATE_DT 		= NOW()
 		WHERE
-			Bottle_ID in
+			Bottle_BarCd in
 			<foreach collection="bottList" item="item" index="index" open="(" separator="," close=")">
 				#{item} 
 			</foreach>
@@ -352,7 +352,7 @@
 			, UPDATE_ID 		= #{updateId}
 			, UPDATE_DT 		= NOW()	
 		WHERE
-			Bottle_ID = #{bottleId}
+			Bottle_BarCd = #{bottleBarCd}
 	</update>
 	
 	<update id="deleteBottle" parameterType="com.gms.web.admin.domain.manage.BottleVO">
@@ -362,7 +362,7 @@
 			, UPDATE_ID = #{updateId}
 			, UPDATE_DT = NOW()
 		WHERE
-			Bottle_ID = #{bottleId}
+			Bottle_BarCD = #{bottleBarCd}
 	</update>
 	
 	<update id="deleteBottles" parameterType="com.gms.web.admin.domain.manage.BottleVO">
@@ -372,7 +372,7 @@
 			, UPDATE_ID = #{updateId}
 			, UPDATE_DT = NOW()
 		WHERE
-			Bottle_ID in  
+			Bottle_BarCD in  
 			<foreach collection="bottList" item="item" index="index" open="(" separator="," close=")">
 				#{item} 
 			</foreach>
@@ -385,7 +385,7 @@
 			, UPDATE_ID = #{updateId}
 			, UPDATE_DT = NOW()
 		WHERE
-			Bottle_ID = #{bottleId}
+			Bottle_BarCD = #{bottleBarCd}
 	</update>
 	
 	<update id="deleteCustomerIdOfBottleHist" parameterType="com.gms.web.admin.domain.manage.BottleVO">
@@ -395,7 +395,7 @@
 			, UPDATE_ID = #{updateId}
 			, UPDATE_DT = NOW()
 		WHERE
-			Bottle_ID 	= #{bottleId}
+			Bottle_BarCD 	= #{bottleBarCd}
 		AND
 			Customer_ID =  #{customerId}
 	</update>
@@ -603,7 +603,7 @@
 
 	<select id="selectBottleBarCdCheck" parameterType="com.gms.web.admin.domain.manage.BottleVO" resultType="int">
 		SELECT
-			Count(Bottle_id)
+			Count(Bottle_BarCd)
 		FROM
 			TB_Bottle
 		WHERE
@@ -620,7 +620,7 @@
 			FROM
 				TB_Bottle_Hist TB, TB_CODE TC, TB_Product TG
 			WHERE
-				Bottle_Id=#{bottleId}
+				Bottle_BarCd=#{bottleBarCd}
 			AND TB.Bottle_Work_CD = TC.CD_ID	
 			AND TB.Product_ID = TG.Product_Id
 		) A left outer join TB_Customer B on A.Customer_ID = B.Customer_ID														
@@ -752,7 +752,7 @@
 	
 	<select id="selectBottleHistCountOfCustomer" resultType="int" parameterType="java.util.Map">
 		SELECT
-			Count(Bottle_id)
+			Count(Bottle_BarCD)
 		FROM
 			TB_Bottle_Hist
 		WHERE

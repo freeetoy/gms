@@ -403,13 +403,13 @@ public class BottleController {
 	public String openBottleUpdate(BottleVO params, Model model) {
 		
 		model.addAttribute("menuId", PropertyFactory.getProperty("common.menu.bottle"));
-		logger.debug(" openBottleUpdate bottleId "+ params.getBottleId());
+		logger.debug(" openBottleUpdate bottleBarCd= "+ params.getBottleBarCd());
 		
-		if (params.getBottleId() == null) {
+		if (params.getBottleBarCd() == null) {
 			return "redirect:/gms/bottle/list.do";
 		} else {
 			
-			BottleVO bottle = bottleService.getBottleDetail(params.getBottleId());
+			BottleVO bottle = bottleService.getBottleDetail(params.getBottleBarCd());
 			
 			if (bottle == null) {
 				return "redirect:/gms/bottle/list.do";
@@ -423,7 +423,7 @@ public class BottleController {
 			model.addAttribute("productPriceList", productPriceList);		
 			
 			// 용기 이력 정보 불러오기
-			List<BottleHistoryVO> historyList = bottleService.selectBottleHistoryList(params.getBottleId());
+			List<BottleHistoryVO> historyList = bottleService.selectBottleHistoryList(params.getBottleBarCd());
 			model.addAttribute("historyList", historyList);	
 			
 			// 대리점 정보 불러오기
@@ -495,9 +495,9 @@ public class BottleController {
 	
 	@RequestMapping(value = "/gms/bottle/detail.do")
 	@ResponseBody
-	public BottleVO getBottleDetail(@RequestParam(value = "bottleId", required = false) String bottleId, Model model)	{
+	public BottleVO getBottleDetail(@RequestParam(value = "bottleId", required = false) String bottleBarCd, Model model)	{
 		
-		BottleVO result = bottleService.getBottleDetail(bottleId);		
+		BottleVO result = bottleService.getBottleDetail(bottleBarCd);		
 		
 		if(result != null) logger.debug("******result *****===*"+result.getGasId());
 		else logger.debug("******result is null  *****===*"); 
@@ -641,7 +641,7 @@ public class BottleController {
 	public ModelAndView deleteBottle(HttpServletRequest request
 			, HttpServletResponse response
 			, BottleVO params) {
-		logger.info(" modifyBottleWorkCd");		
+		logger.info(" deleteBottle");		
 		
 		ModelAndView mav = new ModelAndView();
 		

@@ -62,48 +62,13 @@ var fn_deleteBottle = function(bottleId){
 		});
 		
 		return dfd.promise();
-	}
-	
-	
-	var fn_ChangeBottleWorkCd = function(bottleId){
-	
-		//$("table.table-hover").find('tr').remove();
-		
-		var ajaxInfo ={
-			type:"POST",
-			url:"/gms/bottle/detail.do",
-			data:{
-				bottleId : bottleId
-			},
-			dataType: "json",
-		};
-		
-		ajax = callAjax(ajaxInfo);
-		
-		ajax.done(function(data){
-
-			$("#chBottleId").val(data.bottleId);
-			$("#bottleBarCd").val(data.bottleBarCd);
-			
-			$('select[id="bottleWorkCd"]').find('option:contains(data.bottleWorkCd)').attr("selected",true);
-
-			$("#bottleWorkCd").val(data.bottleWorkCd);			
-				
-			if(data.result == "fail"){
-				alert("용기가 존재하지 않습니다");			
-				return;
-			}
-			
-		});
-		
-	};
-	
+	}		
 	    
-	var goUpdate = function(bottleId){				
+	var goUpdate = function(bottleBarCd){				
 
 		var form = $("#mainForm");	
 
-		$("#bottleId").val(bottleId);
+		$("#bottleBarCd").val(bottleBarCd);
     	
     	//document.getElementById("priceCount").value = totalCount;
     	mainForm.action="/gms/bottle/update.do";
@@ -223,56 +188,7 @@ var fn_deleteBottle = function(bottleId){
     </section>
   
     <section class="content">          
-        <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">용기 상태 변경</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <form id="chForm" name="chForm" th:object="${bottle}" method="post">
-              
-              <div class="card-body">
-            	<table class="table table-hover">
-                  <thead>
-                  <tr>
-                      <th class="card-footer">용기 코드</th>
-                      <th><input type="text" class="form-control" id="chBottleId" name="chBottleId" placeholder="용기 코드" ></th>
-                    </tr>
-                     <tr>                                   
-                      <th class="card-footer">용기 바코드</th>
-                      <th><input type="text" class="form-control" id="bottleBarCd" name="bottleBarCd" placeholder="용기 바코드" ></th>
-                    </tr>
-                    <tr>
-                      <th class="card-footer">상태</th>
-                      <th>
-                      <select id="bottleWorkCd" name="bottleWorkCd" class="form-control">
-                          <option value="">상태</option>				    
-					        <option th:each="row : ${codeList}"
-					                th:text="${row.cdNm}"
-					                th:value="${row.cdId}"
-					               >
-					        </option>					
-                        </select>
-					  </th>   
-                    </tr>
-                  </thead>                              
-                </table>       
-                
-              </div>            
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <a class="btn btn-info btn-sm" href="#" onclick="javascript:fn_modifyBottleWorkCd();"><i class="fas fa-pencil-alt"></i>상태변경</a>
-            </div>
-            </form>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
-      <!-- /.modal -->
+        
         <div class="row">
             <div class="col-1">
                		<label>충전기한</label> 
@@ -280,7 +196,7 @@ var fn_deleteBottle = function(bottleId){
             <div class="col-3">
               <form id="mainForm" name=""mainForm""  method="post">
               <input type="hidden" id="currentPage" name="currentPage" th:value="${currentPage}">
-              <input type="hidden" id="bottleId" name="bottleId" value="">
+              <input type="hidden" id="bottleBarCd" name="bottleBarCd" value="">
                <input type="text" class="form-control" name="searchChargeDt" th:value="${searchChargeDt}"/>			
             </div>               
             <div class="col-5">               
@@ -366,10 +282,10 @@ var fn_deleteBottle = function(bottleId){
                  
                   	<tr th:if="${not #lists.isEmpty( bottleList )}" th:each="row : ${bottleList}" style="font-size:14px;">
                       <td th:text="${totalCount-((currentPage-1)*10) - bottleList.indexOf(row)}"></td>
+                      <td th:text="${row.bottleId}"></td>
                       <td>
-                      <a href="#" th:onclick="goUpdate([[ ${row.bottleId} ]])" th:text="${row.bottleId}"></a>                     
+                      <a href="#" th:onclick="goUpdate([[ ${row.bottleBarCd} ]])" th:text="${row.bottleBarCd}"></a>   
                       </td>
-                      <td th:text="${row.bottleBarCd}"></td>
                       <td th:text="${row.productNm}"></td>
                       <td th:text="${row.bottleCapa}"></td>
                       <td th:text="${row.bottleWorkCdNm}"></td>

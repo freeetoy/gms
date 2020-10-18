@@ -7,7 +7,7 @@
 
 var isOkay = false;
 $(document).ready(function(){
-	$("#bottleId").on("focusout", function(){
+	$("#bottleBarCd").on("focusout", function(){
 		if($(this).val() != ""){
 			checkName();
 		}
@@ -21,15 +21,7 @@ var goList = function(){
 
 // form 필드값 유효성 검사
 var validation = function(){
-	/*
-	var customerNm = $("#customerNm").val();
-	if(customerNm=="" || customerNm == null){
-		alert("거래처명을 입력해 주세요.");
-		$("#customerNm").focus();
-		isOkay = false;
-		return;
-	}
-	*/
+	
 	var result = (
 				isValid(bottleId, "용기코드", null, null)
 			&& isValid(bottleBarCd, "용기 바코드", null, null)
@@ -50,13 +42,13 @@ var validation = function(){
 
 //서버에 버전 데이터 존재 여부 확인 요청
 var checkName = function(){
-	var bottleId = $("#bottleId").val();
+	var bottleBarCd = $("#bottleBarCd").val();
 
 	var ajaxInfo ={
 		type:"POST",
 		url:"/gms/bottle/CheckBottleId.do",
 		data:{
-			bottleId : bottleId
+			bottleBarCd : bottleBarCd
 		},
 		dataType: "json",
 	};
@@ -64,8 +56,8 @@ var checkName = function(){
 	ajax.done(function(data){
 		if(data.result == "fail"){
 			alert(data.message);
-			$("#bottleId").val("");
-			$("#bottleId").focus();
+			$("#bottleBarCd").val("");
+			$("#bottleBarCd").focus();
 			isOkay = false;
 			return;
 		}

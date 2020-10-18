@@ -307,7 +307,7 @@ public class ExcelServiceImpl implements ExcelService {
 	                //logger.debug("$$$$$$$$$$$$$$ ExcelService bottle.getBottleid "+ bottle.getBottleId());
 	                for(int k=0 ; k < bottlelist.size() ; k++) {
 	                	
-	                	if(bottle.getBottleId().equals(bottlelist.get(k).getBottleId())) {
+	                	if(bottle.getBottleBarCd().equals(bottlelist.get(k).getBottleBarCd())) {
 	                		isRegisteFlag = false;
 	                		result = bottleService.modifyBottle(bottle);
 	                		updateCount++;
@@ -316,7 +316,7 @@ public class ExcelServiceImpl implements ExcelService {
 	                if(isRegisteFlag) {
 	                	boolean isBeen = false;
 	                	for(int k=0; k < list.size() ; k++) {
-	                		if(list.get(k).getBottleId().equals(bottle.getBottleId())) isBeen = true;
+	                		if(list.get(k).getBottleBarCd().equals(bottle.getBottleBarCd())) isBeen = true;
 	                	}
 	                	if(!isBeen) {
 	                		list.add(bottle);	                	
@@ -325,7 +325,7 @@ public class ExcelServiceImpl implements ExcelService {
 	                	}
 	                }
                 }else {
-                	sb.append(bottle.getBottleId());
+                	sb.append(bottle.getBottleBarCd());
                 	sb.append(";");
                 	
                 }
@@ -533,7 +533,7 @@ public class ExcelServiceImpl implements ExcelService {
     	                bottle.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
     	              
     	                for(int k=0 ; k < bottlelist.size() ; k++) {
-    	                	if(bottle.getBottleId().equals(bottlelist.get(k).getBottleId())) {
+    	                	if(bottle.getBottleBarCd().equals(bottlelist.get(k).getBottleBarCd())) {
     	                		isRegisteFlag = false;
     	                		result = bottleService.modifyBottle(bottle);
     	                		
@@ -544,7 +544,7 @@ public class ExcelServiceImpl implements ExcelService {
     	                if(isRegisteFlag) {
     	                	boolean isBeen = false;
     	                	for(int k=0; k < list.size() ; k++) {
-    	                		if(list.get(k).getBottleId().equals(bottle.getBottleId())) isBeen = true;
+    	                		if(list.get(k).getBottleBarCd().equals(bottle.getBottleBarCd())) isBeen = true;
     	                	}
     	                	if(!isBeen) {
     	                		list.add(bottle);    	                	
@@ -553,7 +553,7 @@ public class ExcelServiceImpl implements ExcelService {
     	                	}
     	                }
                     }else {
-                    	sb.append(bottle.getBottleId());
+                    	sb.append(bottle.getBottleBarCd());
                     	sb.append(";");                	
                     }                
                 }
@@ -726,7 +726,7 @@ public class ExcelServiceImpl implements ExcelService {
 	                bottle.setMemberCompSeq(Integer.valueOf(PropertyFactory.getProperty("common.Member.Comp.Daehan")));
 	              
 	                for(int k=0 ; k < bottlelist.size() ; k++) {
-	                	if(bottle.getBottleId().equals(bottlelist.get(k).getBottleId())) {
+	                	if(bottle.getBottleBarCd().equals(bottlelist.get(k).getBottleBarCd())) {
 	                		isRegisteFlag = false;
 	                		result = bottleService.modifyBottle(bottle);
 	                		
@@ -740,7 +740,7 @@ public class ExcelServiceImpl implements ExcelService {
 	                	insertCount++;
 	                }
                 }else {
-                	sb.append(bottle.getBottleId());
+                	sb.append(bottle.getBottleBarCd());
                 	sb.append(";");
                 	
                 }

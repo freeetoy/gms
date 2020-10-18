@@ -266,8 +266,8 @@ public class BottleServiceImpl implements BottleService {
 	}
 	
 	@Override
-	public BottleVO getBottleDetail(String bottleId) {
-		return bottleMapper.selectBottleDetail(bottleId);	
+	public BottleVO getBottleDetail(String bottleBarCd) {
+		return bottleMapper.selectBottleDetail(bottleBarCd);	
 	}
 	
 	@Override
@@ -333,7 +333,7 @@ public class BottleServiceImpl implements BottleService {
 	public int modifyBottle(BottleVO param) {
 				
 		// 정보 등록
-		logger.debug("****** modifyBottle.getBottleId()()) *****===*"+param.getBottleId());
+		logger.debug("****** modifyBottle.getBottleBarCd() *****===*"+param.getBottleBarCd());
 		int result = 0;
 		
 		/*
@@ -356,14 +356,13 @@ public class BottleServiceImpl implements BottleService {
 		// 정보 등록
 		logger.debug("****** modifyBottle.getChBottleId()()) *****===*"+param.getChBottleId());
 		int result = 0;
-		result =  bottleMapper.updateBottleWorkCd(param);	
+		result =  bottleMapper.updateBottleWorkCd(param);			
 		
-		
-		param.setBottleId(param.getChBottleId());
+		param.setBottleBarCd(param.getChBottleBarCd());
 		
 		if(result > 0 ) result = bottleMapper.insertBottleHistory(param);
 				
-		param = getBottleDetail(param.getChBottleId());
+		param = getBottleDetail(param.getChBottleBarCd());
 		
 		// TB_Work_Report & TB_Work_Bottle 등록
 		WorkReportVO workReport = new WorkReportVO();
@@ -426,7 +425,7 @@ public class BottleServiceImpl implements BottleService {
 				bottleList.get(i).setCustomerId(param.getCustomerId());
 				bottleList.get(i).setBottleType(param.getBottleType());
 				bottleList.get(i).setUpdateId(param.getCreateId());
-				bottleList.get(i).setChBottleId(bottleList.get(i).getBottleId());
+				bottleList.get(i).setChBottleBarCd(bottleList.get(i).getBottleBarCd());
 				if(param.getCustomerId()!=null) bottleList.get(i).setCarCustomerId(param.getCustomerId().toString());
 				
 				//20200208 하나씩 업데이트로 변경
@@ -477,7 +476,7 @@ public class BottleServiceImpl implements BottleService {
 	@Override
 	@Transactional
 	public int deleteBottle(BottleVO param) {
-		logger.debug("****** deleteBottle *****===*"+param.getBottleId());
+		logger.debug("****** deleteBottle *****===*"+param.getBottleBarCd());
 		
 		int result = 0;
 		result =   bottleMapper.deleteBottle(param);
@@ -498,7 +497,7 @@ public class BottleServiceImpl implements BottleService {
 	@Override
 	public Map<String, Object> checkBottleIdDuplicate(BottleVO param) {		
 		// 중복체크
-		int count = bottleMapper.selectBottleIdCheck(param);
+		int count = bottleMapper.selectBottleBarCdCheck(param);
 		// 결과 변수
 		Map<String, Object> result = new HashMap<String, Object>();
 		
@@ -514,18 +513,18 @@ public class BottleServiceImpl implements BottleService {
 	}
 
 	@Override
-	public List<BottleHistoryVO> selectBottleHistoryList(String bottleId){
+	public List<BottleHistoryVO> selectBottleHistoryList(String bottleBarCd){
 		
-		return bottleMapper.selectBottleHistoryList(bottleId);		
+		return bottleMapper.selectBottleHistoryList(bottleBarCd);		
 	}
 	
 	
-	private int insertBottleHistory(String bottleId) {
+	private int insertBottleHistory(String bottleBarCd) {
 		// 정보 등록
-		logger.debug("****** registerBottle.insertBottleHistory()()) *****===*" +bottleId);
+		logger.debug("****** registerBottle.insertBottleHistory()()) *****===*" +bottleBarCd);
 		
 		BottleVO bottle = new BottleVO();
-		bottle.setBottleId(bottleId);
+		bottle.setBottleBarCd(bottleBarCd);
 		//bottleMapper.selectBottleDetail(bottleId);
 				
 		return bottleMapper.insertBottleHistory(bottle);		
@@ -538,7 +537,7 @@ public class BottleServiceImpl implements BottleService {
 				
 		result = bottleMapper.updateBottleOrderId(param);	
 		
-		if(result > 0 ) result = insertBottleHistory(param.getBottleId());
+		if(result > 0 ) result = insertBottleHistory(param.getBottleBarCd());
 		
 		return result ;
 	}
@@ -631,7 +630,8 @@ public class BottleServiceImpl implements BottleService {
 				|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.charge")) ) {
 		
 			for(int i = 0 ; i < params.size() ; i++) {
-				params.get(i).setChBottleId(params.get(i).getBottleId());
+				//params.get(i).setChBottleId(params.get(i).getBottleId());
+				params.get(i).setChBottleBarCd(params.get(i).getBottleBarCd());
 				params.get(i).setCarCustomerId(param.getCustomerId().toString());
 				params.get(i).setBottleWorkCd(param.getBottleWorkCd());
 				result =  bottleMapper.updateBottleWorkCd(params.get(i));

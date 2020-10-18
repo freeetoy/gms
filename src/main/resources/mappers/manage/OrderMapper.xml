@@ -38,7 +38,7 @@
 		<result property="bottleChangeYn"		column="Bottle_Change_YN"	/>
 		<result property="bottleSaleYn"			column="Bottle_Sale_YN"	/>
 		<result property="orderAmount"			column="Order_Amount"		/>
-		<result property="bottleId"				column="Bottle_ID"			/>
+		<result property="bottleBarCd"			column="Bottle_BarCD"			/>
 		<result property="gasID"				column="GAS_ID"				/>
 		<result property="orderBottleSeq"		column="Order_Bottle_Seq"	/>
 		<result property="Sales_Count"			column="SalesCount"	/>
@@ -54,7 +54,7 @@
 		<result property="orderProductSeq"		column="Order_Product_Seq"	/>
 		<result property="productId"			column="Product_ID"			/>		
 		<result property="productPriceSeq"		column="Product_Price_Seq"	/>
-		<result property="bottleId"				column="Bottle_ID"			/>		
+		<result property="bottleBarCd"			column="Bottle_BarCD"		/>		
 		<result property="createId"				column="CREATE_ID"			/>
 		<result property="createDt"				column="CREATE_DT"			/>
 		<result property="updateId"				column="UPDATE_ID"			/>		
@@ -119,7 +119,7 @@
 		 , Bottle_Change_YN 
 		 , Bottle_Sale_YN 
 		 , Order_Amount 
-		 , Bottle_ID  
+		 , Bottle_BarCD  
 		 , Create_ID        
 		 , Create_Dt        
 		 , Update_ID        
@@ -137,7 +137,7 @@
 		 , Bottle_Change_YN 
 		 , A.Bottle_Sale_YN 
 		 , Order_Amount 
-		 , Bottle_ID    
+		 , Bottle_BarCD    
 		 , GAS_ID 
 		 , Order_Count-IFNULL(Registered_Count,0) Sales_Count
 		 , A.Create_ID        
@@ -151,7 +151,7 @@
 		 , Order_Product_Seq
 		 , Product_ID       
 		 , Product_Price_Seq
-		 , Bottle_ID  
+		 , Bottle_BarCD  
 		 , Create_ID        
 		 , Create_Dt        
 		 , Update_ID        
@@ -164,7 +164,7 @@
 		 , Order_Product_Seq
 		 , Product_ID       
 		 , Product_Price_Seq
-		 , Bottle_ID  
+		 , Bottle_BarCD  
 		 , Create_ID        
 		 , Create_Dt        
 		 , Update_ID        
@@ -211,7 +211,7 @@
 			, #{bottleChangeYn}		
 			, #{bottleSaleYn}		
 			, #{orderAmount}		
-			, #{bottleId}
+			, #{bottleBarCd}
 			, #{createId}			
 			, NOW()
 			, NULL
@@ -234,7 +234,7 @@
 			, #{item.bottleChangeYn}
 			, #{item.bottleSaleYn}			
 			, #{item.orderAmount}		
-			, #{item.bottleId}
+			, #{item.bottleBarCd}
 			, #{item.createId}			
 			, NOW()
 			, NULL
@@ -250,7 +250,7 @@
 			, #{orderProductSeq}	
 			, #{productId}	
 			, #{productPriceSeq}		
-			, #{bottleId}
+			, #{bottleBarCd}
 			, #{createId}			
 			, NOW()
 			, NULL
@@ -268,7 +268,7 @@
 			, #{item.orderProductSeq}	
 			, #{item.productId}	
 			, #{item.productPriceSeq}		
-			, #{item.bottleId}
+			, #{item.bottleBarCd}
 			, #{item.createId}			
 			, NOW()
 			, NULL
@@ -363,7 +363,7 @@
 	<update id="updateOrderBottleId" parameterType="com.gms.web.admin.domain.manage.OrderProductVO">
 		UPDATE TB_Order_Product
 		SET
-			  Bottle_ID 	= #{bottleId}
+			  Bottle_BarCD 	= #{bottleBarCd}
 			, UPDATE_ID 	= #{updateId}
 			, UPDATE_DT 	= NOW()
 		WHERE
@@ -388,7 +388,7 @@
 	<update id="updateOrderBottle" parameterType="com.gms.web.admin.domain.manage.OrderBottleVO">		
 		UPDATE TB_Order_Bottle
 		SET
-			  Bottle_ID 	= #{bottleId}
+			  Bottle_BarCD 	= #{bottleBarCd}
 			, UPDATE_ID 	= #{updateId}
 			, UPDATE_DT 	= NOW()
 		WHERE
@@ -399,7 +399,7 @@
 		<foreach collection="list" item="item" separator=" , ">
 		UPDATE TB_Order_Bottle
 		SET
-			  Bottle_ID 	= #{item.bottleId}
+			  Bottle_BarCD 	= #{item.bottleBarCd}
 		WHERE
 			Order_Bottle_Seq = #{item.orderBottleSeq}
 		</foreach>
@@ -573,7 +573,7 @@
 			 , Bottle_Change_YN 
 			 , Bottle_Sale_YN 
 			 , Order_Amount 
-			 , A.Bottle_ID    
+			 , A.Bottle_BarCD    
 			 , GAS_ID 
 			 , Order_Bottle_Seq
 			 , A.Create_ID        
@@ -589,7 +589,7 @@
 		AND
 			A.Order_Product_Seq = D.Order_Product_Seq
 		AND 
-			D.Bottle_ID is null
+			D.Bottle_BarCD is null
 		AND A.Product_ID = B.Product_ID
 		AND A.Product_ID = C.Product_ID
 		AND A.Product_Price_Seq = C.Product_Price_Seq				
@@ -673,7 +673,7 @@
 		WHERE
 			Order_ID = #{orderId}
 		AND 
-			Bottle_ID is null
+			Bottle_BarCD is null
 	</select>
 	
 	<select id="selectOrderBottleListOfProduct" resultType="com.gms.web.admin.domain.manage.OrderBottleVO" parameterType="com.gms.web.admin.domain.manage.OrderProductVO">		

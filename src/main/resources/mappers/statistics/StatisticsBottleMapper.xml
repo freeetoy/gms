@@ -31,22 +31,22 @@
 		) 
 		SELECT 	DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d'), IFNULL(input_count,0),IFNULL(charge_count,0),IFNULL(sales_count,0),IFNULL(rental_count,0),IFNULL(back_count,0),IFNULL(discard_count,0),'admin',now()
 		from 
-		(	SELECT count(bottle_id) input_count 
+		(	SELECT count(Bottle_BarCd) input_count 
 			FROM TB_Bottle 
 			WHERE delete_yn='N' AND bottle_work_cd ='0388' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')= DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) a,
-		(	SELECT count(bottle_id) charge_count 
+		(	SELECT count(Bottle_BarCd) charge_count 
 			FROM TB_Bottle 
 			WHERE delete_yn='N' AND bottle_work_cd ='0305' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) b,
-		(	SELECT count(bottle_id) sales_count 
+		(	SELECT count(Bottle_BarCd) sales_count 
 			FROM TB_Bottle 
 			WHERE delete_yn='N' AND bottle_work_cd ='0308' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')) c,
-		(	SELECT count(bottle_id) rental_count 
+		(	SELECT count(Bottle_BarCd) rental_count 
 			FROM TB_Bottle 
 			WHERE delete_yn='N' AND bottle_work_cd ='0309' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) d,
-		(	SELECT count(bottle_id) back_count 
+		(	SELECT count(Bottle_BarCd) back_count 
 			FROM TB_Bottle 
 			WHERE delete_yn='N' AND bottle_work_cd in ('0310', '0311','0312') AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) e,
-		(	SELECT count(bottle_id) discard_count 
+		(	SELECT count(Bottle_BarCd) discard_count 
 			FROM TB_Bottle 
 			WHERE delete_yn='N' AND bottle_work_cd ='0399' AND DATE_FORMAT(bottle_work_dt,'%Y/%m/%d')= DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') ) f
 	</insert>

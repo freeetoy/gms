@@ -13,8 +13,6 @@ $(document).ready(function(){
 		}
 	});
 	
-	
-	
 });
 // 리스트 페이지 이동
 var goList = function(){
@@ -236,11 +234,11 @@ var goList = function(){
                   <thead>
                     <tr>
                       <th class="card-footer">용기 코드</th>
-                      <th><input type="text" class="form-control" id="bottleId" name="bottleId" th:value="${bottle.bottleId}" readonly></th>
+                      <th><input type="text" class="form-control" id="bottleId" name="bottleId" th:value="${bottle.bottleId}"></th>
                     </tr>
                      <tr>                                   
                       <th class="card-footer">용기 바코드</th>
-                      <th><input type="text" class="form-control" id="bottleBarCd" name="bottleBarCd" th:value="${bottle.bottleBarCd}"></th>
+                      <th><input type="text" class="form-control" id="bottleBarCd" name="bottleBarCd" th:value="${bottle.bottleBarCd}" readonly></th>
                     </tr>
                     <tr>
                       <th class="card-footer">가스코드</th>

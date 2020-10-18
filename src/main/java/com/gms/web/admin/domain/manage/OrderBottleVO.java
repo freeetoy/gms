@@ -30,8 +30,8 @@ public class OrderBottleVO extends AbstractVO {
 	/** Product_Price_Seq */
 	private Integer productPriceSeq;
 	
-	/** Bottle_ID		*/
-	private String bottleId;
+	/** Bottle_BarCD		*/
+	private String bottleBarCd;
 	
 	private List<Integer> orderBottleList;
 }

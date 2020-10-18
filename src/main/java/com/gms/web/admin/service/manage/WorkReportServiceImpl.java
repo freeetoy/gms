@@ -234,8 +234,8 @@ public class WorkReportServiceImpl implements WorkReportService {
 										|| (strBottleSaleYn.equals("N") && param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) )   ) {
 							
 							
-							if(orderBottle.getBottleId() == null) {
-								orderBottle.setBottleId(soldBottle.getBottleId());
+							if(orderBottle.getBottleBarCd() == null) {
+								orderBottle.setBottleBarCd(soldBottle.getBottleBarCd());
 								
 								soldBottle.setDeleteYn("Y");									
 								soldBottle.setCustomerId(param.getCustomerId());
@@ -631,7 +631,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					tempBottle.setCustomerId(param.getCustomerId());
 					tempBottle.setUpdateId(param.getUserId());
 					tempBottle.setBottleWorkCd(param.getBottleWorkCd());
-					
+					//logger.debug(" registerWorkReportNoOrder tempBottle.getBottleBarCD =" + tempBottle.getBottleBarCd());	
 					//workBottle = new WorkBottleVO();					
 					tempOrderProduct = new OrderProductVO();
 					
@@ -760,7 +760,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					// TB_Order_Bottle
 					tempOrderBottle.setProductId(tempBottle.getProductId());
 					tempOrderBottle.setProductPriceSeq(tempBottle.getProductPriceSeq());
-					tempOrderBottle.setBottleId(tempBottle.getBottleId());			
+					tempOrderBottle.setBottleBarCd(tempBottle.getBottleBarCd()); 		
 					tempOrderBottle.setUpdateId(param.getCreateId());
 					
 					orderBottleList.add(tempOrderBottle);		
@@ -1891,7 +1891,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 			orderBottle.setProductId(param.getProductId());
 			orderBottle.setProductPriceSeq(param.getProductPriceSeq());
 			orderBottle.setCreateId(param.getCreateId());
-			orderBottle.setBottleId(bottle.getBottleId());
+			orderBottle.setBottleBarCd(bottle.getBottleBarCd());
 			
 			orderBottleList.add(orderBottle);
 		}
@@ -1941,9 +1941,9 @@ public class WorkReportServiceImpl implements WorkReportService {
 			for(int i = 0 ; i < param.getSalesCount() ; i++) {
 				orderList.add(orderBottleList.get(getI).getOrderBottleSeq());
 				
-				if(orderBottleList.get(getI).getBottleId()!=null && orderBottleList.get(getI).getBottleId().length() > 0) {
+				if(orderBottleList.get(getI).getBottleBarCd()!=null && orderBottleList.get(getI).getBottleBarCd().length() > 0) {
 					BottleVO bottle = new BottleVO();
-					bottle.setBottleId(orderBottleList.get(getI).getBottleId());
+					bottle.setBottleBarCd(orderBottleList.get(getI).getBottleBarCd());
 					bottle.setCustomerId(param.getCustomerId());
 					bottle.setUpdateId(param.getCreateId());
 					
@@ -2114,7 +2114,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 						orderBottle.setOrderProductSeq(orderProduct.getOrderProductSeq());
 						orderBottle.setProductId(orderProduct.getProductId());
 						orderBottle.setProductPriceSeq(orderProduct.getProductPriceSeq());
-						orderBottle.setBottleId(dummy.getBottleId());
+						orderBottle.setBottleBarCd(dummy.getBottleBarCd());
 						orderBottle.setCreateId(workBottle.getCreateId());
 						
 						addOrderBottletList.add(orderBottle);					
@@ -2501,7 +2501,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					orderBottle.setCreateId(param.getUserId());
 					orderBottle.setOrderId(orderId);					
 					orderBottle.setOrderProductSeq(orderProduct.getOrderProductSeq());
-					orderBottle.setBottleId(bottle.getBottleId());
+					orderBottle.setBottleBarCd(bottle.getBottleBarCd());
 					orderBottle.setProductId(bottle.getProductId());
 					orderBottle.setProductPriceSeq(bottle.getProductPriceSeq());
 					
@@ -2660,7 +2660,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 			orderBottle.setOrderProductSeq(orderProduct.getOrderProductSeq());
 			orderBottle.setProductId(param.getProductId());
 			orderBottle.setProductPriceSeq(param.getProductPriceSeq());
-			orderBottle.setBottleId(param.getBottleId());
+			orderBottle.setBottleBarCd(param.getBottleBarCd());
 			orderBottle.setCreateId(param.getUserId());
 			
 			orderBottleList.add(orderBottle);					
@@ -2751,9 +2751,9 @@ public class WorkReportServiceImpl implements WorkReportService {
 					for(int i = 0 ; i < orderBottleListNot.size() ; i++) {
 						OrderBottleVO orderBottle = orderBottleListNot.get(i);
 						
-						if(orderProductCount > 0 && orderBottle.getBottleId() ==null
+						if(orderProductCount > 0 && orderBottle.getBottleBarCd() ==null
 								&& orderBottle.getProductId() == orderProduct.getProductId() && orderBottle.getProductPriceSeq() == orderProduct.getProductPriceSeq()) {
-							orderBottle.setBottleId(orderProduct.getBottleId());
+							orderBottle.setBottleBarCd(orderProduct.getBottleBarCd());
 							
 							WorkBottleVO workBottle = new WorkBottleVO();
 							
@@ -2802,7 +2802,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 				//logger.debug("WorkReportServiceImpl registerWorkReportMassForOrder getOrderBottleSeq "+orderBottle.getOrderBottleSeq());
 				//logger.debug("WorkReportServiceImpl registerWorkReportMassForOrder orderBottleID "+orderBottle.getBottleId());
 				orderBottle.setUpdateId(param.getUserId());
-				if(orderBottle.getBottleId() != null) {
+				if(orderBottle.getBottleBarCd() != null) {
 					result = orderService.modifyOrderBottle(orderBottle);
 					//orderBottleList.add(orderBottle);
 				}
@@ -2836,7 +2836,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 							orderBottle.setOrderProductSeq(orderProductList.get(j).getOrderProductSeq());
 							orderBottle.setProductId(remainOrderProduct.getProductId());
 							orderBottle.setProductPriceSeq(remainOrderProduct.getProductPriceSeq());
-							orderBottle.setBottleId(remainOrderProduct.getBottleId());
+							orderBottle.setBottleBarCd(remainOrderProduct.getBottleBarCd());
 							orderBottle.setCreateId(param.getUserId());
 							
 							orderBottleList.add(orderBottle);
@@ -2907,7 +2907,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					orderBottle.setOrderProductSeq(orderProduct.getOrderProductSeq());
 					orderBottle.setProductId(orderProduct.getProductId());
 					orderBottle.setProductPriceSeq(orderProduct.getProductPriceSeq());
-					orderBottle.setBottleId(orderProduct.getBottleId());
+					orderBottle.setBottleBarCd(orderProduct.getBottleBarCd());
 					orderBottle.setCreateId(param.getUserId());
 					
 					orderBottleList.add(orderBottle);
@@ -3106,7 +3106,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 		
 		OrderBottleVO orderBottle = new OrderBottleVO();				
 		
-		orderBottle.setBottleId(bottle.getBottleId());
+		orderBottle.setBottleBarCd(bottle.getBottleBarCd());
 		orderBottle.setOrderId(orderProduct.getOrderId());
 		orderBottle.setOrderProductSeq(orderProduct.getOrderProductSeq());
 		orderBottle.setCreateId(bottle.getUpdateId());
