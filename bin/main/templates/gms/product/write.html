@@ -14,7 +14,6 @@ function validationOfForm(form) {
         /* VALUE */   console.log(gasId.value);
         /* TEXT */    console.log(gasId.options[gasId.selectedIndex].text);
 
-	form
 	var result = (
 			   isValid(form.productNm, "상품명", null, null)
 			&& isValid(form.productPrice_0, "상품가격", null, null)
@@ -44,9 +43,8 @@ $(document).ready(function(){
 	$("#addrow").on("click", function () {
 
         counter++;
-
-        console.log("counter=="+counter);
-        if (counter > 10){
+        
+        if (counter > 50){
 
           alert('더 이상 추가 할수 없습니다.');
           return false;
@@ -72,8 +70,7 @@ $(document).ready(function(){
         cols +='</tr>';        
 
         newRow.append(cols);
-        
-        console.log("newRow=="+newRow);
+               
         $("#priceCount").val(counter+1);
         $("table.doc-list").append(newRow);
      
@@ -189,7 +186,7 @@ $(document).ready(function(){
             <div class="card-footer">
                  <a href="/gms/product/list.do" class="btn btn-secondary float-left">취소</a>
 		          <input type="submit" value="저장" class="btn btn-success float-right">
-                </div>		     		
+            </div>		     		
             </form>   
           	
         </div>

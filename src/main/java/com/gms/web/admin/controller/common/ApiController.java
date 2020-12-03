@@ -42,8 +42,8 @@ public class ApiController {
 	@ResponseBody
 	public String controlAction(String userId, String bottles, String customerNm, String bottleType, String bottleWorkCd)	{	
 				
-		logger1.info("userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
-		logger.info("userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
+		logger1.info("controlAction userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
+		logger.info("controlAction", "userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
 		
 		boolean phoneCall = true;
 		int result = 0;		
@@ -125,8 +125,8 @@ public class ApiController {
 	@ResponseBody
 	public String controlActionNoGas(String userId, String customerNm, Integer productId, Integer productPriceSeq, int productCount )	{	
 				
-		logger1.info("userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
-		logger.info("controlActionNoGas userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
+		logger1.info("controlActionNoGas userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
+		logger.info("controlActionNoGas", "userId="+userId+" : productId ="+productId +": productPriceSeq ="+ productPriceSeq + " : customerNm ="+customerNm + " : productCount ="+productCount);
 		
 		boolean phoneCall = true;
 		int result = 0;
@@ -196,8 +196,8 @@ public class ApiController {
 	@ResponseBody
 	public String manageGasAndBottle(String userId, String bottles, String customerNm, String bottleType, String bottleWorkCd )	{	
 				
-		logger.info("userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
-		logger1.info("userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
+		logger.info("manageGasAndBottle userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
+		logger1.info("manageGasAndBottle","userId="+userId+" : bottles ="+bottles +": bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm);
 				
 		int result = 0;
 		boolean phoneCall = true;
@@ -230,7 +230,7 @@ public class ApiController {
 	@RequestMapping(value = "/api/workReportList.do")
 	@ResponseBody
 	public List<WorkBottleVO> getWorkBottleList(String userId)	{			
-		logger1.debug("getWorkBottleList== userId="+userId);
+		logger1.debug("getWorkBottleList","userId="+userId);
 		WorkReportVO workReport = new WorkReportVO();
 		
 		workReport.setSearchUserId(userId);
@@ -243,8 +243,8 @@ public class ApiController {
 	@ResponseBody
 	public String controlMassAction(String userId, String bottles, String customerNm, String bottleType, String bottleWorkCd)	{	
 				
-		logger.info("**************/n userId="+userId+" : bottles ="+bottles +" : bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm +"/n*******");
-		logger1.info("**************/n userId="+userId+" : bottles ="+bottles +" : bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm +"/n*******");
+		logger.info("controlMassAction  userId="+userId+" : bottles ="+bottles +" : bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm +"/n*******");
+		logger1.info("controlMassAction"," userId="+userId+" : bottles ="+bottles +" : bottleType ="+ bottleType + ": bottleWorCd ="+bottleWorkCd+" : customerNm ="+customerNm +"/n*******");
 		
 		int result = 1;		
 		boolean phoneCall = true;
@@ -298,7 +298,7 @@ public class ApiController {
 	@RequestMapping(value = "/api/bottleDetail.do")
 	@ResponseBody
 	public BottleVO getBottleDetail(String bottleBarCd)	{				
-		logger1.info("bottleBarCd="+bottleBarCd);
+		logger1.info("getBottleDetail bottleBarCd="+bottleBarCd);
 		try {
 			BottleVO bottle =  bottleService.getBottleDetailForBarCd(bottleBarCd);			
 			
@@ -320,5 +320,12 @@ public class ApiController {
 			logger.error("====* getBottleDetail bottleBarCd== "+bottleBarCd);
 			return null;
 		}
+	}
+	
+	@RequestMapping(value = "/api/appVersion.do")
+	@ResponseBody
+	public String getAppVersion()	{			
+		
+		return apiService.getAppVersion();
 	}
 }

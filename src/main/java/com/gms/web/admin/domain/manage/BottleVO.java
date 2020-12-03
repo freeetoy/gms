@@ -131,6 +131,9 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	/** SearchBottleiId	*/
 	private String  searchBottleId;
 	
+	/** SearchBottle_BarCd	*/
+	private String searchBottleBarCd;
+	
 	/** SearchGasId		*/
 	private String  searchGasId;
 	
@@ -174,4 +177,6 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	
 	/** setCustomerIdNullYN	*/
 	private String  customerIdNullYn;
+	
+	private int startRow;
 }

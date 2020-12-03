@@ -64,6 +64,8 @@ public interface CustomerService {
 	
 	public List<CustomerPriceVO>  getCustomerPriceListAll();
 	
+	public List<CustomerPriceVO>  getCustomerProductPriceList(Integer productId);
+	
 	public int modifyCustomerPrice(CustomerPriceVO param);
 	
 	public CustomerProductVO getCustomerProduct(CustomerProductVO param);

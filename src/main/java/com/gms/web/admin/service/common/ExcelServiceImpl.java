@@ -42,6 +42,7 @@ import com.gms.web.admin.domain.manage.CustomerPriceVO;
 import com.gms.web.admin.domain.manage.CustomerSimpleVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.ProductPriceSimpleVO;
+import com.gms.web.admin.domain.manage.ProductPriceVO;
 import com.gms.web.admin.domain.manage.ProductTotalVO;
 import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.service.manage.BottleService;
@@ -351,11 +352,16 @@ public class ExcelServiceImpl implements ExcelService {
         		
         		FileInputStream excelFIS = (FileInputStream)(excelFile.getInputStream());
         		
-        		HSSFWorkbook excelWB = new HSSFWorkbook(excelFIS);
-                
+        		//HSSFWorkbook excelWB = new HSSFWorkbook(excelFIS);
+        		
+        		XSSFWorkbook workbook = new XSSFWorkbook(excelFIS);
+
+                // Get first/desired sheet from the workbook
+                XSSFSheet sheet =  workbook.getSheetAt(0);
+        		
                 // 첫번째 시트 불러오기
                 //XSSFSheet sheet = workbook.getSheetAt(0);
-                HSSFSheet sheet = excelWB.getSheetAt(0);
+                //HSSFSheet sheet = excelWB.getSheetAt(0);
                 
                 boolean isRegisteFlag = false;
                 StringBuffer sb = new StringBuffer();
@@ -365,7 +371,8 @@ public class ExcelServiceImpl implements ExcelService {
                 	isRegisteFlag = true;
                 	
                     BottleVO bottle = new BottleVO();
-                    HSSFRow row = sheet.getRow(i);
+                    //HSSFRow row = sheet.getRow(i);
+                    XSSFRow row = sheet.getRow(i);
                     
                     // 행이 존재하기 않으면 패스
                     if(null == row) {
@@ -383,7 +390,8 @@ public class ExcelServiceImpl implements ExcelService {
                 	String productCapa = "";
                 	
                     for(int j=0; j< COLUMN_COUNT; j++) {
-                    	HSSFCell cell = row.getCell(j);
+                    	//HSSFCell cell = row.getCell(j);
+                    	XSSFCell cell = row.getCell(j);
 
                     	if(cell !=null) {
     	                	switch (cell.getCellType()) {
@@ -566,7 +574,7 @@ public class ExcelServiceImpl implements ExcelService {
                 map.put("exception",sb.toString());
                 map.put("result", result);
                 
-                excelWB.close();
+                //excelWB.close();
                 logger.info("$$$$$$$$$$$$$$ ExcelService result "+ result+"==updateCount ="+updateCount+" insertCount=="+insertCount);
         	} catch (Exception e1) {
         		e.printStackTrace();
@@ -1271,6 +1279,259 @@ public class ExcelServiceImpl implements ExcelService {
 		return result;
 	}
 
+	@Override
+	public int uploadCustomerPriceExcelFileLn2(MultipartHttpServletRequest request, 
+			MultipartFile excelFile) {
+		
+		List<CustomerPriceVO> list = new ArrayList<CustomerPriceVO>();
+        
+        int result = 0;
+        try {
+        	
+        	Integer productId = 60;
+        	
+        	List<CustomerPriceVO> cPriceList = customerService.getCustomerProductPriceList(productId);
+        	boolean isRegisteFlag = false;
+        	
+            OPCPackage opcPackage = OPCPackage.open(excelFile.getInputStream());
+            XSSFWorkbook workbook = new XSSFWorkbook(opcPackage);
+            
+            // 첫번째 시트 불러오기
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            
+            int COLUMN_COUNT = 26;
+            
+            int insertCount = 0;
+            StringBuffer sb = new StringBuffer();
+            String strProductPrice="";
+            String strCapa = "";
+
+            List<ProductPriceVO> productList = productService.getProductPriceList(productId);
+            
+            List<String> strlist = null;
+            List<ProductPriceSimpleVO> simpleList = new ArrayList<ProductPriceSimpleVO>();
+            Map<String, Object> map = new HashMap<String, Object>();
+            
+            // 상품정보 가져옴
+        	XSSFRow row1 = sheet.getRow(0);
+        	  
+        	// 상품 가져오기
+        	for(int j=3; j< COLUMN_COUNT; j++) {
+        		
+        		isRegisteFlag = true;
+        		XSSFCell cell = row1.getCell(j);
+        		
+        		switch (cell.getCellType()) {
+                    case Cell.CELL_TYPE_STRING:
+                    	strCapa = cell.getRichStringCellValue().getString();
+                        break;
+                    case Cell.CELL_TYPE_NUMERIC:
+                        if (DateUtil.isCellDateFormatted(cell)) {
+                        	strCapa = cell.getDateCellValue().toString();	                            
+                        } else {
+                            Long roundVal = Math.round(cell.getNumericCellValue());
+                            Double doubleVal = cell.getNumericCellValue();
+                            if (doubleVal.equals(roundVal.doubleValue())) {
+                            	strCapa = String.valueOf(roundVal);
+                            } else {
+                            	strCapa = String.valueOf(doubleVal);
+                            }
+                        }
+                        break;
+                    case Cell.CELL_TYPE_BOOLEAN:
+                    	strCapa = String.valueOf(cell.getBooleanCellValue());
+                        break;
+                    case Cell.CELL_TYPE_FORMULA:
+                    	strCapa = cell.getCellFormula();
+                        break;
+         
+                    default:
+                    	strCapa = "";
+        		} 
+        		
+        		//strProductPrice = cell.getRichStringCellValue().getString();
+        		logger.debug(" *** ExcelSerive uploadExcelFile strCapa=="+j+ "== "+ strCapa);  
+        		ProductPriceSimpleVO simpleProduct = new ProductPriceSimpleVO();
+        		simpleProduct.setProductId(productId);
+        		simpleProduct.setProductCapa(strCapa);
+        		
+        		for(int k=0;k < productList.size() ; k++) {
+        			if(simpleProduct.getProductCapa().equals(productList.get(k).getProductCapa()) ) {
+        				
+        				simpleProduct.setProductPriceSeq(productList.get(k).getProductPriceSeq());
+        			}
+        		}
+        		simpleList.add(simpleProduct);
+        	}
+        	
+            for(int i=1; i<sheet.getLastRowNum() + 1; i++) {            	
+            	
+            	CustomerVO customer = null;
+            	CustomerVO tempcustomer = new CustomerVO();            	
+            	
+                XSSFRow row = sheet.getRow(i);
+                
+                // 행이 존재하기 않으면 패스
+                if(null == row) {
+                    continue;
+                }                             
+              
+                String colValue="";       
+                int productPrice = 0;
+                String customerNm ="";
+            	String businessRegId="";            	
+            	int productCheck = 0;
+            	CustomerPriceVO customerPrice = null;
+            	ProductPriceSimpleVO simpleProduct = null;
+            	
+                for(int j=0; j< COLUMN_COUNT; j++) {                	
+                	
+            		customerPrice = new CustomerPriceVO();
+            		RequestUtils.initUserPrgmInfo(request, customerPrice);                	              	
+                			
+                	productPrice = 0;
+                	XSSFCell cell = row.getCell(j);
+                
+                	//logger.debug(" *** ExcelSerive uploadExcelFile i=="+i+ "== "+ cell.getNumericCellValue());                	
+                	
+                	switch (cell.getCellType()) {
+	                    case Cell.CELL_TYPE_STRING:
+	                        colValue = cell.getRichStringCellValue().getString();
+	                        break;
+	                    case Cell.CELL_TYPE_NUMERIC:
+	                        if (DateUtil.isCellDateFormatted(cell)) {
+	                            colValue = cell.getDateCellValue().toString();	                            
+	                        } else {
+	                            Long roundVal = Math.round(cell.getNumericCellValue());
+	                            Double doubleVal = cell.getNumericCellValue();
+	                            productPrice = (int)cell.getNumericCellValue();
+	                            if (doubleVal.equals(roundVal.doubleValue())) {
+	                                colValue = String.valueOf(roundVal);
+	                            } else {
+	                                colValue = String.valueOf(doubleVal);
+	                            }
+	                        }
+	                        break;
+	                    case Cell.CELL_TYPE_BOOLEAN:
+	                        colValue = String.valueOf(cell.getBooleanCellValue());
+	                        break;
+	                    case Cell.CELL_TYPE_FORMULA:
+	                        colValue = cell.getCellFormula();
+	                        break;
+	         
+	                    default:
+	                        colValue = "";
+                    }
+                	if(productPrice > 0)
+                		logger.debug("ExcelSerive uploadExcelFile j =="+j+"=="+ productPrice);
+                	
+                	if(j == 0) customerNm = colValue;
+                	else if(j==1) businessRegId = colValue;
+                	
+                	if(j==2) {
+                		tempcustomer.setCustomerNm(customerNm);
+	                	tempcustomer.setBusinessRegId(businessRegId);
+	                	
+                		customer = customerService.getCustomerDetailsByNmBusi(tempcustomer);
+                		if(customer!=null) {
+                			RequestUtils.initUserPrgmInfo(request, customer);
+                			//logger.debug("ExcelSerive uploadExcelFile customerId ** =="+ customer.getCustomerId());
+                		}else {
+                			sb.append(customerNm).append(";");
+                		}                	
+                	}
+                	
+					if(j>2 && customer !=null) {		
+						customerPrice = new CustomerPriceVO();
+						customerPrice.setProductId(productId);
+						customerPrice.setProductPrice(productPrice);       
+						customerPrice.setProductBottlePrice(productPrice);  
+						simpleProduct = simpleList.get(productCheck++);	
+											
+						if(simpleProduct != null) {
+							
+							customerPrice.setProductPriceSeq(simpleProduct.getProductPriceSeq());
+						}				
+						logger.debug("*** ExcelSerive uploadExcelFile customer.getProductPriceSeq ----"+customerPrice.getProductPriceSeq());
+						customerPrice.setCustomerId(customer.getCustomerId());
+						
+						if(customer != null &&  customer.getCustomerId() > 0 ) {
+							isRegisteFlag = true;
+							logger.debug("*** ExcelSerive uploadExcelFile cPriceList.size() ----"+cPriceList.size());
+							for(int k=0;k<cPriceList.size();k++) {									
+								logger.debug("*** ExcelSerive uploadExcelFile customer ----"+customer.getCustomerNm());
+			                	if(customerPrice.getCustomerId()- cPriceList.get(k).getCustomerId() ==0 
+			                			&& customerPrice.getProductPriceSeq() - cPriceList.get(k).getProductPriceSeq() == 0) {
+
+			                		if(customerPrice.getProductPrice() > 0 || customerPrice.getProductBottlePrice() > 0) {
+				                		logger.debug("*** ExcelSerive uploadExcelFile modifyCustomerPrice !!!! --------------");
+										
+				                		customerPrice.setUpdateId(customerPrice.getCreateId());
+				                		result = customerService.modifyCustomerPrice(customerPrice);
+				                		isRegisteFlag = false;
+				                		
+				                		//O2(의료용)_35의 경우 O2(의료용)_40 동일하게 처리
+				                		if(customerPrice.getProductId()==1	&& customerPrice.getProductPriceSeq()==6) {
+				                			
+				                			CustomerPriceVO customerPrice40 = new CustomerPriceVO();
+				                			
+				                			customerPrice40.setProductId(customerPrice.getProductId());
+				                			customerPrice40.setCustomerId(customerPrice.getCustomerId());
+				                			customerPrice40.setCreateDt(customerPrice.getCreateDt());
+				                			customerPrice40.setCreateId(customerPrice.getCreateId());
+				                			customerPrice40.setUpdateId(customerPrice.getCreateId());
+				                			customerPrice40.setProductPrice(customerPrice.getProductPrice());
+				                			customerPrice40.setProductBottlePrice(customerPrice.getProductBottlePrice());
+				                			customerPrice40.setProductPriceSeq(7);
+				                			
+				                			result = customerService.modifyCustomerPrice(customerPrice40);
+				                			
+				                		}
+			                		}
+			                	}   
+							}
+				            
+								//logger.debug("*** ExcelSerive uploadExcelFile isRegisteFlag ----"+isRegisteFlag);
+								
+							if(isRegisteFlag) {
+								logger.debug("*** ExcelSerive uploadExcelFile isRegisteFlag ");
+								if(customerPrice.getProductPrice() > 0 || customerPrice.getProductBottlePrice() > 0) {
+									list.add(customerPrice);
+									insertCount++;
+									//logger.debug("*** ExcelSerive uploadExcelFile customerPrice.getProductId() -"+customerPrice.getProductId()+" ProductSeq ="+customerPrice.getProductPriceSeq());
+																			
+									customerPrice = null;
+									if(list.size() > 0 && list.size()%500==0) {
+										result = customerService.registerCustomerPrices(list);
+										list.clear();
+									}				
+								}
+							}
+						}else {								
+							
+							logger.debug("*** ExcelSerive uploadExcelFile customer null= "+customerNm);
+						}
+					}                	
+                }
+            }
+            logger.debug("*** ExcelSerive uploadExcelFile list.size()= "+list.size());
+            if(list.size() > 0) result = customerService.registerCustomerPrices(list);
+            else result = 1;
+            logger.info("$$$$$$$$$$$$$$ ExcelService result "+ result+" insertCount="+insertCount+"==not insert =="+sb.toString());
+            
+           // result = orderService.modifyOrderAmountAll();
+            
+            workbook.close();
+	    } catch (DataAccessException e) {
+				// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
+	    	e.printStackTrace();
+		} catch (Exception e) {
+				// TODO => 알 수 없는 문제가 발생하였다는 메시지를 전달
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 	
 	public void readExcelXLSX(String excel) {
 		
@@ -1624,4 +1885,26 @@ public class ExcelServiceImpl implements ExcelService {
 		return result;
 	}
 
+	private static XSSFSheet createSheet(XSSFWorkbook wb, String prefix, boolean isHidden) {
+	    XSSFSheet sheet = null;
+	    int count = 0;
+
+	    for (int i = 0; i < wb.getNumberOfSheets(); i++) {
+	        String sName = wb.getSheetName(i);
+	        if (sName.startsWith(prefix))
+	            count++;
+	    }
+
+	    if (count > 0) {
+	        sheet = wb.createSheet(prefix + count);
+	    } else
+	        sheet = wb.createSheet(prefix);
+
+	    if (isHidden)
+	        wb.setSheetHidden(wb.getNumberOfSheets() - 1, XSSFWorkbook.SHEET_STATE_VERY_HIDDEN);
+
+	        return sheet;
+	   }
+
+	
 }

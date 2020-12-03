@@ -15,8 +15,8 @@ function validationOfForm(form) {
         /* TEXT */    console.log(gasId.options[gasId.selectedIndex].text);
 
    // }
-	//alert("gasId=="+gasId.value);
-	form
+	
+	
 	var result = (
 			   isValid(form.productNm, "상품명", null, null)
 			&& isValid(form.productPrice_0, "상품가격", null, null)
@@ -38,6 +38,11 @@ function callAjax(ajaxInfo){
 	return dfd.promise();
 }
 
+function goUpdate(){
+	
+	alert("priceCount=="+document.getElementById('priceCount').value);
+	form.submit();
+}
 
 
 $(document).ready(function(){ 
@@ -46,9 +51,8 @@ $(document).ready(function(){
 	
 	$("#addrow").on("click", function () {
         counter++;
-
-        console.log("counter=="+counter);
-        if (counter > 11){
+       
+        if (counter > 50){
 
           alert('더 이상 추가 할수 없습니다.');
           return false;
@@ -82,9 +86,7 @@ $(document).ready(function(){
 
     //수정시 row 추가
 
-     var mod_counter = 0;
-    
-    
+     var mod_counter = 0;    
     
     // row 삭제
     $("table.doc-list").on("click", ".ibtnDel", function (event) {
@@ -99,6 +101,8 @@ $(document).ready(function(){
         $(this).closest("tr").remove();       
         mod_counter -= 1
     });
+    
+
 
 });
 
@@ -127,7 +131,7 @@ $(document).ready(function(){
              <!-- general form elements -->                        
               <!-- /.card-header -->
               <div class="col-10">
-              <form class="form-horizontal" th:action="@{/gms/product/modify.do}" th:object="${product}" method="post" onsubmit="return validationOfForm(this)">
+              <form class="form-horizontal" th:action="@{/gms/product/modify.do}" th:object="${product}" method="post" onsubmit="return goUpdate()">
               <input type="hidden" id="priceCount" name="priceCount" th:value="${productPriceList.size()}">
               <input type="hidden" id="productId" name="productId" th:value="${product.productId}">
               <input type="hidden" id="deleteProductPriceSeq" name="deleteProductPriceSeq" value="">
@@ -202,7 +206,7 @@ $(document).ready(function(){
             
             <div class="card-footer">
                  <a href="/gms/product/list.do" class="btn btn-secondary float-left">취소</a>
-		          <input type="submit" value="저장" class="btn btn-success float-right">
+		          <input type="submit" value="저장"  class="btn btn-success float-right">
                 </div>		     		
             </form>   
           	

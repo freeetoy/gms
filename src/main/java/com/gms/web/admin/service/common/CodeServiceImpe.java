@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gms.web.admin.domain.common.AppVersionVO;
 import com.gms.web.admin.domain.common.CodeVO;
 import com.gms.web.admin.mapper.common.CodeMapper;
 
@@ -22,6 +23,11 @@ public class CodeServiceImpe implements CodeService {
 	public List<CodeVO> getCodeList(String param) {
 		logger.debug("****** getCodeList *****===*" + param);
 		return codeMapper.selectCodeList(param);
+	}
+
+	@Override
+	public AppVersionVO getAppVersion() {
+		return codeMapper.selectAppVersion();
 	}
 
 }

@@ -121,7 +121,8 @@ public class BottleController {
 		model.addAttribute("carList", carList);		
 		
 		//검색어 셋팅
-		model.addAttribute("searchBottleId", params.getSearchBottleId());				
+		model.addAttribute("searchBottleId", params.getSearchBottleId());
+		model.addAttribute("searchBottleBarCd", params.getSearchBottleBarCd());
 		model.addAttribute("searchChargeDt", params.getSearchChargeDt());	
 		model.addAttribute("searchWorkCd", params.getSearchWorkCd() );		
 		

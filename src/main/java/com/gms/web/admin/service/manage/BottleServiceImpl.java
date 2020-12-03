@@ -60,6 +60,7 @@ public class BottleServiceImpl implements BottleService {
 		map.put("startRow", startRow);
 		map.put("rowPerPage", ROW_PER_PAGE);	
 		map.put("searchBottleId", param.getSearchBottleId());	
+		map.put("searchBottleBarCd", param.getSearchBottleBarCd());	
 		
 		if(param.getSearchGasId() != null) {
 			map.put("searchGasId", param.getSearchGasId());
@@ -241,6 +242,8 @@ public class BottleServiceImpl implements BottleService {
 			map.put("ownCustomerId", Integer.parseInt(param.getOwnCustomerId()) );
 			bottleList = bottleMapper.selectBottleHistListToExcelOfCustomer(map);
 		}else {
+			map.put("startRow", param.getStartRow());
+			map.put("rowPerPage",30000);
 			bottleList = bottleMapper.selectBottleListToExcel(map);
 		}
 		

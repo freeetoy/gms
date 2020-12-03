@@ -1034,10 +1034,14 @@ $(document).ready(function(){
 			     	</option>   
 	    	</select>	                 	
             </div>               
-            <div class="col-2"><input type="text" class="form-control" id="searchCustomerNm1" name="searchCustomerNm1" th:value="${searchCustomerNm1}">
+            <div class="col-3"><input type="text" class="form-control" id="searchCustomerNm1" name="searchCustomerNm1" th:value="${searchCustomerNm1}">
             </div>
-            <div class="col-3"><input type="button" class="btn btn-default btn-success" id="btn_com_search1" value="검색" />               
+            <div class="col-1"><input type="button" class="btn btn-default btn-success" id="btn_com_search1" value="검색" />               
             </div>
+            <div align=right class="col-4">
+              		<a class="btn btn-outline-primary btn-sm" href="/gms/bottle/write.do"><i class="far fa-edit"></i>용기등록</a>&nbsp;
+              		<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchProductId= ${searchProductId} ,searchChargeDt=${searchChargeDt},searchWorkCd=${searchWorkCd},ownCustomerId=${ownCustomerId},menuType=1 )}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>               
+              </div>
          </div>
          <div class="row">	
 	        <div class="col-12">
@@ -1049,11 +1053,16 @@ $(document).ready(function(){
            	<div class="col-1">
            		<label>용기코드</label>               		
             </div>               
-            <div class="col-3">              
+            <div class="col-2">              
                <input type="text" id="searchBottleId" name="searchBottleId" class="form-control"  th:value="${searchBottleId}">
             </div>  
-            <div class="col-2">
-            
+            <div class="col-1">
+           		<label>바코드</label>               		
+            </div>  
+             <div class="col-2">              
+               <input type="text" id="searchBottleBarCd" name="searchBottleBarCd" class="form-control"  th:value="${searchBottleBarCd}">
+            </div> 
+            <div class="col-2">            
                	<select id="searchProductId" name="searchProductId" class="form-control">
                		<option value="">가스 선택</option>
                    	<option th:each="row : ${productList}"
@@ -1084,7 +1093,7 @@ $(document).ready(function(){
 			        </option>					        				
                  </select>
               </div>                   
-              <div class="col-1">
+              <div class="col-2">
                 <button class="btn btn-navbar" type="button">
 		            <i class="fas fa-search"></i>
 		          </button>
@@ -1093,10 +1102,7 @@ $(document).ready(function(){
               <!-- div class="col-1">
                		<a href="/gms/bottle/write.do"><button type="button" class="btn btn-block btn-outline-primary btn-sm">용기 등록</button></a>
               </div-->
-              <div align=right class="col-3">
-              		<a class="btn btn-outline-primary btn-sm" href="/gms/bottle/write.do"><i class="far fa-edit"></i>용기등록</a>&nbsp;
-              		<a th:href="@{/gms/bottle/excelDownload.do( currentPage=${currentPage} ,searchBottleId=${searchBottleId},searchProductId= ${searchProductId} ,searchChargeDt=${searchChargeDt},searchWorkCd=${searchWorkCd},ownCustomerId=${ownCustomerId},menuType=1 )}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> 엑셀받기</button></a>               
-              </div>
+              
          </div>
         <div class="row">	
 	        <div class="col-12">

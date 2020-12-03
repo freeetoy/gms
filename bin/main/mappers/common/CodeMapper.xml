@@ -14,6 +14,10 @@
 		<result property="updateDt"			column="UPDATE_DT"			/>
 	</resultMap>
 	
+	<resultMap id="AppVersionMap" type="com.gms.web.admin.domain.common.AppVersionVO" >
+		<result property="appVer"				column="App_Ver"	    	/>
+	</resultMap>
+	
 	<sql id="CodeColumns">
 		  CD_ID
 		, CD_NM
@@ -33,5 +37,13 @@
 		WHERE
 			delete_yn = 'N'
 		AND CD_GRP_ID = #{cdGrpId}
+	</select>
+	
+	
+	<select id="selectAppVersion" resultType="com.gms.web.admin.domain.common.AppVersionVO">
+		SELECT
+			App_Ver
+		FROM
+			TB_App_Version		
 	</select>
 </mapper>

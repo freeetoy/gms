@@ -197,9 +197,9 @@ public class ProductController {
 			ProductPriceVO[] priceVo = new ProductPriceVO[priceCount] ;
 						
 			int listIndex=0;
-			int Max_Product_Count = 11 ;
+			int Max_Product_Count = 50 ;
 			//int lastPriceSeq=0;
-			for(int i =0 ; i < Max_Product_Count ; i++ ) {
+			for(int i =0 ; i < priceCount ; i++ ) {
 				ProductPriceVO priceVo1 = new ProductPriceVO();
 				result = false;
 				
@@ -361,8 +361,9 @@ public class ProductController {
 	
 	@RequestMapping(value = "/api/ngasProductPriceList.do")
 	@ResponseBody
-	public List<ProductPriceSimpleVO> getProductPriceListOfNoGas(Model model)	{	
+	public List<ProductPriceSimpleVO> getProductPriceListOfNoGas(ProductPriceVO param,Model model)	{	
 		
+		logger.debug("******result *****===*"+param.getProductId());
 		List<ProductPriceSimpleVO> productList = productService.getNoGasProductPriceList();
 		//model.addAttribute("productList", productList);
 		

@@ -264,6 +264,47 @@ public class ExcelUploadController {
 		
     }
 	
+	@RequestMapping(value = "/gms/price/uploadExcelFileLn2", method = RequestMethod.POST)	
+    public ModelAndView uploadExcelFileCustomerPriceLn2(MultipartHttpServletRequest request
+    		, HttpServletResponse response) {
+		
+		MultipartFile file = null;
+		int result = 0;
+		try {
+        
+	        Iterator<String> iterator = request.getFileNames();
+	        if(iterator.hasNext()) {
+	            file = request.getFile(iterator.next());
+	        }
+	        //long SIZE_LIMIT = 1024*1024;
+	        long fileSize = file.getSize();
+        	if(fileSize > SIZE_LIMIT) {
+        		String alertMessage = "파일은 1M 이하로 업로드 해주세요.";
+    			RequestUtils.responseWriteException(response, alertMessage,
+    					"/gms/price/write.do");
+    			return null;
+        	}
+        	
+	        result = excelService.uploadCustomerPriceExcelFileLn2(request,file);	        
+	      
+	        //model.addAttribute("gaslist", gaslist);
+	        
+	        logger.debug("ExcelUploadContoller result "+ result);
+		} catch (Exception e) {
+            e.printStackTrace();
+            
+            return null;
+        }
+		
+		if(result > 0){
+			String alertMessage = "엑셀 등록하였습니다.";
+			RequestUtils.responseWriteException(response, alertMessage,
+					"/gms/price/write.do");
+		}
+		return null;
+		
+    }
+	
 	
 	@RequestMapping(value = "/gms/cbottle/uploadExcelFile", method = RequestMethod.POST)	
     public ModelAndView uploadExcelFileCustomerBottle(MultipartHttpServletRequest request

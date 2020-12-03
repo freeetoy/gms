@@ -519,6 +519,15 @@
 			TB_CUSTOMER_PRODUCT_PRICE a		
 	</select>
 	
+	<select id="selectCustomerProductPriceList" parameterType="Integer" resultType="com.gms.web.admin.domain.manage.CustomerPriceVO" >
+		SELECT
+			<include refid="InsertCustomerPriceColumns" />
+		FROM
+			TB_CUSTOMER_PRODUCT_PRICE a		
+		WHERE
+			Product_ID = #{productId}
+	</select>
+	
 	<select id="selectCustomerPriceListAllNow" resultType="com.gms.web.admin.domain.manage.CustomerPriceVO" >
 		SELECT
 			<include refid="InsertCustomerPriceColumns" />

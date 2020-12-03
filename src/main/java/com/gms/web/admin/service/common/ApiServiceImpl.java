@@ -50,6 +50,9 @@ public class ApiServiceImpl implements ApiService {
 	@Autowired
 	private LoginService loginService;
 	
+	@Autowired
+	private CodeService codeService;
+	
 	@Override
 	public int registerWorkReportForSale(WorkReportVO param) {
 		
@@ -313,6 +316,12 @@ public class ApiServiceImpl implements ApiService {
 	public List<BottleVO> getDummyBottleList() {
 		
 		return bottleService.getSimpleDummyBottleList();
+	}
+
+	@Override
+	public String getAppVersion() {
+		
+		return codeService.getAppVersion().getAppVer();
 	}
 
 

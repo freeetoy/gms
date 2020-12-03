@@ -340,6 +340,11 @@ public class CustomerServiceImpl implements CustomerService {
 	public List<CustomerPriceVO> getCustomerPriceListAll() {		
 		return customerMapper.selectCustomerPriceListAll();
 	}
+	
+	@Override
+	public List<CustomerPriceVO> getCustomerProductPriceList(Integer productId) {		
+		return customerMapper.selectCustomerProductPriceList(productId);
+	}
 
 	@Override
 	public int modifyCustomerPrice(CustomerPriceVO param) {

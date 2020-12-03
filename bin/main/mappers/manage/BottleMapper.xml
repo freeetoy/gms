@@ -237,27 +237,27 @@
 		SELECT b.history_seq,a.*
 			FROM TB_Bottle a,
 			(
-				SELECT Bottle_BarCd, count(Bottle_BarCd)+1 history_seq 
-				FROM TB_Bottle_Hist 
-				WHERE Bottle_BarCd=#{bottleBarCd}
+				SELECT c.Bottle_BarCd, IFNULL(max(d.Bottle_Hist_Seq)+1,1) history_seq 
+				FROM TB_Bottle c Left Join  TB_Bottle_Hist d ON c.Bottle_BarCd=d.Bottle_BarCd
+				WHERE c.Bottle_BarCd =#{bottleBarCd}
 			) b 
-		WHERE a.Bottle_BarCd =#{bottleBarCd}
+		WHERE a.Bottle_BarCd = b.Bottle_BarCd 		
 	</insert>
 	
 	<insert id="insertBottleHistorys" parameterType="java.util.List">
 		INSERT INTO TB_Bottle_Hist
 		SELECT b.history_seq,a.*
-			FROM TB_Bottle a,
-			(
-				SELECT c.Bottle_BarCd, IFNULL(count(d.Bottle_BarCd)+1,1) history_seq 
-				FROM TB_Bottle c Left Join  TB_Bottle_Hist d ON c.Bottle_BarCd=d.Bottle_BarCd
-				WHERE c.Bottle_BarCd in (
-				<foreach collection="list" item="item" separator=" , ">
-				#{item.bottleBarCd} 
-				</foreach>
-				)
-				GROUP BY C.Bottle_BarCd
-			) b 
+		FROM TB_Bottle a,
+		(
+			SELECT c.Bottle_BarCd, IFNULL(max(d.Bottle_Hist_Seq)+1,1) history_seq 
+			FROM TB_Bottle c Left Join  TB_Bottle_Hist d ON c.Bottle_BarCd=d.Bottle_BarCd
+			WHERE c.Bottle_BarCd in (
+			<foreach collection="list" item="item" separator=" , ">
+			#{item.bottleBarCd} 
+			</foreach>
+			)
+			GROUP BY C.Bottle_BarCd
+		) b 
 		WHERE a. Bottle_BarCd = b.Bottle_BarCd 			
 	</insert>
 	
@@ -512,6 +512,9 @@
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchBottleId)">
 			AND Bottle_ID	 LIKE CONCAT('%', CONCAT(#{searchBottleId}, '%'))
 			</if>
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchBottleBarCd)">
+			AND Bottle_BarCd	 LIKE CONCAT('%', CONCAT(#{searchBottleBarCd}, '%'))
+			</if>
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchProductId)">
 			AND TG.Product_ID=  #{searchProductId}
 			</if>
@@ -546,7 +549,10 @@
 		SELECT A.*, B.Customer_Nm
 		FROM (
 			SELECT
-				<include refid="BottleSelectColumns" />
+				Bottle_ID , Bottle_BarCd , Gas_CD , Product_Nm , 
+				Bottle_Capa , Charge_Capa , Bottle_Charge_Dt , Bottle_Volumn , 
+				Bottle_Charge_Prss , Bottle_Own_YN , Own_Customer_ID , TB.Customer_ID,
+				Bottle_Type , CD_NM Bottle_Work_CD_NM ,Bottle_Work_DT
 			FROM
 				TB_Bottle TB, TB_CODE TC, TB_Product TG
 			WHERE
@@ -578,6 +584,9 @@
 			Delete_YN = 'N'
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchBottleId)">
 		AND Bottle_ID	 LIKE CONCAT('%', CONCAT(#{searchBottleId}, '%'))
+		</if>
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchBottleBarCd)">
+		AND Bottle_BarCd	 LIKE CONCAT('%', CONCAT(#{searchBottleBarCd}, '%'))
 		</if>
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchProductId)">
 			AND Product_ID=  #{searchProductId}

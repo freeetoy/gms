@@ -28,6 +28,11 @@ function doExcelUploadProcess(){
 		
     form1.submit();
 }
+
+function doExcelUploadProcessLn2(){
+	
+    form3.submit();
+}
     
 $(document).ready(function(){ 
 	
@@ -41,7 +46,7 @@ $(document).ready(function(){
 		counter++;
 		totalCount++;
 
-		if (counter > 20){
+		if (counter > 50){
 		  alert('더 이상 추가 할수 없습니다.');
 		  return false;
 		}
@@ -422,7 +427,57 @@ $(document).ready(function(){
 		</div>
 		</div>
 		<!-- /.modal -->
+		<!--  process modat3 start -->  
+		<div class="modal modal-info fade" id="process-modal3">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+		             	<h4 class="modal-title">엑셀파일 등록</h4>
+		              	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		                <span aria-hidden="true">&times;</span>
+		              	</button>
+		            </div>
 		
+					<div class="modal-body">
+					<div class="clearfix"></div>
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12" >
+							<div class="x_panel">
+								
+								<div class="x_content">
+								<br />
+								<div  class="card-body">
+								<form id="form3" name="form1" method="post" action="/gms/price/uploadExcelFileLn2"enctype="multipart/form-data">					              
+									<table id="myTable" class="table order-info">
+									<thead>
+										<tr>
+											<td class="card-footer">파일선택</td>
+											<td  colspan=4><input type="file" id="fileInput" name="fileInput"> </td>
+											<td> <div id="result"></td>
+										</tr>										
+									</thead>
+									</table>								
+													
+									</form>
+									<div class="ln_solid"></div>
+														
+									<div class="modal-footer justify-content-between">
+						              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						              <a class="btn btn-info btn-sm" href="#" onclick="javascript:doExcelUploadProcessLn2()();"><i class="fas fa-pencil-alt"></i>엑셀업로드</a>
+						            </div>
+									<div id="test_char">
+									
+									</div>
+								</div>
+							</div> <!-- X_content end -->
+						</div>
+					</div> <!-- /.x_panel end -->
+				</div> <!-- / .col -->
+			</div>
+		</div> <!-- / . modal body -->
+		</div>
+		</div>
+		<!-- /.modal -->
 		
         <div class="row">
     	
@@ -451,7 +506,7 @@ $(document).ready(function(){
               </div>             
               <div class="col-2" align=right>
               	<a class="btn_select_process2 btn btn-primary btn-sm"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-upload"></i>엑셀등록</a>
-              </div>
+              	</div>
          </div>
          <div class="row">	
 	        <div class="col-10">
@@ -484,8 +539,8 @@ $(document).ready(function(){
 	                         <td>상품</td>
 	                         <td>용량</td>
 	                         <td>대여가격</td>
-	                         <td>판매(용기+가스)가격</td>
-	                         <td></td>
+	                         <td colspan=2>판매(용기+가스)가격</td>
+	                         
 	                       </tr>
 	                       <tr>
 	                       <td  style="padding-left: 0px;">                                           
@@ -517,10 +572,11 @@ $(document).ready(function(){
             <!-- /.card -->
             
             <div class="card-footer">
-            	<div class="col-10">
-                 <a href="/gms/user/list.do" class="btn btn-secondary float-left">취소</a>
-		         <input type="button" id="save" value="저장"  class="btn btn-success float-right">
-                </div>		
+            	
+                 <a href="/gms/user/list.do" class="btn btn-secondary float-left">취소</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		         <input type="button" id="save" value="저장"  class="btn btn-success">
+		         <a class="btn_select_process3 btn btn-primary btn-sm float-right"  data-toggle="modal" data-target="#process-modal3" href="#"><i class="fas fa-upload"></i>LN2엑셀등록</a>
+               
                </div>	
             </form>             	
         </div>
