@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gms.web.admin.common.config.PropertyFactory;
+import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.common.LoginUserVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CashFlowVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
+import com.gms.web.admin.domain.manage.ProductPriceSimpleVO;
 import com.gms.web.admin.domain.manage.SimpleBottleVO;
 import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
@@ -20,6 +22,7 @@ import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.service.manage.BottleService;
 import com.gms.web.admin.service.manage.CashFlowService;
 import com.gms.web.admin.service.manage.CustomerService;
+import com.gms.web.admin.service.manage.ProductService;
 import com.gms.web.admin.service.manage.UserService;
 import com.gms.web.admin.service.manage.WorkReportService;
 
@@ -53,6 +56,9 @@ public class ApiServiceImpl implements ApiService {
 	@Autowired
 	private CodeService codeService;
 	
+	@Autowired
+	private ProductService productService;
+	
 	@Override
 	public int registerWorkReportForSale(WorkReportVO param) {
 		
@@ -65,7 +71,8 @@ public class ApiServiceImpl implements ApiService {
 			LoginUserVO loginUser = new LoginUserVO();
 			loginUser.setUserId(user.getUserId());
 			
-			result = loginService.modifyLastConnect(loginUser);
+			if(!DateUtils.convertDateFormat(user.getLastConnectDt(),"yyyy-MM-dd").equals(DateUtils.getDate("yyyy-MM-dd")) )
+				result = loginService.modifyLastConnect(loginUser);
 		
 			//Customer 정보가져
 			CustomerVO customer = getCustomer(param.getCustomerNm());
@@ -94,7 +101,8 @@ public class ApiServiceImpl implements ApiService {
 			LoginUserVO loginUser = new LoginUserVO();
 			loginUser.setUserId(user.getUserId());
 			
-			result = loginService.modifyLastConnect(loginUser);
+			if(!DateUtils.convertDateFormat(user.getLastConnectDt(),"yyyy-MM-dd").equals(DateUtils.getDate("yyyy-MM-dd")) )
+				result = loginService.modifyLastConnect(loginUser);
 			
 			List<String> list = null;				
 			BottleVO bottle = new BottleVO();
@@ -149,7 +157,8 @@ public class ApiServiceImpl implements ApiService {
 			LoginUserVO loginUser = new LoginUserVO();
 			loginUser.setUserId(user.getUserId());
 			
-			result = loginService.modifyLastConnect(loginUser);
+			if(!DateUtils.convertDateFormat(user.getLastConnectDt(),"yyyy-MM-dd").equals(DateUtils.getDate("yyyy-MM-dd")) )
+				result = loginService.modifyLastConnect(loginUser);
 			
 			//Customer 정보가져
 			CustomerVO customer = getCustomer(param.getCustomerNm());
@@ -184,7 +193,8 @@ public class ApiServiceImpl implements ApiService {
 			LoginUserVO loginUser = new LoginUserVO();
 			loginUser.setUserId(user.getUserId());
 			
-			result = loginService.modifyLastConnect(loginUser);
+			if(!DateUtils.convertDateFormat(user.getLastConnectDt(),"yyyy-MM-dd").equals(DateUtils.getDate("yyyy-MM-dd")) )
+				result = loginService.modifyLastConnect(loginUser);
 			
 			//Customer 정보가져
 			CustomerVO customer = getCustomer(param.getCustomerNm());
@@ -264,7 +274,8 @@ public class ApiServiceImpl implements ApiService {
 			LoginUserVO loginUser = new LoginUserVO();
 			loginUser.setUserId(user.getUserId());
 			
-			result = loginService.modifyLastConnect(loginUser);
+			if(!DateUtils.convertDateFormat(user.getLastConnectDt(),"yyyy-MM-dd").equals(DateUtils.getDate("yyyy-MM-dd")) )
+				result = loginService.modifyLastConnect(loginUser);
 			
 			//Customer 정보가져
 			CustomerVO customer = getCustomer(param.getCustomerNm());
@@ -294,7 +305,8 @@ public class ApiServiceImpl implements ApiService {
 			LoginUserVO loginUser = new LoginUserVO();
 			loginUser.setUserId(user.getUserId());
 			
-			result = loginService.modifyLastConnect(loginUser);
+			if(!DateUtils.convertDateFormat(user.getLastConnectDt(),"yyyy-MM-dd").equals(DateUtils.getDate("yyyy-MM-dd")) )
+				result = loginService.modifyLastConnect(loginUser);
 			
 			//Customer 정보가져
 			CustomerVO customer = getCustomer(param.getCustomerNm());
@@ -322,6 +334,21 @@ public class ApiServiceImpl implements ApiService {
 	public String getAppVersion() {
 		
 		return codeService.getAppVersion().getAppVer();
+	}
+
+	@Override
+	public List<ProductPriceSimpleVO> getCustomerLn2List(String customerNm) {
+		CustomerVO customer = getCustomer(customerNm);
+		List<ProductPriceSimpleVO> productList= null;
+		if(customer!=null) {
+			
+			productList = productService.getCustomerLn2List(customer.getCustomerId());	
+			
+		}else {
+			return null;
+		}				
+		
+		return productList;
 	}
 
 

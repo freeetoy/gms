@@ -26,7 +26,7 @@
 			(
 				SELECT count(Work_Seq) Order_Count,Work_Report_Seq,Product_ID, Product_Price_Seq,Create_ID,Bottle_Sale_YN,Product_Price
 				FROM TB_Work_Bottle 
-				WHERE Bottle_Work_Cd in ('0308','0309')
+				WHERE Bottle_Work_Cd in ('0308','0309','0314')
 				AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  #{searchDt}
 				Group By Work_Report_Seq,Product_ID, Product_Price_Seq ,Create_ID,Bottle_Sale_YN,Product_Price
 			) WB,TB_Work_Report WR ,TB_Product PT, TB_Product_Price PP, TB_Customer TC, TB_User TU

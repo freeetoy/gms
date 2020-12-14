@@ -321,7 +321,7 @@
 			UNION 
 			SELECT DISTINCT c.product_id pid, c.product_price_seq pseq, c.product_price price, c.Product_Bottle_Price
 			FROM tb_customer_product_price c
-			WHERE customer_id=#{customerId}	
+			WHERE customer_id = #{customerId}	
 			) ta, TB_Product p, TB_Product_Price pp
 		WHERE ta.pid= p.product_Id
 		AND p.product_Id =pp.product_Id
@@ -442,5 +442,26 @@
 			TP.Product_ID = TPP.Product_ID
 		AND 
 			GAS_ID > 0 		
+	</select>
+	
+	<select id="selectCustomerLn2List"  resultType="com.gms.web.admin.domain.manage.ProductPriceSimpleVO" parameterType="Integer">
+		SELECT
+			TC.Product_ID ,TC.Product_Price_Seq,concat(Product_Nm , " - " ,Product_Capa) Product_Nm
+		FROM
+			TB_Product  TP, TB_Product_Price TPP, TB_Customer_Product_Price TC
+		WHERE
+			TP.Product_ID = 60
+		AND
+			TP.Product_ID = TPP.Product_ID
+		AND
+			TP.Product_ID = TC.Product_ID
+		AND
+			TPP.Product_Price_Seq = TC.Product_Price_Seq
+		AND 
+			TP.Product_Status  != '0'
+		AND 
+			TPP.Product_Status  != '0'
+		AND 
+			TC.Customer_ID = #{customerId}		
 	</select>
 </mapper>

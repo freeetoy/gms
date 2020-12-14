@@ -304,9 +304,9 @@ public class OrderServiceImpl implements OrderService {
 								orderProductCapa = tempProduct.getProductCapa();
 							}
 							if(bottleSaleYn.equals("Y"))
-								orderAmount = tempProduct.getProductBottlePrice() *orderCount;	
+								orderAmount = tempProduct.getProductBottlePrice() *orderCount;		
 							else
-								orderAmount = tempProduct.getProductPrice() *orderCount;	
+								orderAmount = tempProduct.getProductPrice() *orderCount;
 							//logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
 							productVo.setOrderAmount(orderAmount);
 												
@@ -320,9 +320,9 @@ public class OrderServiceImpl implements OrderService {
 						if(productId == customerPrice.getProductId() && productPriceSeq == customerPrice.getProductPriceSeq()) {
 							//if(tempProduct.getGasId()!=null && tempProduct.getGasId() > 0) bottleFlag = true;	
 							if(bottleSaleYn.equals("Y"))
-								orderAmount = customerPrice.getProductBottlePrice() *orderCount;	
+								orderAmount = customerPrice.getProductBottlePrice() *orderCount;								
 							else
-								orderAmount = customerPrice.getProductPrice() *orderCount;	
+								orderAmount = customerPrice.getProductPrice() *orderCount;
 							//logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
 							productVo.setOrderAmount(orderAmount);
 												
@@ -561,12 +561,14 @@ public class OrderServiceImpl implements OrderService {
 							if(i==0) {
 								orderProductNm = tempProduct.getProductNm();
 								orderProductCapa = tempProduct.getProductCapa();
-								//logger.debug("OrderService modifyOrder productPriceList orderProductNm== "+ orderProductNm);
-								//logger.debug("OrderService modifyOrder productPriceList orderProductCapa== "+ orderProductCapa);
 							}
 							
-							orderAmount = tempProduct.getProductPrice() *orderCount;	
-							//logger.debug("OrderContoller registerOrder orderAmount== "+ orderAmount);
+							if(bottleSaleYn.equals("Y"))
+								orderAmount = tempProduct.getProductBottlePrice() *orderCount;
+							else
+								orderAmount = tempProduct.getProductPrice() *orderCount;									
+							
+							//orderAmount = tempProduct.getProductPrice() *orderCount;	
 							productVo.setOrderAmount(orderAmount);
 							orderTotalAmount += orderAmount;								
 						}
@@ -616,10 +618,7 @@ public class OrderServiceImpl implements OrderService {
 						}
 					}
 				}
-				
-				logger.debug("OrderContoller modifyOrder orderProductNm== "+ orderProductNm);
-				logger.debug("OrderContoller modifyOrder orderProductCapa== "+ orderProductCapa);
-				
+					
 				if(productCount > 1) {
 					orderProductNm = orderProductNm +"외 "+ (productCount-1);
 					orderProductCapa = orderProductCapa +"외 "+ (productCount-1);

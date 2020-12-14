@@ -5,6 +5,7 @@ import java.util.List;
 import com.gms.web.admin.domain.common.AppVersionVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CashFlowVO;
+import com.gms.web.admin.domain.manage.ProductPriceSimpleVO;
 import com.gms.web.admin.domain.manage.SimpleBottleVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
@@ -32,4 +33,6 @@ public interface ApiService {
 	public List<BottleVO> getDummyBottleList();
 	
 	public String getAppVersion();
+	
+	public List<ProductPriceSimpleVO> getCustomerLn2List(String customerNm);
 }

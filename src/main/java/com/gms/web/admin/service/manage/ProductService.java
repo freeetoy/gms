@@ -59,4 +59,6 @@ public interface ProductService {
 	public List<ProductPriceSimpleVO> getGasProductPriceList();
 	
 	public List<ProductTotalVO> getProductTotalDetailList();
+	
+	public List<ProductPriceSimpleVO> getCustomerLn2List(Integer customerId);
 }

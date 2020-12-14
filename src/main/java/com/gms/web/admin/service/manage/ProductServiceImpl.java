@@ -321,5 +321,10 @@ public class ProductServiceImpl implements ProductService {
 	public List<ProductTotalVO> getProductTotalDetailList() {
 		return productMapper.selectProductTotalDetailList();
 	}
+
+	@Override
+	public List<ProductPriceSimpleVO> getCustomerLn2List(Integer customerId) {
+		return productMapper.selectCustomerLn2List(customerId);
+	}
 	
 }

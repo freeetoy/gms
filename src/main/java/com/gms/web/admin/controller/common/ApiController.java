@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -14,6 +15,8 @@ import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CashFlowVO;
+import com.gms.web.admin.domain.manage.ProductPriceSimpleVO;
+import com.gms.web.admin.domain.manage.ProductPriceVO;
 import com.gms.web.admin.domain.manage.SimpleBottleVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
@@ -103,12 +106,19 @@ public class ApiController {
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.vacuum"))) {			//진공배기
 			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.vacuum"));
 			result = apiService.registerWorkReportForChangeCd(workReport);
+			
 		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.hole"))) {			//누공확인
 			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.hole"));
 			result = apiService.registerWorkReportForChangeCd(workReport);
-		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.freechange"))) {			//누공확인
+			
+		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.freechange"))) {			//무상교체
 			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.freechange"));
 			result = apiService.registerWorkReportForChangeCd(workReport);
+			
+		}else if(bottleWorkCd.equals(PropertyFactory.getProperty("common.bottle.status.title.salesgas"))) {			//가스판매
+			
+			workReport.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.salesgas"));			
+			result = apiService.registerWorkReportForSale(workReport);			
 		}
 		
 		if(result > 0)
@@ -327,5 +337,16 @@ public class ApiController {
 	public String getAppVersion()	{			
 		
 		return apiService.getAppVersion();
+	}
+	
+	@RequestMapping(value = "/api/customerLn2List.do")
+	@ResponseBody
+	public List<ProductPriceSimpleVO> getProductPriceListOfNoGas(String customerNm)	{	
+		
+		
+		List<ProductPriceSimpleVO> productList = apiService.getCustomerLn2List(customerNm);
+		//model.addAttribute("productList", productList);
+		
+		return productList;
 	}
 }

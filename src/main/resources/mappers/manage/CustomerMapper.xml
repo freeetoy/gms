@@ -550,6 +550,7 @@
 		UPDATE TB_CUSTOMER_PRODUCT_PRICE	
 		SET 
 			Product_Price = #{productPrice}
+			, Product_Bottle_Price = #{productBottlePrice}
 			, UPDATE_ID			= #{updateId}
 			, UPDATE_DT			= NOW()
 		WHERE
