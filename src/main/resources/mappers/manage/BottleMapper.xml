@@ -521,6 +521,9 @@
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
 			AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
 			</if>		
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
+			AND date_format(TB.UPDATE_DT,'%Y/%m/%d')  between  #{searchDtFrom} AND  #{searchDtEnd} 
+			</if>
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchWorkCd)">
 			AND Bottle_Work_CD =  #{searchWorkCd}
 			</if>			
@@ -565,7 +568,10 @@
 			</if>
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
 			AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
-			</if>		
+			</if>	
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
+			AND date_format(TB.UPDATE_DT,'%Y/%m/%d')  between  #{searchDtFrom} AND  #{searchDtEnd} 
+			</if>	
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchWorkCd)">
 			AND Bottle_Work_CD =  #{searchWorkCd}
 			</if>			
@@ -594,6 +600,9 @@
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
 		AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
 		</if>		
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
+		AND date_format(UPDATE_DT,'%Y/%m/%d')  between  #{searchDtFrom} AND  #{searchDtEnd} 
+		</if>
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchWorkCd)">
 		AND Bottle_Work_CD =  #{searchWorkCd}
 		</if>	
@@ -777,6 +786,9 @@
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
 		AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
 		</if>		
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
+		AND date_format(UPDATE_DT,'%Y/%m/%d')  between  #{searchDtFrom} AND  #{searchDtEnd} 
+		</if>
 		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchWorkCd)">
 		AND Bottle_Work_CD =  #{searchWorkCd}
 		</if>	
@@ -802,6 +814,9 @@
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
 			AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
 			</if>		
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
+			AND date_format(TB.UPDATE_DT,'%Y/%m/%d')  between  #{searchDtFrom} AND  #{searchDtEnd} 
+			</if>
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchWorkCd)">
 			AND Bottle_Work_CD =  #{searchWorkCd}
 			</if>			
@@ -832,6 +847,9 @@
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchChargeDt)">
 			AND date_format(Bottle_Charge_Dt,'%Y/%m/%d')  between  #{searchChargeDtFrom} AND  #{searchChargeDtEnd} 
 			</if>		
+			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchDt)">
+			AND date_format(TB.UPDATE_DT,'%Y/%m/%d')  between  #{searchDtFrom} AND  #{searchDtEnd} 
+			</if>
 			<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchWorkCd)">
 			AND Bottle_Work_CD =  #{searchWorkCd}
 			</if>			

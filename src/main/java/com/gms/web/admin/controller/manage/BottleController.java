@@ -80,6 +80,19 @@ public class BottleController {
 			params.setSearchChargeDtEnd(searchChargeDtEnd);			
 		}
 		
+		String searchDt = params.getSearchDt();	
+		
+		String searchDtFrom = null;
+		String searchDtEnd = null;
+				
+		if(searchDt != null && searchDt.length() > 20) {
+			searchDtFrom = searchDt.substring(0, 10) ;			
+			searchDtEnd = searchDt.substring(13, searchDt.length()) ;
+			
+			params.setSearchDtFrom(searchDtFrom);
+			params.setSearchDtEnd(searchDtEnd);			
+		}
+		
 		//params.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.come"));
 		
 		Map<String, Object> map = bottleService.getBottleList(params);
@@ -124,6 +137,7 @@ public class BottleController {
 		model.addAttribute("searchBottleId", params.getSearchBottleId());
 		model.addAttribute("searchBottleBarCd", params.getSearchBottleBarCd());
 		model.addAttribute("searchChargeDt", params.getSearchChargeDt());	
+		model.addAttribute("searchDt", params.getSearchDt());	
 		model.addAttribute("searchWorkCd", params.getSearchWorkCd() );		
 		
 		model.addAttribute("currentPage", map.get("currentPage"));

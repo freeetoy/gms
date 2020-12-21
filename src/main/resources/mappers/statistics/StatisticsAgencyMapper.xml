@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gms.web.admin.mapper.statistics.StatisticsAgencyMapper">
+	<resultMap id="StatisticsProductMap" type="com.gms.web.admin.domain.statistics.StatisticsAgencyVO" >		
+		<result property="statDt"				column="Stat_Dt"				/>
+		<result property="customerId"			column="Customer_ID"			/>
+		<result property="productId"			column="Product_ID"				/>
+		<result property="productPriceSeq"		column="Product_Price_Seq"		/>
+		<result property="bottleOwnCount"		column="Bottle_Own_Count"		/>
+		<result property="bottleRentCount"		column="Bottle_Rent_Count"		/>
+		<result property="rentAmount"			column="Rent_Amount"			/>
+		<result property="createId"				column="CREATE_ID"				/>
+		<result property="createDt"				column="CREATE_DT"				/>
+	</resultMap>
+	
+	<sql id="StatisticsAgencyolumns">
+		 Stat_Dt       
+		 , Customer_ID
+		 , Product_ID   
+		 , Product_Price_Seq  
+		 , Bottle_Own_Count	
+		 , Bottle_Rent_Count    
+		 , Create_ID        
+		 , Create_Dt
+	</sql>
+
+	<insert id="inserDailyStatisticsAgency">
+		INSERT INTO TB_Daily_Stat_Agency(
+			<include refid="StatisticsAgencyolumns" />
+		)
+		SELECT DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d') Stat_Dt, TP.Customer_ID, Product_ID, Product_Price_Seq, TP.Bottle_Own_Count, TP.Bottle_Rent_Count,'admin', now()
+		FROM TB_Customer_Product TP, TB_Customer TC
+		WHERE TC.Agency_YN =  'Y'
+		AND TP.Customer_ID = TC.Customer_ID
+	</insert>
+	
+	<insert id="inserMonthlyStatisticsAgency">
+		INSERT INTO TB_Monthly_Stat_Agency(
+			<include refid="StatisticsAgencyolumns" />
+		)
+		SELECT LEFT(Stat_Dt,7) 
+			, Customer_ID
+		 	, Product_ID   
+		 	, Product_Price_Seq  
+			, SUM(Bottle_Own_Count)   
+			, SUM(Bottle_Rent_Count) 
+			, 'admin'
+			, NOW()
+		FROM TB_Daily_Stat_Agency
+		WHERE LEFT(Stat_Dt,7)=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m')
+		GROUP BY Product_ID,LEFT(Stat_Dt,7)
+	</insert>
+	
+	
+	<select id="selectDailylStatisticsAgencyList" resultType="com.gms.web.admin.domain.statistics.StatisticsAgencyVO" parameterType="java.util.Map">		
+		SELECT
+			<include refid="StatisticsAgencyolumns" />
+		FROM
+			TB_Daily_Stat_Agency
+		WHERE
+			1 = 1	
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchStatDt)">
+		AND Stat_Dt between  #{searchStatDtFrom} AND  #{searchStatDtEnd} 
+		</if>
+		ORDER BY Create_Dt DESC 
+	</select>
+	
+	<select id="selectMontlylStatisticsAgencyList" resultType="com.gms.web.admin.domain.statistics.StatisticsAgencyVO" parameterType="java.util.Map">		
+		SELECT
+			<include refid="StatisticsAgencyolumns" />
+		FROM
+			TB_Monthly_Stat_Agency
+		WHERE
+			1 = 1
+		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchStatDt)">
+		AND Stat_Dt between  #{searchStatDtFrom} AND  #{searchStatDtEnd} 
+		</if>
+		ORDER BY Create_Dt DESC 
+	</select>
+	
+</mapper>

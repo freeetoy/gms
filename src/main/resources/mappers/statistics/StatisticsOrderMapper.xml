@@ -132,13 +132,13 @@
 		(
 			SELECT Count(Work_Seq) Sales_Count, Sum(Product_Price) Sales_Amount
 			FROM TB_Work_Bottle
-			WHERE Bottle_Work_Cd='0308' 
+			WHERE Bottle_Work_Cd in ( '0308' , '0314')
 			AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')
 		) A,
 		(
 			SELECT Count(Work_Seq) Rental_Count, Sum(Product_Price) Rental_Amount
 			FROM TB_Work_Bottle
-			WHERE Bottle_Work_Cd='0309' 
+			WHERE Bottle_Work_Cd in ( '0309' ,'0316' )
 			AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')			 
 		) B,
 		(

@@ -78,6 +78,8 @@ public class ApiServiceImpl implements ApiService {
 			CustomerVO customer = getCustomer(param.getCustomerNm());
 			if(customer!=null) {
 				param.setCustomerId(customer.getCustomerId());
+				//20201220
+				param.setCustomerAgencyYn(customer.getAgencyYn());
 	
 				result = workService.registerWorkReportNoOrder(param);			
 				
@@ -125,6 +127,8 @@ public class ApiServiceImpl implements ApiService {
 			if(customer !=null) {
 				bottle.setCustomerId(customer.getCustomerId());
 				param.setCustomerId(customer.getCustomerId());
+				//20201220
+				param.setCustomerAgencyYn(customer.getAgencyYn());
 			}else {
 				return CUSOTMER_NOT_EXIST;
 			}

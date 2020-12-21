@@ -398,7 +398,10 @@ public class WorkReportServiceImpl implements WorkReportService {
 							workBottle.setWorkSeq(workSeq++);
 							workBottle.setProductPrice(newOrderProduct.getOrderAmount());
 							workBottle.setBottleSaleYn(newOrderProduct.getBottleSaleYn());
-							workBottle.setBottleWorkCd(param.getBottleWorkCd());
+							workBottle.setBottleWorkCd(param.getBottleWorkCd());							
+							//20201220
+							workBottle.setCustomerAgencyYn(param.getCustomerAgencyYn());
+							
 							workBottleList.add(workBottle); 
 							receivableAmount += workBottle.getProductPrice();
 							
@@ -485,25 +488,29 @@ public class WorkReportServiceImpl implements WorkReportService {
 			result = registerCashFlow(param,receivableAmount);
 						
 			//Customer Bottle_Own_Count 증가
-			if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale")) ) {
+			//TODO 
+			// common.bottle.status.salesgas / common.bottle.status.agencyRent 처리
+			if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale")) || param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.salesgas")) ) {
 				
 				CustomerVO customer = new CustomerVO();
 				customer.setCustomerId(param.getCustomerId());
 				customer.setUpdateId(param.getCreateId());
 				customer.setBottleOwnCount(workBottleList.size());
+				//20201220
+				customer.setAgencyYn(param.getCustomerAgencyYn());
 				
-				result = changeCustomerProduct(workBottleList);	//Customer_Product 등록
-				
+				result = changeCustomerProduct(workBottleList);	//Customer_Product 등록				
 				result = customerService.modifyCustomerBottleCount(customer);
-			}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) {
+			}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) || param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyRent")) ) {
 				
 				CustomerVO customer = new CustomerVO();
 				customer.setCustomerId(param.getCustomerId());
 				customer.setUpdateId(param.getCreateId());
 				customer.setBottleRentCount(workBottleList.size());
+				//20201220
+				customer.setAgencyYn(param.getCustomerAgencyYn());
 				
-				result = changeCustomerProduct(workBottleList);	//Customer_Product 등록
-				
+				result = changeCustomerProduct(workBottleList);	//Customer_Product 등록				
 				result = customerService.modifyCustomerBottleRentCount(customer);
 			}
 			
@@ -733,6 +740,8 @@ public class WorkReportServiceImpl implements WorkReportService {
 					
 					workBottle.setWorkReportSeq(param.getWorkReportSeq());
 					workBottle.setWorkSeq(workSeq++);			
+					//20201220
+					workBottle.setCustomerAgencyYn(param.getCustomerAgencyYn());
 					
 					if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale")) ) {
 						workBottle.setBottleSaleYn("Y");
@@ -797,21 +806,25 @@ public class WorkReportServiceImpl implements WorkReportService {
 				param.setWorkDt(cal.getTime());
 				//param.setBottleType(PropertyFactory.getProperty("Bottle.Type.Full"));
 				
-				if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale")) ) {
+				//TODO
+				// common.bottle.status.salesgas / common.bottle.status.agencyRent 처리 필요
+				if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale")) || param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.salesgas"))) {
 				
 					CustomerVO customer = new CustomerVO();
 					customer.setCustomerId(param.getCustomerId());
-					customer.setUpdateId(param.getCreateId());
+					customer.setUpdateId(param.getCreateId());					
 					customer.setBottleOwnCount(workBottleList.size());
+					customer.setAgencyYn(param.getCustomerAgencyYn());
 					
 					result = changeCustomerProduct(workBottleList);	//Customer_Product 등록
 					result = customerService.modifyCustomerBottleCount(customer);
-				}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) {
+				}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent"))  || param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyRent")) ) {
 					
 					CustomerVO customer = new CustomerVO();
 					customer.setCustomerId(param.getCustomerId());
 					customer.setUpdateId(param.getCreateId());
 					customer.setBottleRentCount(workBottleList.size());
+					customer.setAgencyYn(param.getCustomerAgencyYn());
 					
 					result = changeCustomerProduct(workBottleList);	//Customer_Product 등록
 					result = customerService.modifyCustomerBottleRentCount(customer);
@@ -864,7 +877,10 @@ public class WorkReportServiceImpl implements WorkReportService {
 			if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back")) 
 					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freeback"))
 					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback"))
-					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freechange")) ) {
+					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freechange")) 
+					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.salesBack")) 
+					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyBack")) 
+					) {
 				workReportSeq = getWorkReportSeqForCustomerToday(param);
 			}
 			//Work_Report_Seq 가져오기
@@ -927,6 +943,8 @@ public class WorkReportServiceImpl implements WorkReportService {
 			//logger.debug("WorkReportServiceImpl registerWorkReportByBottle insertFlag =" + insertFlag);
 			
 			//Customer Bottle_Own_Count 감소
+			//TODO
+			// common.bottle.status.agencyBack / common.bottle.status.salesBack 처리 필요
 			if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freeback"))
 					|| param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback"))) {
 				
@@ -934,20 +952,31 @@ public class WorkReportServiceImpl implements WorkReportService {
 				customer.setCustomerId(param.getCustomerId());
 				customer.setUpdateId(param.getCreateId());
 				customer.setBottleOwnCount(workBottleList.size()*-1);
+				customer.setAgencyYn(param.getCustomerAgencyYn());
 				
 				result = changeCustomerProduct(workBottleList);	//Customer_Product 등록
 				
 				result = customerService.modifyCustomerBottleCount(customer);
-			}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back")) ){
+			}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back")) || param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyBack"))  ){
 				
 				CustomerVO customer = new CustomerVO();
 				customer.setCustomerId(param.getCustomerId());
 				customer.setUpdateId(param.getCreateId());
 				customer.setBottleRentCount(workBottleList.size()*-1);
+				customer.setAgencyYn(param.getCustomerAgencyYn());
 				
 				result = changeCustomerProduct(workBottleList);	//Customer_Product 등록
 				
 				result = customerService.modifyCustomerBottleRentCount(customer);
+			}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.salesBack")) ){
+				CustomerVO customer = new CustomerVO();
+				customer.setCustomerId(param.getCustomerId());
+				customer.setUpdateId(param.getCreateId());
+				customer.setBottleOwnCount(workBottleList.size()*1);
+				customer.setAgencyYn(param.getCustomerAgencyYn());
+				
+				result = changeCustomerProduct(workBottleList);	//Customer_Product 등록				
+				result = customerService.modifyCustomerBottleCount(customer);
 			}else if(param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freechange")) ){
 				
 				
@@ -3136,45 +3165,61 @@ public class WorkReportServiceImpl implements WorkReportService {
 				
 				if(customerProduct != null) {
 					
-					if(param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale"))) {
-						customerProduct.setBottleOwnCount(1);
-						
-					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent"))) {
-						
+					if(param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale"))
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.salesBack"))	//20201220
+							) {
+						customerProduct.setBottleOwnCount(1);						
+					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent"))
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyRent"))	//20201220
+							) {						
 						customerProduct.setBottleRentCount(1);
-					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back"))) {
-						
+					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back"))
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyBack"))	//20201220
+							) {						
 						customerProduct.setBottleRentCount(-1);
 					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freeback"))
-							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback")) ) {
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback")) 
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.salesgas"))	//20201220
+							) {
 						customerProduct.setBottleOwnCount(-1);
-					}
-					
+					}					
 					
 					if(param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale"))
 							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freeback"))
-							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback")) ) {
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback")) 
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.salesgas")) 
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.salesBack")) 
+							) {
 						result = customerService.modifyCustomerProductOwnCount(customerProduct);
 						
 					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent"))
-							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back"))) {
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back"))
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyRent"))
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyBack"))
+							) {
 						result = customerService.modifyCustomerProductRentCount(customerProduct);
 					}
 					
 				}else {
 					customerProduct = temp;		
 					
-					if(param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale"))) {
+					if(param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale"))
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.salesBack"))	//20201220
+							) {
 						customerProduct.setBottleOwnCount(1);
 						
-					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent"))) {
-						
+					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent"))
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyRent"))	//20201220
+							) {						
 						customerProduct.setBottleRentCount(1);
-					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back"))) {
-						
+					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back"))
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyBack"))	//20201220
+							) {						
 						customerProduct.setBottleRentCount(-1);
 					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freeback"))
-							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback")) ) {
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback")) 
+							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.salesgas"))
+							) {
 						customerProduct.setBottleOwnCount(-1);
 					}
 					

@@ -155,7 +155,7 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	/** searchChargeDtEnd	*/
 	private String  searchChargeDtEnd;
 	
-	/** searchChargeDtEnd	*/
+	/** searchSalesYn	*/
 	private String  searchSalesYn;
 	
 	/** menuType
@@ -179,4 +179,13 @@ public class BottleVO extends AbstractSearchVO implements Serializable {
 	private String  customerIdNullYn;
 	
 	private int startRow;
+	
+	/** searchDt	*/
+	private String  searchDt;
+	
+	/** searchDtFrom	*/
+	private String  searchDtFrom;
+	
+	/** searchDtEnd	*/
+	private String  searchDtEnd;
 }

@@ -77,6 +77,9 @@
 	<entry key="common.bottle.status.buyback">0312</entry> 	<!-- 매입 -->
 	<entry key="common.bottle.status.freechange">0313</entry> 	<!-- 무상교체 -->
 	<entry key="common.bottle.status.salesgas">0314</entry> 	<!-- 가스판매 -->
+	<entry key="common.bottle.status.salesBack">0315</entry> 	<!-- 판매회수 -->
+	<entry key="common.bottle.status.agencyRent">0316</entry> 	<!-- 공장대여 -->
+	<entry key="common.bottle.status.agencyBack">0317</entry> 	<!-- 대여회수 -->
 	<entry key="common.bottle.status.0311">0320</entry> 	<!-- 기타 -->
 	<entry key="common.bottle.status.0312">0330</entry> 	<!-- 입금 -->
 	<entry key="common.bottle.status.0399">0399</entry>		<!-- 폐기 -->
@@ -102,6 +105,9 @@
 	<entry key="common.bottle.status.title.massback">대량회수</entry> 		<!-- 대량회수 -->
 	<entry key="common.bottle.status.title.freechange">무상교체</entry> 	<!-- 무상교체 -->
 	<entry key="common.bottle.status.title.salesgas">가스판매</entry> 		<!-- 가스판매 -->
+	<entry key="common.bottle.status.title.salesBack">판매회수</entry> 	<!-- 판매회수 -->
+	<entry key="common.bottle.status.title.agencyRent">공장대여</entry> 	<!-- 공장대여 -->
+	<entry key="common.bottle.status.title.agencyBack">대여회수</entry> 	<!-- 대여회수 -->
 	
 	<entry key="common.code.order.type">0100</entry>
 	<entry key="common.code.order.type.order">0101</entry>

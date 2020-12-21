@@ -88,6 +88,21 @@ public class BottleServiceImpl implements BottleService {
 			//logger.debug("****** getBottleList *****getSearchChargeDtEnd===*"+param.getSearchChargeDtEnd());
 		}
 		
+		if(param.getSearchDt() != null) {
+			map.put("searchDt", param.getSearchDt());
+			//logger.debug("****** getBottleList *****getSearchChargeDt===*"+param.getSearchChargeDt());
+		}		
+		
+		if(param.getSearchDtFrom() != null) {
+			map.put("searchDtFrom", param.getSearchDtFrom());
+			//logger.debug("****** getBottleList *****getSearchChargeDtFrom===*"+param.getSearchChargeDtFrom());
+		}
+		
+		if(param.getSearchDtEnd() != null) {
+			map.put("searchDtEnd", param.getSearchDtEnd());
+			//logger.debug("****** getBottleList *****getSearchChargeDtEnd===*"+param.getSearchChargeDtEnd());
+		}
+		
 		if(param.getSearchSalesYn() != null) {
 			map.put("searchSalesYn", param.getSearchSalesYn());
 			map.put("bottleWorkCd", param.getBottleWorkCd());
@@ -178,6 +193,26 @@ public class BottleServiceImpl implements BottleService {
 			map.put("searchWorkCd", param.getSearchWorkCd());
 		}
 		
+		if(param.getSearchDt() != null) {
+			map.put("searchDt", param.getSearchDt());
+			
+			String searchDt = param.getSearchDt();	
+			
+			String searchDtFrom = null;
+			String searchDtEnd = null;
+					
+			if(searchDt != null && searchDt.length() > 20) {
+				searchDtFrom = searchDt.substring(0, 10) ;			
+				searchDtEnd = searchDt.substring(13, searchDt.length()) ;
+				
+				param.setSearchDtFrom(searchDtFrom);
+				param.setSearchDtEnd(searchDtEnd);			
+				map.put("searchDtFrom", param.getSearchDtFrom());
+				map.put("searchDtEnd", param.getSearchDtEnd());
+			}
+			
+		}		
+			
 		if(param.getSearchChargeDt() != null) {
 			map.put("searchChargeDt", param.getSearchChargeDt());
 			logger.debug("****** getBottleListToExcel *****getSearchChargeDt===*"+param.getSearchChargeDt());

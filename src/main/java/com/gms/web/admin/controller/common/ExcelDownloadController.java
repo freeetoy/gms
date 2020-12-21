@@ -248,9 +248,10 @@ public class ExcelDownloadController {
 			        */
 			        
 			    }	
-			    
+	/*		    
 			    param.setStartRow(30001);
-				bottleList = bottleService.getBottleListToExcel(param);
+			    
+				//bottleList = bottleService.getBottleListToExcel(param);
 				
 				for(BottleVO vo : bottleList) {
 			    	int k=0;
@@ -312,17 +313,9 @@ public class ExcelDownloadController {
 			        	cell.setCellValue("self");
 			        else
 			        	cell.setCellValue("other");					       
-			        /*
-			        cell = row.createCell(k++);
-			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue(vo.getCustomerNm());
-			        
-			        cell = row.createCell(k++);
-			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue(vo.getBottleWorkCdNm());
-			        */
 			        
 			    }	
+		    */
 		    }
 		    // width 자동조절
 			for (int x = 0; x < sheet.getRow(1).getPhysicalNumberOfCells(); x++) {

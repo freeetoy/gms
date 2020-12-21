@@ -7,6 +7,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gms.web.admin.service.statistics.StatisticsAgencyService;
 import com.gms.web.admin.service.statistics.StatisticsBottleService;
 import com.gms.web.admin.service.statistics.StatisticsCustomerService;
 import com.gms.web.admin.service.statistics.StatisticsOrderService;
@@ -33,6 +34,10 @@ public class SchedulerServiceImpl implements SchedulerService {
 	@Autowired
 	private StatisticsUserService statUserService;
 
+
+	@Autowired
+	private StatisticsAgencyService statAgencyService;
+
 	@Override
 	@Transactional
 	public int registerDailyStatistics() {
@@ -54,6 +59,8 @@ public class SchedulerServiceImpl implements SchedulerService {
 			result  = statBottleService.registerDailyStatisticsBottle();
 			
 			result  = statUserService.registerDailyStatisticsUser();
+			
+			result  = statAgencyService.registerDailyStatisticsAgency();
 			
 		} catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
@@ -84,6 +91,8 @@ public class SchedulerServiceImpl implements SchedulerService {
 			result = statCustomerService.registerMonthlyStatisticsCustomer();
 			
 			result  = statBottleService.registerMonthlyStatisticsBottle();
+			
+			result  = statAgencyService.registerMonthlyStatisticsAgency();
 			
 		} catch (DataAccessException e) {
 			// TODO => 데이터베이스 처리 과정에 문제가 발생하였다는 메시지를 전달
