@@ -44,6 +44,8 @@ public class UserVO  extends  AbstractSearchVO implements Serializable {
 	/** 삭제여부 */
 	private String deleteYn;
 	
+	/** 이카운트코드 ECount_User_CD */
+	private String eCountUserCd;
 	
 	
 	/** 사용자명 검색	 */

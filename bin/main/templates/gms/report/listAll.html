@@ -572,7 +572,7 @@ $(document).ready(function(){
     {
  	   var searchDt = $('#searchDt').val();
  	   var searchUserId = $('#searchUserId').val();
- 	   console.log("searchDt=="+searchDt);
+ 	   
        $.popupWindow('/gms/report/print.do?searchDt='+searchDt+"&searchUserId="+searchUserId, {
               width: 980,
               height: 700,
@@ -602,6 +602,32 @@ $(document).ready(function(){
         form.submit();		
     });
     
+    $(".btn_ecount_user").click(function()  
+    {
+ 	   var searchDt = $('#searchDt').val();
+ 	   var searchUserId =  $("#searchUserId").val()
+ 	   
+ 	   var form = document.createElement("form");
+		form.setAttribute("charset","UTF-8");
+		form.setAttribute("method","post");
+		form.setAttribute("action","/gms/excelDownloadEcount.do");			
+	    
+		var hiddenField = document.createElement("input");
+      	hiddenField.setAttribute("type", "hidden");
+      	hiddenField.setAttribute("name", "searchDt");
+      	hiddenField.setAttribute("value", searchDt);
+      	form.appendChild(hiddenField);   
+      	
+      	var hiddenField1 = document.createElement("input");
+      	hiddenField1.setAttribute("type", "hidden");
+      	hiddenField1.setAttribute("name", "searchUserId");
+      	hiddenField1.setAttribute("value", searchUserId);
+      	form.appendChild(hiddenField1);   
+      
+      	document.body.appendChild(form);
+        
+        form.submit();		
+    });
     
     
     $(".btn_select_delete").click(function()  
@@ -968,10 +994,12 @@ $(document).ready(function(){
         		<a class="btn_select_process2 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal2" href="#"><i class="fas fa-check-circle"></i> 단품판매</a>
         		<!--  <a class="btn_select_process3 btn btn-success btn-sm"  data-toggle="modal" data-target="#process-modal1" href="#"><i class="fas fa-check-circle"></i> 회수</a>-->
         	</div>
-        	<div class="col-8">
-        	<a class="btn_ecount btn btn-primary btn-sm float-right"   th:userId="${session.userId}"  href="#" >
-                              <i class="fas fa-file-excel"></i> ECount엑셀받기</a>
-         		<!-- <a th:href="@{/gms/excelDownloadEcount.do}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> ECount엑셀받기</button></a>     -->     	
+        	<div class="col-6" align="right">
+	        	<a class="btn_ecount_user btn btn-primary btn-sm float-right"   th:userId="${session.userId}"  href="#" ><i class="fas fa-file-excel"></i> ECount엑셀받기(사용자별)</a>
+	         		<!-- <a th:href="@{/gms/excelDownloadEcount.do}"><button type="button" class="btn btn-primary btn-sm float-right"><i class="far fa-file-excel"></i> ECount엑셀받기</button></a>     -->     	
+	        </div>
+	        <div class="col-2">
+	        	<a class="btn_ecount btn btn-primary btn-sm float-right"   th:userId="${session.userId}"  href="#" ><i class="fas fa-file-excel"></i> ECount엑셀받기</a>
         	</div>
         </div>
         <div class="row">

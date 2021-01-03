@@ -1,5 +1,7 @@
 package com.gms.web.admin.domain.manage;
 
+import com.gms.web.admin.common.config.PropertyFactory;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +20,7 @@ public class ECountVO {
 	
 	private String wareHouse ="대한특수가스";
 	
-	private String dealType = "부가세율 적용";		// 거래유형
+	private String dealType = PropertyFactory.getProperty("ecount.dealtype.tax.include");		// 거래유형
 	
 	private String currency;		//통화
 	

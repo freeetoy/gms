@@ -24,7 +24,7 @@
 		 , Create_Dt
 	</sql>
 
-	<insert id="inserDailyStatisticsAgency">
+	<insert id="insertDailyStatisticsAgency">
 		INSERT INTO TB_Daily_Stat_Agency(
 			<include refid="StatisticsAgencyolumns" />
 		)
@@ -32,9 +32,10 @@
 		FROM TB_Customer_Product TP, TB_Customer TC
 		WHERE TC.Agency_YN =  'Y'
 		AND TP.Customer_ID = TC.Customer_ID
+		AND (TP.Bottle_Own_Count >0 ||  TP.Bottle_Rent_Count >0 )
 	</insert>
 	
-	<insert id="inserMonthlyStatisticsAgency">
+	<insert id="insertMonthlyStatisticsAgency">
 		INSERT INTO TB_Monthly_Stat_Agency(
 			<include refid="StatisticsAgencyolumns" />
 		)
@@ -51,31 +52,63 @@
 		GROUP BY Product_ID,LEFT(Stat_Dt,7)
 	</insert>
 	
+	<select id="selectStatisticsAgencyCustomerList" resultType="com.gms.web.admin.domain.manage.CustomerSimpleVO" parameterType="java.util.Map">		
+		SELECT sa.Customer_ID, tc.Customer_Nm
+		FROM TB_Daily_Stat_Agency sa, TB_Customer tc
+		WHERE sa.Customer_Id = tc.Customer_ID		
+		AND sa.Stat_Dt = #{searchStatDt} 
+		GROUP BY sa.Customer_ID			
+	</select>
+	
+	<select id="selectStatisticsAgencyProductList" resultType="com.gms.web.admin.domain.manage.ProductPriceSimpleVO" parameterType="java.util.Map">		
+		SELECT sa.Product_ID, sa.Product_Price_Seq , tp.Product_Nm, pp.Product_Capa
+		FROM TB_Daily_Stat_Agency sa,TB_Product tp, TB_Product_Price pp 
+		WHERE sa.Product_ID = tp.Product_ID
+		AND sa.Product_ID = pp.Product_ID
+		AND sa.Product_Price_Seq = pp.Product_Price_Seq
+		AND sa.Stat_Dt = #{searchStatDt} 
+		GROUP by sa.Product_ID, sa.Product_Price_Seq
+	</select>
 	
 	<select id="selectDailylStatisticsAgencyList" resultType="com.gms.web.admin.domain.statistics.StatisticsAgencyVO" parameterType="java.util.Map">		
 		SELECT
-			<include refid="StatisticsAgencyolumns" />
-		FROM
-			TB_Daily_Stat_Agency
-		WHERE
-			1 = 1	
-		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchStatDt)">
-		AND Stat_Dt between  #{searchStatDtFrom} AND  #{searchStatDtEnd} 
-		</if>
-		ORDER BY Create_Dt DESC 
+			Stat_Dt       
+		 , sa.Customer_ID
+		 , sa.Product_ID   
+		 , sa.Product_Price_Seq  
+		 , sa.Bottle_Own_Count	
+		 , sa.Bottle_Rent_Count
+		FROM TB_Daily_Stat_Agency sa
+		WHERE sa.Stat_Dt = #{searchStatDt} 
+		Order By sa.Product_ID , sa.Product_Price_Seq
+		<!-- 
+		SELECT tb.Product_ID, p.Product_Nm, tb.Product_Price_Seq, tb.Product_Capa
+				,tc1.Bottle_Own_Count, tc1.Bottle_Rent_Count, tc1.Customer_Id, tc1.Customer_Nm
+		FROM  TB_Product_Price tb Left Join 
+		(
+			SELECT Product_Id, Product_Price_Seq,TP.Bottle_Own_Count,TP.Bottle_Rent_Count,TP.Customer_Id,Customer_Nm
+			FROM TB_Daily_Stat_Agency TP, tb_customer TC
+			WHERE TC.Agency_YN =  'Y'
+			AND TP.Customer_ID = TC.Customer_ID
+			AND TP.Stat_Dt = DATE_FORMAT(date_sub(curdate(), interval 1 day),'%Y/%m/%d')
+			Group by Product_Id, Product_Price_Seq, TP.Customer_Id
+		) tc1 on ( tb.Product_ID = tc1.Product_ID and tb.Product_Price_Seq = tc1.Product_Price_Seq)
+		, TB_Product p
+		WHERE tb.Product_ID` = p.Product_ID
+		 -->
 	</select>
 	
 	<select id="selectMontlylStatisticsAgencyList" resultType="com.gms.web.admin.domain.statistics.StatisticsAgencyVO" parameterType="java.util.Map">		
 		SELECT
-			<include refid="StatisticsAgencyolumns" />
-		FROM
-			TB_Monthly_Stat_Agency
-		WHERE
-			1 = 1
-		<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchStatDt)">
-		AND Stat_Dt between  #{searchStatDtFrom} AND  #{searchStatDtEnd} 
-		</if>
-		ORDER BY Create_Dt DESC 
+			Stat_Dt       
+		 , sa.Customer_ID
+		 , sa.Product_ID   
+		 , sa.Product_Price_Seq  
+		 , sa.Bottle_Own_Count	
+		 , sa.Bottle_Rent_Count
+		FROM TB_Monthly_Stat_Agency sa
+		WHERE sa.Stat_Dt = #{searchStatDt} 
+		Order By sa.Product_ID , sa.Product_Price_Seq
 	</select>
 	
 </mapper>

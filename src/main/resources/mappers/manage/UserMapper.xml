@@ -12,7 +12,8 @@
 		<result property="userAuthority"		column="User_Authority"		/>
 		<result property="userPasswd"			column="User_Passwd"		/>
 		<result property="lastConnectDt"		column="Last_Connect_Dt"	/>
-		<result property="deleteYn"				column="DELETE_YN"			/>		
+		<result property="deleteYn"				column="DELETE_YN"			/>	
+		<result property="eCountUserCd"			column="ECount_User_CD"		/>		
 		<result property="createId"				column="CREATE_ID"			/>
 		<result property="createDt"				column="CREATED_DT"			/>
 		<result property="updateId"				column="UPDATE_ID"			/>		
@@ -29,6 +30,7 @@
 		, User_Passwd    
 		, Last_Connect_Dt
 		, Delete_Yn
+		, ECount_User_CD
 		, Create_ID      
 		, Create_Dt      
 		, Update_ID      
@@ -50,6 +52,7 @@
 			, #{userPasswd}
 			, NULL
 			, IFNULL(#{deleteYn}, 'N')
+			, #{eCountUserCd}
 			, #{createId}			
 			, NOW()
 			, NULL
@@ -87,6 +90,7 @@
 			, User_Part_CD		= #{userPartCd}
 			, User_Authority	= #{userAuthority}
 			, User_Passwd		= #{userPasswd}
+			, ECount_User_CD	= #{eCountUserCd}
 			, UPDATE_ID			= #{updateId}
 			, UPDATE_DT			= NOW()
 		WHERE

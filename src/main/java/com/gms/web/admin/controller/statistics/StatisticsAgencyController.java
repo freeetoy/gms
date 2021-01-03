@@ -1,7 +1,6 @@
 package com.gms.web.admin.controller.statistics;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,12 +22,10 @@ import com.gms.web.admin.common.config.PropertyFactory;
 import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.common.utils.ExcelStyle;
 import com.gms.web.admin.common.utils.StringUtils;
-import com.gms.web.admin.domain.manage.CustomerVO;
+import com.gms.web.admin.domain.manage.CustomerSimpleVO;
+import com.gms.web.admin.domain.statistics.StatisticsAgencyResultVO;
 import com.gms.web.admin.domain.statistics.StatisticsAgencyVO;
-import com.gms.web.admin.domain.statistics.StatisticsCustomerVO;
-import com.gms.web.admin.service.manage.CustomerService;
 import com.gms.web.admin.service.statistics.StatisticsAgencyService;
-import com.gms.web.admin.service.statistics.StatisticsCustomerService;
 
 @Controller
 public class StatisticsAgencyController {
@@ -38,13 +35,11 @@ public class StatisticsAgencyController {
 	 * UserService 빈(Bean) 선언
 	 */
 	@Autowired
-	private StatisticsAgencyService statService;
+	private StatisticsAgencyService statService;	
 	
-	@Autowired
-	private CustomerService customerService;
 	
 	@RequestMapping(value = "/gms/statistics/agency/daily.do")
-	public ModelAndView getStatisticsAgencyDaily(StatisticsAgencyVO params) {
+	public ModelAndView getStatisticsAgencyDaily(StatisticsAgencyVO param) {
 
 		logger.info("StatisticsCustomerContoller getStatisticsCustomerDaily");
 		//logger.debug("StatisticsCustomerContoller searchStatisticsCustomerDt "+ params.getSearchStatDt());
@@ -53,43 +48,23 @@ public class StatisticsAgencyController {
 		
 		//Integer searchCustomerId = params.getSearchCustomerId();
 				
-		String searchStatDt = params.getSearchStatDt();	
-		
-		String searchStatDtFrom = null;
-		String searchStatDtEnd = null;
-				
-		if(searchStatDt != null && searchStatDt.length() > 20) {						
-			searchStatDtFrom = searchStatDt.substring(0, 10) ;			
-			searchStatDtEnd = searchStatDt.substring(13, searchStatDt.length()) ;
-			
-			params.setSearchStatDtFrom(searchStatDtFrom);
-			params.setSearchStatDtEnd(searchStatDtEnd);			
-		}else {				
-			searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");
-			//logger.debug("****** getStatisticsCustomerDaily else *****getSearchStatDtFrom===*"+searchStatDtFrom);
-			
-			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");
-			//logger.debug("****** getStatisticsCustomerDaily else *****getSearchStatDtEnd===*"+searchStatDtEnd);
-			
-			params.setSearchStatDtFrom(searchStatDtFrom);
-			params.setSearchStatDtEnd(searchStatDtEnd);
-			
-			searchStatDt = searchStatDtFrom +" - "+ searchStatDtEnd;
-			params.setSearchStatDt(searchStatDt);
+		String searchStatDt = param.getSearchStatDt();			
+		if(searchStatDt == null ||  (searchStatDt != null && searchStatDt.length() < 6 ) ){
+			searchStatDt = DateUtils.getNextDate(-1,"yyyy/MM/dd");
+			param.setSearchStatDt(searchStatDt);
 		}
-		params.setSearchStatDt(searchStatDtFrom);
 		
-		List<StatisticsAgencyVO> statCustomerList = statService.getDailylStatisticsAgencyList(params);
+		List<CustomerSimpleVO> customerList = statService.getStatisticsAgencyCustomerList(param);
 		
-		mav.addObject("statCustomerList", statCustomerList);	
+		List<StatisticsAgencyResultVO> statAgency = statService.getDailylStatisticsAgencyList(param);
+		
+		mav.addObject("customerList", customerList);	
+		mav.addObject("statAgency", statAgency);	
 		
 		//검색어 셋팅
-		mav.addObject("searchStatDt", searchStatDt);		
-		
-		Map<String, Object> map = customerService.searchCustomerList("");
-		mav.addObject("customerList", map.get("list"));
-		
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_customer"));	 		
+		mav.addObject("searchStatDt", searchStatDt);				
+	
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_agency"));	 		
 		
 		mav.setViewName("gms/statistics/agency/daily");
 		
@@ -98,50 +73,31 @@ public class StatisticsAgencyController {
 
 	
 	@RequestMapping(value = "/gms/statistics/agency/monthly.do")
-	public ModelAndView getStatisticsCustomerMonthly(StatisticsAgencyVO params) {
+	public ModelAndView getStatisticsAgencyMonthly(StatisticsAgencyVO param) {
 
-		logger.info("StatisticsCustomerContoller getStatisticsCustomerMonthly");
-		logger.debug("StatisticsCustomerContoller searchStatisticsCustomerDt "+ params.getSearchStatDt());
+		logger.info("StatisticsCustomerContoller getStatisticsAgencyMonthly");
 
 		ModelAndView mav = new ModelAndView();
-				
-		String searchStatDt = params.getSearchStatDt();	
 		
-		String searchStatDtFrom = null;
-		String searchStatDtEnd = null;
+		//Integer searchCustomerId = params.getSearchCustomerId();
 				
-		if(searchStatDt != null && searchStatDt.length() > 20) {						
-			searchStatDtFrom = searchStatDt.substring(0, 8) ;			
-			searchStatDtEnd = searchStatDt.substring(13, searchStatDt.length()-2) ;
-			
-			params.setSearchStatDtFrom(searchStatDtFrom);
-			params.setSearchStatDtEnd(searchStatDtEnd);			
-		}else {									
-			searchStatDtFrom = DateUtils.getNextDate(-366,"yyyy/MM");
-			//logger.debug("****** getMonthlylStatisticsCustomerList else *****getSearchStatDtFrom===*"+searchStatDtFrom);			
-			searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM");
-			//logger.debug("****** getMonthlylStatisticsCustomerList else *****getSearchStatDtEnd===*"+searchStatDtEnd);
-			
-			params.setSearchStatDtFrom(searchStatDtFrom);
-			params.setSearchStatDtEnd(searchStatDtEnd);
-			
-			searchStatDt = searchStatDtFrom +" - "+ searchStatDtEnd;
-			
-			params.setSearchStatDt(searchStatDt);
+		String searchStatDt = param.getSearchStatDt();			
+		if(searchStatDt == null ||  (searchStatDt != null && searchStatDt.length() < 6 ) ){
+			searchStatDt = DateUtils.getNextDate(-30,"yyyy/MM");
+			param.setSearchStatDt(searchStatDt);
 		}
-		params.setSearchStatDt(searchStatDtFrom);
 		
-		List<StatisticsAgencyVO> statCustomerList = statService.getMontlylStatisticsAgencyList(params);
+		List<CustomerSimpleVO> customerList = statService.getStatisticsAgencyCustomerList(param);
 		
-		mav.addObject("statCustomerList", statCustomerList);	
+		List<StatisticsAgencyResultVO> statAgency = statService.getMontlylStatisticsAgencyList(param);
+		
+		mav.addObject("customerList", customerList);	
+		mav.addObject("statAgency", statAgency);	
 		
 		//검색어 셋팅
-		mav.addObject("searchStatDt", searchStatDt);			
-		
-		Map<String, Object> map = customerService.searchCustomerList("");
-		mav.addObject("customerList", map.get("list"));
-		
-		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_customer"));		
+		mav.addObject("searchStatDt", searchStatDt);				
+	
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_agency"));	 		
 		
 		mav.setViewName("gms/statistics/agency/monthly");
 		
@@ -150,48 +106,24 @@ public class StatisticsAgencyController {
 	
 	
 	@RequestMapping(value = "/gms/statistics/agency/excelDown.do")
-	public void excelDownloadAgency(HttpServletResponse response,StatisticsAgencyVO params){
+	public void excelDownloadAgency(HttpServletResponse response,StatisticsAgencyVO param){
 	// 게시판 목록조회
 
 	   try {
 		   // 가스 정보 불러오기
-		   String searchStatDt = params.getSearchStatDt();	
+		   String searchStatDt = param.getSearchStatDt();			
+		   
+		   List<CustomerSimpleVO> customerList = statService.getStatisticsAgencyCustomerList(param);
+		   String sheetName = "대리점";
+		   String fileName="Statistic_"+sheetName+"_";
 			
-		   String searchStatDtFrom = null;
-		   String searchStatDtEnd = null;
-					
-			if(searchStatDt != null && searchStatDt.length() > 20) {						
-				searchStatDtFrom = searchStatDt.substring(0, 10) ;			
-				searchStatDtEnd = searchStatDt.substring(13, searchStatDt.length()) ;
-				
-				params.setSearchStatDtFrom(searchStatDtFrom);
-				params.setSearchStatDtEnd(searchStatDtEnd);			
-			}else {			
-				searchStatDtFrom = DateUtils.getNextDate(-31,"yyyy/MM/dd");		
-				searchStatDtEnd = DateUtils.getNextDate(-1,"yyyy/MM/dd");	
-				
-				params.setSearchStatDtFrom(searchStatDtFrom);
-				params.setSearchStatDtEnd(searchStatDtEnd);
-		
-				searchStatDt = searchStatDtFrom +" - "+ searchStatDtEnd;
-				
-				params.setSearchStatDt(searchStatDt);
-			}		
-			/*
-			CustomerVO customer = customerService.getCustomerDetails(params.getSearchCustomerId());
-					
-			
-			if(customer != null) sheetName = customer.getCustomerNm();
-			*/String sheetName = "거래처";
-			
-			List<StatisticsAgencyVO> statAgencyList = null;
-			
-			String fileName="Statistic_"+sheetName;
-			if(params.getPeriodType()==1) {
-				statAgencyList = statService.getDailylStatisticsAgencyList(params);
+		   List<StatisticsAgencyResultVO> statAgency = null;
+		   
+			if(param.getPeriodType()==1) {
+				statAgency = statService.getDailylStatisticsAgencyList(param);
 				fileName +="Daily_"+DateUtils.getDate();
 			}else {
-				statAgencyList = statService.getMontlylStatisticsAgencyList(params);
+				statAgency = statService.getMontlylStatisticsAgencyList(param);
 				fileName +="Monthly_"+DateUtils.getDate();
 			}
 		    // 워크북 생성
@@ -211,48 +143,66 @@ public class StatisticsAgencyController {
 		    // 데이터용 경계 스타일 테두리만 지정
 		    CellStyle bodyStyle = wb.createCellStyle();
 		    
-		    bodyStyle= ExcelStyle.getBodyStyle(bodyStyle);
+		    bodyStyle= ExcelStyle.getBodyStyle(bodyStyle);		   
 		   
-		    // 헤더 생성 날짜		주문건수	주문금액
-		    //			0	1		2		
-		    row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
+		    row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);		   
+		    cell = row.createCell(0);
 		    
-		    List<String> list = null;		    
-		    list = StringUtils.makeForeach(PropertyFactory.getProperty("excel.stat.customer.title"), ","); 		
-		    
-		    for(int i =0;i<list.size();i++) {
+		    for(int i=1;i<customerList.size()+1;i++) {
 		    
 			    cell = row.createCell(i);
 			    cell.setCellStyle(headStyle);
-			    cell.setCellValue(list.get(i));		    
+			    cell.setCellValue(customerList.get(i-1).getCustomerNm());		    
 		    }
 		    
 		   // 날짜		주문건수	주문금액
 		    // 데이터 부분 생성
-		    for(StatisticsAgencyVO vo : statAgencyList) {
+		    for(StatisticsAgencyResultVO vo : statAgency) {
+		    	int ind = 0;
 		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
-		        cell = row.createCell(0);
+		        cell = row.createCell(ind++);
 		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getStatDt());
-		 /*       
-		        cell = row.createCell(1);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getBottleOwnCount());
+		        cell.setCellValue(vo.getProductNm()+" "+vo.getProductCapa());
 		        
-		        cell = row.createCell(2);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getOrderAmount());	        
-		        
-		        cell = row.createCell(3);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getIncomeAmount());
-		        
-		        cell = row.createCell(4);
-		        cell.setCellStyle(bodyStyle);
-		        cell.setCellValue(vo.getReceivableAmount());	  
-		      */ 
+		        for(int i =0; i < vo.getBottleOwnCountList().length;i++) {
+		        	cell = row.createCell(ind++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleOwnCountList()[i]);
+		        }		 
 		    }	
-	
+		    row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
+		    cell = row.createCell(0);
+	        cell.setCellStyle(bodyStyle);
+	        cell.setCellValue("대여현황");
+	        
+		    for(StatisticsAgencyResultVO vo : statAgency) {
+		    	int ind = 0;
+		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
+		        cell = row.createCell(ind++);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getProductNm()+" "+vo.getProductCapa());
+		        
+		        for(int i =0; i < vo.getBottleRentCountList().length;i++) {
+		        	cell = row.createCell(ind++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleRentCountList()[i]);
+		        }		 
+		    }	
+		    
+		    for (int x = 0; x < sheet.getRow(1).getPhysicalNumberOfCells(); x++) {
+				sheet.autoSizeColumn(x);
+				int width = sheet.getColumnWidth(x);
+				int minWidth =  450;
+				int maxWidth = 18000;
+				if (minWidth > width) {
+					sheet.setColumnWidth(x, minWidth);
+				} else if (width > maxWidth) {
+					sheet.setColumnWidth(x, maxWidth);
+				} else {
+					sheet.setColumnWidth(x, width + 2000);
+				}
+			}
+		    
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel"); 
 		    //response.setHeader("Content-Disposition", "attachment;filename="+fileName);	

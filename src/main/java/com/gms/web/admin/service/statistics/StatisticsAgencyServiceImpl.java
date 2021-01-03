@@ -1,5 +1,6 @@
 package com.gms.web.admin.service.statistics;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gms.web.admin.domain.manage.CustomerSimpleVO;
+import com.gms.web.admin.domain.manage.CustomerVO;
+import com.gms.web.admin.domain.manage.ProductPriceSimpleVO;
+import com.gms.web.admin.domain.manage.WorkReportViewVO;
+import com.gms.web.admin.domain.statistics.StatisticsAgencyResultVO;
 import com.gms.web.admin.domain.statistics.StatisticsAgencyVO;
 import com.gms.web.admin.mapper.statistics.StatisticsAgencyMapper;
 
@@ -21,8 +27,8 @@ public class StatisticsAgencyServiceImpl implements StatisticsAgencyService {
 	private StatisticsAgencyMapper statMapper;
 	
 	@Override
-	public List<StatisticsAgencyVO> getDailylStatisticsAgencyList(StatisticsAgencyVO param) {
-		logger.info("****** getDailylStatisticsCustomerList *****start===*");	
+	public List<StatisticsAgencyResultVO> getDailylStatisticsAgencyList(StatisticsAgencyVO param) {
+		logger.info("****** getDailylStatisticsAgencyList *****start===*");	
 		
 		Map<String, Object> map = new HashMap<String, Object>();		
 
@@ -30,65 +36,202 @@ public class StatisticsAgencyServiceImpl implements StatisticsAgencyService {
 		
 		if(param.getSearchStatDt() != null) {
 			map.put("searchStatDt", param.getSearchStatDt());
-			logger.debug("****** getDailylStatisticsCustomerList *****getSearchStatDt===*"+param.getSearchStatDt());
+			logger.debug("****** getDailylStatisticsAgencyList *****getSearchStatDt===*"+param.getSearchStatDt());
+		}				
+			
+		List<CustomerSimpleVO> customerList = statMapper.selectStatisticsAgencyCustomerList(map);			
+		List<ProductPriceSimpleVO> productList = statMapper.selectStatisticsAgencyProductList(map);	
+		List<StatisticsAgencyVO> agencyList = statMapper.selectDailylStatisticsAgencyList(map);	
+		
+		StatisticsAgencyResultVO statResult = new StatisticsAgencyResultVO();
+		List<StatisticsAgencyResultVO> statList = new ArrayList<StatisticsAgencyResultVO>();	
+		List<Integer> bottleOwnCountList1 = new ArrayList<Integer>();
+		
+		for(int i =0 ; i < productList.size() ; i++) {
+			statResult = new StatisticsAgencyResultVO();
+			statResult.setProductId(productList.get(i).getProductId());
+			statResult.setProductNm(productList.get(i).getProductNm());
+			statResult.setProductPriceSeq(productList.get(i).getProductPriceSeq());
+			statResult.setProductCapa(productList.get(i).getProductCapa());
+			
+			Integer[] countOwnList = new Integer[customerList.size()];
+			Integer[] countRentList = new Integer[customerList.size()];
+			
+			for(int k =0 ; k < customerList.size() ; k++) {					
+				//logger.debug("&&&customerList.customerId ="+customerList.get(k).getCustomerId());
+				for(int j =0 ; j < agencyList.size() ; j++) {	
+					
+					if(agencyList.get(j).getCustomerId()- customerList.get(k).getCustomerId() == 0) {
+						//logger.debug(" customerList.customerId =*"+customerList.get(k).getCustomerId());
+						//logger.debug(" agencyList.customerId =*"+agencyList.get(j).getCustomerId());
+						
+						if(statResult.getProductId() == agencyList.get(j).getProductId() 
+								&& statResult.getProductPriceSeq() == agencyList.get(j).getProductPriceSeq()) {
+								/*
+							logger.debug("==statResult.getProductId =*"+statResult.getProductId());	
+							//logger.debug(" statResult.getProductNm =*"+statResult.getProductNm());	
+							logger.debug(" statResult.getProductPriceSeq =*"+statResult.getProductPriceSeq());	
+							//logger.debug("== statResult.getProductCapa =*"+statResult.getProductCapa());	
+							
+							logger.debug(" agencyList.getProductId =*"+agencyList.get(j).getProductId());				
+							logger.debug(" agencyList.getProductPriceSeq =*"+agencyList.get(j).getProductPriceSeq());
+							*/
+							
+							countOwnList[k] = agencyList.get(j).getBottleOwnCount();
+							countRentList[k] = agencyList.get(j).getBottleRentCount();
+							//logger.debug("***************statAgency.countList1 =="+countList[k]);
+						}			
+					}
+				}				
+			}
+			
+			for(int  j=0; j<countOwnList.length ;  j++) {
+				if(countOwnList[j] == null) {
+					countOwnList[j] =0;
+					bottleOwnCountList1.add(0);
+				}else {
+					bottleOwnCountList1.add(countOwnList[j]);
+				}
+				if(countRentList[j] == null) countRentList[j] =0;
+			}
+			statResult.setBottleOwnCountList(countOwnList);
+			statResult.setBottleRentCountList(countRentList);
+			statResult.setBottleOwnCountList1(bottleOwnCountList1);
+			statList.add(statResult);
 		}		
 		
-		if(param.getSearchStatDtFrom() != null) {
-			map.put("searchStatDtFrom", param.getSearchStatDtFrom());
-			logger.debug("****** getDailylStatisticsCustomerList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
+		for(int i =0 ; i < statList.size() ; i++ ) {
+			//StatisticsAgencyVO statAgency = statList.get(i).getStatAgency();
+			Integer[] countList  = statList.get(i).getBottleOwnCountList();
+			Integer[] countList1  = statList.get(i).getBottleRentCountList();
+			
+			logger.debug(" statList.get(i).getProductId =*"+statList.get(i).getProductId());	
+			logger.debug(" statList.get(i).getProductNm =*"+statList.get(i).getProductNm());	
+			logger.debug(" statList.get(i).getProductPriceSeq =*"+statList.get(i).getProductPriceSeq());	
+			logger.debug(" statList.get(i).getProductCapa =*"+statList.get(i).getProductCapa());	
+			
+			for(int j =0 ; j < countList.length ; j++) {
+				logger.debug(" statAgency.countList =="+countList[j]);		
+				logger.debug(" statAgency.countList1 =="+countList1[j]);
+			}
+			
 		}
 		
-		if(param.getSearchStatDtEnd() != null) {
-			map.put("searchStatDtEnd", param.getSearchStatDtEnd());
-			logger.debug("****** getDailylStatisticsCustomerList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
-		}	
-				
-		List<StatisticsAgencyVO> statList = statMapper.selectDailylStatisticsAgencyList(map);	
+		//statList.setCustomerList(customerList);
+		//statList.setProductList(productList);
+		//statList.setStatAgencyList(agencyList);
 		
-				
 		return statList;
 	}
 
 	@Override
-	public List<StatisticsAgencyVO> getMontlylStatisticsAgencyList(StatisticsAgencyVO param) {
+	public List<StatisticsAgencyResultVO> getMontlylStatisticsAgencyList(StatisticsAgencyVO param) {
 
-		logger.info("****** getMonthlyStatisticsCustomerList *****start===*");	
+		logger.info("****** getMontlylStatisticsAgencyList *****start===*");	
 		
-		Map<String, Object> map = new HashMap<String, Object>();		
-
-		//map.put("searchCustomerId", param.getSearchCustomerId());			
+		Map<String, Object> map = new HashMap<String, Object>();
 		
 		if(param.getSearchStatDt() != null) {
 			map.put("searchStatDt", param.getSearchStatDt());
-			logger.debug("****** getMonthlylStatisticsCustomerList *****getSearchStatDt===*"+param.getSearchStatDt());
+		}				
+			
+		List<CustomerSimpleVO> customerList = statMapper.selectStatisticsAgencyCustomerList(map);			
+		List<ProductPriceSimpleVO> productList = statMapper.selectStatisticsAgencyProductList(map);	
+		List<StatisticsAgencyVO> agencyList = statMapper.selectMontlylStatisticsAgencyList(map);	
+		
+		StatisticsAgencyResultVO statResult = new StatisticsAgencyResultVO();
+		List<StatisticsAgencyResultVO> statList = new ArrayList<StatisticsAgencyResultVO>();	
+		List<Integer> bottleOwnCountList1 = new ArrayList<Integer>();
+		
+		for(int i =0 ; i < productList.size() ; i++) {
+			statResult = new StatisticsAgencyResultVO();
+			statResult.setProductId(productList.get(i).getProductId());
+			statResult.setProductNm(productList.get(i).getProductNm());
+			statResult.setProductPriceSeq(productList.get(i).getProductPriceSeq());
+			statResult.setProductCapa(productList.get(i).getProductCapa());
+			
+			Integer[] countOwnList = new Integer[customerList.size()];
+			Integer[] countRentList = new Integer[customerList.size()];
+			
+			for(int k =0 ; k < customerList.size() ; k++) {					
+				
+				for(int j =0 ; j < agencyList.size() ; j++) {	
+					
+					if(agencyList.get(j).getCustomerId()- customerList.get(k).getCustomerId() == 0) {
+						
+						if(statResult.getProductId() == agencyList.get(j).getProductId() 
+								&& statResult.getProductPriceSeq() == agencyList.get(j).getProductPriceSeq()) {
+							
+							countOwnList[k] = agencyList.get(j).getBottleOwnCount();
+							countRentList[k] = agencyList.get(j).getBottleRentCount();							
+						}			
+					}
+				}				
+			}
+			
+			for(int  j=0; j<countOwnList.length ;  j++) {
+				if(countOwnList[j] == null) {
+					countOwnList[j] =0;
+					bottleOwnCountList1.add(0);
+				}else {
+					bottleOwnCountList1.add(countOwnList[j]);
+				}
+				if(countRentList[j] == null) countRentList[j] =0;
+			}
+			statResult.setBottleOwnCountList(countOwnList);
+			statResult.setBottleRentCountList(countRentList);
+			statResult.setBottleOwnCountList1(bottleOwnCountList1);
+			statList.add(statResult);
 		}		
-		
-		if(param.getSearchStatDtFrom() != null) {
-			map.put("searchStatDtFrom", param.getSearchStatDtFrom());
-			logger.debug("****** getMonthlylStatisticsCustomerList *****getSearchStatDtFrom===*"+param.getSearchStatDtFrom());
+		/*
+		for(int i =0 ; i < statList.size() ; i++ ) {
+			//StatisticsAgencyVO statAgency = statList.get(i).getStatAgency();
+			Integer[] countList  = statList.get(i).getBottleOwnCountList();
+			Integer[] countList1  = statList.get(i).getBottleRentCountList();
+			
+			logger.debug(" statList.get(i).getProductId =*"+statList.get(i).getProductId());	
+			logger.debug(" statList.get(i).getProductNm =*"+statList.get(i).getProductNm());	
+			logger.debug(" statList.get(i).getProductPriceSeq =*"+statList.get(i).getProductPriceSeq());	
+			logger.debug(" statList.get(i).getProductCapa =*"+statList.get(i).getProductCapa());	
+			
+			for(int j =0 ; j < countList.length ; j++) {
+				logger.debug(" statAgency.countList =="+countList[j]);		
+				logger.debug(" statAgency.countList1 =="+countList1[j]);
+			}			
 		}
+		*/
 		
-		if(param.getSearchStatDtEnd() != null) {
-			map.put("searchStatDtEnd", param.getSearchStatDtEnd());
-			logger.debug("****** getMonthlylStatisticsCustomerList *****getSearchStatDtEnd===*"+param.getSearchStatDtEnd());
-		}	
-				
-		List<StatisticsAgencyVO> statList = statMapper.selectMontlylStatisticsAgencyList(map);	
 		
-				
 		return statList;
 	}
 
 	@Override
 	public int registerDailyStatisticsAgency() {
-		// TODO Auto-generated method stub
-		return statMapper.inserDailyStatisticsAgncy();
+		
+		return statMapper.insertDailyStatisticsAgency();
 	}
 
 	@Override
 	public int registerMonthlyStatisticsAgency() {
-		// TODO Auto-generated method stub
-		return statMapper.inserMonthlyStatisticsAgency();
+		
+		return statMapper.insertMonthlyStatisticsAgency();
+	}
+
+	@Override
+	public List<CustomerSimpleVO> getStatisticsAgencyCustomerList(StatisticsAgencyVO param) {
+		Map<String, Object> map = new HashMap<String, Object>();		
+
+		//map.put("searchCustomerId", param.getSearchCustomerId());	
+		
+		if(param.getSearchStatDt() != null) {
+			map.put("searchStatDt", param.getSearchStatDt());
+			logger.debug("****** getDailylStatisticsAgencyList *****getSearchStatDt===*"+param.getSearchStatDt());
+		}				
+			
+		List<CustomerSimpleVO> customerList = statMapper.selectStatisticsAgencyCustomerList(map);
+
+		return customerList;
+		
 	}
 
 	

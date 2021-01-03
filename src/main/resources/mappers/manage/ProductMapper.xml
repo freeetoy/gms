@@ -420,9 +420,9 @@
 		FROM
 			TB_Product  TP, TB_Product_Price TPP
 		WHERE
-			TP.Product_Status  != '0'
+			TP.Product_Status  = '2'
 		AND 
-			TPP.Product_Status  != '0'
+			TPP.Product_Status  = '2'
 		AND 
 			TP.Product_ID = TPP.Product_ID
 		AND 

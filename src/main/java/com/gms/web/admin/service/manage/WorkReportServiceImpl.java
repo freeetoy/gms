@@ -345,7 +345,8 @@ public class WorkReportServiceImpl implements WorkReportService {
 								WorkBottleVO workBottle = makeWorkBottle(soldBottle);
 								workBottle.setWorkReportSeq(param.getWorkReportSeq());
 								workBottle.setWorkSeq(workSeq++);
-								workBottle.setProductPrice(newOrderProductList.get(j).getOrderAmount());
+								//workBottle.setProductPrice(newOrderProductList.get(j).getOrderAmount());
+								workBottle.setProductPrice(productPrice);	//20210101 수정
 								workBottle.setBottleSaleYn(newOrderProductList.get(j).getBottleSaleYn());
 								//workBottle.setBottleWorkCd(param.getBottleWorkCd());
 								

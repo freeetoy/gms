@@ -19,11 +19,20 @@ public class StatisticsAgencyVO extends AbstractVO implements Serializable {
 	/**Customer_ID   */
 	private Integer customerId ;
 	
+	/**Customer_Nm   */
+	private String customerNm ;
+	
 	/**Product_ID   */
 	private Integer productId ;	
 	
+	/**Product_Nm   */
+	private String productNm ;	
+	
 	/**Product_Price_SEq   */
 	private Integer productPriceSeq ;	
+	
+	/**Product_Capa   */
+	private String productCapa ;	
 	
 	/**Bottle_Own_Count  */
 	private int bottleOwnCount;
@@ -32,13 +41,8 @@ public class StatisticsAgencyVO extends AbstractVO implements Serializable {
 	private int bottleRentCount;
 		
 	/** searchStatDt	*/
-	private String  searchStatDt;
-	
-	/** searchStatDtFrom	*/
-	private String  searchStatDtFrom;
-	
-	/** searchStatDtEnd	*/
-	private String  searchStatDtEnd;
+	private String  searchStatDt;	
+
 	
 	/** periodType
 	 * 1 daily

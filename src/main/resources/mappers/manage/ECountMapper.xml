@@ -20,7 +20,7 @@
 
 	 <select id="selectECount" resultType="com.gms.web.admin.domain.manage.ECountVO" parameterType="com.gms.web.admin.domain.manage.WorkReportVO" >		
 		SELECT 
-			TC.ECount_CD Customer_ID,Customer_NM, WB.Product_ID, PP.ECount_CD, PP.ECount_CDS, PT.Product_Nm, PP.Product_Capa, User_Nm Sales_Nm, WB.Bottle_Sale_YN,
+			TC.ECount_CD Customer_ID,Customer_NM, WB.Product_ID, PP.ECount_CD, PP.ECount_CDS, PT.Product_Nm, PP.Product_Capa, ECount_User_CD Sales_Nm, WB.Bottle_Sale_YN,
 			WB.Order_Count, WB.Product_Price, WB.Order_Count*WB.Product_Price Supply_Price,WB.Order_Count*WB.Product_Price*0.1 VAT
 		FROM 
 			(
@@ -28,6 +28,9 @@
 				FROM TB_Work_Bottle 
 				WHERE Bottle_Work_Cd in ('0308','0309','0314', '0315')
 				AND DATE_FORMAT(Create_dt,'%Y/%m/%d')=  #{searchDt}
+				<if test="@com.gms.web.admin.common.utils.StringUtils@isNotEmpty(searchUserId)">
+				AND Create_ID =  #{searchUserId}
+				</if>	
 				Group By Work_Report_Seq,Product_ID, Product_Price_Seq ,Create_ID,Bottle_Sale_YN,Product_Price
 			) WB,TB_Work_Report WR ,TB_Product PT, TB_Product_Price PP, TB_Customer TC, TB_User TU
 		WHERE 

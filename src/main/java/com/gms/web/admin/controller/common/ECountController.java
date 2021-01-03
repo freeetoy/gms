@@ -75,10 +75,14 @@ public class ECountController {
 	
 		    String curDate = searchDt.replace("/", "-");		    
 		    
-		    int excelIndex = 0;
+		    int excelIndex = 1;
 		    // 데이터 부분 생성
+		    ECountVO prevEcount = null;
 		    for(ECountVO vo : eList) {
-		    	excelIndex++;
+		    	
+		    	if(prevEcount != null && !prevEcount.getCustomerNm().equals(vo.getCustomerNm()) ){
+		    		excelIndex++;	
+		    	}
 		    	int k=0;
 		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
 		        
@@ -140,7 +144,7 @@ public class ECountController {
 		        //품목코드	
 		        cell = row.createCell(k++);
 		        cell.setCellStyle(bodyStyle);
-		        if(vo.getBottleSaleYn().equals("Y"))
+		        if(vo.getBottleSaleYn()!=null && vo.getBottleSaleYn().equals("Y"))
 		        	cell.setCellValue(vo.getECountCdS());
 		        else
 		        	cell.setCellValue(vo.getECountCd());
@@ -201,6 +205,7 @@ public class ECountController {
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getEcountString());
 	
+		        prevEcount = vo;
 		    }	
 		    // width 자동조절
 		    if(eList.size() > 0) {
@@ -218,9 +223,11 @@ public class ECountController {
 	 				}
 	 			}
 		    }
+		    String fileName = "Ecount_"+curDate+".xls";
+		    if(workReport.getSearchUserId()!=null && workReport.getSearchUserId().length() > 0) fileName = "Ecount_"+workReport.getSearchUserId()+"_"+curDate+".xls";
 		    // 컨텐츠 타입과 파일명 지정
 		    response.setContentType("ms-vnd/excel");
-		    response.setHeader("Content-Disposition", "attachment;filename=Ecount_"+curDate+".xls");	
+		    response.setHeader("Content-Disposition", "attachment;filename="+fileName);	
 	
 		    // 엑셀 출력
 		    wb.write(response.getOutputStream());
