@@ -96,33 +96,33 @@ $(function() {
                   <thead>
                     <tr style="font-size:13px;">
                       <th>날짜</th>
-                      <th>주문건수</th>
-                      <th>주문금액</th>
-                      <th>완료건수</th>
-                      <th>완료금액</th>
-                      <th>취소주문</th>
-                      <th>회수요청</th>
-                      <th>점검요청</th>
-                      <th>기타요청</th>
+                      <th align="right" >주문건수</th>
+                      <th align="right" >주문금액</th>
+                      <th align="right" >완료건수</th>
+                      <th align="right" >완료금액</th>
+                      <th align="right" >취소주문</th>
+                      <th align="right" >회수요청</th>
+                      <th align="right" >점검요청</th>
+                      <th align="right" >기타요청</th>
                     </tr>
                   </thead>
                   <tbody>
                   	<tr th:if="${not #lists.isEmpty( statList )}" th:each="row : ${statList}" style="font-size:14px;">
                       <td th:text="${row.statDt}"></td>
-                       <td th:if="${row.orderTotalCount> 999 }" th:text="${#numbers.formatInteger(row.orderTotalCount, 3, 'COMMA')}">
-                      <td th:unless="${row.orderTotalCount> 999 }" th:text="${row.orderTotalCount}">    
-                      <td th:if="${row.orderTotalAmount> 0 }" th:text="${#numbers.formatInteger(row.orderTotalAmount, 3, 'COMMA')}">
-                      <td th:unless="${row.orderTotalAmount> 0 }" th:text="${row.orderTotalAmount}">
+                      <td align="right" th:if="${row.orderTotalCount> 999 }" th:text="${#numbers.formatInteger(row.orderTotalCount, 3, 'COMMA')}">
+                      <td align="right" th:unless="${row.orderTotalCount> 999 }" th:text="${row.orderTotalCount}">    
+                      <td align="right" th:if="${row.orderTotalAmount> 0 }" th:text="${#numbers.formatInteger(row.orderTotalAmount, 3, 'COMMA')}">
+                      <td align="right" th:unless="${row.orderTotalAmount> 0 }" th:text="${row.orderTotalAmount}">
                       </td>                
-                      <td th:if="${row.orderCompletedCount> 999 }" th:text="${#numbers.formatInteger(row.orderCompletedCount, 3, 'COMMA')}">
-                      <td th:unless="${row.orderCompletedCount> 999 }" th:text="${row.orderCompletedCount}">     
-                      <td th:if="${row.orderCompletedAmount> 0 }" th:text="${#numbers.formatInteger(row.orderCompletedAmount, 3, 'COMMA')}">
-                      <td th:unless="${row.orderCompletedAmount> 0 }" th:text="${row.orderCompletedAmount}">
+                      <td align="right" th:if="${row.orderCompletedCount> 999 }" th:text="${#numbers.formatInteger(row.orderCompletedCount, 3, 'COMMA')}">
+                      <td align="right" th:unless="${row.orderCompletedCount> 999 }" th:text="${row.orderCompletedCount}">     
+                      <td align="right" th:if="${row.orderCompletedAmount> 0 }" th:text="${#numbers.formatInteger(row.orderCompletedAmount, 3, 'COMMA')}">
+                      <td align="right" th:unless="${row.orderCompletedAmount> 0 }" th:text="${row.orderCompletedAmount}">
                       </td>                   
-                      <td th:text="${row.orderCancelCount}"></td>
-                      <td th:text="${row.orderRetrievedCount}"></td>
-                      <td th:text="${row.orderCheckCount}"></td>
-                      <td th:text="${row.orderEtcCount}"></td>
+                      <td align="right" th:text="${row.orderCancelCount}"></td>
+                      <td align="right" th:text="${row.orderRetrievedCount}"></td>
+                      <td align="right" th:text="${row.orderCheckCount}"></td>
+                      <td align="right" th:text="${row.orderEtcCount}"></td>
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( statList )}">
 						<td colspan="7">조회된 결과가 없습니다.</td>

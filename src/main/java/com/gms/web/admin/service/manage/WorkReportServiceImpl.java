@@ -231,7 +231,10 @@ public class WorkReportServiceImpl implements WorkReportService {
 						if(soldBottle.getProductId() == orderBottle.getProductId() 
 								&& soldBottle.getProductPriceSeq() == orderBottle.getProductPriceSeq() 
 								&& ( (strBottleSaleYn.equals("Y") && param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale")) )
-										|| (strBottleSaleYn.equals("N") && param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) )   ) {
+										|| (strBottleSaleYn.equals("N") && param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) )   
+										|| (param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.salesgas")) )
+										|| (param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyRent")) )
+								) {
 							
 							
 							if(orderBottle.getBottleBarCd() == null) {
@@ -280,7 +283,10 @@ public class WorkReportServiceImpl implements WorkReportService {
 						if(soldBottle.getProductId() == orderProduct.getProductId() 
 								&& soldBottle.getProductPriceSeq() == orderProduct.getProductPriceSeq() 
 								&& ( (strBottleSaleYn.equals("Y") && param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale")) )
-										|| (strBottleSaleYn.equals("N") && param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) )   ) {
+										|| (strBottleSaleYn.equals("N") && param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) )
+										|| (param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.salesgas")) )
+										|| (param.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyRent")) )
+										)   ) {
 							
 							
 							int productPrice = orderProduct.getOrderAmount() / orderProduct.getOrderCount();
@@ -3178,6 +3184,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyBack"))	//20201220
 							) {						
 						customerProduct.setBottleRentCount(-1);
+						logger.debug("*** customerProduct.getRentCOunt="+customerProduct.getBottleRentCount());
 					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.freeback"))
 							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.buyback")) 
 							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.salesgas"))	//20201220
@@ -3198,6 +3205,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyRent"))
 							|| param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.agencyBack"))
 							) {
+						logger.debug("customerProduct.getRentCOunt="+customerProduct.getBottleRentCount());
 						result = customerService.modifyCustomerProductRentCount(customerProduct);
 					}
 					

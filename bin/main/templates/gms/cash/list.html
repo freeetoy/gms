@@ -423,10 +423,10 @@ $(function() {
                       <td th:text="${totalCount-((currentPage-1) * rowPerPage) - list.indexOf(row)}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd HH:mm' )}"></td>
                       <th th:text="${row.customerNm}" >거래처</th>
-                      <td th:if="${row.receivableAmount> 999 }"  th:text="${#numbers.formatInteger(row.receivableAmount, 3, 'COMMA')}"></td> 
-                      <td th:unless="${row.receivableAmount> 999 }"  th:text="${row.receivableAmount}"></td>                     
-                      <td th:if="${row.incomeAmount> 999 }" th:text="${#numbers.formatInteger(row.incomeAmount, 3, 'COMMA')}"></td>
-                      <td th:unless="${row.incomeAmount> 999 }" th:text="${row.incomeAmount}"></td>
+                      <td align="right" th:if="${row.receivableAmount> 999 }"  th:text="${#numbers.formatInteger(row.receivableAmount, 3, 'COMMA')}"></td> 
+                      <td align="right" th:unless="${row.receivableAmount> 999 }"  th:text="${row.receivableAmount}"></td>                     
+                      <td align="right" th:if="${row.incomeAmount> 999 }" th:text="${#numbers.formatInteger(row.incomeAmount, 3, 'COMMA')}"></td>
+                      <td align="right" th:unless="${row.incomeAmount> 999 }" th:text="${row.incomeAmount}"></td>
                       <td th:if="${row.incomeWay=='CASH'}">현금
                       <td th:if="${row.incomeWay=='CARD'}">카드        
                       <td th:if="${row.incomeWay==null}">    

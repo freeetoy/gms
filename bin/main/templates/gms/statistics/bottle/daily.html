@@ -96,21 +96,21 @@ $(function() {
 		                  <thead>
 		                    <tr style="font-size:13px;">
 		                      <th>날짜</th>
-		                      <th>신규</th>
-		                      <th>충전</th>
-		                      <th>판매</th>
-		                      <th>대여</th>
-		                      <th>회수</th>
+		                      <th align="right">신  규</th>
+		                      <th align="right">충  전</th>
+		                      <th align="right">판  매</th>
+		                      <th align="right">대  여</th>
+		                      <th align="right">회  수</th>
 		                    </tr>
 		                  </thead>
 		                  <tbody>
 		                  	<tr th:if="${not #lists.isEmpty( statList )}" th:each="row : ${statList}" style="font-size:14px;">
 		                      <td th:text="${row.statDt}"></td>
-		                      <td th:text="${row.bottleInputCount}"></td>                      
-		                      <td th:text="${row.bottleChargeCount}"></td>
-		                      <td th:text="${row.bottleSalesCount}"></td>
-		                      <td th:text="${row.bottleRentalCount}"></td>
-		                      <td th:text="${row.bottleBackCount}"></td>
+		                      <td align="right" th:text="${row.bottleInputCount}"></td>                      
+		                      <td align="right" th:text="${row.bottleChargeCount}"></td>
+		                      <td align="right" th:text="${row.bottleSalesCount}"></td>
+		                      <td align="right" th:text="${row.bottleRentalCount}"></td>
+		                      <td align="right" th:text="${row.bottleBackCount}"></td>
 		                    </tr>
 		                    <tr th:unless="${not #lists.isEmpty( statList )}">
 								<td colspan="6">조회된 결과가 없습니다.</td>

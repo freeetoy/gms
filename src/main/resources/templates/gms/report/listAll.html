@@ -968,10 +968,10 @@ $(document).ready(function(){
                       	</tr>
                       	</table>
                       </td>
-                      <td th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
-                      <td th:unless="${row.orderAmount> 0 }" th:text="${row.orderAmount}">
-                      <td th:if="${row.receivedAmount> 0 }" th:text="${#numbers.formatInteger(row.receivedAmount, 3, 'COMMA')} + ${row.incomeWay} ">
-		     		  <td th:unless="${row.receivedAmount> 0 }" th:text="${row.receivedAmount} +  ${row.incomeWay} "></td>	
+                      <td align="right" th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
+                      <td align="right" th:unless="${row.orderAmount> 0 }" th:text="${row.orderAmount}">
+                      <td align="right" th:if="${row.receivedAmount> 0 }" th:text="${#numbers.formatInteger(row.receivedAmount, 3, 'COMMA')} + ${row.incomeWay} ">
+		     		  <td align="right" th:unless="${row.receivedAmount> 0 }" th:text="${row.receivedAmount} +  ${row.incomeWay} "></td>	
 		     		  </td>
 		     		  <td><a class="btn_select_delete btn btn-danger btn-xs" th:workReportSeq="${row.workReportSeq}" th:customerNm1="${row.customerNm}"   href="#"><i class="fas fa-trash"></i>삭제</a></td>    
                  

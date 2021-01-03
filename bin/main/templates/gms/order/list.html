@@ -744,8 +744,8 @@ $(document).ready(function(){
                       <th><a th:href="@{/gms/customer/update.do( customerId=${row.customerId})}" th:text="${row.CustomerNm}"></a></th>
                       <th th:text="${row.orderProductNm}"></th>
                       <td th:text="${row.orderProductCapa}"></td>
-                      <td th:if="${row.orderTotalAmount > 999}" th:text="${#numbers.formatInteger(row.orderTotalAmount, 3, 'COMMA')}"></td>
-                      <td th:unless="${row.orderTotalAmount > 999}" th:text="${row.orderTotalAmount}"></td>
+                      <td align="right" th:if="${row.orderTotalAmount > 999}" th:text="${#numbers.formatInteger(row.orderTotalAmount, 3, 'COMMA')}"></td>
+                      <td align="right" th:unless="${row.orderTotalAmount > 999}" th:text="${row.orderTotalAmount}"></td>
                       <td th:text="|${row.createNm}(${row.createId})|"></td>
                       <th th:if="${row.orderProcessCd=='0210'}" ><h6><span class="badge badge-danger">주문접수</span></h6>
                       <th th:if="${row.orderProcessCd=='0220'}" ><h6><span class="badge badge-danger">주문접수완료</span></h6>

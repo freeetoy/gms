@@ -128,21 +128,21 @@ $(function() {
                   <thead>
                     <tr style="font-size:13px;">
                       <th>날짜</th>
-                      <th>판매건수</th>
-                      <th>판매금액</th>
-                      <th>대여건수</th>
-                      <th>대여금액</th>
+                      <th align="right">판매건수</th>
+                      <th align="right">판매금액</th>
+                      <th align="right">대여건수</th>
+                      <th align="right">대여금액</th>
                     </tr>
                   </thead>
                   <tbody>
                   	<tr th:if="${not #lists.isEmpty( statProductList )}" th:each="row : ${statProductList}" style="font-size:14px;">
                       <td th:text="${row.statDt}"></td>
-                      <td th:text="${row.saleCount}"></td>
-                      <td th:if="${row.saleAmount> 0 }" th:text="${#numbers.formatInteger(row.saleAmount, 3, 'COMMA')}">
-                      <td th:unless="${row.saleAmount> 0 }" th:text="${row.saleAmount}">
-                      <td th:text="${row.rentCount}"></td>
-                      <td th:if="${row.rentAmount> 0 }" th:text="${#numbers.formatInteger(row.rentAmount, 3, 'COMMA')}">
-                      <td th:unless="${row.rentAmount> 0 }" th:text="${row.rentAmount}">
+                      <td align="right" th:text="${row.saleCount}"></td>
+                      <td align="right" th:if="${row.saleAmount> 0 }" th:text="${#numbers.formatInteger(row.saleAmount, 3, 'COMMA')}">
+                      <td align="right" th:unless="${row.saleAmount> 0 }" th:text="${row.saleAmount}">
+                      <td align="right" th:text="${row.rentCount}"></td>
+                      <td align="right" th:if="${row.rentAmount> 0 }" th:text="${#numbers.formatInteger(row.rentAmount, 3, 'COMMA')}">
+                      <td align="right" th:unless="${row.rentAmount> 0 }" th:text="${row.rentAmount}">
                       </td>                      
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( statProductList )}">
