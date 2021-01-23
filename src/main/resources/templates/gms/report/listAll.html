@@ -964,7 +964,7 @@ $(document).ready(function(){
                       <td>
                     	<table>     
                       	<tr th:if="${not #lists.isEmpty(row.backBottles )}" th:each="row2 : ${row.backBottles}" >
-                      		<td  th:text="${row2.productNm} + ' ' + ${row2.productCapa}+ ' ' + ${row2.productCount}">
+                      		<td  th:text="${row2.productNm} + ' ' + ${row2.productCapa}+ ' ' + ${row2.productCount}  + ' (' + ${row2.bottleWorkCdNm} + ')'">
                       	</tr>
                       	</table>
                       </td>

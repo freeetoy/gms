@@ -15,6 +15,7 @@ import com.gms.web.admin.common.utils.DateUtils;
 import com.gms.web.admin.domain.manage.BottleHistoryVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CashFlowVO;
+import com.gms.web.admin.domain.manage.CustomerProductVO;
 import com.gms.web.admin.domain.manage.ProductPriceSimpleVO;
 import com.gms.web.admin.domain.manage.ProductPriceVO;
 import com.gms.web.admin.domain.manage.SimpleBottleVO;
@@ -353,12 +354,23 @@ public class ApiController {
 	
 	@RequestMapping(value = "/api/customerLn2List.do")
 	@ResponseBody
-	public List<ProductPriceSimpleVO> getProductPriceListOfNoGas(String customerNm)	{	
+	public List<ProductPriceSimpleVO> getProductPriceListOfNoGas()	{	
 		
 		
-		List<ProductPriceSimpleVO> productList = apiService.getCustomerLn2List(customerNm);
+		List<ProductPriceSimpleVO> productList = apiService.getCustomerLn2List();
 		//model.addAttribute("productList", productList);
 		
 		return productList;
+	}
+	
+	@RequestMapping(value = "/api/customerBottleList.do")
+	@ResponseBody
+	public List<CustomerProductVO> getCustomerBottleList(String customerNm)	{	
+		
+		
+		List<CustomerProductVO> bottleList = apiService.getCustomerBottleList(customerNm);
+		//model.addAttribute("productList", productList);
+		
+		return bottleList;
 	}
 }

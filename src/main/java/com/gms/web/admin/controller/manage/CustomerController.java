@@ -82,6 +82,9 @@ public class CustomerController {
 		UserVO param = new UserVO();
 		param.setUserPartCd(PropertyFactory.getProperty("common.user.SALES"));
 		
+		List<CustomerSimpleVO> agencyList = customerService.getAgencyCustomerList();
+		model.addAttribute("agencyList", agencyList);
+		
 		List<UserVO> userList = userService.getUserListPart(param);
 		model.addAttribute("userList", userList);
 		
@@ -136,7 +139,6 @@ public class CustomerController {
 			model.addAttribute("currentPage","1");
 		
 		String old_url = request.getHeader("referer");
-		logger.debug(" 리스트 ======> "+old_url);
 		
 		if (customerId == null) {
 			return "redirect:/gms/customer/list.do";
@@ -154,8 +156,11 @@ public class CustomerController {
 			param.setUserPartCd(PropertyFactory.getProperty("common.user.SALES"));
 			
 			List<UserVO> userList = userService.getUserListPart(param);
-			model.addAttribute("userList", userList);
-					
+			model.addAttribute("userList", userList);					
+
+			List<CustomerSimpleVO> agencyList = customerService.getAgencyCustomerList();
+			model.addAttribute("agencyList", agencyList);			
+			
 			// Customer_Price
 			List<CustomerPriceExtVO> customerPriceList = customerService.getCustomerPriceList(customerId) ;
 			model.addAttribute("customerPriceList", customerPriceList);	

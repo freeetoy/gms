@@ -99,6 +99,9 @@ $(document).ready(function(){
 		$('#bottleWorkCd_' + pid).append('<option value=0312>매입</option>')	
 		$('#bottleWorkCd_' + pid).append('<option value=0313>무상교체</option>')	
 		$('#bottleWorkCd_' + pid).append('<option value=0314>가스판매</option>')	
+		$('#bottleWorkCd_' + pid).append('<option value=0315>판매회수</option>')	
+		$('#bottleWorkCd_' + pid).append('<option value=0316>공장대여</option>')	
+		$('#bottleWorkCd_' + pid).append('<option value=0317>대여회수</option>')	
     } 
     
 	function initProduct(pid){
@@ -234,7 +237,7 @@ $(document).ready(function(){
 		        var newRow = $("<tr>");
 				var cols = "";
 				cols += '<td style="padding-left:5px;">';
-				cols += '<select class="form-control" id="bottleWorkCd_0" name="bottleWorkCd_0" style="width:100px">'; 
+				cols += '<select class="form-control" id="bottleWorkCd_0" name="bottleWorkCd_0" style="width:120px">'; 
 				cols += '<option value=0308>판매</option>'; 
 				cols += '<option value=0309>대여</option>'; 
 				cols += '<option value=0310>회수</option>'; 
@@ -242,6 +245,9 @@ $(document).ready(function(){
 				cols += '<option value=0312>매입</option>'; 
 				cols += '<option value=0313>무상교체</option>'; 
 				cols += '<option value=0314>가스판매</option>'; 
+				cols += '<option value=0315>판매회수</option>'; 
+				cols += '<option value=0316>공장대여</option>'; 
+				cols += '<option value=0317>대여회수</option>'; 
 				cols += '</select>'; 
 				cols += '</td><td>';
 				cols += '<select class="form-control" id="productId_0" name="productId_0" style="width:250px"></select>'; 
@@ -284,7 +290,7 @@ $(document).ready(function(){
 		            cols = "";				
 					cols += '<td style="padding-left:5px;">';
 					
-					cols += '	<select class="form-control" id="bottleWorkCd_' + counter +  '" name="bottleWorkCd_' + counter + '" style="width:100px" readonly>'; 
+					cols += '	<select class="form-control" id="bottleWorkCd_' + counter +  '" name="bottleWorkCd_' + counter + '" style="width:120px" readonly>'; 
 					//cols += '	<option value="' + data[i].bottleWorkCd +'" selected>' + data[i].bottleWorkCd + '</option>';
 					if(data[i].bottleWorkCd =='0308')
 						cols += '	<option value="0308" selected>판매</option>';					
@@ -300,7 +306,13 @@ $(document).ready(function(){
 						cols += '	<option value="0313" selected>무상교체</option>';	
 					if(data[i].bottleWorkCd =='0314')
 						cols += '	<option value="0314" selected>가스판매</option>';	
-					
+					if(data[i].bottleWorkCd =='0315')
+						cols += '	<option value="0315" selected>판매회수</option>';
+					if(data[i].bottleWorkCd =='0316')
+						cols += '	<option value="0316" selected>공장대여</option>';	
+					if(data[i].bottleWorkCd =='0317')
+						cols += '	<option value="0317" selected>대여회수</option>';
+							
 					cols += '	</select>';
 					cols += '</td><td>';
 					cols += '	<select class="form-control" id="productId_' + counter +  '" name="productId_' + counter + '" style="width:250px" readonly>'; 

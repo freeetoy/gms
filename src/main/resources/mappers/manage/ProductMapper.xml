@@ -416,7 +416,7 @@
 	
 	<select id="selectNoGasProductPriceList"  resultType="com.gms.web.admin.domain.manage.ProductPriceSimpleVO">
 		SELECT
-			TP.Product_ID ,Product_Price_Seq,concat(Product_Nm , " - " ,Product_Capa) Product_Nm
+			TP.Product_ID ,Product_Price_Seq,concat(Product_Nm , " - " ,Product_Capa) Product_Nm,Product_Capa
 		FROM
 			TB_Product  TP, TB_Product_Price TPP
 		WHERE
@@ -444,24 +444,18 @@
 			GAS_ID > 0 		
 	</select>
 	
-	<select id="selectCustomerLn2List"  resultType="com.gms.web.admin.domain.manage.ProductPriceSimpleVO" parameterType="Integer">
+	<select id="selectCustomerLn2List"  resultType="com.gms.web.admin.domain.manage.ProductPriceSimpleVO">
 		SELECT
-			TC.Product_ID ,TC.Product_Price_Seq,concat(Product_Nm , " - " ,Product_Capa) Product_Nm
+			TPP.Product_ID ,TPP.Product_Price_Seq,concat(Product_Nm , " - " ,Product_Capa) Product_Nm,Product_Capa
 		FROM
-			TB_Product  TP, TB_Product_Price TPP, TB_Customer_Product_Price TC
+			TB_Product  TP, TB_Product_Price TPP
 		WHERE
 			TP.Product_ID = 60
 		AND
-			TP.Product_ID = TPP.Product_ID
-		AND
-			TP.Product_ID = TC.Product_ID
-		AND
-			TPP.Product_Price_Seq = TC.Product_Price_Seq
+			TP.Product_ID = TPP.Product_ID		
 		AND 
 			TP.Product_Status  != '0'
 		AND 
 			TPP.Product_Status  != '0'
-		AND 
-			TC.Customer_ID = #{customerId}		
 	</select>
 </mapper>

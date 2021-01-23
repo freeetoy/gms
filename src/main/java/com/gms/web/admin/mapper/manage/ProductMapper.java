@@ -65,5 +65,5 @@ public interface ProductMapper {
 	
 	public List<ProductTotalVO> selectProductTotalDetailList();
 	
-	public List<ProductPriceSimpleVO> selectCustomerLn2List(Integer productId);
+	public List<ProductPriceSimpleVO> selectCustomerLn2List();
 }

@@ -552,10 +552,10 @@
 		SELECT A.*, B.Customer_Nm
 		FROM (
 			SELECT
-				Bottle_ID , Bottle_BarCd , Gas_CD , Product_Nm , 
-				Bottle_Capa , Charge_Capa , Bottle_Charge_Dt , Bottle_Volumn , 
+				Bottle_ID , Bottle_BarCd , Gas_CD , Product_Nm , Bottle_Capa , 
+				Charge_Capa ,Bottle_Create_Dt, Bottle_Charge_Dt , Bottle_Volumn , 
 				Bottle_Charge_Prss , Bottle_Own_YN , Own_Customer_ID , TB.Customer_ID,
-				Bottle_Type , CD_NM Bottle_Work_CD_NM ,Bottle_Work_DT
+				Bottle_Type , CD_NM Bottle_Work_CD_NM ,Bottle_Work_DT,Bottle_Work_ID
 			FROM
 				TB_Bottle TB, TB_CODE TC, TB_Product TG
 			WHERE

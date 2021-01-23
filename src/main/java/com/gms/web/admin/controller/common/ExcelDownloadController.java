@@ -176,13 +176,12 @@ public class ExcelDownloadController {
 			  //용기번호	바코드번호	가스종류	충전용량	제조월	충전기한	용기체적	사업자등록번호	GMP여부(Y/N)	품명	충전압력	용기소유(자사-self,타사-other)
             	//0		1			2	3		4		5		6		7			8			9		10		11	
 			    // 데이터 부분 생성
-			    
+			    //20210105 변경
+			    //바코드번호	용기번호	가스종류	품명	용기체적	충전용량	충전압력	거래처	작업구분	용기타입	용기제조일	충전기한	작업일	작업자	삭제요청	GMP
+
 			    for(BottleVO vo : bottleList) {
 			    	int k=0;
 			        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
-			        cell = row.createCell(k++);
-			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue(vo.getBottleId());
 			        
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
@@ -190,11 +189,42 @@ public class ExcelDownloadController {
 			        
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleId());			        
+			       
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
 			        cell.setCellValue(vo.getGasCd());
 			        
 			        cell = row.createCell(k++);;
 			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getProductNm());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleVolumn());
+			        
+			        cell = row.createCell(k++);;
+			        cell.setCellStyle(bodyStyle);
 			        cell.setCellValue(vo.getBottleCapa());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleChargePrss());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getCustomerNm());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue(vo.getBottleWorkCdNm());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        if(vo.getBottleType() !=null && vo.getBottleType().equals("F"))
+			        	cell.setCellValue("실병");
+			        else
+			        	cell.setCellValue("공병");
 			        
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
@@ -212,41 +242,25 @@ public class ExcelDownloadController {
 			        
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue(vo.getBottleVolumn());
+			        if(vo.getBottleWorkDt() !=null) 
+			        	cell.setCellValue(DateUtils.convertDateFormat(vo.getBottleWorkDt(),"yyyy-MM-dd : hh:mm:ss"));
+			        else
+			        	cell.setCellValue("");
 			        
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue(PropertyFactory.getProperty("common.Member.Comp.Daehan.businessNum"));
+			        cell.setCellValue(vo.getBottleWorkId());
+			        
+			        cell = row.createCell(k++);
+			        cell.setCellStyle(bodyStyle);
+			        cell.setCellValue("N");
 			        
 			        //GMP여부
 			        cell = row.createCell(k++);
 			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue("");
+			        cell.setCellValue("Y");
 			        
-			        cell = row.createCell(k++);;
-			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue(vo.getProductNm());
-			        
-			        cell = row.createCell(k++);
-			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue(vo.getBottleChargePrss());
-			        
-			        cell = row.createCell(k++);
-			        cell.setCellStyle(bodyStyle);
-			        if(vo.getBottleOwnYn()!=null && vo.getBottleOwnYn().equals("Y"))
-			        	cell.setCellValue("self");
-			        else
-			        	cell.setCellValue("other");					       
-			        /*
-			        cell = row.createCell(k++);
-			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue(vo.getCustomerNm());
-			        
-			        cell = row.createCell(k++);
-			        cell.setCellStyle(bodyStyle);
-			        cell.setCellValue(vo.getBottleWorkCdNm());
-			        */
-			        
+			       
 			    }	
 	/*		    
 			    param.setStartRow(30001);

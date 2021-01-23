@@ -243,6 +243,24 @@ $(function() {
 	      		
 		      		 </th>   
                     </tr>
+                    <tr>
+                      <th class="card-footer">상위대리점</th>
+                      <th>
+                       <select id="parentCustomerId" name="parentCustomerId" class="form-control">
+                        <option value="">상위대리점</option>
+                      	<option th:each="row : ${agencyList}"
+					                th:text="${row.customerNm}"
+					                th:value="${row.customerId}"
+					                th:if="${customer.parentCustomerId == row.customerId}" selected>
+					     </option>	
+					     <option th:each="row : ${agencyList}"
+					                th:text="${row.customerNm}"
+					                th:value="${row.customerId}"
+					                th:unless="${customer.parentCustomerId == row.customerId}">
+					     </option>		
+					    </select>	                      
+						</th>   
+                    </tr>         
                     <tr>                                   
                       <th class="card-footer">ECount코드</th>
                       <th><input type="text" class="form-control" id="eCountCd" name="eCountCd" th:value="${customer.eCountCd}"></th>

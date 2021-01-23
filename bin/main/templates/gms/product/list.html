@@ -122,12 +122,12 @@
                       <th th:if="${row.productPriceSeq == 1}" th:text="|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${row.productCapa}|">
                       <th th:unless="${row.productPriceSeq == 1}" th:text="${row.productCapa}">
                       </th>
-                      <td th:text="${#numbers.formatInteger(row.productPrice, 3, 'COMMA')}"></td>
+                      <td th:text="${#numbers.formatDecimal(row.productPrice,3,'COMMA',2,'POINT')}"></td>
                       <td th:text="${row.eCountCd}"></td>
-                      <td th:text="${#numbers.formatInteger(row.productBottlePrice, 3, 'COMMA')}"></td>
+                      <td th:text="${#numbers.formatDecimal(row.productBottlePrice, 3,'COMMA',2,'POINT')}"></td>
                       <td th:text="${row.eCountCdS}"></td>
                       <td th:text="${row.createId}"></td>
-                      <!-- td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td> -->
+                      <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd' )}"></td>
                       <td th:if="${row.productStatus=='2'}">판매중
                       <td th:if="${row.productStatus=='1'}">판매중지
                       <td th:if="${row.productStatus=='0'}">삭제

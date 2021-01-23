@@ -18,6 +18,7 @@
 		<result property="customerStatus"		column="Customer_Status"	/>		
 		<result property="carYn"				column="Car_YN"				/>	
 		<result property="agencyYn"				column="Agency_YN"			/>		
+		<result property="parentCustomerId"		column="Parent_Customer_ID"	/>
 		<result property="eCountCd"				column="ECount_CD"			/>	
 		<result property="bottleOwnCount"		column="Bottle_Own_Count"	/>	
 		<result property="bottleRentCount"		column="Bottle_Rent_Count"	/>	
@@ -59,6 +60,7 @@
 		, Customer_Status
 		, Car_Yn
 		, Agency_Yn
+		, Parent_Customer_ID
 		, ECount_CD
 		, Bottle_Own_Count
 		, Bottle_Rent_Count
@@ -84,6 +86,7 @@
 		, Customer_Status
 		, Car_YN
 		, Agency_Yn
+		, Parent_Customer_ID
 		, ECount_CD
 		, Bottle_Own_Count
 		, Bottle_Rent_Count
@@ -149,6 +152,7 @@
 			, '2'
 			, #{carYn}
 			, #{agencyYn}
+			, #{parentCustomerId}
 			, #{eCountCd}
 			, #{bottleOwnCount}
 			, #{bottleRentCount}
@@ -179,6 +183,7 @@
 			, '2'
 			, #{item.carYn}
 			, #{item.agencyYn}
+			, #{item.parentCustomerId}
 			, #{item.eCountCd}
 			, #{item.bottleOwnCount}
 			, #{item.bottleRentCount}
@@ -316,6 +321,7 @@
 			, Sales_ID				= #{salesId}
 			, Car_YN				= #{carYn}
 			, Agency_YN				= #{agencyYn}
+			, Parent_Customer_ID	= #{parentCustomerId}
 			, ECount_CD				= #{eCountCd}
 			, Summary				= #{summary}
 			, UPDATE_ID				= #{updateId}

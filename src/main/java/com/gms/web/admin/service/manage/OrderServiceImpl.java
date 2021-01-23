@@ -899,8 +899,11 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public int getNextOrderProductSeq(Integer orderId) {
-		
-		return orderMapper.selectNextOrderProductSeq(orderId);	
+	
+		if(orderId == null)
+			return 1;
+		else
+			return orderMapper.selectNextOrderProductSeq(orderId);	
 	}
 
 	@Override

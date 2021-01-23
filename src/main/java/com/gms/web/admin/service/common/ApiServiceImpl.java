@@ -13,6 +13,8 @@ import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.domain.common.LoginUserVO;
 import com.gms.web.admin.domain.manage.BottleVO;
 import com.gms.web.admin.domain.manage.CashFlowVO;
+import com.gms.web.admin.domain.manage.CustomerBottleVO;
+import com.gms.web.admin.domain.manage.CustomerProductVO;
 import com.gms.web.admin.domain.manage.CustomerVO;
 import com.gms.web.admin.domain.manage.ProductPriceSimpleVO;
 import com.gms.web.admin.domain.manage.SimpleBottleVO;
@@ -341,18 +343,24 @@ public class ApiServiceImpl implements ApiService {
 	}
 
 	@Override
-	public List<ProductPriceSimpleVO> getCustomerLn2List(String customerNm) {
-		CustomerVO customer = getCustomer(customerNm);
+	public List<ProductPriceSimpleVO> getCustomerLn2List() {
+		//CustomerVO customer = getCustomer(customerNm);
 		List<ProductPriceSimpleVO> productList= null;
-		if(customer!=null) {
-			
-			productList = productService.getCustomerLn2List(customer.getCustomerId());	
-			
-		}else {
-			return null;
-		}				
+		productList = productService.getCustomerLn2List();				
 		
 		return productList;
+	}
+
+	@Override
+	public List<CustomerProductVO> getCustomerBottleList(String customerNm) {
+		
+		List<CustomerProductVO> bottleList= null;
+		CustomerVO customer = getCustomer(customerNm);
+		
+		if(customer!=null)
+			bottleList = customerService.getCustomerProductList(customer.getCustomerId());		
+		
+		return bottleList;
 	}
 
 

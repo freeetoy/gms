@@ -114,7 +114,12 @@ var goWrite = function(){
 	
 	form.submit();
 }
+
+$(document).ready(function(){	
 	
+	
+});
+
 </script>
 
    <div class="content-wrapper">
@@ -194,6 +199,19 @@ var goWrite = function(){
                       	<input type="radio" name="agencyYn" id="agencyYn" value="N" checked=""> 비대리점		      		
 		      		 </th>   
                     </tr>
+                    <tr>
+                      <th class="card-footer">상위대리점</th>
+                      <th>
+                       <select id="parentCustomerId" name="parentCustomerId" class="form-control">
+                        <option value="">상위대리점</option>
+                      	<option th:each="row : ${agencyList}"
+					                th:text="${row.customerNm}"
+					                th:value="${row.customerId}"
+					               >
+					     </option>		
+					    </select>	                      
+						</th>   
+                    </tr>         
                     <tr>
                       <th class="card-footer">영업 담당자</th>
                       <th>
