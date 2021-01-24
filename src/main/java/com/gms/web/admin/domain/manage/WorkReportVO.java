@@ -25,6 +25,9 @@ public class WorkReportVO extends AbstractVO implements Serializable {
 	/** Customer_Nm        	*/
 	private String customerNm;
 	
+	/**Agency_YN */
+	private String agencyYn = "N";
+	
 	/** Order_ID		*/
 	private Integer orderId;
 	
@@ -111,6 +114,5 @@ public class WorkReportVO extends AbstractVO implements Serializable {
 	
 	private boolean phoneFlag = false;
 	
-	/** Customer_Agency_YN        	*/
-	private String customerAgencyYn;
+
 }

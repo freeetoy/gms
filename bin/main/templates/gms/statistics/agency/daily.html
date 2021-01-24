@@ -104,14 +104,14 @@ $(function() {
 		                  <tbody>
 		                  	<tr th:if="${not #lists.isEmpty( statAgency )}" th:each="row : ${statAgency}" style="font-size:14px;">
 		                      <td th:text="|${row.productNm} ${row.productCapa}|"></td>
-		                      <td align="right" th:if="${not #lists.isEmpty( row.bottleOwnCountList )}" th:each="row1 : ${row.bottleOwnCountList}" th:text="${row1}"></td>		                      
+		                      <td align="center" th:if="${not #lists.isEmpty( row.bottleOwnCountList )}" th:each="row1 : ${row.bottleOwnCountList}" th:text="${row1}"></td>		                      
 		                    </tr>
 		                    <tr style="font-size:14px;">
 		                      <th colspan="${customerList.size+1}">대여용기</th>
 		                    </tr>
 		                    <tr th:if="${not #lists.isEmpty( statAgency )}" th:each="row : ${statAgency}" style="font-size:14px;">
 		                      <td th:text="|${row.productNm} ${row.productCapa}|"></td>
-		                      <td align="right" th:if="${not #lists.isEmpty( row.bottleRentCountList )}" th:each="row1 : ${row.bottleRentCountList}" th:text="${row1}"></td>
+		                      <td align="center" th:if="${not #lists.isEmpty( row.bottleRentCountList )}" th:each="row1 : ${row.bottleRentCountList}" th:text="${row1}"></td>
 		                      
 		                    </tr>
 		                    <tr th:unless="${not #lists.isEmpty( statAgency )}">

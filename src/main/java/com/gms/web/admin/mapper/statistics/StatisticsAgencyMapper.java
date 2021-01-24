@@ -23,5 +23,11 @@ public interface StatisticsAgencyMapper {
 	public int insertDailyStatisticsAgency();
 
 	public int insertMonthlyStatisticsAgency();
+	
+	public List<StatisticsAgencyVO> selectTodayStatisticsAgencyList();	
+	
+	public List<CustomerSimpleVO> selectTodayStatisticsAgencyCustomerList();	
+	
+	public List<ProductPriceSimpleVO> selectTodayStatisticsAgencyProductList();
 
 }

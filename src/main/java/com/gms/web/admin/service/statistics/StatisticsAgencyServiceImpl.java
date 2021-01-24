@@ -32,16 +32,25 @@ public class StatisticsAgencyServiceImpl implements StatisticsAgencyService {
 		
 		Map<String, Object> map = new HashMap<String, Object>();		
 
-		//map.put("searchCustomerId", param.getSearchCustomerId());	
+		List<StatisticsAgencyVO> agencyList = null;
+		List<CustomerSimpleVO> customerList = null;
+		List<ProductPriceSimpleVO> productList = null;
 		
-		if(param.getSearchStatDt() != null) {
+		if(param.getSearchStatDt() != null && param.getSearchStatDt().length() > 0) {
 			map.put("searchStatDt", param.getSearchStatDt());
 			logger.debug("****** getDailylStatisticsAgencyList *****getSearchStatDt===*"+param.getSearchStatDt());
-		}				
+			agencyList = statMapper.selectDailylStatisticsAgencyList(map);	
+			customerList = statMapper.selectStatisticsAgencyCustomerList(map);	
+			productList = statMapper.selectStatisticsAgencyProductList(map);	
+		}else {
+			agencyList = statMapper.selectTodayStatisticsAgencyList();	
+			customerList = statMapper.selectTodayStatisticsAgencyCustomerList();	
+			productList = statMapper.selectTodayStatisticsAgencyProductList();	
+		}
 			
-		List<CustomerSimpleVO> customerList = statMapper.selectStatisticsAgencyCustomerList(map);			
-		List<ProductPriceSimpleVO> productList = statMapper.selectStatisticsAgencyProductList(map);	
-		List<StatisticsAgencyVO> agencyList = statMapper.selectDailylStatisticsAgencyList(map);	
+		//List<CustomerSimpleVO> customerList = statMapper.selectStatisticsAgencyCustomerList(map);			
+		//List<ProductPriceSimpleVO> productList = statMapper.selectStatisticsAgencyProductList(map);	
+		//List<StatisticsAgencyVO> agencyList = statMapper.selectDailylStatisticsAgencyList(map);	
 		
 		StatisticsAgencyResultVO statResult = new StatisticsAgencyResultVO();
 		List<StatisticsAgencyResultVO> statList = new ArrayList<StatisticsAgencyResultVO>();	
@@ -225,11 +234,14 @@ public class StatisticsAgencyServiceImpl implements StatisticsAgencyService {
 		
 		if(param.getSearchStatDt() != null) {
 			map.put("searchStatDt", param.getSearchStatDt());
-			logger.debug("****** getDailylStatisticsAgencyList *****getSearchStatDt===*"+param.getSearchStatDt());
+			//logger.debug("****** getDailylStatisticsAgencyList *****getSearchStatDt===*"+param.getSearchStatDt());
 		}				
 			
-		List<CustomerSimpleVO> customerList = statMapper.selectStatisticsAgencyCustomerList(map);
-
+		List<CustomerSimpleVO> customerList = null;
+		if(param.getSearchStatDt() != null && param.getSearchStatDt().length() > 0) 
+			customerList = statMapper.selectStatisticsAgencyCustomerList(map);
+		else
+			customerList = statMapper.selectTodayStatisticsAgencyCustomerList();
 		return customerList;
 		
 	}

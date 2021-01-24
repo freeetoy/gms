@@ -96,21 +96,21 @@ $(function() {
 		                  <thead>
 		                    <tr style="font-size:13px;">
 		                      <th>날짜</th>
-		                      <th align="right">신규</th>
-		                      <th align="right">충전</th>
-		                      <th align="right">판매</th>
-		                      <th align="right">대여</th>
-		                      <th align="right">회수</th>
+		                      <th align="center">신규</th>
+		                      <th align="center">충전</th>
+		                      <th align="center">판매</th>
+		                      <th align="center">대여</th>
+		                      <th align="center">회수</th>
 		                    </tr>
 		                  </thead>
 		                  <tbody>
 		                  	<tr th:if="${not #lists.isEmpty( statList )}" th:each="row : ${statList}" style="font-size:14px;">
 		                      <td th:text="${row.statDt}"></td>
-		                      <td align="right" th:text="${row.bottleInputCount}"></td>                      
-		                      <td align="right" th:text="${row.bottleChargeCount}"></td>
-		                      <td align="right" th:text="${row.bottleSalesCount}"></td>
-		                      <td align="right" th:text="${row.bottleRentalCount}"></td>
-		                      <td align="right" th:text="${row.bottleBackCount}"></td>
+		                      <td align="center" th:text="${row.bottleInputCount}"></td>                      
+		                      <td align="center" th:text="${row.bottleChargeCount}"></td>
+		                      <td align="center" th:text="${row.bottleSalesCount}"></td>
+		                      <td align="center" th:text="${row.bottleRentalCount}"></td>
+		                      <td align="center" th:text="${row.bottleBackCount}"></td>
 		                    </tr>
 		                    <tr th:unless="${not #lists.isEmpty( statList )}">
 								<td colspan="5">조회된 결과가 없습니다.</td>

@@ -48,12 +48,13 @@ public class StatisticsAgencyController {
 		
 		//Integer searchCustomerId = params.getSearchCustomerId();
 				
-		String searchStatDt = param.getSearchStatDt();			
+		//String searchStatDt = param.getSearchStatDt();			
+		/*
 		if(searchStatDt == null ||  (searchStatDt != null && searchStatDt.length() < 6 ) ){
 			searchStatDt = DateUtils.getNextDate(-1,"yyyy/MM/dd");
 			param.setSearchStatDt(searchStatDt);
 		}
-		
+		*/
 		List<CustomerSimpleVO> customerList = statService.getStatisticsAgencyCustomerList(param);
 		
 		List<StatisticsAgencyResultVO> statAgency = statService.getDailylStatisticsAgencyList(param);
@@ -62,7 +63,7 @@ public class StatisticsAgencyController {
 		mav.addObject("statAgency", statAgency);	
 		
 		//검색어 셋팅
-		mav.addObject("searchStatDt", searchStatDt);				
+		mav.addObject("searchStatDt", param.getSearchStatDt());				
 	
 		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.stat_agency"));	 		
 		

@@ -111,4 +111,32 @@
 		Order By sa.Product_ID , sa.Product_Price_Seq
 	</select>
 	
+	<select id="selectTodayStatisticsAgencyList" resultType="com.gms.web.admin.domain.statistics.StatisticsAgencyVO">		
+		SELECT DATE_FORMAT(curdate(),'%Y/%m/%d') Stat_Dt, TP.Customer_ID, Product_ID, Product_Price_Seq, TP.Bottle_Own_Count, TP.Bottle_Rent_Count
+		FROM TB_Customer_Product TP, TB_Customer TC
+		WHERE TC.Agency_YN =  'Y'
+		AND TP.Customer_ID = TC.Customer_ID
+		AND (TP.Bottle_Own_Count+TP.Bottle_Rent_Count !=0 )
+	</select>
+	
+	<select id="selectTodayStatisticsAgencyCustomerList" resultType="com.gms.web.admin.domain.manage.CustomerSimpleVO">		
+		SELECT TP.Customer_ID, TC.Customer_Nm
+		FROM TB_Customer_Product TP, TB_Customer TC
+		WHERE TC.Agency_YN =  'Y'
+		AND TP.Customer_ID = TC.Customer_ID		
+		AND (TP.Bottle_Own_Count + TP.Bottle_Rent_Count !=0 )
+		GROUP By TP.Customer_ID 
+	</select>
+	
+	<select id="selectTodayStatisticsAgencyProductList" resultType="com.gms.web.admin.domain.manage.ProductPriceSimpleVO">		
+		SELECT TCP.Product_ID, TCP.Product_Price_Seq  , tp.Product_Nm, pp.Product_Capa
+		FROM TB_Customer_Product TCP, TB_Customer TC, TB_Product tp, TB_Product_Price pp 
+		WHERE TC.Agency_YN =  'Y'
+		AND TCP.Customer_ID = TC.Customer_ID		
+		and TCP.Product_ID = tp.Product_ID
+		AND TCP.Product_ID = pp.Product_ID
+		AND TCP.Product_Price_Seq = pp.Product_Price_Seq
+		AND (TCP.Bottle_Own_Count + TCP.Bottle_Rent_Count !=0 )
+		GROUP by TCP.Product_ID, TCP.Product_Price_Seq
+	</select>
 </mapper>

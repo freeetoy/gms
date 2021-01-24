@@ -88,6 +88,6 @@ public class WorkBottleVO extends AbstractVO implements Serializable {
 	/**User_ID              */
 	private String userId;
 	
-	/** Customer_Agency_YN        	*/
-	private String customerAgencyYn;
+	/**Agency_YN */
+	private String agencyYn = "N";
 }
