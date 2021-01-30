@@ -77,13 +77,13 @@ public class OrderVO extends AbstractSearchVO implements Serializable {
 	private String salesId;
 
 	/** Order_Total_Amount     	*/
-	private int orderTotalAmount;
+	private double orderTotalAmount;
 	
 	/** Deposit_Check_Dt   	*/
 	private Date depositCheckDt;
 
 	/** Deposit_Amount     	*/
-	private int depositAmount;
+	private double depositAmount;
 
 	/** Deposit_Bank_Cd    	
 	 * 0501	국민은행

@@ -23,10 +23,10 @@ public class CustomerPriceVO extends AbstractVO implements Serializable {
 	private Integer productPriceSeq;	
 	
 	/** Product_Price 	*/    
-	private int productPrice;
+	private double productPrice;
 	
 	/** Product_Bottle_Price 	*/    
-	private int productBottlePrice;
+	private double productBottlePrice;
 	
 	/** 거래처명 검색	 */
 	private String searchCustomerNm;

@@ -361,7 +361,7 @@ public class OrderController {
 		
 		model.addAttribute("orderExt", result);
 		
-		model.addAttribute("orderTotalAmountHan",StringUtils.numberToHan(String.valueOf(result.getOrder().getOrderTotalAmount())));
+		model.addAttribute("orderTotalAmountHan",StringUtils.numberToHan(String.valueOf(Math.round(result.getOrder().getOrderTotalAmount()))));
 		
 		//logger.debug("OrderContoller getPopupOrderDetail Money 1024 "+StringUtils.numberToHan("1024"));
 		CustomerVO customer = customerService.getCustomerDetails(result.getOrder().getCustomerId());			
@@ -466,7 +466,7 @@ public class OrderController {
 			//model.addAttribute("cashSum", cashSum);			
 			
 			orderPrint.setOrderExt(result);
-			orderPrint.setOrderTotalAmountHan(StringUtils.numberToHan(String.valueOf(result.getOrder().getOrderTotalAmount())));
+			orderPrint.setOrderTotalAmountHan(StringUtils.numberToHan(String.valueOf(Math.round(result.getOrder().getOrderTotalAmount()))));
 			orderPrint.setCustomer(customer);
 			orderPrint.setRentBottle(rentList.toString());
 			//orderPrint.setCustomerProduct(rentBottleList);

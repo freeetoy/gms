@@ -230,7 +230,7 @@ public class ApiServiceImpl implements ApiService {
 					workReport.setReceivedAmount(param.getIncomeAmount());
 					workReport.setIncomeWay(param.getIncomeWay());
 					workReport.setWorkReportSeq(workReportSeq);
-					
+			
 					result = workService.modifyWorkReportReceivedAmount(workReport);
 				}			
 				

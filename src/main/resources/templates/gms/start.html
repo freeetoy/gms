@@ -112,7 +112,8 @@ var goUpdate = function(bottleBarCd){
                       <a href="#" th:onclick="goUpdate([[ ${row.bottleBarCd} ]])" th:text="${row.bottleBarCd}"></a>   
                       </td>
                       <td th:text="${row.CustomerNm}"></td>
-                      <td th:text="${row.productNm}"></td>
+                      <td th:if="${row.bottleWorkCd=='0330'}" th:text="${#numbers.formatDecimal(row.productNm, 3, 'COMMA' ,2,'POINT')}"></td>
+                      <td th:unless="${row.bottleWorkCd=='0330'}" th:text="${row.productNm}"></td>
                       <td th:text="${row.bottleCapa}"></td>
                       <td th:text="${row.bottleWorkCdNm}"></td>   
                       <td th:text="|${row.bottleWorkNm}(${row.bottleWorkId})|"></td>                 

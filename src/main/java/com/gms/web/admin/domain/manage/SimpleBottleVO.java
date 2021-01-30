@@ -30,5 +30,5 @@ public class SimpleBottleVO implements Serializable {
 	private Integer productPriceSeq;
 	
 	/** Receivable_Amount	*/    
-	private int receivableAmount;
+	private double receivableAmount;
 }

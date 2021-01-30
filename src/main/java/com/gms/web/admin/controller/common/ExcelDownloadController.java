@@ -418,33 +418,46 @@ public class ExcelDownloadController {
 			    cell.setCellValue(list.get(i));		    
 		    }
 		    
-		    //순번	거래처	품명	용량	접수자	상태	요청일자	접수일
+		    //순번	거래처	품명	용량 주문액	접수자	상태	요청일자	접수일
 		    // 데이터 부분 생성
 		    int i = 1;
+		    int idx = 0;
 		    for(OrderVO vo : orderlist) {
+		    	idx = 0;
 		        row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNo++);
-		        cell = row.createCell(0);
+		        cell = row.createCell(idx++);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(i++);
-		        cell = row.createCell(1);
+		        
+		        cell = row.createCell(idx++);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getCustomerNm());
-		        cell = row.createCell(2);
+		        
+		        cell = row.createCell(idx++);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getOrderProductNm());
-		        cell = row.createCell(3);
+		        
+		        cell = row.createCell(idx++);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getOrderProductCapa());
-		        cell = row.createCell(4);
+		        
+		        cell = row.createCell(idx++);
+		        cell.setCellStyle(bodyStyle);
+		        cell.setCellValue(vo.getOrderTotalAmount());
+		        
+		        cell = row.createCell(idx++);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getCreateNm()+"("+vo.getCreateId()+")");
-		        cell = row.createCell(5);
+		        
+		        cell = row.createCell(idx++);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(vo.getOrderProcessCdNm());
-		        cell = row.createCell(6);
+		        
+		        cell = row.createCell(idx++);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(DateUtils.convertDateFormat(vo.getDeliveryReqDt(), "yyyy/MM/dd"));
-		        cell = row.createCell(7);
+		        
+		        cell = row.createCell(idx++);
 		        cell.setCellStyle(bodyStyle);
 		        cell.setCellValue(DateUtils.convertDateFormat(vo.getCreateDt(), "yyyy/MM/dd"));
 	

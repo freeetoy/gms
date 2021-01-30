@@ -18,16 +18,16 @@ public class StatisticsSalesVO implements Serializable {
 	private int salesCount;
 	
 	/**Sales_Amount    */
-	private int salesAmount;
+	private double salesAmount;
 
 	/**Rental_Count     */
 	private int rentalCount;
 	
 	/**Income_Amount    */
-	private int incomeAmount;
+	private double incomeAmount;
 	
 	/**Rental_Amount    */
-	private int rentalAmount;
+	private double rentalAmount;
 	
 	/** searchStatDt	*/
 	private String  searchStatDt;

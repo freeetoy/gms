@@ -171,14 +171,17 @@ $(function() {
                   	<tr th:if="${not #lists.isEmpty( statCustomerList )}" th:each="row : ${statCustomerList}" style="font-size:14px;">
                       <td th:text="${row.statDt}"></td>
                       <td align="right" th:text="${row.orderCount}"></td>
-                      <td align="right" th:if="${row.orderAmount> 0 }" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
-                      <td align="right" th:unless="${row.orderAmount> 0 }" th:text="${row.orderAmount}">
+                      <td align="right" th:if="${row.orderAmount > 0 && row.orderAmount * 100 % 100 == 0}" th:text="${#numbers.formatInteger(row.orderAmount, 3, 'COMMA')}">
+                      <td align="right" th:if="${row.orderAmount > 0 && row.orderAmount * 100 % 100 > 0}" th:text="${#numbers.formatDecimal(row.orderAmount, 3, 'COMMA', 2,'POINT')}">
+                      <td align="right" th:if="${row.orderAmount == 0 }" th:text="${row.orderAmount}">
                       </td>
-                      <td align="right" th:if="${row.incomeAmount> 0 }" th:text="${#numbers.formatInteger(row.incomeAmount, 3, 'COMMA')}">
-                      <td align="right" th:unless="${row.incomeAmount> 0 }" th:text="${row.incomeAmount}">
+                      <td align="right" th:if="${row.incomeAmount > 0 && row.incomeAmount * 100 % 100 == 0 }" th:text="${#numbers.formatInteger(row.incomeAmount, 3, 'COMMA')}">
+                      <td align="right" th:if="${row.incomeAmount > 0 && row.incomeAmount * 100 % 100 > 0 }" th:text="${#numbers.formatDecimal(row.incomeAmount, 3, 'COMMA', 2,'POINT')}">
+                      <td align="right" th:if="${row.incomeAmount == 0 }" th:text="${row.incomeAmount}">
                       </td>
-                      <td align="right" th:if="${row.receivableAmount> 0 }" th:text="${#numbers.formatInteger(row.receivableAmount, 3, 'COMMA')}">
-                      <td align="right" th:unless="${row.receivableAmount> 0 }" th:text="${row.receivableAmount}">
+                      <td align="right" th:if="${row.receivableAmount > 0 && row.receivableAmount * 100 % 100 == 0}" th:text="${#numbers.formatInteger(row.receivableAmount, 3, 'COMMA')}">
+                      <td align="right" th:if="${row.receivableAmount > 0 && row.receivableAmount * 100 % 100 > 0}" th:text="${#numbers.formatDecimal(row.receivableAmount, 3, 'COMMA', 2,'POINT')}">
+                      <td align="right" th:if="${row.receivableAmount == 0 }" th:text="${row.receivableAmount}">
                       </td>                      
                     </tr>
                     <tr th:unless="${not #lists.isEmpty( statCustomerList )}">

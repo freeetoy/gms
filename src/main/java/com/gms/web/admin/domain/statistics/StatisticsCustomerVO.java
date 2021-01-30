@@ -24,13 +24,13 @@ private static final long serialVersionUID = 8474003342300538104L;
 	private int orderCount;
 	
 	/**Order_Amount */
-	private int orderAmount;
+	private double orderAmount;
 	
 	/** Income_Amount       */    
-	private int incomeAmount;
+	private double incomeAmount;
 	
 	/** Receivable_Amount	*/    
-	private int receivableAmount;
+	private double receivableAmount;
 	
 	/** searchCustomerId	*/
 	private Integer searchCustomerId;

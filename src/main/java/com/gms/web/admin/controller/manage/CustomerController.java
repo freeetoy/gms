@@ -387,10 +387,10 @@ public class CustomerController {
 				priceVo.setCustomerId(Integer.parseInt(request.getParameter("customerId1")));
 				priceVo.setProductId(Integer.parseInt(request.getParameter("productId_"+i)));
 				priceVo.setProductPriceSeq(Integer.parseInt(request.getParameter("productPriceSeq_"+i)));
-				priceVo.setProductPrice(Integer.parseInt(request.getParameter("productPrice_"+i)));
+				priceVo.setProductPrice(Float.parseFloat(request.getParameter("productPrice_"+i)));
 				if(request.getParameter("productBottlePrice_"+i) != null && request.getParameter("productBottlePrice_"+i).length() > 0 )	bottlePrice = request.getParameter("productBottlePrice_"+i);
 				else bottlePrice = "0";
-				priceVo.setProductBottlePrice(Integer.parseInt(bottlePrice));
+				priceVo.setProductBottlePrice(Float.parseFloat(bottlePrice));
 					
 				customerPrice[i] = priceVo;				
 			}

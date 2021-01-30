@@ -32,16 +32,16 @@ public class ProductTotalVO extends AbstractVO  implements Serializable {
 	private Integer productPriceSeq;	
 	
 	/** Product_Price 	*/    
-	private int productPrice;
+	private double productPrice;
 	
 	/** Product_Bottle_Price 	*/    
-	private int productBottlePrice;
+	private double productBottlePrice;
 	
 	/** Customer_Product_Price 	*/    
-	private int customerProductPrice;
+	private double customerProductPrice;
 	
 	/** Customer_Bottle_Price 	*/    
-	private int customerBottlePrice;
+	private double customerBottlePrice;
 	
 	/** Product_Capa     */
 	private String productCapa;

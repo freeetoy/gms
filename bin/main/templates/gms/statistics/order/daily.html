@@ -111,13 +111,15 @@ $(function() {
                       <td th:text="${row.statDt}"></td>
                       <td align="right" th:if="${row.orderTotalCount> 999 }" th:text="${#numbers.formatInteger(row.orderTotalCount, 3, 'COMMA')}">
                       <td align="right" th:unless="${row.orderTotalCount> 999 }" th:text="${row.orderTotalCount}">                      
-                      <td align="right" th:if="${row.orderTotalAmount> 0 }" th:text="${#numbers.formatInteger(row.orderTotalAmount, 3, 'COMMA')}">
-                      <td align="right" th:unless="${row.orderTotalAmount> 0 }" th:text="${row.orderTotalAmount}">
+                      <td align="right" th:if="${row.orderTotalAmount > 0 && row.orderTotalAmount * 100 % 100 == 0 }" th:text="${#numbers.formatInteger(row.orderTotalAmount, 3, 'COMMA')}">
+                      <td align="right" th:if="${row.orderTotalAmount > 0 && row.orderTotalAmount * 100 % 100 > 0 }" th:text="${#numbers.formatDecimal(row.orderTotalAmount, 3, 'COMMA', 2,'POINT')}">
+                      <td align="right" th:if="${row.orderTotalAmount == 0 }" th:text="${row.orderTotalAmount}">
                       </td>      
                       <td align="right" th:if="${row.orderCompletedCount> 999 }" th:text="${#numbers.formatInteger(row.orderCompletedCount, 3, 'COMMA')}">
                       <td align="right" th:unless="${row.orderCompletedCount> 999 }" th:text="${row.orderCompletedCount}">        
-                      <td align="right" th:if="${row.orderCompletedAmount> 0 }" th:text="${#numbers.formatInteger(row.orderCompletedAmount, 3, 'COMMA')}">
-                      <td align="right" th:unless="${row.orderCompletedAmount> 0 }" th:text="${row.orderCompletedAmount}">
+                      <td align="right" th:if="${row.orderCompletedAmount > 0 && row.orderCompletedAmount * 100 % 100 == 0 }" th:text="${#numbers.formatInteger(row.orderCompletedAmount, 3, 'COMMA')}">
+                      <td align="right" th:if="${row.orderCompletedAmount > 0 && row.orderCompletedAmount * 100 % 100 > 0 }" th:text="${#numbers.formatDecimal(row.orderCompletedAmount, 3, 'COMMA', 2,'POINT')}">
+                      <td align="right" th:if="${row.orderCompletedAmount> 0 }" th:text="${row.orderCompletedAmount}">
                       </td>                     
                       <td align="right" th:text="${row.orderCancelCount}"></td>
                       <td align="right" th:text="${row.orderRetrievedCount}"></td>

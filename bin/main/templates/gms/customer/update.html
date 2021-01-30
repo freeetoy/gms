@@ -343,10 +343,12 @@ $(function() {
 	                 	<tr th:if="${not #lists.isEmpty( customerPriceList )}" th:each="row : ${customerPriceList}">
 	                     <td th:text="${row.productNm}"></td>
 	                     <td th:text="${row.productCapa}"></td>
-	                     <td th:if="${row.productPrice> 999 }"  th:text="${#numbers.formatInteger(row.productPrice, 3, 'COMMA')}"></td> 
-	                     <td th:unless="${row.productPrice> 999 }"  th:text="${row.productPrice}"></td>
-	                     <td th:if="${row.productBottlePrice> 999 }"  th:text="${#numbers.formatInteger(row.productBottlePrice, 3, 'COMMA')}"></td> 
-						 <td th:unless="${row.productBottlePrice> 999 }"  th:text="${row.productBottlePrice}"></td>
+	                     <td th:if="${row.productPrice> 0 && row.productPrice*100%100 == 0 }"  th:text="${#numbers.formatInteger(row.productPrice, 3, 'COMMA')}"></td>
+	                     <td th:if="${row.productPrice> 0 && row.productPrice*100%100 > 0 }"  th:text="${#numbers.formatDecimal(row.productPrice, 3, 'COMMA', 2,'POINT')}"></td> 
+	                     <td th:if="${row.productPrice <= 0 }"  th:text="${row.productPrice}"></td>
+	                     <td th:if="${row.productBottlePrice > 0 && row.productBottlePrice * 100 %100 == 0  }"  th:text="${#numbers.formatInteger(row.productBottlePrice, 3, 'COMMA')}"></td>
+	                     <td th:if="${row.productBottlePrice > 0 && row.productBottlePrice * 100 %100 >  0  }"  th:text="${#numbers.formatDecimal(row.productBottlePrice, 3, 'COMMA', 2,'POINT')}"></td> 
+						 <td th:if="${row.productBottlePrice <= 0 }"  th:text="${row.productBottlePrice}"></td>
 	                   </tr>
 	                 	</tbody>
 	              	</table>   

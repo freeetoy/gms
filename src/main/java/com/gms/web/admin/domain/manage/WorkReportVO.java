@@ -47,10 +47,10 @@ public class WorkReportVO extends AbstractVO implements Serializable {
 	private Date workDt;	
 	
 	/** Order_Amount     	*/
-	private int orderAmount;
+	private double orderAmount;
 	
 	/**Received_Amount     */
-	private int receivedAmount;
+	private double receivedAmount;
 	
 	/** Income_Way		*/  
 	/** CASH

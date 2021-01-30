@@ -11,9 +11,9 @@ public class CashSumVO implements Serializable {
 	
 	private static final long serialVersionUID = 3212009822300528104L;
 
-	long incomeAmountSum;
+	double incomeAmountSum;
 	
-	long receivableAmountSum;
+	double receivableAmountSum;
 	
-	long receivableAmountNet;
+	double receivableAmountNet;
 }

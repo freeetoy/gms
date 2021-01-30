@@ -14,10 +14,10 @@ public class TempProductVO {
 	private Integer productPriceSeq;
 	
 	/** Product_Price 	*/    
-	private int productPrice;	
+	private double productPrice;	
 	
 	/** Product_Bottle_Price 	*/    
-	private int productBottlePrice;	
+	private double productBottlePrice;	
 	
 	/** Order_ID			*/
 	private Integer orderId;

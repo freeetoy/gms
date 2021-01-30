@@ -238,7 +238,7 @@ public class OrderServiceImpl implements OrderService {
 			
 			String orderTypeCd = params.getOrderTypeCd();
 						
-			int orderAmount = 0;
+			double orderAmount = 0;
 			//int deleteAmount = 0;
 			int orderTotalAmount = 0;
 			
@@ -485,8 +485,8 @@ public class OrderServiceImpl implements OrderService {
 			
 			String orderTypeCd = params.getOrderTypeCd();
 						
-			int orderAmount = 0;
-			int orderTotalAmount = 0;
+			double orderAmount = 0;
+			double orderTotalAmount = 0;
 			
 			Integer productId =0;
 			Integer productPriceSeq = 0;
@@ -828,6 +828,7 @@ public class OrderServiceImpl implements OrderService {
 	public OrderExtVO getOrder(Integer orderId) {
 		
 		OrderVO order = orderMapper.selectOrderDetail(orderId);	
+		
 		List<OrderProductVO> orderProduct = null;
 		
 		if(order.getOrderTypeCd().equals(PropertyFactory.getProperty("common.code.order.type.order")) )

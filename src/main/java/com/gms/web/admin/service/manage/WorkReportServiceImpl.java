@@ -147,7 +147,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 			}
 		}
 		//logger.debug("WorkReportServiceImpl getWorkReportListAll viewList.size= "+ viewList.size());
-		int totalAmount=0;
+		double totalAmount=0;
 		for(int i=0;i<viewList.size() ; i++) {
 			totalAmount = 0;
 			
@@ -293,7 +293,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 										)   ) {
 							
 							
-							int productPrice = orderProduct.getOrderAmount() / orderProduct.getOrderCount();
+							double productPrice = orderProduct.getOrderAmount() / orderProduct.getOrderCount();
 							
 							WorkBottleVO workBottle = makeWorkBottle(soldBottle);
 							workBottle.setWorkReportSeq(param.getWorkReportSeq());
@@ -331,7 +331,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 						OrderProductVO orderProduct = orderProductList.get(k);
 						
 						if(soldBottle.getProductId() == orderProduct.getProductId() && soldBottle.getProductPriceSeq() == orderProduct.getProductPriceSeq()) {
-							int productPrice = orderProduct.getOrderAmount() / orderProduct.getOrderCount();
+							double productPrice = orderProduct.getOrderAmount() / orderProduct.getOrderCount();
 							orderProduct.setOrderCount(orderProduct.getOrderCount()+1);
 							orderProduct.setOrderAmount(orderProduct.getOrderAmount()+productPrice);
 							orderProduct.setBottleId(soldBottle.getBottleId());
@@ -349,7 +349,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 								alreadyFlag = false;
 								
 								int orderCount = newOrderProductList.get(j).getOrderCount();
-								int productPrice = newOrderProductList.get(j).getOrderAmount() / newOrderProductList.get(j).getOrderCount();
+								double productPrice = newOrderProductList.get(j).getOrderAmount() / newOrderProductList.get(j).getOrderCount();
 								newOrderProductList.get(j).setOrderCount(orderCount+1);
 								newOrderProductList.get(j).setOrderAmount(newOrderProductList.get(j).getOrderAmount()+productPrice);														
 								
@@ -1690,13 +1690,45 @@ public class WorkReportServiceImpl implements WorkReportService {
 
 	@Override
 	public int modifyWorkReportReceivedAmount(WorkReportVO param) {		
-		return workMapper.updateWorkReportReceivedAmount(param);
+		int workSeq=1;
+		int result = 0 ;
+
+		workSeq = workMapper.selectWorkBottleSeq(param.getWorkReportSeq());
+		
+		WorkBottleVO workBottle = new WorkBottleVO();
+		workBottle.setWorkReportSeq(param.getWorkReportSeq());
+		workBottle.setWorkSeq(workSeq);
+		workBottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0312"));		
+		workBottle.setCustomerId(param.getCustomerId());				
+		workBottle.setCreateId(param.getCreateId());			
+		
+		result =  workMapper.updateWorkReportReceivedAmount(param);
+		if(result > 0)
+			result = workMapper.insertWorkBottle(workBottle);
+		
+		
+		return result;
 	}
 
-
+	// 입금용 WorkReport 등록
 	@Override
 	public int registerWorkReportOnly(WorkReportVO param) {		
-		return workMapper.insertWorkReport(param);
+		
+		int workSeq=1;
+		int result = 0 ;
+
+		WorkBottleVO workBottle = new WorkBottleVO();
+		workBottle.setWorkReportSeq(param.getWorkReportSeq());
+		workBottle.setWorkSeq(workSeq);
+		workBottle.setBottleWorkCd(PropertyFactory.getProperty("common.bottle.status.0312"));		
+		workBottle.setCustomerId(param.getCustomerId());				
+		workBottle.setCreateId(param.getCreateId());			
+		
+		result =  workMapper.insertWorkReport(param);
+		if(result > 0)
+			result = workMapper.insertWorkBottle(workBottle);
+		
+		return result ; 
 	}
 
 
@@ -1954,7 +1986,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 		if(orderBottleList.size() > 0)
 			result = orderService.registerOrderBottles(orderBottleList);
 		
-		int orderPrice = param.getOrderAmount() / param.getOrderCount();
+		double orderPrice = param.getOrderAmount() / param.getOrderCount();
 		
 		param.setOrderCount(param.getOrderCount()+param.getSalesCount());
 		param.setOrderAmount(param.getOrderAmount()+orderPrice*param.getSalesCount());		
@@ -1967,7 +1999,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 	private int addOrderProductNoGas(OrderProductVO param) {
 		int result= 1;
 
-		int orderPrice = param.getOrderAmount() / param.getOrderCount();
+		double orderPrice = param.getOrderAmount() / param.getOrderCount();
 		
 		param.setOrderCount(param.getOrderCount()+param.getSalesCount());
 		param.setOrderAmount(param.getOrderAmount()+orderPrice*param.getSalesCount());		
@@ -2016,7 +2048,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 
 		if(orderProductCount > 0) {
 		// orderProduct 수정s
-			int orderPrice = param.getOrderAmount() / param.getOrderCount();
+			double orderPrice = param.getOrderAmount() / param.getOrderCount();
 			
 			param.setOrderCount(param.getOrderCount()-param.getSalesCount());
 			param.setOrderAmount(param.getOrderAmount()-orderPrice*param.getSalesCount());		
@@ -2460,7 +2492,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 
 	@Transactional
 	private OrderVO registerOrderInfo(WorkReportVO param, List<BottleVO> params, List<String> bottles, List<String> productCounts) {
-		
+		logger.debug(" registerOrderInfo" );
 		try {
 			int result = 0;
 			//Order
@@ -2628,18 +2660,18 @@ public class WorkReportServiceImpl implements WorkReportService {
 		
 	private int modifyCustomerProductMass(WorkReportVO param, List<OrderProductVO> params) {
 		logger.debug(" modifyCustomerProductMass");
-		logger.debug(" modifyCustomerProductMass params= "+params.size());
+		
 		int result = 0 ;
 		try {
 			List<CustomerProductVO> customerProductList = customerService.getCustomerProductList(param.getCustomerId());
 			List<CustomerProductVO> registerCustomerProductList = new ArrayList<CustomerProductVO>();
 			int checkAgency = 1;
-			if(param.getAgencyYn().equals("Y")) checkAgency = -1;
+			if(param.getAgencyYn()!=null && param.getAgencyYn().equals("Y") && param.getWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale"))) checkAgency = -1;
 			
 			for(int i = 0 ; i < params.size() ; i++ ) {
 				OrderProductVO orderProduct = params.get(i);
 				boolean isReg = true;
-				
+				logger.debug(" modifyCustomerProductMass orderProduct= "+params.size());
 				if(customerProductList !=null) {
 					for(int j=0 ; j < customerProductList.size() ; j++) {
 						CustomerProductVO  customerProduct = customerProductList.get(j);
@@ -2647,13 +2679,13 @@ public class WorkReportServiceImpl implements WorkReportService {
 						customerProduct.setUpdateId(param.getUserId());
 						
 						if(orderProduct.getProductId()== customerProduct.getProductId() && orderProduct.getProductPriceSeq() == customerProduct.getProductPriceSeq()) {
-							if(orderProduct.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale"))) {
+							if(param.getWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.sale"))) {
 								customerProduct.setBottleOwnCount(checkAgency * orderProduct.getOrderCount());
 								result = customerService.modifyCustomerProductOwnCount(customerProduct);
-							}else if(orderProduct.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent"))) {
+							}else if(param.getWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent"))) {
 								customerProduct.setBottleRentCount(checkAgency * orderProduct.getOrderCount());
 								result = customerService.modifyCustomerProductRentCount(customerProduct);
-							}else if(orderProduct.getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back"))) {
+							}else if(param.getWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.back"))) {
 								customerProduct.setBottleRentCount(checkAgency * orderProduct.getOrderCount()*-1);
 								result = customerService.modifyCustomerProductRentCount(customerProduct);
 							}
@@ -2735,7 +2767,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 		return result;		
 	}	
 	
-	private int registerCashFlow(WorkReportVO param,int receivableAmount) {
+	private int registerCashFlow(WorkReportVO param, double receivableAmount) {
 		int result = 0;
 		
 		CashFlowVO cashFlow = new CashFlowVO();
@@ -2883,7 +2915,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 					if(remainOrderProductList.get(i).getProductId() == orderProductList.get(j).getProductId()
 							&& remainOrderProductList.get(i).getProductPriceSeq() == orderProductList.get(j).getProductPriceSeq() ) {
 						
-						int orginPrice = orderProductList.get(j).getOrderAmount() / orderProductList.get(j).getOrderCount();
+						double orginPrice = orderProductList.get(j).getOrderAmount() / orderProductList.get(j).getOrderCount();
 						
 						orderProductList.get(j).setOrderCount(orderProductList.get(j).getOrderCount()+remainOrderProduct.getOrderCount());
 						orderProductList.get(j).setOrderAmount( orderProductList.get(j).getOrderCount()*orginPrice);
@@ -3212,7 +3244,10 @@ public class WorkReportServiceImpl implements WorkReportService {
 						else
 							customerProduct.setBottleOwnCount(1);	
 					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.salesBack")) ){ //20201220
-						customerProduct.setBottleOwnCount(1);	
+						if(param.get(i).getAgencyYn().equals("Y"))
+							customerProduct.setBottleOwnCount(1);	
+						else
+							customerProduct.setBottleOwnCount(-1);	
 					}else if (param.get(i).getBottleWorkCd().equals(PropertyFactory.getProperty("common.bottle.status.rent")) ) {
 						if(param.get(i).getAgencyYn().equals("Y"))
 							customerProduct.setBottleRentCount(-1);

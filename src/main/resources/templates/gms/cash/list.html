@@ -100,7 +100,7 @@ $(document).ready(function(){
 	$("#btn_com_search1").click(function()  
 	{    	
 	  var searchCustomerNm = $("#searchCustomerNm1").val();
-	console.log("searchCustomerNm =="+searchCustomerNm);
+	
 	   $.ajax({
 	           url: '/gms/common/customerList.do',
 	           type: 'POST',
@@ -423,10 +423,12 @@ $(function() {
                       <td th:text="${totalCount-((currentPage-1) * rowPerPage) - list.indexOf(row)}"></td>
                       <td th:text="${#calendars.format( row.createDt, 'yyyy-MM-dd HH:mm' )}"></td>
                       <th th:text="${row.customerNm}" >거래처</th>
-                      <td align="right" th:if="${row.receivableAmount> 999 }"  th:text="${#numbers.formatInteger(row.receivableAmount, 3, 'COMMA')}"></td> 
-                      <td align="right" th:unless="${row.receivableAmount> 999 }"  th:text="${row.receivableAmount}"></td>                     
-                      <td align="right" th:if="${row.incomeAmount> 999 }" th:text="${#numbers.formatInteger(row.incomeAmount, 3, 'COMMA')}"></td>
-                      <td align="right" th:unless="${row.incomeAmount> 999 }" th:text="${row.incomeAmount}"></td>
+                      <td align="right" th:if="${row.receivableAmount> 0 && row.receivableAmount*100%100 > 0}"  th:text="${#numbers.formatDecimal(row.receivableAmount, 3, 'COMMA' ,2,'POINT')}"></td> 
+                      <td align="right" th:if="${row.receivableAmount> 0 && row.receivableAmount*100%100 == 0}"  th:text="${#numbers.formatInteger(row.receivableAmount, 3, 'COMMA')}"></td> 
+                      <td align="right" th:if="${row.receivableAmount <= 0 }"  th:text="${row.receivableAmount}"></td>                     
+                      <td align="right" th:if="${row.incomeAmount > 0  && row.incomeAmount*100%100 > 0 }" th:text="${#numbers.formatDecimal(row.incomeAmount, 3, 'COMMA' ,2,'POINT')}"></td>
+                      <td align="right" th:if="${row.incomeAmount > 0  && row.incomeAmount*100%100 == 0 }" th:text="${#numbers.formatInteger(row.incomeAmount, 3, 'COMMA')}"></td>
+                      <td align="right" th:if="${row.incomeAmount <= 0 }" th:text="${row.incomeAmount}"></td>
                       <td th:if="${row.incomeWay=='CASH'}">현금
                       <td th:if="${row.incomeWay=='CARD'}">카드        
                       <td th:if="${row.incomeWay==null}">    

@@ -26,7 +26,7 @@ public class WorkReportViewVO extends AbstractVO implements Serializable {
 	private String customerNm;
 	
 	/** Order_Amount     	*/
-	private int orderAmount;
+	private double orderAmount;
 	
 	/** Income_Way		*/  
 	/** CASH
@@ -35,7 +35,7 @@ public class WorkReportViewVO extends AbstractVO implements Serializable {
 	private String incomeWay;
 	
 	/**Received_Amount     */
-	private int receivedAmount;
+	private double receivedAmount;
 	
 	/** searchDt	*/
 	private String  searchDt;

@@ -21,12 +21,14 @@ import com.gms.web.admin.common.utils.StringUtils;
 import com.gms.web.admin.common.web.utils.RequestUtils;
 import com.gms.web.admin.domain.common.LoginUserVO;
 import com.gms.web.admin.domain.manage.BottleVO;
+import com.gms.web.admin.domain.manage.CashFlowVO;
 import com.gms.web.admin.domain.manage.OrderBottlesVO;
 import com.gms.web.admin.domain.manage.UserVO;
 import com.gms.web.admin.domain.manage.WorkBottleVO;
 import com.gms.web.admin.domain.manage.WorkReportVO;
 import com.gms.web.admin.domain.manage.WorkReportViewVO;
 import com.gms.web.admin.service.manage.BottleService;
+import com.gms.web.admin.service.manage.CashFlowService;
 import com.gms.web.admin.service.manage.UserService;
 import com.gms.web.admin.service.manage.WorkReportService;
 
@@ -48,6 +50,9 @@ public class WorkReportController {
 	
 	@Autowired
 	private BottleService bottleService;
+	
+	@Autowired
+	private CashFlowService cashService;
 	
 	@RequestMapping(value = "/gms/report/list.do")
 	public ModelAndView getWorkReportList(
@@ -428,5 +433,58 @@ public class WorkReportController {
 		}
 		return null;
 		//return "redirect:/gms/mypage/assign.do";		
+	}
+	
+	
+	@RequestMapping(value = "/gms/report/registerCash.do", method = RequestMethod.POST)
+	public ModelAndView registerCashFlow(
+			HttpServletRequest request
+			, HttpServletResponse response
+			, CashFlowVO param) {
+		
+		int result = 0;
+		ModelAndView mav = new ModelAndView();		
+				
+		param.setUpdateId(param.getCreateId());
+		mav.addObject("menuId", PropertyFactory.getProperty("common.menu.diary"));	 	
+		logger.debug("getCreateId = "+param.getCreateId());				
+		
+		// 수금액 정보 업데이트			
+		
+		WorkReportVO workReport = new WorkReportVO();
+		workReport.setCustomerId(param.getCustomerId());
+		workReport.setUserId(param.getCreateId());
+		
+		int workReportSeq = workService.getWorkReportSeqForCustomerToday(workReport);
+		
+		if(workReportSeq <= 0) {
+			workReportSeq = workService.getWorkReportSeq();		
+			workReport.setWorkReportSeq(workReportSeq);
+			workReport.setCreateId(param.getCreateId());
+			workReport.setUserId(param.getCreateId());
+			workReport.setReceivedAmount(param.getIncomeAmount());
+			workReport.setIncomeWay(param.getIncomeWay());
+			workReport.setWorkCd(PropertyFactory.getProperty("common.bottle.status.0312"));
+			
+			workService.registerWorkReportOnly(workReport);
+			
+		}else {
+			workReport.setUpdateId(param.getCreateId());
+			workReport.setReceivedAmount(param.getIncomeAmount());
+			workReport.setIncomeWay(param.getIncomeWay());
+			workReport.setWorkReportSeq(workReportSeq);
+			
+			result = workService.modifyWorkReportReceivedAmount(workReport);
+		}	
+		
+		if(param.getIncomeAmount() <=0)
+			param.setIncomeWay(null);
+
+		result = cashService.registerCashFlow(param);
+		if(result > 0){
+			String alertMessage = "등록되었습니다.";
+			RequestUtils.responseWriteException(response, alertMessage, "/gms/report/listAll.do?searchUserId="+param.getCreateId() );
+		}
+		return null;
 	}
 }

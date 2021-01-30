@@ -39,7 +39,7 @@ public class OrderProductVO extends AbstractVO implements Serializable {
 	private String bottleSaleYn;	
 	
 	/** Order_Amount     	*/
-	private int orderAmount;
+	private double orderAmount;
 	
 	/** Bottle_ID			*/
 	private String bottleId;     

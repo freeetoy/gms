@@ -54,7 +54,7 @@ public class WorkBottleVO extends AbstractVO implements Serializable {
 	private Integer productPriceSeq;
 	
 	/** Product_Price 	*/    
-	private int productPrice;	
+	private double productPrice;	
 	
 	/**   Bottle_Type */
 	/** E 공병, F 실병 */
@@ -72,7 +72,7 @@ public class WorkBottleVO extends AbstractVO implements Serializable {
 	private Integer orderId;
 	
 	/** Order_Total_Amount     	*/
-	private int orderTotalAmount;
+	private double orderTotalAmount;
 	
 	private int productCount;
 	

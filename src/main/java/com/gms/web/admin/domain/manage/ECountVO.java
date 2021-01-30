@@ -43,17 +43,17 @@ public class ECountVO {
 	
 	private int orderCount;	//수량
 	
-	private int productPrice;	//단가
+	private double productPrice;	//단가
 	
-	private int currencyPrice;	//외화 금액
+	private double currencyPrice;	//외화 금액
 	
-	private int supplyPrice;		//공급가액
+	private double supplyPrice;		//공급가액
 		
-	private int vat;			//부가세
+	private double vat;			//부가세
 	
 	private String summary;			//적요
 	
-	private int prdouctPriceVAT;		//단가(VAT포함)
+	private double prdouctPriceVAT;		//단가(VAT포함)
 	
 	private String receipt;		//생산전표생성
 	

@@ -1099,7 +1099,7 @@ public class ExcelServiceImpl implements ExcelService {
                 }                             
               
                 String colValue="";       
-                int productPrice = 0;
+                float productPrice = 0;
                 String customerNm ="";
             	String businessRegId="";            	
             	int productCheck = 0;
@@ -1128,7 +1128,7 @@ public class ExcelServiceImpl implements ExcelService {
 	                        } else {
 	                            Long roundVal = Math.round(cell.getNumericCellValue());
 	                            Double doubleVal = cell.getNumericCellValue();
-	                            productPrice = (int)cell.getNumericCellValue();
+	                            productPrice = (float)cell.getNumericCellValue();
 	                            if (doubleVal.equals(roundVal.doubleValue())) {
 	                                colValue = String.valueOf(roundVal);
 	                            } else {
@@ -1377,7 +1377,7 @@ public class ExcelServiceImpl implements ExcelService {
                 }                             
               
                 String colValue="";       
-                int productPrice = 0;
+                float productPrice = 0;
                 String customerNm ="";
             	String businessRegId="";            	
             	int productCheck = 0;
@@ -1404,7 +1404,7 @@ public class ExcelServiceImpl implements ExcelService {
 	                        } else {
 	                            Long roundVal = Math.round(cell.getNumericCellValue());
 	                            Double doubleVal = cell.getNumericCellValue();
-	                            productPrice = (int)cell.getNumericCellValue();
+	                            productPrice = (float)cell.getNumericCellValue();
 	                            if (doubleVal.equals(roundVal.doubleValue())) {
 	                                colValue = String.valueOf(roundVal);
 	                            } else {

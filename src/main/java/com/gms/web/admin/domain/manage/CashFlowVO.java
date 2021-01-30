@@ -23,10 +23,10 @@ public class CashFlowVO extends AbstractSearchVO implements Serializable {
 	private String customerNm;
 
 	/** Income_Amount       */    
-	private int incomeAmount;
+	private double incomeAmount;
 	
 	/** Receivable_Amount	*/    
-	private int receivableAmount;
+	private double receivableAmount;
 	
 	/** Income_Way		*/  
 	/** CASH

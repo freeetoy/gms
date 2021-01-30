@@ -24,13 +24,13 @@ public class StatisticsProductVO extends AbstractVO implements Serializable {
 	private int saleCount;
 	
 	/**Sale_Amount */
-	private int saleAmount;
+	private double saleAmount;
 	
 	/**Rent_Count  */
 	private int rentCount;
 	
 	/**Rent_Amount */
-	private int rentAmount;
+	private double rentAmount;
 	
 	private Integer searchProductId;
 	
