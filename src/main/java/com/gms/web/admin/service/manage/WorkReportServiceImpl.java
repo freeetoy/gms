@@ -208,7 +208,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 				result = workMapper.insertWorkReport(param);
 			
 			boolean updateOrderAddFlag = true;
-			int receivableAmount = 0 ;
+			double receivableAmount = 0 ;
 			
 			for(int i = 0 ; i < bottleList.size() ; i++) {
 				BottleVO soldBottle = bottleList.get(i);				
@@ -448,7 +448,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 			// Order 상태 정보 변경
 			List<OrderProductVO> allOrderProductList = orderService.getOrderProductList(param.getOrderId());
 			int remainCount = 0;
-			int orderAmount = 0;
+			double orderAmount = 0;
 			
 			boolean orderCompleted = false;
 			for(int j=0; j < allOrderProductList.size() ; j++) {
@@ -642,8 +642,8 @@ public class WorkReportServiceImpl implements WorkReportService {
 				int orderProductSeq = 1;
 				int orderBottleSeq= 1;
 				int orderCount = 1;
-				int orderTotalAmount = 0;		
-				int receivableAmount = 0;
+				double orderTotalAmount = 0;		
+				double receivableAmount = 0;
 				String orderProductNm = "";
 				String orderProductCapa = "";				
 				
@@ -1271,7 +1271,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 		boolean registerFlag = false;
 		int result = 0;
 		int workSeq=1;
-		int receivableAmount =0;
+		double receivableAmount =0;
 		
 		if(param.getProductId() != null && param.getProductPriceSeq() != null) {
 			
@@ -2231,7 +2231,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 		logger.debug(" --modifyOrderInfo  orderProductList.size=" + orderProductList.size() );
 		String orderProductNm = "";
 		String orderProductCapa = "";
-		int orderTotalAmount = 0;		
+		double orderTotalAmount = 0;		
 		
 		for(int i=0 ;i < orderProductList.size() ; i++) {
 			orderTotalAmount +=orderProductList.get(i).getOrderAmount();
@@ -2528,7 +2528,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 			List<OrderBottleVO> orderBottleList = new ArrayList<OrderBottleVO>();
 			List<WorkBottleVO> workBottleList = new ArrayList<WorkBottleVO>();			
 			
-			int orderTotalAmount = 0 ;
+			double orderTotalAmount = 0 ;
 			String orderProductNm = "";
 			String orderProductCapa = "";
 			int workSeq = 1;
@@ -2802,8 +2802,8 @@ public class WorkReportServiceImpl implements WorkReportService {
 			List<OrderProductVO> orderProductList = orderService.getOrderProductList(order.getOrderId());
 			
 			List<OrderBottleVO> orderBottleListNot = orderService.getOrderBottleListNotDelivery(order.getOrderId());
-			int addOrderTotalAmount = 0;
-			int orderTotalAmount = 0;
+			double addOrderTotalAmount = 0;
+			double orderTotalAmount = 0;
 			
 			for(int i = 0 ; i < bottleList.size() ; i++) {
 				BottleVO bottle = bottleList.get(i);
@@ -3107,7 +3107,7 @@ public class WorkReportServiceImpl implements WorkReportService {
 			
 			List<OrderProductVO> orderProductList = orderService.getOrderProductList(workReport.getOrderId());					
 			
-			int totalAmount = 0;
+			double totalAmount = 0;
 			String bottleIds = "";
 			//Order_product Order_Bottle
 			for(int j=0 ; j < beforeWorkBottleList.size() ; j++) {

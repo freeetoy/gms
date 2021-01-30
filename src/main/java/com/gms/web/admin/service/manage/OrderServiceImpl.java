@@ -240,7 +240,7 @@ public class OrderServiceImpl implements OrderService {
 						
 			double orderAmount = 0;
 			//int deleteAmount = 0;
-			int orderTotalAmount = 0;
+			double orderTotalAmount = 0;
 			
 			Integer productId =0;
 			Integer productPriceSeq = 0;
@@ -953,7 +953,7 @@ public class OrderServiceImpl implements OrderService {
 			workBottleList = workService.getWorkBottleListOfOrder(order.getOrderId());
 		}
 		
-		int orderTotalAmount = 0;
+		double orderTotalAmount = 0;
 		
 		for(int j=0;j<productList.size();j++) {
 			CustomerPriceExtVO customerProduct = productList.get(j);
@@ -1018,7 +1018,7 @@ public class OrderServiceImpl implements OrderService {
 					
 					List<WorkBottleVO> workBottleList = workService.getWorkBottleListOfOrder(order.getOrderId());
 					
-					int orderTotalAmount = 0;
+					double orderTotalAmount = 0;
 					for(int j=0;j<productList.size();j++) {
 						CustomerPriceExtVO customerProduct = productList.get(j);
 						
